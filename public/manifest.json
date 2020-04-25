@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "MyLinks",
+  "name": "Organize my links",
   "icons": [
     {
       "src": "favicon.ico",

@@ -1,0 +1,141 @@
+@import url(https://fonts.googleapis.com/css?family=Open+Sans);
+
+body { 
+  font-family: 'Open Sans', sans-serif;
+  color: #666;
+}
+
+.ml-wrapper {
+  padding: 5px;
+  margin: 5px;
+}
+
+.ml-widget-label h2 {
+  color: #000;
+  display: inline;
+  flex-grow: 1;
+  font-size: 14px;
+  line-height: 34px;
+  margin-right: 0px;
+  margin-right: 6px;
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ml-widget-item-link {
+  color: #444;
+  display: block;
+  font-size: 14px;
+  text-decoration: none;
+}
+
+.ml-widget-item-link::after {
+  content: '';
+  display: block;
+  width: 0;
+  height: 2px;
+  transition: width .3s;
+  background: #999;
+}
+
+.ml-widget-item-link:hover::after {
+  width: 100%;
+}
+
+.ml-widget-item-link:focus, .ml-widget-item-link:focus {
+  text-decoration: none;
+}
+
+.ml-rows {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-self: flex-start;
+  margin: 5px 0;
+  width: 100%;
+}
+
+.ml-rows ul {
+  display: block;
+  list-style-type: none;
+  min-height: 23px;
+  overflow-x: hidden;
+  margin: 0;
+  padding: 0;
+}
+
+.ml-rows li {
+  margin-bottom: 2px;
+}
+
+.ml-columns {
+  display: flex;
+  flex-direction: row;
+}
+
+.ml-widget {
+  flex: 1;
+  border: 1px solid gray;
+  margin: 5px 10px;
+  padding: 0 10px 10px 10px;
+  background-color: #fff;
+  box-shadow: 8px 8px 6px rgba(0,0,0,.2);
+}
+
+.ml-widget:hover .ml-toolbar {
+    display: block;
+}
+
+.ml-favicon {
+  width: 16px;
+  height: 16px;
+  line-height: 16px;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: 16px 16px;
+  text-align: center;
+  margin-right: 6px;
+  float: left;
+  clear: both;
+}
+
+.ml-favicon img {
+  max-width: 16px;
+  max-height: 16px;
+}
+
+.ml-toolbar {
+  float: right;
+  line-height: 34px;
+  cursor: pointer;
+  display: none;
+}
+
+.fa-external-link {
+  color: #000;
+}
+
+.fa-external-link:hover {
+  animation-name: pulse;
+  animation-duration: 0.7s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+
+@keyframes pulse {
+  50% {
+    transform: scale(0.8);
+  }
+}
+
+.ml-missing-favicon {
+  width: 16px;
+  height: 16px;
+  display: inline-block;
+  background-color: var(--missing-favicon-color, yellow);
+  mask: url(../../img/missingFavicon.svg) no-repeat 50% 50%;
+  mask-size: cover;
+}
