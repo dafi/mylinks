@@ -136,6 +136,6 @@ body {
   height: 16px;
   display: inline-block;
   background-color: var(--missing-favicon-color, yellow);
-  mask: url(../../img/missingFavicon.svg) no-repeat 50% 50%;
+  mask: svg-load(../../img/missingFavicon.svg) no-repeat 50% 50%;
   mask-size: cover;
 }
