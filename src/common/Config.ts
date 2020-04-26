@@ -2,6 +2,8 @@ import WidgetData from '../model/WidgetData';
 
 const STORAGE_PREF_DATA = 'myLinkData';
 
+export type OnLoadCallback = (config?: Config | null | undefined) => void;
+
 export interface Data {
   bkg: string;
   missingFavIconColor: string,
@@ -15,15 +17,15 @@ export default class Config {
     this.config = config;
   }
 
-  static fromData(onLoadCallback: any) {
-    ConfigReader.loadData((data: Data) => {
-      onLoadCallback(new Config(data));
+  static fromData(onLoadCallback: OnLoadCallback) {
+    ConfigReader.loadData((data?: Data) => {
+      onLoadCallback(data ? new Config(data) : null);
     });
   }
 
-  static fromFile(file: any, onLoadCallback: any) {
-    ConfigReader.loadFromFile(file, (data: Data) => {
-      onLoadCallback(new Config(data));
+  static fromFile(file: any, onLoadCallback: OnLoadCallback) {
+    ConfigReader.loadFromFile(file, (data?: Data) => {
+      onLoadCallback(data ? new Config(data) : null);
     });
   }
 
@@ -56,7 +58,7 @@ class ConfigReader {
     if (jsonText) {
       data = ConfigReader.loadFromObject(JSON.parse(jsonText));
     }
-  onLoadCallback(data);
+    onLoadCallback(data);
   }
 
   // loadWidgetsFromUrl(url) {
