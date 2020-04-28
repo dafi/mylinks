@@ -21,7 +21,6 @@ export class UIInput {
     const el = this.findElement(document.elementFromPoint(this.mouseX, this.mouseY), 'ml-widget');
     if (el && el.dataset.listId) {
       const widget = this.config.findWidgetById(el.dataset.listId);
-      console.log(widget)
       if (widget) {
         openAllLinks(widget);
       }
