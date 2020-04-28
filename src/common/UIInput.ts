@@ -51,7 +51,20 @@ export class UIInput {
     if (e.key === 'a') {
       this.openFromMousePosition();
     }
+    this.openFromShortcut(e.key);
+
     return true;
   }
 
+  openFromShortcut(key: string) {
+    const shortcut = this.config.config.shortcuts.find((shortcut) => shortcut.key === key);
+    if (!shortcut) {
+      return;
+    }
+    const item = this.config.config.rows.flat().map(i => i.list).flat().find(item => item.id === shortcut.id);
+
+    if (item) {
+      window.open(item.url);      
+    }
+  }
 }

@@ -1,4 +1,4 @@
-import WidgetData from '../model/WidgetData';
+import WidgetData, { ShortcutData } from '../model/WidgetData';
 
 const STORAGE_PREF_DATA = 'myLinkData';
 
@@ -7,7 +7,8 @@ export type OnLoadCallback = (config?: Config | null | undefined) => void;
 export interface Data {
   bkg: string;
   missingFavIconColor: string,
-	rows: [WidgetData[]]
+  rows: [WidgetData[]];
+  shortcuts: ShortcutData[];
 }
 
 export default class Config {
@@ -30,7 +31,7 @@ export default class Config {
   }
 
   findWidgetById(id: string) {
-    return this.config?.rows.flat().find(w => w.id === id);
+    return this.config.rows.flat().find(w => w.id === id);
   }
   
   applyBackground() {
