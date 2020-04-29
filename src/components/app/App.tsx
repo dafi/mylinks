@@ -1,19 +1,25 @@
 import React from 'react';
 import './App.css';
-import './fileContainer.css';
+import './toolbar-icon.css';
 
 import {ThemeContext, Theme, defaultTheme} from '../../common/ThemeContext';
 import * as MyLinks from '../widgets/Widgets';
 import Config from '../../common/Config';
 import * as UIInput from '../../common/UIInput';
-import WidgetData from '../../model/WidgetData';
+import { Widget } from '../../model/MyLinks';
 
-export interface PageState { columns: [WidgetData[]], theme: Theme }
+const STORAGE_PREF_HIDE_SHORTCUTS = 'hideShortcuts';
+
+export interface PageState { columns: [Widget[]], theme: Theme }
 
 class Page extends React.Component<{}, PageState> {
+  config?: Config | null;
+
   constructor(props: {}) {
     super(props);
-    this.state = { columns: [[]], theme: defaultTheme};
+    const theme = Object.assign({}, defaultTheme);
+    theme.hideShortcuts = this.hideShortcuts;
+    this.state = { columns: [[]], theme: theme};
   }
 
   componentDidMount() {
@@ -29,16 +35,22 @@ class Page extends React.Component<{}, PageState> {
           <MyLinks.Grid columns={this.state.columns} />
         </div>
 
-        <label className="fileContainer">
-          Load Widgets...
+        <label className="toolbar-icon">
+          <i className="fa fa-file-import"></i>
           <input type="file" id="files" name="files[]" onChange={(e) => this.handleFileSelect(e)} />
         </label>
+
+        <label className="toolbar-icon" onClick={(e) => this.onClickKeyboard(e)}>
+          <i className="fa fa-keyboard"></i>
+        </label>
+
       </div>
     </ThemeContext.Provider>
     ;
   }
 
   reloadAll(config?: Config | null) {
+    this.config = config;
     if (!config) {
       return;
     }
@@ -46,9 +58,18 @@ class Page extends React.Component<{}, PageState> {
     config.applyTheme();
     new UIInput.UIInput(config);
     this.setState({
-      theme: {missingFavIconColor: config.config.missingFavIconColor},
-      columns: config.config.rows
+      theme: {missingFavIconColor: config.myLinks.theme?.missingFavIconColor, hideShortcuts: this.hideShortcuts},
+      columns: config.myLinks.columns
     });
+  }
+
+  onClickKeyboard(evt: any) {
+    if (this.config) {
+      this.hideShortcuts = !this.hideShortcuts;
+      this.setState({
+        theme: {missingFavIconColor: this.config.myLinks.theme?.missingFavIconColor, hideShortcuts: this.hideShortcuts},
+      });
+    }
   }
   
   handleFileSelect(evt: any) {
@@ -58,6 +79,14 @@ class Page extends React.Component<{}, PageState> {
         this.reloadAll(config);
       });
     }
+  }
+
+  get hideShortcuts(): boolean {
+    return (localStorage.getItem(STORAGE_PREF_HIDE_SHORTCUTS) === '1') || false;
+  }
+
+  set hideShortcuts(v: boolean) {
+    localStorage.setItem(STORAGE_PREF_HIDE_SHORTCUTS, v ? '1' : '0');
   }
 }
 

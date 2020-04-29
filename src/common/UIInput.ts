@@ -1,5 +1,5 @@
 import Config from "./Config";
-import { openAllLinks } from "../model/WidgetData";
+import { openAllLinks } from "../model/MyLinks";
 
 export class UIInput {
   mouseX = 0
@@ -49,18 +49,19 @@ export class UIInput {
     }
     if (e.key === 'a') {
       this.openFromMousePosition();
+    } else {
+      this.openFromShortcut(e.key);
     }
-    this.openFromShortcut(e.key);
 
     return true;
   }
 
   openFromShortcut(key: string) {
-    const shortcut = this.config.config.shortcuts.find((shortcut) => shortcut.key === key);
+    const shortcut = this.config.myLinks.shortcuts.find((shortcut) => shortcut.key === key);
     if (!shortcut) {
       return;
     }
-    const item = this.config.config.rows.flat().map(i => i.list).flat().find(item => item.id === shortcut.id);
+    const item = this.config.myLinks.columns.flat().map(i => i.list).flat().find(item => item.id === shortcut.id);
 
     if (item) {
       window.open(item.url);      

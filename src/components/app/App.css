@@ -48,6 +48,15 @@ body {
   text-decoration: none;
 }
 
+.ml-widget-item-link .description {
+  float: right;
+  border-radius: 3px;
+  background-color: var(--link-description-background, red);
+  color: var(--link-description-color, white);
+  width: 16px;
+  text-align: center;
+}
+
 .ml-rows {
   display: flex;
   flex-direction: column;
@@ -85,7 +94,7 @@ body {
 }
 
 .ml-widget:hover .ml-toolbar {
-    display: block;
+  display: block;
 }
 
 .ml-favicon {
@@ -113,11 +122,11 @@ body {
   display: none;
 }
 
-.fa-external-link {
+.fa-external-link-alt {
   color: #000;
 }
 
-.fa-external-link:hover {
+.fa-external-link-alt:hover {
   animation-name: pulse;
   animation-duration: 0.7s;
   animation-timing-function: linear;

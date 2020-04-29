@@ -1,22 +1,30 @@
 import React from 'react';
 import {ThemeContext} from '../../common/ThemeContext';
-import WidgetData, { openAllLinks } from '../../model/WidgetData';
-import { WidgetLink } from '../../model/WidgetLink';
+import { openAllLinks, Link as MLLink, Widget as MLWidget } from '../../model/MyLinks';
 
-export interface LinkProps { value: WidgetLink }
+export interface LinkProps { value: MLLink }
 
 class Link extends React.Component<LinkProps, {}> {
   render() {
+    const theme = this.context;
     const item = this.props.value;
+
+    const style = {
+      visibility: theme.hideShortcuts ? 'collapse' : 'visible'
+    } as React.CSSProperties;
     return (
       <a href={item.url} target="_blank" rel="noopener noreferrer" className="ml-widget-item-link">
         {this.image(item)}
-        <div className="label">{item.label}</div>
+        <div className="label">{item.label}
+        <span className="description" style={style}>
+            {item.description}
+        </span>
+        </div>
       </a>
     );
   }
 
-  image(item: WidgetLink) {
+  image(item: MLLink) {
     if (item.favicon) {
       return <i className="ml-favicon"><img src={item.favicon} alt=''/></i>;
     }
@@ -26,7 +34,7 @@ class Link extends React.Component<LinkProps, {}> {
 
 Link.contextType = ThemeContext;
 
-export interface WidgetProps { value: WidgetData }
+export interface WidgetProps { value: MLWidget }
 
 class Widget extends React.Component<WidgetProps, {}> {
   render() {
@@ -37,7 +45,7 @@ class Widget extends React.Component<WidgetProps, {}> {
         <div className="ml-widget-label">
           <h2>{data.title}</h2>
           <span className="ml-toolbar" onClick={ () => openAllLinks(data)}>
-            <i className="fa fa-external-link"></i>
+            <i className="fa fa-external-link-alt"></i>
           </span>
         </div>
         <ul>{ items }</ul>
@@ -45,7 +53,7 @@ class Widget extends React.Component<WidgetProps, {}> {
   }
 }
 
-export interface ColumnProps { value: WidgetData[] }
+export interface ColumnProps { value: MLWidget[] }
 
 class Column extends React.Component<ColumnProps, {}> {
   render() {
@@ -54,12 +62,12 @@ class Column extends React.Component<ColumnProps, {}> {
   }
 }
 
-export interface GridProps { columns: [WidgetData[]] }
+export interface GridProps { columns: [MLWidget[]] }
 
 export class Grid extends React.Component<GridProps, {}> {
   render() {
     const widgets = this.props.columns || [];
-    const columns = widgets.map((columns: WidgetData[], index: number) => <Column key={index} value={columns}/>);
+    const columns = widgets.map((columns: MLWidget[], index: number) => <Column key={index} value={columns}/>);
     return <section className="ml-columns">{columns}</section>;
   }  
 }

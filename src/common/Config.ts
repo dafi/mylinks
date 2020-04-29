@@ -1,41 +1,47 @@
-import WidgetData, { ShortcutData } from '../model/WidgetData';
+import { MyLinks } from '../model/MyLinks';
 
-const STORAGE_PREF_DATA = 'myLinkData';
+const STORAGE_PREF_DATA = 'myLinksData';
 
 export type OnLoadCallback = (config?: Config | null | undefined) => void;
 
-export interface Data {
-  bkg: string;
-  missingFavIconColor: string,
-  rows: [WidgetData[]];
-  shortcuts: ShortcutData[];
-}
-
 export default class Config {
-  config: Data;
+  myLinks: MyLinks;
 
-  constructor(config: Data) {
-    this.config = config;
+  constructor(myLinks: MyLinks) {
+    this.myLinks = myLinks;
+    this.updateDescriptions();
+  }
+
+  private updateDescriptions() {
+    this.myLinks.columns.forEach(row => {
+      row.forEach(widgets => {
+        widgets.list
+        .filter(item => !!item.id)
+        .forEach(item => {
+          item.description = this.myLinks.shortcuts.find(s => s.id === item.id)?.key
+        });
+      })
+    })
   }
 
   static fromData(onLoadCallback: OnLoadCallback) {
-    ConfigReader.loadData((data?: Data) => {
-      onLoadCallback(data ? new Config(data) : null);
+    ConfigReader.loadData((myLinks?: MyLinks) => {
+      onLoadCallback(myLinks ? new Config(myLinks) : null);
     });
   }
 
   static fromFile(file: any, onLoadCallback: OnLoadCallback) {
-    ConfigReader.loadFromFile(file, (data?: Data) => {
-      onLoadCallback(data ? new Config(data) : null);
+    ConfigReader.loadFromFile(file, (myLinks?: MyLinks) => {
+      onLoadCallback(myLinks ? new Config(myLinks) : null);
     });
   }
 
   findWidgetById(id: string) {
-    return this.config.rows.flat().find(w => w.id === id);
+    return this.myLinks.columns.flat().find(w => w.id === id);
   }
   
   applyBackground() {
-    const bkg = this.config ? this.config['bkg'] : null;
+    const bkg = this.myLinks?.theme?.backgroundImage;
     const body = document.body;
     if (bkg) {
       body.style.backgroundImage = `url(${bkg})`;
@@ -45,8 +51,20 @@ export default class Config {
   }
 
   applyTheme() {
-    if (this.config.missingFavIconColor) {
-      document.documentElement.style.setProperty('--missing-favicon-color', this.config.missingFavIconColor);
+    const theme = this.myLinks.theme;
+
+    if (!theme) {
+      return;
+    }
+
+    if (theme.missingFavIconColor) {
+      document.documentElement.style.setProperty('--missing-favicon-color', theme.missingFavIconColor);
+    }
+    if (theme.linkDescriptionBackground) {
+      document.documentElement.style.setProperty('--link-description-background', theme.linkDescriptionBackground);
+    }
+    if (theme.linkDescriptionColor) {
+      document.documentElement.style.setProperty('--link-description-color', theme.linkDescriptionColor);
     }
   }
 }
@@ -62,24 +80,8 @@ class ConfigReader {
     onLoadCallback(data);
   }
 
-  // loadWidgetsFromUrl(url) {
-  // $.ajax({
-  //   dataType: "json",
-  //   url: url,
-  //   beforeSend: function(xhr) {
-  //     // if called from local file system ensure the mimetype is json
-  //     if (xhr.overrideMimeType) {
-  //       xhr.overrideMimeType("application/json");
-  //     }
-  //   },
-  //   success: function(json) {
-  //     $.mlLoadWidgetsFromObject(json, callback);
-  //   }
-  // });
-  // }
-
-  static loadFromObject(json: any) : Data {
-    return json as Data;
+  static loadFromObject(json: any) : MyLinks {
+    return json as MyLinks;
   }
 
   static loadFromFile(file: any, onLoadCallback: any) {
