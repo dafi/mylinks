@@ -5,15 +5,15 @@ import './toolbar-icon.css';
 import {ThemeContext, Theme, defaultTheme} from '../../common/ThemeContext';
 import * as MyLinks from '../widgets/Widgets';
 import Config from '../../common/Config';
-import * as UIInput from '../../common/UIInput';
-import { Widget } from '../../model/MyLinks';
+import { UIInput } from '../../common/UIInput';
+import { Widget, MyLinksHolder, MyLinks as MMLinks } from '../../model/MyLinks';
 
 const STORAGE_PREF_HIDE_SHORTCUTS = 'hideShortcuts';
 
 export interface PageState { columns: [Widget[]], theme: Theme }
 
 class Page extends React.Component<{}, PageState> {
-  config?: Config | null;
+  private myLinksHolder?: MyLinksHolder;
 
   constructor(props: {}) {
     super(props);
@@ -23,8 +23,8 @@ class Page extends React.Component<{}, PageState> {
   }
 
   componentDidMount() {
-    Config.fromData((config?: Config | null) => {
-      this.reloadAll(config);
+    Config.fromData((myLinks?: MMLinks | null) => {
+      this.reloadAll(myLinks);
     });
   }
 
@@ -49,25 +49,25 @@ class Page extends React.Component<{}, PageState> {
     ;
   }
 
-  reloadAll(config?: Config | null) {
-    this.config = config;
-    if (!config) {
+  reloadAll(myLinks?: MMLinks | null) {
+    if (!myLinks) {
       return;
     }
-    config.applyBackground();
-    config.applyTheme();
-    new UIInput.UIInput(config);
+    this.myLinksHolder = new MyLinksHolder(myLinks);
+    this.myLinksHolder.applyBackground();
+    this.myLinksHolder.applyTheme();
+    UIInput.instance().setup(this.myLinksHolder);
     this.setState({
-      theme: {missingFavIconColor: config.myLinks.theme?.missingFavIconColor, hideShortcuts: this.hideShortcuts},
-      columns: config.myLinks.columns
+      theme: {missingFavIconColor: myLinks.theme?.missingFavIconColor, hideShortcuts: this.hideShortcuts},
+      columns: myLinks.columns
     });
   }
 
   onClickKeyboard(evt: any) {
-    if (this.config) {
+    if (this.myLinksHolder) {
       this.hideShortcuts = !this.hideShortcuts;
       this.setState({
-        theme: {missingFavIconColor: this.config.myLinks.theme?.missingFavIconColor, hideShortcuts: this.hideShortcuts},
+        theme: {missingFavIconColor: this.myLinksHolder.myLinks.theme?.missingFavIconColor, hideShortcuts: this.hideShortcuts},
       });
     }
   }
@@ -75,8 +75,8 @@ class Page extends React.Component<{}, PageState> {
   handleFileSelect(evt: any) {
     const file = evt.target.files[0];
     if (file.type === 'application/json') {
-      Config.fromFile(file, (config?: Config | null) => {
-        this.reloadAll(config);
+      Config.fromFile(file, (myLinks?: MMLinks | null) => {
+        this.reloadAll(myLinks);
       });
     }
   }

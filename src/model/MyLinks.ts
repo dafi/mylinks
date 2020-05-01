@@ -32,3 +32,62 @@ export interface MyLinks {
 export function openAllLinks(wd: Widget) {
   wd.list.reverse().forEach(item => window.open(item.url));
 }
+
+export class MyLinksHolder {
+
+  constructor(public readonly myLinks: MyLinks) {
+    this.updateDescriptionsFromShortcuts();
+  }
+
+  updateDescriptionsFromShortcuts() {
+    this.myLinks.columns.forEach(row => {
+      row.forEach(widgets => {
+        widgets.list
+        .filter(item => !!item.id)
+        .forEach(item => {
+          item.description = this.myLinks.shortcuts.find(s => s.id === item.id)?.key
+        });
+      })
+    });
+  }
+
+  findWidgetById(id: string) {
+    return this.myLinks.columns.flat().find(w => w.id === id);
+  }
+
+  findLinkByKey(key: string): Link | undefined {
+    const shortcut = this.myLinks.shortcuts.find((shortcut) => shortcut.key === key);
+    if (!shortcut) {
+      return undefined;
+    }
+    return this.myLinks.columns.flat().map(i => i.list).flat().find(item => item.id === shortcut.id);
+  }
+
+  applyBackground() {
+    const bkg = this.myLinks.theme?.backgroundImage;
+    const body = document.body;
+    if (bkg) {
+      body.style.backgroundImage = `url(${bkg})`;
+    } else {
+      body.style.backgroundImage = '';
+    }
+  }
+
+  applyTheme() {
+    const theme = this.myLinks.theme;
+
+    if (!theme) {
+      return;
+    }
+
+    if (theme.missingFavIconColor) {
+      document.documentElement.style.setProperty('--missing-favicon-color', theme.missingFavIconColor);
+    }
+    if (theme.linkDescriptionBackground) {
+      document.documentElement.style.setProperty('--link-description-background', theme.linkDescriptionBackground);
+    }
+    if (theme.linkDescriptionColor) {
+      document.documentElement.style.setProperty('--link-description-color', theme.linkDescriptionColor);
+    }
+  }
+}

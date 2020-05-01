@@ -1,26 +1,39 @@
-import Config from "./Config";
-import { openAllLinks } from "../model/MyLinks";
+import { openAllLinks, MyLinksHolder } from "../model/MyLinks";
 
 export class UIInput {
-  mouseX = 0
-  mouseY = 0;
-  config: Config;
+  private mouseX = 0
+  private mouseY = 0;
+  private static _instance: UIInput;
+  private myLinksHolder?: MyLinksHolder;
 
-  constructor(config: Config) {
-    this.config = config;
-
-    this.mouseX = 0;
-    this.mouseY = 0;
+  private constructor() {
     document.addEventListener('mousemove', (e) => this.storeMousePosition(e), false);
     document.addEventListener('mouseenter', (e) => this.storeMousePosition(e), false);
 
     document.addEventListener('keypress', (e) => this.keyPress(e), false);
+  }
+
+  static instance(): UIInput {
+    if (!this._instance) {
+      this._instance = new this();
+    }
+    return this._instance;
+  }
+
+  setup(myLinksHolder: MyLinksHolder) {
+    this.myLinksHolder = myLinksHolder;
+
+    this.mouseX = 0;
+    this.mouseY = 0;
   }  
 
-  openFromMousePosition() {
+  private openFromMousePosition() {
+    if (!this.myLinksHolder) {
+      return;
+    }
     const el = this.findElement(document.elementFromPoint(this.mouseX, this.mouseY), 'ml-widget');
     if (el && el.dataset.listId) {
-      const widget = this.config.findWidgetById(el.dataset.listId);
+      const widget = this.myLinksHolder.findWidgetById(el.dataset.listId);
       if (widget) {
         openAllLinks(widget);
       }
@@ -56,15 +69,11 @@ export class UIInput {
     return true;
   }
 
-  openFromShortcut(key: string) {
-    const shortcut = this.config.myLinks.shortcuts.find((shortcut) => shortcut.key === key);
-    if (!shortcut) {
-      return;
-    }
-    const item = this.config.myLinks.columns.flat().map(i => i.list).flat().find(item => item.id === shortcut.id);
+  private openFromShortcut(key: string) {
+    const link = this.myLinksHolder?.findLinkByKey(key);
 
-    if (item) {
-      window.open(item.url);      
+    if (link) {
+      window.open(link.url);      
     }
   }
 }
