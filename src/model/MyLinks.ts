@@ -26,7 +26,7 @@ export interface Widget {
 export interface MyLinks {
   theme: Theme;
   columns: [Widget[]];
-  shortcuts: Shortcut[];
+  shortcuts?: Shortcut[];
 }
 
 export function openAllLinks(wd: Widget) {
@@ -40,12 +40,17 @@ export class MyLinksHolder {
   }
 
   updateDescriptionsFromShortcuts() {
+    const shortcuts = this.myLinks.shortcuts;
+
+    if (!shortcuts) {
+      return;
+    }
     this.myLinks.columns.forEach(row => {
       row.forEach(widgets => {
         widgets.list
         .filter(item => !!item.id)
         .forEach(item => {
-          item.description = this.myLinks.shortcuts.find(s => s.id === item.id)?.key
+          item.description = shortcuts.find(s => s.id === item.id)?.key
         });
       })
     });
@@ -56,11 +61,15 @@ export class MyLinksHolder {
   }
 
   findLinkByKey(key: string): Link | undefined {
-    const shortcut = this.myLinks.shortcuts.find((shortcut) => shortcut.key === key);
+    const shortcut = this.myLinks.shortcuts?.find((shortcut) => shortcut.key === key);
     if (!shortcut) {
       return undefined;
     }
     return this.myLinks.columns.flat().map(i => i.list).flat().find(item => item.id === shortcut.id);
+  }
+
+  hasShortcuts(): boolean {
+    return (this.myLinks.shortcuts?.length || 0) > 0;
   }
 
   applyBackground() {

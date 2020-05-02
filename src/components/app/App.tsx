@@ -10,7 +10,11 @@ import { Widget, MyLinksHolder, MyLinks as MMLinks } from '../../model/MyLinks';
 
 const STORAGE_PREF_HIDE_SHORTCUTS = 'hideShortcuts';
 
-export interface PageState { columns: [Widget[]], theme: Theme }
+export interface PageState {
+  columns: [Widget[]],
+  theme: Theme,
+  hasShortcuts: boolean
+ }
 
 class Page extends React.Component<{}, PageState> {
   private myLinksHolder?: MyLinksHolder;
@@ -19,7 +23,7 @@ class Page extends React.Component<{}, PageState> {
     super(props);
     const theme = Object.assign({}, defaultTheme);
     theme.hideShortcuts = this.hideShortcuts;
-    this.state = { columns: [[]], theme: theme};
+    this.state = { columns: [[]], theme: theme, hasShortcuts: false};
   }
 
   componentDidMount() {
@@ -29,6 +33,10 @@ class Page extends React.Component<{}, PageState> {
   }
 
   render() {
+    const style = {
+      visibility: this.state.hasShortcuts ? 'visible' : 'collapse'
+    } as React.CSSProperties;;
+
     return <ThemeContext.Provider value={this.state.theme}>
       <div className="ml-wrapper">
         <div className="ml-grid">
@@ -40,7 +48,7 @@ class Page extends React.Component<{}, PageState> {
           <input type="file" id="files" name="files[]" onChange={(e) => this.handleFileSelect(e)} />
         </label>
 
-        <label className="toolbar-icon" onClick={(e) => this.onClickKeyboard(e)}>
+        <label className="toolbar-icon" style={style} onClick={(e) => this.onClickKeyboard(e)}>
           <i className="fa fa-keyboard"></i>
         </label>
 
@@ -59,7 +67,8 @@ class Page extends React.Component<{}, PageState> {
     UIInput.instance().setup(this.myLinksHolder);
     this.setState({
       theme: {missingFavIconColor: myLinks.theme?.missingFavIconColor, hideShortcuts: this.hideShortcuts},
-      columns: myLinks.columns
+      columns: myLinks.columns,
+      hasShortcuts: this.myLinksHolder.hasShortcuts()
     });
   }
 
