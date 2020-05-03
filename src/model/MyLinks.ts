@@ -1,8 +1,8 @@
 export interface Theme {
   backgroundImage?: string;
   missingFavIconColor: string,
-  linkDescriptionBackground?: string;
-  linkDescriptionColor?: string;
+  linkKeyBackground?: string;
+  linkKeyColor?: string;
 }
 
 export interface Link {
@@ -85,14 +85,16 @@ export class MyLinksHolder {
       return;
     }
 
-    if (theme.missingFavIconColor) {
-      document.documentElement.style.setProperty('--missing-favicon-color', theme.missingFavIconColor);
-    }
-    if (theme.linkDescriptionBackground) {
-      document.documentElement.style.setProperty('--link-description-background', theme.linkDescriptionBackground);
-    }
-    if (theme.linkDescriptionColor) {
-      document.documentElement.style.setProperty('--link-description-color', theme.linkDescriptionColor);
+    this.setColor('--missing-favicon-color', theme.missingFavIconColor);
+    this.setColor('--link-key-background', theme.linkKeyBackground);
+    this.setColor('--link-key-color', theme.linkKeyColor);
+  }
+
+  private setColor(property: string, color?: string) {
+    if (color) {
+      document.documentElement.style.setProperty(property, color);
+    } else {
+      document.documentElement.style.removeProperty(property);
     }
   }
 }

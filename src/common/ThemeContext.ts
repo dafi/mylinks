@@ -2,8 +2,8 @@ import React from 'react';
 
 export interface Theme {
   missingFavIconColor: string;
-  linkDescriptionBackground?: string;
-  linkDescriptionColor?: string;
+  linkKeyBackground?: string;
+  linkKeyColor?: string;
 
   hideShortcuts: boolean;
 }

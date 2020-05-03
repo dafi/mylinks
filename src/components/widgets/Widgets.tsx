@@ -10,15 +10,13 @@ class Link extends React.Component<LinkProps, {}> {
     const item = this.props.value;
 
     const style = {
-      visibility: theme.hideShortcuts ? 'collapse' : 'visible'
+      visibility: theme.hideShortcuts || !item.description ? 'collapse' : 'visible'
     } as React.CSSProperties;
     return (
       <a href={item.url} target="_blank" rel="noopener noreferrer" className="ml-widget-item-link">
         {this.image(item)}
         <div className="label">{item.label}
-        <span className="description" style={style}>
-            {item.description}
-        </span>
+          <kbd style={style}>{item.description}</kbd>
         </div>
       </a>
     );
