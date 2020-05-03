@@ -1,10 +1,11 @@
-import { openAllLinks, MyLinksHolder } from "../model/MyLinks";
+import { openAllLinks, MyLinksHolder, Shortcut } from "../model/MyLinks";
 
 export class UIInput {
   private mouseX = 0
   private mouseY = 0;
   private static _instance: UIInput;
   private myLinksHolder?: MyLinksHolder;
+  private buffer = '';
 
   private constructor() {
     document.addEventListener('mousemove', (e) => this.storeMousePosition(e), false);
@@ -61,16 +62,25 @@ export class UIInput {
       return false;
     }
     if (e.key === 'a') {
+      this.buffer = '';
       this.openFromMousePosition();
-    } else {
-      this.openFromShortcut(e.key);
+    } else if (this.myLinksHolder?.myLinks.shortcuts) {
+      this.buffer += e.key;
+      let arr = this.myLinksHolder?.myLinks.shortcuts?.filter((shortcut) => shortcut.key.startsWith(this.buffer));
+      if (arr.length === 0) {
+        // not found
+        this.buffer = '';
+      } else if (arr.length === 1 && arr[0].key === this.buffer) {
+        this.buffer = '';
+        this.openFromShortcut(arr[0]);
+      }
     }
 
     return true;
   }
 
-  private openFromShortcut(key: string) {
-    const link = this.myLinksHolder?.findLinkByKey(key);
+  private openFromShortcut(shortcut: Shortcut) {
+    const link = this.myLinksHolder?.findLinkByShortcut(shortcut);
 
     if (link) {
       window.open(link.url);      

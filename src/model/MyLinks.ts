@@ -60,11 +60,7 @@ export class MyLinksHolder {
     return this.myLinks.columns.flat().find(w => w.id === id);
   }
 
-  findLinkByKey(key: string): Link | undefined {
-    const shortcut = this.myLinks.shortcuts?.find((shortcut) => shortcut.key === key);
-    if (!shortcut) {
-      return undefined;
-    }
+  findLinkByShortcut(shortcut: Shortcut): Link | undefined {
     return this.myLinks.columns.flat().map(i => i.list).flat().find(item => item.id === shortcut.id);
   }
 
