@@ -16,8 +16,6 @@ body {
   flex-grow: 1;
   font-size: 14px;
   line-height: 34px;
-  margin-right: 0px;
-  margin-right: 6px;
   margin: 0;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -152,4 +150,9 @@ body {
   background-color: var(--missing-favicon-color, yellow);
   mask: svg-load('../../img/missingFavicon.svg') no-repeat 50% 50%;
   mask-size: cover;
+}
+
+.ml-widget a:focus {
+  outline: 0;
+  font-weight: bold;
 }
