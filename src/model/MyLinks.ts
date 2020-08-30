@@ -6,7 +6,7 @@ export interface Theme {
 }
 
 export interface Link {
-  id?: string;
+  id: string;
   label: string;
   url: string;
   favicon?: string;
@@ -30,7 +30,11 @@ export interface MyLinks {
 }
 
 export function openAllLinks(wd: Widget) {
-  wd.list.reverse().forEach(item => window.open(item.url));
+  wd.list.reverse().forEach(openLink);
+}
+
+export function openLink(link: Link) {
+  window.open(link.url)
 }
 
 export class MyLinksHolder {

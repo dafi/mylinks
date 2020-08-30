@@ -43,7 +43,7 @@ class Widget extends React.Component<WidgetProps, {}> {
         <div className="ml-widget-label">
           <h2>{data.title}</h2>
           <span className="ml-toolbar" onClick={ () => openAllLinks(data)}>
-            <i className="fa fa-external-link-alt"></i>
+            <i className="fa fa-external-link-alt"/>
           </span>
         </div>
         <ul>{ items }</ul>

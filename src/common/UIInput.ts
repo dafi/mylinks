@@ -1,4 +1,4 @@
-import { openAllLinks, MyLinksHolder, Shortcut } from "../model/MyLinks";
+import {openAllLinks, MyLinksHolder, Shortcut, openLink} from "../model/MyLinks";
 
 export class UIInput {
   private mouseX = 0
@@ -10,8 +10,6 @@ export class UIInput {
   private constructor() {
     document.addEventListener('mousemove', (e) => this.storeMousePosition(e), false);
     document.addEventListener('mouseenter', (e) => this.storeMousePosition(e), false);
-
-    document.addEventListener('keypress', (e) => this.keyPress(e), false);
   }
 
   static instance(): UIInput {
@@ -57,7 +55,7 @@ export class UIInput {
     this.mouseY = e.clientY;
   }
 
-  keyPress(e: any) {
+  keyDown(e: any) {
     if (e.ctrlKey || e.shiftKey || e.altKey || e.metaKey) {
       return false;
     }
@@ -83,7 +81,7 @@ export class UIInput {
     const link = this.myLinksHolder?.findLinkByShortcut(shortcut);
 
     if (link) {
-      window.open(link.url);      
+      openLink(link);
     }
   }
 }
