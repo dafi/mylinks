@@ -112,7 +112,9 @@ export class LinkSelector extends React.Component<LinkSelectorProps, LinkSelecto
                 onDoubleClick={(e) => this.onDoubleClick(e, i)}
                 className={i === this.state.selectedIndex ? 'selected' : 'none'}
                 ref={this.listRefs.get(r.id)}
-                key={r.id}>{this.image(r.link)}{r.widget.title} - {r.link.label}</li>
+                key={r.id}>{this.image(r.link)}
+                <div>{r.widget.title} - {r.link.label}</div>
+              </li>
             })}
           </ul>
         </div>
@@ -155,11 +157,9 @@ export class LinkSelector extends React.Component<LinkSelectorProps, LinkSelecto
 
   image(item: Link) {
     if (item.favicon) {
-      return <i className="ml-favicon"><img src={item.favicon} alt=''/></i>;
+      return <img src={item.favicon} className="ml-favicon" alt=''/>;
     }
-    return <i className="ml-favicon">
-      <div className="ml-missing-favicon"/>
-    </i>;
+    return <div className="ml-missing-favicon"/>;
   }
 
 }

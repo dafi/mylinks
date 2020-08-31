@@ -22,6 +22,9 @@
     line-height: 25px;
     user-select: none;
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    padding-left: 4px;
 }
 
 .link-selector li:hover {
