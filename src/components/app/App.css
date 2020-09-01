@@ -1,6 +1,12 @@
-@import url(https://fonts.googleapis.com/css?family=Open+Sans);
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap');
 
-body { 
+:root {
+  --link-key-background: #eee;
+  --link-key-color: #333;
+  --missing-favicon-color: yellow;
+}
+
+body {
   font-family: 'Open Sans', sans-serif;
   color: #666;
 }
@@ -157,6 +163,7 @@ body {
   height: 16px;
   display: inline-block;
   background-color: var(--missing-favicon-color, yellow);
+  /*noinspection CssInvalidFunction*/
   mask: svg-load('../../img/missingFavicon.svg') no-repeat 50% 50%;
   mask-size: cover;
   margin-right: 6px;
