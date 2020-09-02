@@ -24,7 +24,11 @@ class ConfigReader {
 
     let jsonText = localStorage.getItem(STORAGE_PREF_DATA);
     if (jsonText) {
-      data = ConfigReader.loadFromObject(JSON.parse(jsonText));
+      try {
+        data = ConfigReader.loadFromObject(JSON.parse(jsonText));
+      } catch (e) {
+        window.alert(e);
+      }
     }
     onLoadCallback(data);
   }
@@ -39,8 +43,12 @@ class ConfigReader {
     reader.onload = (() => {
       return (e: any) => {
         let jsonText = e.target.result;
-        localStorage.setItem(STORAGE_PREF_DATA, jsonText);
-        onLoadCallback(ConfigReader.loadFromObject(JSON.parse(jsonText)));
+        try {
+          onLoadCallback(ConfigReader.loadFromObject(JSON.parse(jsonText)));
+          localStorage.setItem(STORAGE_PREF_DATA, jsonText);
+        } catch (e) {
+          window.alert(e);
+        }
       };
     })();
 
