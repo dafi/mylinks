@@ -10,11 +10,7 @@ export interface Link {
   label: string;
   url: string;
   favicon?: string;
-  description?: string;
-}
-export interface Shortcut {
-  key: string;
-  id: string;
+  shortcut?: string;
 }
 
 export interface Widget {
@@ -26,7 +22,6 @@ export interface Widget {
 export interface MyLinks {
   theme: Theme;
   columns: [Widget[]];
-  shortcuts?: Shortcut[];
 }
 
 export function openAllLinks(wd: Widget) {
@@ -37,39 +32,43 @@ export function openLink(link: Link) {
   window.open(link.url)
 }
 
+export function filterMyLinks(myLinks: MyLinks, callback: (widget: Widget, link: Link) => boolean) : Link[] {
+  const result: Link[] = [];
+  myLinks.columns.forEach(row => {
+    row.forEach(widgets => {
+      widgets.list
+        .forEach(item => {
+          if (callback(widgets, item)) {
+            result.push(item);
+          }
+        });
+    })
+  });
+  return result;
+}
+
+export function someMyLinks(myLinks: MyLinks, callback: (widget: Widget, link: Link) => boolean) {
+  return myLinks.columns.some(row => {
+    return row.some(widget => {
+      return widget.list.some(link => {
+        return callback(widget, link);
+      })
+    })
+  })
+}
+
+
 export class MyLinksHolder {
 
   constructor(public readonly myLinks: MyLinks) {
-    this.updateDescriptionsFromShortcuts();
-  }
-
-  updateDescriptionsFromShortcuts() {
-    const shortcuts = this.myLinks.shortcuts;
-
-    if (!shortcuts) {
-      return;
-    }
-    this.myLinks.columns.forEach(row => {
-      row.forEach(widgets => {
-        widgets.list
-        .filter(item => !!item.id)
-        .forEach(item => {
-          item.description = shortcuts.find(s => s.id === item.id)?.key
-        });
-      })
-    });
   }
 
   findWidgetById(id: string) {
     return this.myLinks.columns.flat().find(w => w.id === id);
   }
 
-  findLinkByShortcut(shortcut: Shortcut): Link | undefined {
-    return this.myLinks.columns.flat().map(i => i.list).flat().find(item => item.id === shortcut.id);
-  }
-
   hasShortcuts(): boolean {
-    return (this.myLinks.shortcuts?.length || 0) > 0;
+    return someMyLinks(this.myLinks, (w, l) => !!l.shortcut);
   }
 
   applyBackground() {
@@ -89,12 +88,12 @@ export class MyLinksHolder {
       return;
     }
 
-    this.setColor('--missing-favicon-color', theme.missingFavIconColor);
-    this.setColor('--link-key-background', theme.linkKeyBackground);
-    this.setColor('--link-key-color', theme.linkKeyColor);
+    MyLinksHolder.setColor('--missing-favicon-color', theme.missingFavIconColor);
+    MyLinksHolder.setColor('--link-key-background', theme.linkKeyBackground);
+    MyLinksHolder.setColor('--link-key-color', theme.linkKeyColor);
   }
 
-  private setColor(property: string, color?: string) {
+  private static setColor(property: string, color?: string) {
     if (color) {
       document.documentElement.style.setProperty(property, color);
     } else {

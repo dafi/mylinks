@@ -12,7 +12,7 @@ class Link extends React.Component<LinkProps, {}> {
     const item = this.props.value;
 
     const style = {
-      visibility: theme.hideShortcuts || !item.description ? 'collapse' : 'visible'
+      visibility: theme.hideShortcuts || !item.shortcut ? 'collapse' : 'visible'
     } as React.CSSProperties;
     return (
       <a href={item.url} target="_blank" rel="noopener noreferrer" className="ml-widget-item-link">
@@ -22,7 +22,7 @@ class Link extends React.Component<LinkProps, {}> {
             <div className="label">{item.label}</div>
           </div>
           <div className="right-items">
-            <kbd style={style}>{item.description}</kbd>
+            <kbd style={style}>{item.shortcut}</kbd>
           </div>
         </div>
       </a>

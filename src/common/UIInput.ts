@@ -1,4 +1,4 @@
-import {openAllLinks, MyLinksHolder, Shortcut, openLink} from "../model/MyLinks";
+import {openAllLinks, MyLinksHolder, openLink, filterMyLinks} from "../model/MyLinks";
 
 export class UIInput {
   private mouseX = 0
@@ -62,26 +62,22 @@ export class UIInput {
     if (e.key === 'a') {
       this.buffer = '';
       this.openFromMousePosition();
-    } else if (this.myLinksHolder?.myLinks.shortcuts) {
+    } else if (this.myLinksHolder) {
       this.buffer += e.key;
-      let arr = this.myLinksHolder?.myLinks.shortcuts?.filter((shortcut) => shortcut.key.startsWith(this.buffer));
+
+      let arr = filterMyLinks(this.myLinksHolder.myLinks, (w, l) => {
+        return l.shortcut?.startsWith(this.buffer) === true;
+      });
+
       if (arr.length === 0) {
         // not found
         this.buffer = '';
-      } else if (arr.length === 1 && arr[0].key === this.buffer) {
+      } else if (arr.length === 1 && arr[0].shortcut === this.buffer) {
         this.buffer = '';
-        this.openFromShortcut(arr[0]);
+        openLink(arr[0]);
       }
     }
 
     return true;
-  }
-
-  private openFromShortcut(shortcut: Shortcut) {
-    const link = this.myLinksHolder?.findLinkByShortcut(shortcut);
-
-    if (link) {
-      openLink(link);
-    }
   }
 }
