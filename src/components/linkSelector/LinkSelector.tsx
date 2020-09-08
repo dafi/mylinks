@@ -1,10 +1,10 @@
 import * as React from "react";
 import './LinkSelector.css'
 import {Link, Widget} from "../../model/MyLinks";
+import Fuse from 'fuse.js'
 
 interface Result {
   id: string,
-  widget: Widget,
   link: Link
 }
 
@@ -18,13 +18,10 @@ interface LinkSelectorState {
   selectedIndex: number
 }
 
-function linkContains(link: Link, pattern: string) {
-  return link.label.toLowerCase().indexOf(pattern.toLowerCase()) >= 0;
-}
-
 export class LinkSelector extends React.Component<LinkSelectorProps, LinkSelectorState> {
   private listRefs = new Map<string, any>();
   private inputRef: any = React.createRef();
+  private fuse: Fuse<Link>;
 
   constructor(props: any) {
     super(props);
@@ -36,6 +33,12 @@ export class LinkSelector extends React.Component<LinkSelectorProps, LinkSelecto
     this.onKeyDown = this.onKeyDown.bind(this);
     this.onClick = this.onClick.bind(this);
     this.onDoubleClick = this.onDoubleClick.bind(this);
+
+    const links = this.props.widgets?.flat().map(w => w.list).flat() || [];
+    const options = {
+      keys: ['label']
+    }
+    this.fuse = new Fuse(links, options);
   }
 
   componentDidMount() {
@@ -103,6 +106,7 @@ export class LinkSelector extends React.Component<LinkSelectorProps, LinkSelecto
                onKeyDown={this.onKeyDown}
                onChange={this.onChange}
                placeholder="Search"
+               spellCheck="false"
                className="input-box"/>
         <div className="list">
           <ul>
@@ -113,7 +117,7 @@ export class LinkSelector extends React.Component<LinkSelectorProps, LinkSelecto
                 className={i === this.state.selectedIndex ? 'selected' : 'none'}
                 ref={this.listRefs.get(r.id)}
                 key={r.id}>{this.image(r.link)}
-                <div>{r.widget.title} - {r.link.label}</div>
+                <div>{r.link.widget?.title || ''} - {r.link.label}</div>
               </li>
             })}
           </ul>
@@ -137,22 +141,14 @@ export class LinkSelector extends React.Component<LinkSelectorProps, LinkSelecto
     });
   }
 
-  filter(pattern: string) {
+  filter(pattern: string): Result[] {
     if (pattern.length === 0) {
       return [];
     }
-    const widgets = this.props.widgets?.flat() || [];
-    const result: Result[] = [];
 
-    widgets.forEach(w => {
-      const links = w.list.filter(link => linkContains(link, pattern))
-      if (links) {
-        result.push(...links.map(l => {
-          return {id: l.id, widget: w, link: l}
-        }));
-      }
+    return this.fuse.search(pattern).map(result => {
+      return {id: result.item.id, link: result.item}
     });
-    return result;
   }
 
   image(item: Link) {

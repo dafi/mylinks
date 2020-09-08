@@ -1,14 +1,14 @@
 import React from 'react';
 import './App.css';
 import './toolbar-icon.css';
-import Spotlight from './Spotlight';
+import Spotlight from '../spotlight/Spotlight';
 
 import {ThemeContext, Theme, defaultTheme} from '../../common/ThemeContext';
 import * as MyLinks from '../widgets/Widgets';
 import Config from '../../common/Config';
 import {UIInput} from '../../common/UIInput';
 import {Widget, MyLinksHolder, MyLinks as MMLinks, Link, openLink} from '../../model/MyLinks';
-import {LinkSelector} from "./LinkSelector";
+import {LinkSelector} from "../linkSelector/LinkSelector";
 
 const STORAGE_PREF_HIDE_SHORTCUTS = 'hideShortcuts';
 
