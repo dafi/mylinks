@@ -78,7 +78,9 @@ class Page extends React.Component<{}, PageState> {
 
         <label className="toolbar-icon">
           <i className="fa fa-file-import"/>
-          <input type="file" id="files" name="files[]" onChange={(e) => this.handleFileSelect(e)}/>
+          <input type="file" id="files" name="files[]"
+                 accept="application/json"
+                 onChange={(e) => this.handleFileSelect(e)}/>
         </label>
 
         <label className="toolbar-icon" style={style} onClick={(e) => this.onClickKeyboard(e)}>
@@ -126,11 +128,12 @@ class Page extends React.Component<{}, PageState> {
 
   handleFileSelect(evt: any) {
     const file = evt.target.files[0];
-    if (file.type === 'application/json') {
-      Config.fromFile(file, (myLinks?: MMLinks | null) => {
-        this.reloadAll(myLinks);
-      });
-    }
+    // onChange is not called when the path is the same
+    // so we force the change
+    evt.target.value = null;
+    Config.fromFile(file, (myLinks?: MMLinks | null) => {
+      this.reloadAll(myLinks);
+    });
   }
 
   get hideShortcuts(): boolean {
