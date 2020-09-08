@@ -1,4 +1,4 @@
-import { openAllLinks, MyLinksHolder, Shortcut } from "../model/MyLinks";
+import {openAllLinks, MyLinksHolder, openLink, filterMyLinks} from "../model/MyLinks";
 
 export class UIInput {
   private mouseX = 0
@@ -10,8 +10,6 @@ export class UIInput {
   private constructor() {
     document.addEventListener('mousemove', (e) => this.storeMousePosition(e), false);
     document.addEventListener('mouseenter', (e) => this.storeMousePosition(e), false);
-
-    document.addEventListener('keypress', (e) => this.keyPress(e), false);
   }
 
   static instance(): UIInput {
@@ -57,33 +55,29 @@ export class UIInput {
     this.mouseY = e.clientY;
   }
 
-  keyPress(e: any) {
+  keyDown(e: any) {
     if (e.ctrlKey || e.shiftKey || e.altKey || e.metaKey) {
       return false;
     }
     if (e.key === 'a') {
       this.buffer = '';
       this.openFromMousePosition();
-    } else if (this.myLinksHolder?.myLinks.shortcuts) {
+    } else if (this.myLinksHolder) {
       this.buffer += e.key;
-      let arr = this.myLinksHolder?.myLinks.shortcuts?.filter((shortcut) => shortcut.key.startsWith(this.buffer));
+
+      let arr = filterMyLinks(this.myLinksHolder.myLinks, (w, l) => {
+        return l.shortcut?.startsWith(this.buffer) === true;
+      });
+
       if (arr.length === 0) {
         // not found
         this.buffer = '';
-      } else if (arr.length === 1 && arr[0].key === this.buffer) {
+      } else if (arr.length === 1 && arr[0].shortcut === this.buffer) {
         this.buffer = '';
-        this.openFromShortcut(arr[0]);
+        openLink(arr[0]);
       }
     }
 
     return true;
-  }
-
-  private openFromShortcut(shortcut: Shortcut) {
-    const link = this.myLinksHolder?.findLinkByShortcut(shortcut);
-
-    if (link) {
-      window.open(link.url);      
-    }
   }
 }

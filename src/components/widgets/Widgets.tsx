@@ -1,8 +1,10 @@
 import React from 'react';
 import {ThemeContext} from '../../common/ThemeContext';
-import { openAllLinks, Link as MLLink, Widget as MLWidget } from '../../model/MyLinks';
+import {openAllLinks, Link as MLLink, Widget as MLWidget} from '../../model/MyLinks';
 
-export interface LinkProps { value: MLLink }
+export interface LinkProps {
+  value: MLLink
+}
 
 class Link extends React.Component<LinkProps, {}> {
   render() {
@@ -10,13 +12,18 @@ class Link extends React.Component<LinkProps, {}> {
     const item = this.props.value;
 
     const style = {
-      visibility: theme.hideShortcuts || !item.description ? 'collapse' : 'visible'
+      visibility: theme.hideShortcuts || !item.shortcut ? 'collapse' : 'visible'
     } as React.CSSProperties;
     return (
       <a href={item.url} target="_blank" rel="noopener noreferrer" className="ml-widget-item-link">
-        {this.image(item)}
-        <div className="label">{item.label}
-          <kbd style={style}>{item.description}</kbd>
+        <div className="content">
+          <div className="left-items">
+            {this.image(item)}
+            <div className="label">{item.label}</div>
+          </div>
+          <div className="right-items">
+            <kbd style={style}>{item.shortcut}</kbd>
+          </div>
         </div>
       </a>
     );
@@ -24,48 +31,54 @@ class Link extends React.Component<LinkProps, {}> {
 
   image(item: MLLink) {
     if (item.favicon) {
-      return <i className="ml-favicon"><img src={item.favicon} alt=''/></i>;
+      return <img src={item.favicon} className="ml-favicon" alt=''/>;
     }
-    return <i className="ml-favicon"><div className="ml-missing-favicon" /></i>;
+    return <div className="ml-missing-favicon"/>;
   }
 }
 
 Link.contextType = ThemeContext;
 
-export interface WidgetProps { value: MLWidget }
+export interface WidgetProps {
+  value: MLWidget
+}
 
 class Widget extends React.Component<WidgetProps, {}> {
   render() {
     const data = this.props.value;
-    const items = data.list.map(v => <li key={v.url}> <Link value={v} /> </li>);
+    const items = data.list.map(v => <li key={v.url}><Link value={v}/></li>);
     return (
       <div className="ml-widget" data-list-id={data.id}>
         <div className="ml-widget-label">
           <h2>{data.title}</h2>
-          <span className="ml-toolbar" onClick={ () => openAllLinks(data)}>
-            <i className="fa fa-external-link-alt"></i>
+          <span className="ml-toolbar" onClick={() => openAllLinks(data)}>
+            <i className="fa fa-external-link-alt"/>
           </span>
         </div>
-        <ul>{ items }</ul>
+        <ul>{items}</ul>
       </div>);
   }
 }
 
-export interface ColumnProps { value: MLWidget[] }
+export interface ColumnProps {
+  value: MLWidget[]
+}
 
 class Column extends React.Component<ColumnProps, {}> {
   render() {
-    const widgets = this.props.value.map(widget => <Widget key={widget.id} value={widget} />);
+    const widgets = this.props.value.map(widget => <Widget key={widget.id} value={widget}/>);
     return <section className="ml-rows">{widgets}</section>;
   }
 }
 
-export interface GridProps { columns: [MLWidget[]] }
+export interface GridProps {
+  columns: [MLWidget[]]
+}
 
 export class Grid extends React.Component<GridProps, {}> {
   render() {
     const widgets = this.props.columns || [];
     const columns = widgets.map((columns: MLWidget[], index: number) => <Column key={index} value={columns}/>);
     return <section className="ml-columns">{columns}</section>;
-  }  
+  }
 }

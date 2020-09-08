@@ -1,0 +1,38 @@
+.link-selector .input-box {
+    width: 100%;
+    border: 0;
+    font-size: 2em;
+    color: blue;
+}
+
+.link-selector .input-box:focus {
+    outline: none;
+}
+
+.link-selector ul {
+    list-style: none;
+    max-height: 300px;
+    margin: 0;
+    overflow: auto;
+    padding: 0;
+    text-indent: 10px;
+}
+
+.link-selector li {
+    line-height: 25px;
+    user-select: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    padding-left: 4px;
+}
+
+.link-selector li:hover {
+    background-color: lightgray;
+    color: black;
+}
+
+.link-selector .selected {
+    background: blue;
+    color: #fff;
+}

@@ -1,6 +1,12 @@
-@import url(https://fonts.googleapis.com/css?family=Open+Sans);
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap');
 
-body { 
+:root {
+  --link-key-background: #eee;
+  --link-key-color: #333;
+  --missing-favicon-color: yellow;
+}
+
+body {
   font-family: 'Open Sans', sans-serif;
   color: #666;
 }
@@ -42,12 +48,24 @@ body {
   width: 100%;
 }
 
+.ml-widget-item-link .content {
+  color: #444;
+  display: flex;
+  justify-content: space-between;
+  text-decoration: none;
+}
+
+.ml-widget-item-link .left-items {
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
 .ml-widget-item-link:focus, .ml-widget-item-link:focus {
   text-decoration: none;
 }
 
 .ml-widget-item-link kbd {
-  float: right;
   border-radius: 3px;
   background-color: var(--link-key-background, #eee);
   color: var(--link-key-color, #333);
@@ -56,7 +74,7 @@ body {
   font-size: 1.1em;
   font-weight: 700;
   line-height: 1;
-  padding: 0px 4px;
+  padding: 0 4px;
   white-space: nowrap;
 }
 
@@ -107,10 +125,7 @@ body {
   background-repeat: no-repeat;
   background-position: center center;
   background-size: 16px 16px;
-  text-align: center;
   margin-right: 6px;
-  float: left;
-  clear: both;
 }
 
 .ml-favicon img {
@@ -148,8 +163,10 @@ body {
   height: 16px;
   display: inline-block;
   background-color: var(--missing-favicon-color, yellow);
+  /*noinspection CssInvalidFunction*/
   mask: svg-load('../../img/missingFavicon.svg') no-repeat 50% 50%;
   mask-size: cover;
+  margin-right: 6px;
 }
 
 .ml-widget a:focus {
