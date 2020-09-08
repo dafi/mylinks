@@ -11,6 +11,7 @@ export interface Link {
   url: string;
   favicon?: string;
   shortcut?: string;
+  widget?: Widget;
 }
 
 export interface Widget {
@@ -61,6 +62,15 @@ export function someMyLinks(myLinks: MyLinks, callback: (widget: Widget, link: L
 export class MyLinksHolder {
 
   constructor(public readonly myLinks: MyLinks) {
+    this.attachWidgetTolinks();
+  }
+
+  private attachWidgetTolinks() {
+    this.myLinks.columns.flat().forEach(w => {
+      w.list.forEach(l => {
+        l.widget = w;
+      })
+    });
   }
 
   findWidgetById(id: string) {
