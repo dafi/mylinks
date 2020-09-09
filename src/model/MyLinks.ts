@@ -20,9 +20,14 @@ export interface Widget {
   list: [Link];
 }
 
+export interface Config {
+  faviconService?: string;
+}
+
 export interface MyLinks {
   theme: Theme;
   columns: [Widget[]];
+  config?: Config;
 }
 
 export function openAllLinks(wd: Widget) {
@@ -31,6 +36,27 @@ export function openAllLinks(wd: Widget) {
 
 export function openLink(link: Link) {
   window.open(link.url)
+}
+
+export function faviconUrlByLink(link: Link, faviconUrlBuilder: string | null | undefined): string | null {
+  let faviconUrl = link.favicon;
+
+  if (faviconUrl) {
+    return faviconUrl;
+  }
+  if (faviconUrl?.length === 0) {
+    return null;
+  }
+  if (faviconUrlBuilder) {
+    try {
+      const url = new URL(link.url);
+      if (url.host) {
+        return faviconUrlBuilder.replace('$1', url.host);
+      }
+    } catch {
+    }
+  }
+  return null;
 }
 
 export function filterMyLinks(myLinks: MyLinks, callback: (widget: Widget, link: Link) => boolean) : Link[] {

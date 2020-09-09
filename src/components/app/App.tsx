@@ -3,18 +3,18 @@ import './App.css';
 import './toolbar-icon.css';
 import Spotlight from '../spotlight/Spotlight';
 
-import {ThemeContext, Theme, defaultTheme} from '../../common/ThemeContext';
+import {AppConfigContext, appConfigClone, AppConfig} from '../../common/AppConfigContext';
 import * as MyLinks from '../widgets/Widgets';
 import Config from '../../common/Config';
 import {UIInput} from '../../common/UIInput';
-import {Widget, MyLinksHolder, MyLinks as MMLinks, Link, openLink} from '../../model/MyLinks';
+import {Link, MyLinks as MMLinks, MyLinksHolder, openLink, Widget} from '../../model/MyLinks';
 import {LinkSelector} from "../linkSelector/LinkSelector";
 
 const STORAGE_PREF_HIDE_SHORTCUTS = 'hideShortcuts';
 
 export interface PageState {
   columns: [Widget[]],
-  theme: Theme,
+  config: AppConfig,
   hasShortcuts: boolean,
   isOpen: boolean
 }
@@ -24,9 +24,9 @@ class Page extends React.Component<{}, PageState> {
 
   constructor(props: {}) {
     super(props);
-    const theme = Object.assign({}, defaultTheme);
-    theme.hideShortcuts = this.hideShortcuts;
-    this.state = {columns: [[]], theme: theme, hasShortcuts: false, isOpen: false};
+    const config = appConfigClone();
+    config.hideShortcuts = this.hideShortcuts;
+    this.state = {columns: [[]], config: config, hasShortcuts: false, isOpen: false};
   }
 
   keyDown(e: any) {
@@ -70,7 +70,7 @@ class Page extends React.Component<{}, PageState> {
       visibility: this.state.hasShortcuts ? 'visible' : 'collapse'
     } as React.CSSProperties;
 
-    return <ThemeContext.Provider value={this.state.theme}>
+    return <AppConfigContext.Provider value={this.state.config}>
       <div className="ml-wrapper">
         <div className="ml-grid">
           <MyLinks.Grid columns={this.state.columns}/>
@@ -95,7 +95,7 @@ class Page extends React.Component<{}, PageState> {
         </Spotlight>
 
       </div>
-    </ThemeContext.Provider>
+    </AppConfigContext.Provider>
       ;
   }
 
@@ -108,7 +108,7 @@ class Page extends React.Component<{}, PageState> {
     this.myLinksHolder.applyTheme();
     UIInput.instance().setup(this.myLinksHolder);
     this.setState({
-      theme: {missingFavIconColor: myLinks.theme?.missingFavIconColor, hideShortcuts: this.hideShortcuts},
+      config: this.buildConfig(myLinks),
       columns: myLinks.columns,
       hasShortcuts: this.myLinksHolder.hasShortcuts()
     });
@@ -118,10 +118,7 @@ class Page extends React.Component<{}, PageState> {
     if (this.myLinksHolder) {
       this.hideShortcuts = !this.hideShortcuts;
       this.setState({
-        theme: {
-          missingFavIconColor: this.myLinksHolder.myLinks.theme?.missingFavIconColor,
-          hideShortcuts: this.hideShortcuts
-        },
+        config: this.buildConfig(this.myLinksHolder.myLinks)
       });
     }
   }
@@ -143,6 +140,17 @@ class Page extends React.Component<{}, PageState> {
   set hideShortcuts(v: boolean) {
     localStorage.setItem(STORAGE_PREF_HIDE_SHORTCUTS, v ? '1' : '0');
   }
+
+  buildConfig(myLinks: MMLinks) : AppConfig {
+    return {
+      theme: {
+        missingFavIconColor: myLinks.theme?.missingFavIconColor,
+      },
+      faviconService: myLinks.config?.faviconService,
+      hideShortcuts: this.hideShortcuts
+    }
+  }
+
 }
 
 function App() {

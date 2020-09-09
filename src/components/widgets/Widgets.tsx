@@ -1,6 +1,6 @@
 import React from 'react';
-import {ThemeContext} from '../../common/ThemeContext';
-import {openAllLinks, Link as MLLink, Widget as MLWidget} from '../../model/MyLinks';
+import {AppConfig, AppConfigContext} from '../../common/AppConfigContext';
+import {faviconUrlByLink, Link as MLLink, openAllLinks, Widget as MLWidget} from '../../model/MyLinks';
 
 export interface LinkProps {
   value: MLLink
@@ -8,11 +8,11 @@ export interface LinkProps {
 
 class Link extends React.Component<LinkProps, {}> {
   render() {
-    const theme = this.context;
+    const appConfig = this.context;
     const item = this.props.value;
 
     const style = {
-      visibility: theme.hideShortcuts || !item.shortcut ? 'collapse' : 'visible'
+      visibility: appConfig.hideShortcuts || !item.shortcut ? 'collapse' : 'visible'
     } as React.CSSProperties;
     return (
       <a href={item.url} target="_blank" rel="noopener noreferrer" className="ml-widget-item-link">
@@ -30,14 +30,16 @@ class Link extends React.Component<LinkProps, {}> {
   }
 
   image(item: MLLink) {
-    if (item.favicon) {
-      return <img src={item.favicon} className="ml-favicon" alt=''/>;
+    const faviconUrl = faviconUrlByLink(item, this.context.faviconService);
+
+    if (faviconUrl) {
+      return <img src={faviconUrl} className="ml-favicon" alt=''/>;
     }
     return <div className="ml-missing-favicon"/>;
   }
 }
 
-Link.contextType = ThemeContext;
+Link.contextType = AppConfigContext;
 
 export interface WidgetProps {
   value: MLWidget
