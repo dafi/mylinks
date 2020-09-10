@@ -42,16 +42,24 @@ export function faviconUrlByLink(link: Link, faviconUrlBuilder: string | null | 
   let faviconUrl = link.favicon;
 
   if (faviconUrl) {
-    return faviconUrl;
+    // url contains protocol
+    if (/^.*:\/\//.test(faviconUrl)) {
+      return faviconUrl;
+    }
+    return faviconUrlBuilder?.replace('$1', faviconUrl) || null;
   }
   if (faviconUrl?.length === 0) {
     return null;
   }
+  return buildFaviconUrl(link.url, faviconUrlBuilder)
+}
+
+export function buildFaviconUrl(url: string, faviconUrlBuilder: string | null | undefined): string | null {
   if (faviconUrlBuilder) {
     try {
-      const url = new URL(link.url);
-      if (url.host) {
-        return faviconUrlBuilder.replace('$1', url.host);
+      const host = new URL(url).host;
+      if (host) {
+        return faviconUrlBuilder.replace('$1', host);
       }
     } catch {
     }
