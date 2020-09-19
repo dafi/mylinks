@@ -1,5 +1,5 @@
 import React from 'react';
-import {AppConfig, AppConfigContext} from '../../common/AppConfigContext';
+import {AppConfigContext} from '../../common/AppConfigContext';
 import {faviconUrlByLink, Link as MLLink, openAllLinks, Widget as MLWidget} from '../../model/MyLinks';
 
 export interface LinkProps {
