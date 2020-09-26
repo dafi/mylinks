@@ -11,6 +11,7 @@
     "@types/node": "^12.12.37",
     "@types/react-dom": "^16.9.6",
     "customize-cra": "^0.9.1",
+    "dropbox": "^5.2.1",
     "fuse.js": "^6.4.1",
     "postcss-inline-svg": "^4.1.0",
     "react": "^16.13.1",

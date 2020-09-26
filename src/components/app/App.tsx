@@ -2,6 +2,7 @@ import React from 'react';
 import './App.css';
 import './toolbar-icon.css';
 import Spotlight from '../spotlight/Spotlight';
+import Dropbox from 'dropbox';
 
 import {AppConfigContext, appConfigClone, AppConfig} from '../../common/AppConfigContext';
 import * as MyLinks from '../widgets/Widgets';
@@ -76,14 +77,18 @@ class Page extends React.Component<{}, PageState> {
           <MyLinks.Grid columns={this.state.columns}/>
         </div>
 
-        <label className="toolbar-icon">
+        <label className="toolbar-icon" title="Load configuration from local file">
           <i className="fa fa-file-import"/>
           <input type="file" id="files" name="files[]"
                  accept="application/json"
                  onChange={(e) => this.handleFileSelect(e)}/>
         </label>
 
-        <label className="toolbar-icon" style={style} onClick={(e) => this.onClickKeyboard(e)}>
+        <label className="toolbar-icon" title="Load configuration from Dropbox" onClick={(e) => this.onDropbox(e)}>
+          <i className="fab fa-dropbox"/>
+        </label>
+
+        <label className="toolbar-icon" title="Toogle shortcuts visibility" style={style} onClick={(e) => this.onClickKeyboard(e)}>
           <i className="fa fa-keyboard"/>
         </label>
 
@@ -151,6 +156,56 @@ class Page extends React.Component<{}, PageState> {
     }
   }
 
+  private onDropbox(e: React.MouseEvent<HTMLLabelElement>) {
+    function getConfigOrPrompt(configName: string, message: string | undefined = undefined): string | null {
+      let value = localStorage.getItem(configName);
+
+      if (!value) {
+        value = window.prompt(message);
+        if (value) {
+          localStorage.setItem(configName, value);
+        }
+      }
+      return value;
+    }
+    let accessToken = getConfigOrPrompt('dropboxAccessToken', 'Enter Dropbox access token');
+    let path = null;
+
+    if (accessToken) {
+      path = getConfigOrPrompt('dropboxConfigPath', 'Config path');
+    }
+
+    if (!path) {
+      return;
+    }
+
+    var dbx = new Dropbox.Dropbox({
+      fetch: fetch,
+      accessToken: accessToken || ''
+    });
+
+    // dbx.usersGetCurrentAccount()
+    //   .then(function(response) {
+    //     console.log(response);
+    //   })
+    //   .catch(function(error) {
+    //     console.error(error);
+    //   });
+
+    dbx.filesDownload({
+      path: '/home.json'
+    })
+      .then(response => {
+        console.log(response);
+        var blob = (response as any).fileBlob;
+        Config.fromFile(blob, (myLinks?: MMLinks | null) => {
+          this.reloadAll(myLinks);
+        });
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  }
 }
 
 function App() {
