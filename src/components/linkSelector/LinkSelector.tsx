@@ -101,13 +101,16 @@ export class LinkSelector extends React.Component<LinkSelectorProps, LinkSelecto
   render() {
     return (
       <div className="link-selector">
-        <input type="text"
-               ref={this.inputRef}
-               onKeyDown={this.onKeyDown}
-               onChange={this.onChange}
-               placeholder="Search"
-               spellCheck="false"
-               className="input-box"/>
+        <div className="input-container">
+          <i className="fas fa-search icon"/>
+          <input type="text"
+                 ref={this.inputRef}
+                 onKeyDown={this.onKeyDown}
+                 onChange={this.onChange}
+                 placeholder="Search"
+                 spellCheck="false"
+                 className="input-box"/>
+        </div>
         <div className="list">
           <ul>
             {this.state.result.map((r, i) => {
