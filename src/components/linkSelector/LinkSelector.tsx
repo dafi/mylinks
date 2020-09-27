@@ -1,7 +1,8 @@
 import * as React from "react";
 import './LinkSelector.css'
-import {Link, Widget} from "../../model/MyLinks";
+import {faviconUrlByLink, Link, Widget} from "../../model/MyLinks";
 import Fuse from 'fuse.js'
+import {AppConfigContext} from "../../common/AppConfigContext";
 
 interface Result {
   id: string,
@@ -155,10 +156,14 @@ export class LinkSelector extends React.Component<LinkSelectorProps, LinkSelecto
   }
 
   image(item: Link) {
-    if (item.favicon) {
-      return <img src={item.favicon} className="ml-favicon" alt=''/>;
+    const faviconUrl = faviconUrlByLink(item, this.context.faviconService);
+
+    if (faviconUrl) {
+      return <img src={faviconUrl} className="ml-favicon" alt=''/>;
     }
     return <div className="ml-missing-favicon"/>;
   }
-
 }
+
+LinkSelector.contextType = AppConfigContext;
+
