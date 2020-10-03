@@ -158,14 +158,17 @@ body {
   }
 }
 
-.ml-missing-favicon {
+.missing-favicon {
   width: 16px;
   height: 16px;
-  display: inline-block;
   background-color: var(--missing-favicon-color, yellow);
   /*noinspection CssInvalidFunction*/
   mask: svg-load('../../img/missingFavicon.svg') no-repeat 50% 50%;
   mask-size: cover;
+}
+
+.ml-missing-favicon {
+  display: inline-block;
   margin-right: 6px;
 }
 

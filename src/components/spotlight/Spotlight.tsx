@@ -28,7 +28,6 @@ class Spotlight extends React.Component<SpotlightProp, {}> {
       margin: '0 auto',
       maxWidth: 750,
       minHeight: 40,
-      padding: 10
     } as React.CSSProperties;
 
     return (

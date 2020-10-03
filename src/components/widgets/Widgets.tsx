@@ -35,7 +35,7 @@ class Link extends React.Component<LinkProps, {}> {
     if (faviconUrl) {
       return <img src={faviconUrl} className="ml-favicon" alt=''/>;
     }
-    return <div className="ml-missing-favicon"/>;
+    return <div className="missing-favicon ml-missing-favicon"/>;
   }
 }
 

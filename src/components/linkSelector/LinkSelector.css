@@ -3,6 +3,10 @@
     --link-selector-input-color: blue;
 }
 
+.link-selector {
+    padding: 10px 0 10px 0;
+}
+
 .link-selector .input-box {
     width: 100%;
     border: 0;
@@ -29,7 +33,7 @@
     cursor: pointer;
     display: flex;
     align-items: center;
-    padding-left: 4px;
+    padding: 4px;
 }
 
 .link-selector li:hover {
@@ -53,4 +57,21 @@
     text-align: center;
     font-size: var(--link-selector-input-font-size);
     color: var(--link-selector-input-color);
+}
+
+.link-selector .list-image {
+    background: white;
+    border-radius: 50%;
+    display: inline-block;
+    padding: 5px;
+}
+
+.link-selector .list-image img {
+    width: 16px;
+    height: 16px;
+    display: block;
+}
+
+.link-selector .list-image .missing-image {
+    display: block;
 }

@@ -120,7 +120,7 @@ export class LinkSelector extends React.Component<LinkSelectorProps, LinkSelecto
                 onDoubleClick={(e) => this.onDoubleClick(e, i)}
                 className={i === this.state.selectedIndex ? 'selected' : 'none'}
                 ref={this.listRefs.get(r.id)}
-                key={r.id}>{this.image(r.link)}
+                key={r.id}><i className="list-image">{this.image(r.link)}</i>
                 <div>{r.link.widget?.title || ''} - {r.link.label}</div>
               </li>
             })}
@@ -159,9 +159,9 @@ export class LinkSelector extends React.Component<LinkSelectorProps, LinkSelecto
     const faviconUrl = faviconUrlByLink(item, this.context.faviconService);
 
     if (faviconUrl) {
-      return <img src={faviconUrl} className="ml-favicon" alt=''/>;
+      return <img src={faviconUrl} alt=''/>;
     }
-    return <div className="ml-missing-favicon"/>;
+    return <div className="missing-image missing-favicon"/>;
   }
 }
 
