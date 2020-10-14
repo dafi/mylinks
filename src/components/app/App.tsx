@@ -12,6 +12,10 @@ import {LinkSelector} from "../linkSelector/LinkSelector";
 
 const STORAGE_PREF_HIDE_SHORTCUTS = 'hideShortcuts';
 
+// https://github.com/microsoft/TypeScript/issues/21309
+// TS doesn't include experimental APIs in lib.d.ts
+declare const window: any;
+
 export interface PageState {
   columns: [Widget[]],
   config: AppConfig,
@@ -56,13 +60,15 @@ class Page extends React.Component<{}, PageState> {
 
   onLinkSelected = (link: Link) => {
     this.toggleModal()
-    openLink(link);
+    // Ensure the DOM is updated and the dialog is hidden when the link is open
+    // This is necessary because returning to myLinks window the dialog can be yet visible
+    window.requestIdleCallback(() => openLink(link));
   }
 
   toggleModal = () => {
-    this.setState({
-      isOpen: !this.state.isOpen
-    });
+    this.setState( prevState => (
+      {isOpen: !prevState.isOpen}
+  ));
   }
 
   render() {
@@ -76,14 +82,16 @@ class Page extends React.Component<{}, PageState> {
           <MyLinks.Grid columns={this.state.columns}/>
         </div>
 
-        <label className="toolbar-icon">
+        <label className="toolbar-icon" title="Load configuration from local file">
           <i className="fa fa-file-import"/>
           <input type="file" id="files" name="files[]"
                  accept="application/json"
                  onChange={(e) => this.handleFileSelect(e)}/>
         </label>
 
-        <label className="toolbar-icon" style={style} onClick={(e) => this.onClickKeyboard(e)}>
+        <label className="toolbar-icon"
+               title="Toogle shortcuts visibility"
+               style={style} onClick={(e) => this.onClickKeyboard(e)}>
           <i className="fa fa-keyboard"/>
         </label>
 
