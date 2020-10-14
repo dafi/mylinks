@@ -20,6 +20,7 @@
     "typescript": "^3.7.5"
   },
   "scripts": {
+    "zip": "zip -rv mylinks build",
     "start": "react-app-rewired start",
     "build": "react-app-rewired build",
     "test": "react-app-rewired test",
