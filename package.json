@@ -12,6 +12,7 @@
     "@types/react-dom": "^16.9.6",
     "customize-cra": "^0.9.1",
     "fuse.js": "^6.4.1",
+    "gh-pages": "^3.1.0",
     "postcss-inline-svg": "^4.1.0",
     "react": "^16.13.1",
     "react-app-rewired": "^2.1.5",
@@ -20,6 +21,8 @@
     "typescript": "^3.7.5"
   },
   "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "zip": "zip -rv mylinks build",
     "start": "react-app-rewired start",
     "build": "react-app-rewired build",
@@ -40,5 +43,6 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  "devDependencies": {}
 }
