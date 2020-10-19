@@ -8,7 +8,7 @@ import * as MyLinks from '../widgets/Widgets';
 import Config from '../../common/Config';
 import {UIInput} from '../../common/UIInput';
 import {Link, MyLinks as MMLinks, MyLinksHolder, openLink, Widget} from '../../model/MyLinks';
-import {LinkSelector} from "../linkSelector/LinkSelector";
+import {LinkSelector} from '../linkSelector/LinkSelector';
 
 const STORAGE_PREF_HIDE_SHORTCUTS = 'hideShortcuts';
 
@@ -17,10 +17,10 @@ const STORAGE_PREF_HIDE_SHORTCUTS = 'hideShortcuts';
 declare const window: any;
 
 export interface PageState {
-  columns: [Widget[]],
-  config: AppConfig,
-  hasShortcuts: boolean,
-  isOpen: boolean
+  columns: [Widget[]];
+  config: AppConfig;
+  hasShortcuts: boolean;
+  isOpen: boolean;
 }
 
 class Page extends React.Component<{}, PageState> {
@@ -59,9 +59,9 @@ class Page extends React.Component<{}, PageState> {
   }
 
   onLinkSelected = (link: Link) => {
-    this.toggleModal()
+    this.toggleModal();
     // Ensure the DOM is updated and the dialog is hidden when the link is open
-    // This is necessary because returning to myLinks window the dialog can be yet visible
+    // This is necessary because when returning to myLinks window/tab, the dialog can be yet visible
     window.requestIdleCallback(() => openLink(link));
   }
 
@@ -114,6 +114,8 @@ class Page extends React.Component<{}, PageState> {
     this.myLinksHolder = new MyLinksHolder(myLinks);
     this.myLinksHolder.applyBackground();
     this.myLinksHolder.applyTheme();
+    this.myLinksHolder.applyColorToFavIcon(myLinks.theme?.missingFavIconColor);
+
     UIInput.instance().setup(this.myLinksHolder);
     this.setState({
       config: this.buildConfig(myLinks),
@@ -122,7 +124,7 @@ class Page extends React.Component<{}, PageState> {
     });
   }
 
-  onClickKeyboard(evt: any) {
+  onClickKeyboard(_: any) {
     if (this.myLinksHolder) {
       this.hideShortcuts = !this.hideShortcuts;
       this.setState({
@@ -149,14 +151,14 @@ class Page extends React.Component<{}, PageState> {
     localStorage.setItem(STORAGE_PREF_HIDE_SHORTCUTS, v ? '1' : '0');
   }
 
-  buildConfig(myLinks: MMLinks) : AppConfig {
+  buildConfig(myLinks: MMLinks): AppConfig {
     return {
       theme: {
         missingFavIconColor: myLinks.theme?.missingFavIconColor,
       },
       faviconService: myLinks.config?.faviconService,
       hideShortcuts: this.hideShortcuts
-    }
+    };
   }
 
 }

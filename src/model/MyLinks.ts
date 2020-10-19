@@ -1,6 +1,6 @@
 export interface Theme {
   backgroundImage?: string;
-  missingFavIconColor: string,
+  missingFavIconColor: string;
   linkKeyBackground?: string;
   linkKeyColor?: string;
 }
@@ -35,11 +35,11 @@ export function openAllLinks(wd: Widget) {
 }
 
 export function openLink(link: Link) {
-  window.open(link.url)
+  window.open(link.url);
 }
 
 export function faviconUrlByLink(link: Link, faviconUrlBuilder: string | null | undefined): string | null {
-  let faviconUrl = link.favicon;
+  const faviconUrl = link.favicon;
 
   if (faviconUrl) {
     // url contains protocol
@@ -51,7 +51,7 @@ export function faviconUrlByLink(link: Link, faviconUrlBuilder: string | null | 
   if (faviconUrl?.length === 0) {
     return null;
   }
-  return buildFaviconUrl(link.url, faviconUrlBuilder)
+  return buildFaviconUrl(link.url, faviconUrlBuilder);
 }
 
 export function buildFaviconUrl(url: string, faviconUrlBuilder: string | null | undefined): string | null {
@@ -67,7 +67,7 @@ export function buildFaviconUrl(url: string, faviconUrlBuilder: string | null | 
   return null;
 }
 
-export function filterMyLinks(myLinks: MyLinks, callback: (widget: Widget, link: Link) => boolean) : Link[] {
+export function filterMyLinks(myLinks: MyLinks, callback: (widget: Widget, link: Link) => boolean): Link[] {
   const result: Link[] = [];
   myLinks.columns.forEach(row => {
     row.forEach(widgets => {
@@ -77,7 +77,7 @@ export function filterMyLinks(myLinks: MyLinks, callback: (widget: Widget, link:
             result.push(item);
           }
         });
-    })
+    });
   });
   return result;
 }
@@ -87,13 +87,21 @@ export function someMyLinks(myLinks: MyLinks, callback: (widget: Widget, link: L
     return row.some(widget => {
       return widget.list.some(link => {
         return callback(widget, link);
-      })
-    })
-  })
+      });
+    });
+  });
 }
 
 
 export class MyLinksHolder {
+
+  private static setColor(property: string, color?: string) {
+    if (color) {
+      document.documentElement.style.setProperty(property, color);
+    } else {
+      document.documentElement.style.removeProperty(property);
+    }
+  }
 
   constructor(public readonly myLinks: MyLinks) {
     this.attachWidgetTolinks();
@@ -103,7 +111,7 @@ export class MyLinksHolder {
     this.myLinks.columns.flat().forEach(w => {
       w.list.forEach(l => {
         l.widget = w;
-      })
+      });
     });
   }
 
@@ -137,11 +145,39 @@ export class MyLinksHolder {
     MyLinksHolder.setColor('--link-key-color', theme.linkKeyColor);
   }
 
-  private static setColor(property: string, color?: string) {
-    if (color) {
-      document.documentElement.style.setProperty(property, color);
-    } else {
-      document.documentElement.style.removeProperty(property);
+  createImage(image: any, width: number, height: number, color: string) {
+    const canvas = document.createElement('canvas');
+    const context = canvas.getContext('2d');
+    if (context) {
+      canvas.width = width;
+      canvas.height = height;
+      context.fillStyle = color;
+      context.fillRect(0, 0, width, height);
+      context.fill();
+      context.globalCompositeOperation = 'destination-atop';
+      context.drawImage(image, 0, 0);
+      return canvas.toDataURL();
     }
+    return null;
+  }
+
+  applyColorToFavIcon(color?: string) {
+    if (!color) {
+      return;
+    }
+    // tslint:disable-next-line:quotemark
+    const favicon: any = document.querySelector("link[rel~='icon']");
+    if (!favicon) {
+      return;
+    }
+    const image = new Image();
+    image.src = favicon.href;
+    image.onload = (): void => {
+      const favImage = this.createImage(image, 16, 16, color);
+      if (favImage) {
+        favicon.type = 'image/x-icon';
+        favicon.href = favImage;
+      }
+    };
   }
 }
