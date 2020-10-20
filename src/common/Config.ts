@@ -4,14 +4,16 @@ const STORAGE_PREF_DATA = 'myLinksData';
 
 export type OnLoadCallback = (myLinks?: MyLinks | null | undefined) => void;
 
+type MyLinksCallback = (myLinks?: MyLinks) => void;
+
 export default class Config {
-  static fromData(onLoadCallback: OnLoadCallback) {
+  static fromData(onLoadCallback: OnLoadCallback): void {
     ConfigReader.loadData((myLinks?: MyLinks) => {
       onLoadCallback(myLinks);
     });
   }
 
-  static fromFile(file: any, onLoadCallback: OnLoadCallback) {
+  static fromFile(file: File, onLoadCallback: OnLoadCallback): void {
     ConfigReader.loadFromFile(file, (myLinks?: MyLinks) => {
       onLoadCallback(myLinks);
     });
@@ -19,10 +21,10 @@ export default class Config {
 }
 
 class ConfigReader {
-  static loadData(onLoadCallback: any) {
-    let data = null;
+  static loadData(onLoadCallback: MyLinksCallback) {
+    let data: MyLinks | undefined;
 
-    let jsonText = localStorage.getItem(STORAGE_PREF_DATA);
+    const jsonText = localStorage.getItem(STORAGE_PREF_DATA);
     if (jsonText) {
       try {
         data = ConfigReader.loadFromObject(JSON.parse(jsonText));
@@ -33,16 +35,17 @@ class ConfigReader {
     onLoadCallback(data);
   }
 
-  static loadFromObject(json: any) : MyLinks {
+  static loadFromObject(json: unknown) : MyLinks {
     return json as MyLinks;
   }
 
-  static loadFromFile(file: any, onLoadCallback: any) {
-    let reader = new FileReader();
+  static loadFromFile(file: File, onLoadCallback: MyLinksCallback) {
+    const reader = new FileReader();
 
     reader.onload = (() => {
-      return (e: any) => {
-        let jsonText = e.target.result;
+      return (e: ProgressEvent<FileReader>) => {
+        const result = e.target?.result;
+        const jsonText = typeof result === 'string' ? result : '';
         try {
           onLoadCallback(ConfigReader.loadFromObject(JSON.parse(jsonText)));
           localStorage.setItem(STORAGE_PREF_DATA, jsonText);

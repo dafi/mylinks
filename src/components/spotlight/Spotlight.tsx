@@ -1,13 +1,13 @@
-import React from 'react';
+import React, {ReactNode} from 'react';
 
 export interface SpotlightProp {
   onClose: () => void
   show: boolean,
-  children: any
+  children: unknown
 }
 
-class Spotlight extends React.Component<SpotlightProp, {}> {
-  render() {
+class Spotlight extends React.Component<SpotlightProp, unknown> {
+  render(): ReactNode {
     if (!this.props.show) {
       return null;
     }

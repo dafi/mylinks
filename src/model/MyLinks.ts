@@ -30,11 +30,11 @@ export interface MyLinks {
   config?: Config;
 }
 
-export function openAllLinks(wd: Widget) {
+export function openAllLinks(wd: Widget): void {
   wd.list.reverse().forEach(openLink);
 }
 
-export function openLink(link: Link) {
+export function openLink(link: Link): void {
   window.open(link.url);
 }
 
@@ -62,6 +62,7 @@ export function buildFaviconUrl(url: string, faviconUrlBuilder: string | null | 
         return faviconUrlBuilder.replace('$1', host);
       }
     } catch {
+      // eslint-disable-next-line no-empty
     }
   }
   return null;
@@ -82,7 +83,7 @@ export function filterMyLinks(myLinks: MyLinks, callback: (widget: Widget, link:
   return result;
 }
 
-export function someMyLinks(myLinks: MyLinks, callback: (widget: Widget, link: Link) => boolean) {
+export function someMyLinks(myLinks: MyLinks, callback: (widget: Widget, link: Link) => boolean): boolean {
   return myLinks.columns.some(row => {
     return row.some(widget => {
       return widget.list.some(link => {
@@ -107,15 +108,7 @@ export class MyLinksHolder {
     this.attachWidgetTolinks();
   }
 
-  private attachWidgetTolinks() {
-    this.myLinks.columns.flat().forEach(w => {
-      w.list.forEach(l => {
-        l.widget = w;
-      });
-    });
-  }
-
-  findWidgetById(id: string) {
+  findWidgetById(id: string): Widget | undefined {
     return this.myLinks.columns.flat().find(w => w.id === id);
   }
 
@@ -123,7 +116,7 @@ export class MyLinksHolder {
     return someMyLinks(this.myLinks, (w, l) => !!l.shortcut);
   }
 
-  applyBackground() {
+  applyBackground(): void {
     const bkg = this.myLinks.theme?.backgroundImage;
     const body = document.body;
     if (bkg) {
@@ -133,7 +126,7 @@ export class MyLinksHolder {
     }
   }
 
-  applyTheme() {
+  applyTheme(): void {
     const theme = this.myLinks.theme;
 
     if (!theme) {
@@ -145,7 +138,7 @@ export class MyLinksHolder {
     MyLinksHolder.setColor('--link-key-color', theme.linkKeyColor);
   }
 
-  createImage(image: any, width: number, height: number, color: string) {
+  createImage(image: HTMLOrSVGImageElement, width: number, height: number, color: string): string | null {
     const canvas = document.createElement('canvas');
     const context = canvas.getContext('2d');
     if (context) {
@@ -161,12 +154,12 @@ export class MyLinksHolder {
     return null;
   }
 
-  applyColorToFavIcon(color?: string) {
+  applyColorToFavIcon(color?: string): void {
     if (!color) {
       return;
     }
-    // tslint:disable-next-line:quotemark
-    const favicon: any = document.querySelector("link[rel~='icon']");
+    // eslint-disable-next-line quotes
+    const favicon: HTMLLinkElement | null = document.querySelector("link[rel~='icon']");
     if (!favicon) {
       return;
     }
@@ -179,5 +172,13 @@ export class MyLinksHolder {
         favicon.href = favImage;
       }
     };
+  }
+
+  private attachWidgetTolinks() {
+    this.myLinks.columns.flat().forEach(w => {
+      w.list.forEach(l => {
+        l.widget = w;
+      });
+    });
   }
 }

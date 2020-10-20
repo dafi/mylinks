@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {ChangeEvent, ReactNode} from 'react';
 import './App.css';
 import './toolbar-icon.css';
 import Spotlight from '../spotlight/Spotlight';
@@ -14,6 +14,7 @@ const STORAGE_PREF_HIDE_SHORTCUTS = 'hideShortcuts';
 
 // https://github.com/microsoft/TypeScript/issues/21309
 // TS doesn't include experimental APIs in lib.d.ts
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 declare const window: any;
 
 export interface PageState {
@@ -23,19 +24,19 @@ export interface PageState {
   isOpen: boolean;
 }
 
-class Page extends React.Component<{}, PageState> {
+class Page extends React.Component<unknown, PageState> {
   private myLinksHolder?: MyLinksHolder;
 
-  constructor(props: {}) {
+  constructor(props: unknown) {
     super(props);
     const config = appConfigClone();
     config.hideShortcuts = this.hideShortcuts;
     this.state = {columns: [[]], config: config, hasShortcuts: false, isOpen: false};
   }
 
-  keyDown(e: any) {
+  keyDown(e: KeyboardEvent) {
     if (this.state.isOpen) {
-      if (e.keyCode === 27) {
+      if (e.key === 'Escape') {
         this.toggleModal();
         return true;
       }
@@ -68,10 +69,10 @@ class Page extends React.Component<{}, PageState> {
   toggleModal = () => {
     this.setState( prevState => (
       {isOpen: !prevState.isOpen}
-  ));
+    ));
   }
 
-  render() {
+  render(): ReactNode {
     const style = {
       visibility: this.state.hasShortcuts ? 'visible' : 'collapse'
     } as React.CSSProperties;
@@ -91,7 +92,7 @@ class Page extends React.Component<{}, PageState> {
 
         <label className="toolbar-icon"
                title="Toogle shortcuts visibility"
-               style={style} onClick={(e) => this.onClickKeyboard(e)}>
+               style={style} onClick={() => this.onClickKeyboard()}>
           <i className="fa fa-keyboard"/>
         </label>
 
@@ -103,8 +104,7 @@ class Page extends React.Component<{}, PageState> {
         </Spotlight>
 
       </div>
-    </AppConfigContext.Provider>
-      ;
+    </AppConfigContext.Provider>;
   }
 
   reloadAll(myLinks?: MMLinks | null) {
@@ -124,7 +124,7 @@ class Page extends React.Component<{}, PageState> {
     });
   }
 
-  onClickKeyboard(_: any) {
+  onClickKeyboard() {
     if (this.myLinksHolder) {
       this.hideShortcuts = !this.hideShortcuts;
       this.setState({
@@ -133,14 +133,19 @@ class Page extends React.Component<{}, PageState> {
     }
   }
 
-  handleFileSelect(evt: any) {
-    const file = evt.target.files[0];
+  handleFileSelect(evt: ChangeEvent<HTMLInputElement>) {
+    if (!evt.target) {
+      return;
+    }
+    const file = evt.target.files && evt.target.files[0];
     // onChange is not called when the path is the same
     // so we force the change
-    evt.target.value = null;
-    Config.fromFile(file, (myLinks?: MMLinks | null) => {
-      this.reloadAll(myLinks);
-    });
+    evt.target.value = '';
+    if (file) {
+      Config.fromFile(file, (myLinks?: MMLinks | null) => {
+        this.reloadAll(myLinks);
+      });
+    }
   }
 
   get hideShortcuts(): boolean {
@@ -163,6 +168,7 @@ class Page extends React.Component<{}, PageState> {
 
 }
 
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 function App() {
   return <Page/>;
 }

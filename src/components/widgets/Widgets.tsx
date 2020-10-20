@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {ReactNode} from 'react';
 import {AppConfigContext} from '../../common/AppConfigContext';
 import {faviconUrlByLink, Link as MLLink, openAllLinks, Widget as MLWidget} from '../../model/MyLinks';
 
@@ -6,8 +6,8 @@ export interface LinkProps {
   value: MLLink
 }
 
-class Link extends React.Component<LinkProps, {}> {
-  render() {
+class Link extends React.Component<LinkProps, unknown> {
+  render(): ReactNode {
     const appConfig = this.context;
     const item = this.props.value;
 
@@ -45,8 +45,8 @@ export interface WidgetProps {
   value: MLWidget
 }
 
-class Widget extends React.Component<WidgetProps, {}> {
-  render() {
+class Widget extends React.Component<WidgetProps, unknown> {
+  render(): ReactNode {
     const data = this.props.value;
     const items = data.list.map(v => <li key={v.url}><Link value={v}/></li>);
     return (
@@ -66,8 +66,8 @@ export interface ColumnProps {
   value: MLWidget[]
 }
 
-class Column extends React.Component<ColumnProps, {}> {
-  render() {
+class Column extends React.Component<ColumnProps, unknown> {
+  render(): ReactNode {
     const widgets = this.props.value.map(widget => <Widget key={widget.id} value={widget}/>);
     return <section className="ml-rows">{widgets}</section>;
   }
@@ -77,8 +77,8 @@ export interface GridProps {
   columns: [MLWidget[]]
 }
 
-export class Grid extends React.Component<GridProps, {}> {
-  render() {
+export class Grid extends React.Component<GridProps, unknown> {
+  render(): ReactNode {
     const widgets = this.props.columns || [];
     const columns = widgets.map((columns: MLWidget[], index: number) => <Column key={index} value={columns}/>);
     return <section className="ml-columns">{columns}</section>;

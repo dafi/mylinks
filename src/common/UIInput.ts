@@ -1,16 +1,11 @@
-import {openAllLinks, MyLinksHolder, openLink, filterMyLinks} from "../model/MyLinks";
+import {openAllLinks, MyLinksHolder, openLink, filterMyLinks} from '../model/MyLinks';
 
 export class UIInput {
-  private mouseX = 0
-  private mouseY = 0;
   private static _instance: UIInput;
+  private mouseX = 0;
+  private mouseY = 0;
   private myLinksHolder?: MyLinksHolder;
   private buffer = '';
-
-  private constructor() {
-    document.addEventListener('mousemove', (e) => this.storeMousePosition(e), false);
-    document.addEventListener('mouseenter', (e) => this.storeMousePosition(e), false);
-  }
 
   static instance(): UIInput {
     if (!this._instance) {
@@ -19,27 +14,19 @@ export class UIInput {
     return this._instance;
   }
 
-  setup(myLinksHolder: MyLinksHolder) {
+  private constructor() {
+    document.addEventListener('mousemove', (e) => this.storeMousePosition(e), false);
+    document.addEventListener('mouseenter', (e) => this.storeMousePosition(e), false);
+  }
+
+  setup(myLinksHolder: MyLinksHolder): void {
     this.myLinksHolder = myLinksHolder;
 
     this.mouseX = 0;
     this.mouseY = 0;
   }  
 
-  private openFromMousePosition() {
-    if (!this.myLinksHolder) {
-      return;
-    }
-    const el = this.findElement(document.elementFromPoint(this.mouseX, this.mouseY), 'ml-widget');
-    if (el && el.dataset.listId) {
-      const widget = this.myLinksHolder.findWidgetById(el.dataset.listId);
-      if (widget) {
-        openAllLinks(widget);
-      }
-    }
-  }
-
-  findElement(el: any, className: string) {
+  findElement(el: Element | null, className: string): Element | null {
     while (el) {
       const isWidget = Array.from(el.classList).some(i => i === className);
       if (isWidget) {
@@ -50,12 +37,12 @@ export class UIInput {
     return null;
   }
 
-  storeMousePosition(e: any) {
+  storeMousePosition(e: MouseEvent): void {
     this.mouseX = e.clientX;
     this.mouseY = e.clientY;
   }
 
-  keyDown(e: any) {
+  keyDown(e: KeyboardEvent): boolean {
     if (e.ctrlKey || e.shiftKey || e.altKey || e.metaKey) {
       return false;
     }
@@ -65,7 +52,7 @@ export class UIInput {
     } else if (this.myLinksHolder) {
       this.buffer += e.key;
 
-      let arr = filterMyLinks(this.myLinksHolder.myLinks, (w, l) => {
+      const arr = filterMyLinks(this.myLinksHolder.myLinks, (w, l) => {
         return l.shortcut?.startsWith(this.buffer) === true;
       });
 
@@ -79,5 +66,19 @@ export class UIInput {
     }
 
     return true;
+  }
+
+  private openFromMousePosition() {
+    if (!this.myLinksHolder) {
+      return;
+    }
+    const el = this.findElement(
+      document.elementFromPoint(this.mouseX, this.mouseY), 'ml-widget') as HTMLElement;
+    if (el && el.dataset.listId) {
+      const widget = this.myLinksHolder.findWidgetById(el.dataset.listId);
+      if (widget) {
+        openAllLinks(widget);
+      }
+    }
   }
 }

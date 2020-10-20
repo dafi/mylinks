@@ -19,9 +19,9 @@ export interface AppConfig {
 const defaultAppConfig: AppConfig = {
   theme: defaultTheme,
   hideShortcuts: false
-}
+};
 
 // deep copy the configuration
-export const appConfigClone = () => JSON.parse(JSON.stringify(defaultAppConfig));
+export const appConfigClone = (): AppConfig => JSON.parse(JSON.stringify(defaultAppConfig));
 
 export const AppConfigContext = React.createContext<AppConfig>(defaultAppConfig);
