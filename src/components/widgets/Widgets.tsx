@@ -80,7 +80,8 @@ export interface GridProps {
 export class Grid extends React.Component<GridProps, unknown> {
   render(): ReactNode {
     const widgets = this.props.columns || [];
-    const columns = widgets.map((columns: MLWidget[], index: number) => <Column key={index} value={columns}/>);
+    const columns = widgets.map(
+      (columns: MLWidget[], index: number) => <Column key={index} value={columns}/>);
     return <section className="ml-columns">{columns}</section>;
   }
 }

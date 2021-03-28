@@ -38,7 +38,10 @@ export function openLink(link: Link): void {
   window.open(link.url);
 }
 
-export function faviconUrlByLink(link: Link, faviconUrlBuilder: string | null | undefined): string | null {
+export function faviconUrlByLink(
+  link: Link,
+  faviconUrlBuilder: string | null | undefined
+): string | null {
   const faviconUrl = link.favicon;
 
   if (faviconUrl) {
@@ -54,7 +57,10 @@ export function faviconUrlByLink(link: Link, faviconUrlBuilder: string | null | 
   return buildFaviconUrl(link.url, faviconUrlBuilder);
 }
 
-export function buildFaviconUrl(url: string, faviconUrlBuilder: string | null | undefined): string | null {
+export function buildFaviconUrl(
+  url: string,
+  faviconUrlBuilder: string | null | undefined
+): string | null {
   if (faviconUrlBuilder) {
     try {
       const host = new URL(url).host;
@@ -68,7 +74,10 @@ export function buildFaviconUrl(url: string, faviconUrlBuilder: string | null | 
   return null;
 }
 
-export function filterMyLinks(myLinks: MyLinks, callback: (widget: Widget, link: Link) => boolean): Link[] {
+export function filterMyLinks(
+  myLinks: MyLinks,
+  callback: (widget: Widget, link: Link) => boolean
+): Link[] {
   const result: Link[] = [];
   myLinks.columns.forEach(row => {
     row.forEach(widgets => {
@@ -83,7 +92,10 @@ export function filterMyLinks(myLinks: MyLinks, callback: (widget: Widget, link:
   return result;
 }
 
-export function someMyLinks(myLinks: MyLinks, callback: (widget: Widget, link: Link) => boolean): boolean {
+export function someMyLinks(
+  myLinks: MyLinks,
+  callback: (widget: Widget, link: Link) => boolean
+): boolean {
   return myLinks.columns.some(row => {
     return row.some(widget => {
       return widget.list.some(link => {
@@ -138,7 +150,12 @@ export class MyLinksHolder {
     MyLinksHolder.setColor('--link-key-color', theme.linkKeyColor);
   }
 
-  createImage(image: HTMLOrSVGImageElement, width: number, height: number, color: string): string | null {
+  createImage(
+    image: HTMLOrSVGImageElement,
+    width: number,
+    height: number,
+    color: string
+  ): string | null {
     const canvas = document.createElement('canvas');
     const context = canvas.getContext('2d');
     if (context) {

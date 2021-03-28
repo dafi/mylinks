@@ -45,6 +45,29 @@
       "error",
       "always"
     ],
+    "max-params": [
+      "error", 4
+    ],
+    "max-lines-per-function": [
+      "error", 20
+    ],
+    "max-len": [
+      "error",
+      {
+        "code": 100,
+        "ignoreUrls": true,
+        "ignorePattern": "^\\s*import"
+      }
+    ],
+    "max-depth": [
+      "error", 4
+    ],
+    "max-lines": [
+      "error"
+    ],
+    "@typescript-eslint/no-use-before-define": [
+      0
+    ],
     "@typescript-eslint/member-ordering": [
       "error",
       {
@@ -70,5 +93,15 @@
         ]
       }
     ]
-  }
+  },
+  "overrides": [
+    {
+      "files": ["src/components/**/*.tsx"],
+      "rules": {
+        "max-lines-per-function": [
+          "error", 200
+        ]
+      }
+    }
+  ]
 }
