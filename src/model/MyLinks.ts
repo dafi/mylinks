@@ -117,7 +117,7 @@ export class MyLinksHolder {
   }
 
   constructor(public readonly myLinks: MyLinks) {
-    this.attachWidgetTolinks();
+    this.attachWidgetToLinks();
   }
 
   findWidgetById(id: string): Widget | undefined {
@@ -191,7 +191,7 @@ export class MyLinksHolder {
     };
   }
 
-  private attachWidgetTolinks() {
+  private attachWidgetToLinks() {
     this.myLinks.columns.flat().forEach(w => {
       w.list.forEach(l => {
         l.widget = w;
