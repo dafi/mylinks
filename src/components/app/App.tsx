@@ -91,7 +91,7 @@ class Page extends React.Component<unknown, PageState> {
         </label>
 
         <label className="toolbar-icon"
-               title="Toogle shortcuts visibility"
+               title="Toggle shortcuts visibility"
                style={style} onClick={() => this.onClickKeyboard()}>
           <i className="fa fa-keyboard"/>
         </label>
