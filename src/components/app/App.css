@@ -4,6 +4,8 @@
   --link-key-background: #eee;
   --link-key-color: #333;
   --missing-favicon-color: yellow;
+  --title-font-size: 0.875em;
+  --label-font-size: 0.875em;
 }
 
 body {
@@ -20,7 +22,7 @@ body {
   color: #000;
   display: inline;
   flex-grow: 1;
-  font-size: 14px;
+  font-size: var(--title-font-size);
   line-height: 34px;
   margin: 0;
   overflow: hidden;
@@ -31,7 +33,7 @@ body {
 .ml-widget-item-link {
   color: #444;
   display: block;
-  font-size: 14px;
+  font-size: var(--label-font-size);
   text-decoration: none;
 }
 
@@ -71,7 +73,7 @@ body {
   color: var(--link-key-color, #333);
   border: 1px solid #b4b4b4;
   box-shadow: 0 1px 1px rgba(0, 0, 0, .2), 0 2px 0 0 rgba(255, 255, 255, .7) inset;
-  font-size: 0.9em;
+  font-size: 1.1em;
   font-weight: 700;
   line-height: 1;
   padding: 0 4px;
