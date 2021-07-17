@@ -96,15 +96,10 @@ export function someMyLinks(
   myLinks: MyLinks,
   callback: (widget: Widget, link: Link) => boolean
 ): boolean {
-  return myLinks.columns.some(row => {
-    return row.some(widget => {
-      return widget.list.some(link => {
-        return callback(widget, link);
-      });
-    });
-  });
+  return myLinks.columns.some(row =>
+    row.some(widget => widget.list.some(link => callback(widget, link)))
+  );
 }
-
 
 export class MyLinksHolder {
 
@@ -175,8 +170,7 @@ export class MyLinksHolder {
     if (!color) {
       return;
     }
-    // eslint-disable-next-line quotes
-    const favicon: HTMLLinkElement | null = document.querySelector("link[rel~='icon']");
+    const favicon: HTMLLinkElement | null = document.querySelector('link[rel~="icon"]');
     if (!favicon) {
       return;
     }

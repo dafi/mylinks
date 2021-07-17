@@ -1,17 +1,17 @@
-import {openAllLinks, MyLinksHolder, openLink, filterMyLinks, MyLinks, Link} from '../model/MyLinks';
+import { openAllLinks, MyLinksHolder, openLink, filterMyLinks, MyLinks, Link } from '../model/MyLinks';
 
 export class UIInput {
-  private static _instance: UIInput;
+  private static mInstance: UIInput;
   private mouseX = 0;
   private mouseY = 0;
   private myLinksHolder?: MyLinksHolder;
   private buffer = '';
 
   static instance(): UIInput {
-    if (!this._instance) {
-      this._instance = new this();
+    if (!this.mInstance) {
+      this.mInstance = new this();
     }
-    return this._instance;
+    return this.mInstance;
   }
 
   private constructor() {
@@ -24,7 +24,7 @@ export class UIInput {
 
     this.mouseX = 0;
     this.mouseY = 0;
-  }  
+  }
 
   findElement(el: Element | null, className: string): Element | null {
     while (el) {
@@ -61,9 +61,9 @@ export class UIInput {
   }
 
   private findLinkByShortcut(myLinks: MyLinks): Link | null {
-    const arr = filterMyLinks(myLinks, (w, l) => {
-      return l.shortcut?.startsWith(this.buffer) === true;
-    });
+    const arr = filterMyLinks(myLinks, (w, l) =>
+      l.shortcut?.startsWith(this.buffer) === true
+    );
 
     if (arr.length === 0) {
       // not found

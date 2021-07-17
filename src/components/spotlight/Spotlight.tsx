@@ -1,9 +1,9 @@
 import React, {ReactNode} from 'react';
 
 export interface SpotlightProp {
-  onClose: () => void
-  show: boolean,
-  children: unknown
+  onClose: () => void;
+  show: boolean;
+  children: unknown;
 }
 
 class Spotlight extends React.Component<SpotlightProp, unknown> {

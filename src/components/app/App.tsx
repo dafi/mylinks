@@ -64,13 +64,13 @@ class Page extends React.Component<unknown, PageState> {
     // Ensure the DOM is updated and the dialog is hidden when the link is open
     // This is necessary because when returning to myLinks window/tab, the dialog can be yet visible
     window.requestIdleCallback(() => openLink(link));
-  }
+  };
 
   toggleModal = () => {
     this.setState( prevState => (
       {isOpen: !prevState.isOpen}
     ));
-  }
+  };
 
   render(): ReactNode {
     const style = {

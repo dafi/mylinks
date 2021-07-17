@@ -3,7 +3,7 @@ import {AppConfigContext} from '../../common/AppConfigContext';
 import {faviconUrlByLink, Link as MLLink, openAllLinks, Widget as MLWidget} from '../../model/MyLinks';
 
 export interface LinkProps {
-  value: MLLink
+  value: MLLink;
 }
 
 class Link extends React.Component<LinkProps, unknown> {
@@ -42,7 +42,7 @@ class Link extends React.Component<LinkProps, unknown> {
 Link.contextType = AppConfigContext;
 
 export interface WidgetProps {
-  value: MLWidget
+  value: MLWidget;
 }
 
 class Widget extends React.Component<WidgetProps, unknown> {
@@ -63,7 +63,7 @@ class Widget extends React.Component<WidgetProps, unknown> {
 }
 
 export interface ColumnProps {
-  value: MLWidget[]
+  value: MLWidget[];
 }
 
 class Column extends React.Component<ColumnProps, unknown> {
@@ -74,14 +74,14 @@ class Column extends React.Component<ColumnProps, unknown> {
 }
 
 export interface GridProps {
-  columns: [MLWidget[]]
+  columns: [MLWidget[]];
 }
 
 export class Grid extends React.Component<GridProps, unknown> {
   render(): ReactNode {
     const widgets = this.props.columns || [];
-    const columns = widgets.map(
+    const columnsEl = widgets.map(
       (columns: MLWidget[], index: number) => <Column key={index} value={columns}/>);
-    return <section className="ml-columns">{columns}</section>;
+    return <section className="ml-columns">{columnsEl}</section>;
   }
 }

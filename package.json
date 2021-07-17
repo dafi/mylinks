@@ -4,21 +4,20 @@
   "private": true,
   "homepage": "./",
   "dependencies": {
-    "@testing-library/jest-dom": "^4.2.4",
-    "@testing-library/react": "^9.5.0",
-    "@testing-library/user-event": "^7.2.1",
-    "@types/jest": "^24.9.1",
-    "@types/node": "^12.12.37",
-    "@types/react-dom": "^16.9.6",
-    "customize-cra": "^0.9.1",
-    "fuse.js": "^6.4.1",
-    "gh-pages": "^3.1.0",
+    "@testing-library/jest-dom": "^5.14.1",
+    "@testing-library/react": "^12.0.0",
+    "@testing-library/user-event": "^13.1.9",
+    "@types/jest": "^26.0.24",
+    "@types/node": "^16.3.2",
+    "@types/react-dom": "^17.0.9",
+    "customize-cra": "^1.0.0",
+    "fuse.js": "^6.4.6",
+    "gh-pages": "^3.2.3",
     "postcss-inline-svg": "^4.1.0",
-    "react": "^16.13.1",
-    "react-app-rewired": "^2.1.5",
-    "react-dom": "^16.13.1",
-    "react-scripts": "3.4.4",
-    "typescript": "^3.7.5"
+    "react": "^17.0.2",
+    "react-app-rewired": "^2.1.8",
+    "react-dom": "^17.0.2",
+    "react-scripts": "4.0.3"
   },
   "scripts": {
     "predeploy": "npm run build",
@@ -46,14 +45,16 @@
     ]
   },
   "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^4.5.0",
-    "@typescript-eslint/parser": "^4.5.0",
-    "eslint": "^6.6.0",
-    "eslint-config-standard": "^14.1.1",
-    "eslint-plugin-import": "^2.22.1",
+    "@typescript-eslint/eslint-plugin": "^4.28.3",
+    "@typescript-eslint/parser": "^4.28.3",
+    "eslint": "^7.30.0",
+    "eslint-config-standard": "^16.0.3",
+    "eslint-plugin-import": "^2.23.4",
+    "eslint-plugin-jsdoc": "^35.4.3",
     "eslint-plugin-node": "^11.1.0",
-    "eslint-plugin-promise": "^4.2.1",
-    "eslint-plugin-react": "^7.21.5",
-    "eslint-plugin-standard": "^4.0.1"
+    "eslint-plugin-promise": "^5.1.0",
+    "eslint-plugin-react": "^7.24.0",
+    "eslint-plugin-standard": "^4.1.0",
+    "typescript": "^4.3.5"
   }
 }

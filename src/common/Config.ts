@@ -35,16 +35,16 @@ class ConfigReader {
     onLoadCallback(data);
   }
 
-  static loadFromObject(json: unknown) : MyLinks {
+  static loadFromObject(json: unknown): MyLinks {
     return json as MyLinks;
   }
 
   static loadFromFile(file: File, onLoadCallback: MyLinksCallback) {
     const reader = new FileReader();
 
-    reader.onload = (() => {
-      return (e: ProgressEvent<FileReader>) => {
-        const result = e.target?.result;
+    reader.onload = (() =>
+      (event: ProgressEvent<FileReader>) => {
+        const result = event.target?.result;
         const jsonText = typeof result === 'string' ? result : '';
         try {
           onLoadCallback(ConfigReader.loadFromObject(JSON.parse(jsonText)));
@@ -52,8 +52,7 @@ class ConfigReader {
         } catch (e) {
           window.alert(e);
         }
-      };
-    })();
+      })();
 
     reader.readAsText(file);
   }

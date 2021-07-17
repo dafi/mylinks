@@ -1,22 +1,22 @@
-import React, {ChangeEvent, ReactNode, RefObject} from 'react';
-import './LinkSelector.css';
-import {faviconUrlByLink, Link, Widget} from '../../model/MyLinks';
+import React, { ChangeEvent, ReactNode, RefObject } from 'react';
 import Fuse from 'fuse.js';
-import {AppConfigContext} from '../../common/AppConfigContext';
+import './LinkSelector.css';
+import { faviconUrlByLink, Link, Widget } from '../../model/MyLinks';
+import { AppConfigContext } from '../../common/AppConfigContext';
 
 interface Result {
-  id: string,
-  link: Link
+  id: string;
+  link: Link;
 }
 
 export interface LinkSelectorProps {
-  widgets: [Widget[]] | undefined,
-  onSelected: (link: Link) => void
+  widgets: [Widget[]] | undefined;
+  onSelected: (link: Link) => void;
 }
 
 interface LinkSelectorState {
-  result: Result[]
-  selectedIndex: number
+  result: Result[];
+  selectedIndex: number;
 }
 
 export class LinkSelector extends React.Component<LinkSelectorProps, LinkSelectorState> {
@@ -95,7 +95,7 @@ export class LinkSelector extends React.Component<LinkSelectorProps, LinkSelecto
       const item = this.state.result[newIndex];
       const liElement = this.listRefs.get(item.id)?.current;
       if (liElement) {
-        liElement.scrollIntoView({block: 'nearest', inline: 'nearest'});
+        liElement.scrollIntoView({ block: 'nearest', inline: 'nearest' });
       }
       this.setState({
         selectedIndex: newIndex
@@ -110,25 +110,25 @@ export class LinkSelector extends React.Component<LinkSelectorProps, LinkSelecto
         <div className="input-container">
           <i className="fas fa-search icon"/>
           <input type="text"
-            ref={this.inputRef}
-            onKeyDown={this.onKeyDown}
-            onChange={this.onChange}
-            placeholder="Search"
-            spellCheck="false"
-            className="input-box"/>
+                 ref={this.inputRef}
+                 onKeyDown={this.onKeyDown}
+                 onChange={this.onChange}
+                 placeholder="Search"
+                 spellCheck="false"
+                 className="input-box"/>
         </div>
         <div className="list">
           <ul>
-            {this.state.result.map((r, i) => {
-              return <li
+            {this.state.result.map((r, i) =>
+              <li
                 onClick={(e) => this.onClick(e, i)}
                 onDoubleClick={(e) => this.onDoubleClick(e, i)}
                 className={i === this.state.selectedIndex ? 'selected' : 'none'}
                 ref={this.listRefs.get(r.id) ?? null}
                 key={r.id}><i className="list-image">{this.image(r.link)}</i>
                 <div>{r.link.widget?.title || ''} - {r.link.label}</div>
-              </li>;
-            })}
+              </li>
+            )}
           </ul>
         </div>
       </div>
@@ -155,16 +155,16 @@ export class LinkSelector extends React.Component<LinkSelectorProps, LinkSelecto
       return [];
     }
 
-    return this.fuse.search(pattern).map(result => {
-      return {id: result.item.id, link: result.item};
-    });
+    return this.fuse.search(pattern).map(result =>
+      ({ id: result.item.id, link: result.item })
+    );
   }
 
   image(item: Link): ReactNode {
     const faviconUrl = faviconUrlByLink(item, this.context.faviconService);
 
     if (faviconUrl) {
-      return <img src={faviconUrl} alt=''/>;
+      return <img src={faviconUrl} alt=""/>;
     }
     return <div className="missing-image missing-favicon"/>;
   }
