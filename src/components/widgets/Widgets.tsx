@@ -1,63 +1,86 @@
-import React, {ReactNode} from 'react';
-import {AppConfigContext} from '../../common/AppConfigContext';
-import {faviconUrlByLink, Link as MLLink, openAllLinks, Widget as MLWidget} from '../../model/MyLinks';
-
-export interface LinkProps {
-  value: MLLink;
-}
-
-class Link extends React.Component<LinkProps, unknown> {
-  render(): ReactNode {
-    const appConfig = this.context;
-    const item = this.props.value;
-
-    const style = {
-      visibility: appConfig.hideShortcuts || !item.shortcut ? 'collapse' : 'visible'
-    } as React.CSSProperties;
-    return (
-      <a href={item.url} target="_blank" rel="noopener noreferrer" className="ml-widget-item-link">
-        <div className="content">
-          <div className="left-items">
-            {this.image(item)}
-            <div className="label">{item.label}</div>
-          </div>
-          <div className="right-items">
-            <kbd style={style}>{item.shortcut}</kbd>
-          </div>
-        </div>
-      </a>
-    );
-  }
-
-  image(item: MLLink) {
-    const faviconUrl = faviconUrlByLink(item, this.context.faviconService);
-
-    if (faviconUrl) {
-      return <img src={faviconUrl} className="ml-favicon" alt=''/>;
-    }
-    return <div className="missing-favicon ml-missing-favicon"/>;
-  }
-}
-
-Link.contextType = AppConfigContext;
+import React, { ReactNode } from 'react';
+import { openAllLinks } from '../../model/MyLinks';
+import { Widget as MLWidget } from '../../model/MyLinks-interface';
+import { Link } from './Link';
 
 export interface WidgetProps {
   value: MLWidget;
 }
 
-class Widget extends React.Component<WidgetProps, unknown> {
+interface WidgetState {
+  isMinimized: boolean;
+}
+
+interface WidgetExtraCssClass {
+  window: string;
+  listContainer: string;
+  list: string;
+  expandIcon: string;
+}
+
+class Widget extends React.Component<WidgetProps, WidgetState> {
+  private startMinimized = false;
+
+  constructor(props: WidgetProps) {
+    super(props);
+    this.startMinimized = localStorage.getItem(`${this.props.value.id}-minimized`) === 't';
+    this.state = { isMinimized: this.startMinimized };
+  }
+
+  toggleMinimize(mini: boolean): void {
+    if (this.startMinimized) {
+      this.setState({ isMinimized: mini });
+    }
+  }
+
+  toggleWidgetSize(): void {
+    this.startMinimized = !this.startMinimized;
+    localStorage.setItem(`${this.props.value.id}-minimized`, this.startMinimized ? 't' : 'f');
+    this.setState({ isMinimized: this.startMinimized });
+  }
+
+  cssExtraClasses(): WidgetExtraCssClass {
+    const cls: WidgetExtraCssClass = {
+      window: '',
+      list: '',
+      listContainer: '',
+      expandIcon: ''
+    };
+
+    if (this.startMinimized) {
+      if (this.state.isMinimized) {
+        cls.list = 'ml-widget-show-minimized-list-hidden';
+      } else {
+        cls.window = 'ml-widget-show-minimized-window';
+        cls.listContainer = 'ml-widget-show-minimized-list-container';
+        cls.list = 'ml-widget-show-minimized-list-visible';
+        cls.expandIcon = 'fa fa-angle-down';
+      }
+    } else {
+      cls.expandIcon = 'fa fa-angle-up';
+    }
+    return cls;
+  }
+
   render(): ReactNode {
     const data = this.props.value;
     const items = data.list.map(v => <li key={v.url}><Link value={v}/></li>);
+    const cssClasses = this.cssExtraClasses();
+
     return (
-      <div className="ml-widget" data-list-id={data.id}>
+      <div className={`ml-widget ${cssClasses.window}`} data-list-id={data.id}
+           onMouseOver={(): void => this.toggleMinimize(false)}
+           onMouseOut={(): void => this.toggleMinimize(true)}>
         <div className="ml-widget-label">
           <h2>{data.title}</h2>
-          <span className="ml-toolbar" onClick={() => openAllLinks(data)}>
-            <i className="fa fa-external-link-alt"/>
+          <span className="ml-toolbar">
+            <i className={`${cssClasses.expandIcon} icon`} onClick={(): void => this.toggleWidgetSize()}/>
+            <i className="fa fa-external-link-alt icon" onClick={(): void => openAllLinks(data)}/>
           </span>
         </div>
-        <ul>{items}</ul>
+        <div className={cssClasses.listContainer}>
+          <ul className={`ml-widget-list ${cssClasses.list}`}>{items}</ul>
+        </div>
       </div>);
   }
 }

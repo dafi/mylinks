@@ -6,6 +6,8 @@
   --missing-favicon-color: yellow;
   --title-font-size: 0.875em;
   --label-font-size: 0.875em;
+  --widget-background-color: #fff;
+  --widget-border-color: gray;
 }
 
 body {
@@ -28,6 +30,11 @@ body {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  padding: 0 10px 10px 10px;
+}
+
+.ml-widget-list {
+  padding: 0 10px 10px 10px;
 }
 
 .ml-widget-item-link {
@@ -90,12 +97,10 @@ body {
 }
 
 .ml-rows ul {
-  display: block;
   list-style-type: none;
   min-height: 23px;
   overflow-x: hidden;
   margin: 0;
-  padding: 0;
 }
 
 .ml-rows li {
@@ -109,10 +114,9 @@ body {
 
 .ml-widget {
   flex: 1;
-  border: 1px solid gray;
+  border: 1px solid var(--widget-border-color);
   margin: 5px 10px;
-  padding: 0 10px 10px 10px;
-  background-color: #fff;
+  background-color: var(--widget-background-color, #ff0000);
   box-shadow: 8px 8px 6px rgba(0,0,0,.2);
 }
 
@@ -142,11 +146,12 @@ body {
   display: none;
 }
 
-.fa-external-link-alt {
+.ml-toolbar .icon {
+  padding-right: 8px;
   color: #000;
 }
 
-.fa-external-link-alt:hover {
+.ml-toolbar .icon:hover {
   animation-name: pulse;
   animation-duration: 0.7s;
   animation-timing-function: linear;
@@ -183,4 +188,26 @@ body {
 #files {
   max-width: 100%;
   max-height: 100%;
+}
+
+.ml-widget-show-minimized-window {
+  position: relative;
+}
+
+.ml-widget-show-minimized-list-container {
+  position: absolute;
+  width: 100%;
+  background-color: var(--widget-background-color);
+  border-left: 1px solid var(--widget-border-color);
+  border-right: 1px solid var(--widget-border-color);
+  border-bottom: 1px solid var(--widget-border-color);
+  left: -1px;
+}
+
+.ml-widget-show-minimized-list-visible {
+  display: block;
+}
+
+.ml-widget-show-minimized-list-hidden {
+  display: none;
 }
