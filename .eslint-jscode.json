@@ -106,7 +106,12 @@
       }
     ],
     "no-debugger": "error",
-    "no-empty": "off",
+    "no-empty": [
+      "error",
+      {
+        "allowEmptyCatch": true
+      }
+    ],
     "no-empty-function": "off",
     "no-eval": "error",
     "no-fallthrough": "error",
