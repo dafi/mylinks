@@ -22,6 +22,6 @@ const defaultAppConfig: AppConfig = {
 };
 
 // deep copy the configuration
-export const appConfigClone = (): AppConfig => JSON.parse(JSON.stringify(defaultAppConfig));
+export const appConfigClone = (): AppConfig => JSON.parse(JSON.stringify(defaultAppConfig)) as AppConfig;
 
 export const AppConfigContext = React.createContext<AppConfig>(defaultAppConfig);

@@ -1,4 +1,5 @@
-import { openAllLinks, MyLinksHolder, openLink, filterMyLinks, MyLinks, Link } from '../model/MyLinks';
+import { filterMyLinks, MyLinksHolder, openAllLinks, openLink } from '../model/MyLinks';
+import { Link, MyLinks } from '../model/MyLinks-interface';
 
 export class UIInput {
   private static mInstance: UIInput;
@@ -75,7 +76,7 @@ export class UIInput {
     return null;
   }
 
-  private openFromMousePosition() {
+  private openFromMousePosition(): void {
     if (!this.myLinksHolder) {
       return;
     }

@@ -10,7 +10,7 @@ Inside the `package.json` file changed `homepage` to `./` to work locally from `
 
 ## Remote deploy
 
-### On github pages
+### On GitHub pages
 
 There are two new scripts defined inside `package.json`
 
@@ -20,6 +20,6 @@ There are two new scripts defined inside `package.json`
 Run the following command to deploy on [mylinks](https://dafi.github.io/mylinks/)
 
 	npm run deploy
-	
+
 
 

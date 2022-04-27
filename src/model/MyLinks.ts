@@ -1,34 +1,7 @@
-export interface Theme {
-  backgroundImage?: string;
-  missingFavIconColor: string;
-  linkKeyBackground?: string;
-  linkKeyColor?: string;
-}
+import { Link, MyLinks, Widget } from './MyLinks-interface';
 
-export interface Link {
-  id: string;
-  label: string;
-  url: string;
-  favicon?: string;
-  shortcut?: string;
-  widget?: Widget;
-}
-
-export interface Widget {
-  id: string;
-  title: string;
-  list: [Link];
-}
-
-export interface Config {
-  faviconService?: string;
-}
-
-export interface MyLinks {
-  theme: Theme;
-  columns: [Widget[]];
-  config?: Config;
-}
+const FaviconWidth = 16;
+const FavIconHeight = 16;
 
 export function openAllLinks(wd: Widget): void {
   wd.list.reverse().forEach(openLink);
@@ -103,7 +76,7 @@ export function someMyLinks(
 
 export class MyLinksHolder {
 
-  private static setColor(property: string, color?: string) {
+  private static setColor(property: string, color?: string): void {
     if (color) {
       document.documentElement.style.setProperty(property, color);
     } else {
@@ -177,7 +150,7 @@ export class MyLinksHolder {
     const image = new Image();
     image.src = favicon.href;
     image.onload = (): void => {
-      const favImage = this.createImage(image, 16, 16, color);
+      const favImage = this.createImage(image, FaviconWidth, FavIconHeight, color);
       if (favImage) {
         favicon.type = 'image/x-icon';
         favicon.href = favImage;
@@ -185,7 +158,7 @@ export class MyLinksHolder {
     };
   }
 
-  private attachWidgetToLinks() {
+  private attachWidgetToLinks(): void {
     this.myLinks.columns.flat().forEach(w => {
       w.list.forEach(l => {
         l.widget = w;

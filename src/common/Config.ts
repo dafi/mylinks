@@ -1,4 +1,4 @@
-import { MyLinks } from '../model/MyLinks';
+import { MyLinks } from '../model/MyLinks-interface';
 
 const STORAGE_PREF_DATA = 'myLinksData';
 
@@ -21,7 +21,7 @@ export default class Config {
 }
 
 class ConfigReader {
-  static loadData(onLoadCallback: MyLinksCallback) {
+  static loadData(onLoadCallback: MyLinksCallback): void {
     let data: MyLinks | undefined;
 
     const jsonText = localStorage.getItem(STORAGE_PREF_DATA);
@@ -39,11 +39,11 @@ class ConfigReader {
     return json as MyLinks;
   }
 
-  static loadFromFile(file: File, onLoadCallback: MyLinksCallback) {
+  static loadFromFile(file: File, onLoadCallback: MyLinksCallback): void {
     const reader = new FileReader();
 
     reader.onload = (() =>
-      (event: ProgressEvent<FileReader>) => {
+      (event: ProgressEvent<FileReader>): void => {
         const result = event.target?.result;
         const jsonText = typeof result === 'string' ? result : '';
         try {

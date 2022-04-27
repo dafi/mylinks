@@ -1,14 +1,15 @@
-import React, {ChangeEvent, ReactNode} from 'react';
+import React, { ChangeEvent, ReactNode } from 'react';
+
+import { AppConfig, appConfigClone, AppConfigContext } from '../../common/AppConfigContext';
+import Config from '../../common/Config';
+import { UIInput } from '../../common/UIInput';
+import { MyLinksHolder, openLink } from '../../model/MyLinks';
+import { Link, MyLinks as MMLinks, Widget } from '../../model/MyLinks-interface';
+import { LinkSelector } from '../linkSelector/LinkSelector';
+import Spotlight from '../spotlight/Spotlight';
+import * as MyLinks from '../widgets/Widgets';
 import './App.css';
 import './toolbar-icon.css';
-import Spotlight from '../spotlight/Spotlight';
-
-import {AppConfigContext, appConfigClone, AppConfig} from '../../common/AppConfigContext';
-import * as MyLinks from '../widgets/Widgets';
-import Config from '../../common/Config';
-import {UIInput} from '../../common/UIInput';
-import {Link, MyLinks as MMLinks, MyLinksHolder, openLink, Widget} from '../../model/MyLinks';
-import {LinkSelector} from '../linkSelector/LinkSelector';
 
 const STORAGE_PREF_HIDE_SHORTCUTS = 'hideShortcuts';
 
@@ -31,10 +32,10 @@ class Page extends React.Component<unknown, PageState> {
     super(props);
     const config = appConfigClone();
     config.hideShortcuts = this.hideShortcuts;
-    this.state = {columns: [[]], config: config, hasShortcuts: false, isOpen: false};
+    this.state = { columns: [[]], config: config, hasShortcuts: false, isOpen: false };
   }
 
-  keyDown(e: KeyboardEvent) {
+  keyDown(e: KeyboardEvent): boolean {
     if (this.state.isOpen) {
       if (e.key === 'Escape') {
         this.toggleModal();
@@ -52,23 +53,23 @@ class Page extends React.Component<unknown, PageState> {
     return UIInput.instance().keyDown(e);
   }
 
-  componentDidMount() {
+  componentDidMount(): void {
     document.addEventListener('keydown', (e) => this.keyDown(e), false);
     Config.fromData((myLinks?: MMLinks | null) => {
       this.reloadAll(myLinks);
     });
   }
 
-  onLinkSelected = (link: Link) => {
+  onLinkSelected = (link: Link): void => {
     this.toggleModal();
     // Ensure the DOM is updated and the dialog is hidden when the link is open
     // This is necessary because when returning to myLinks window/tab, the dialog can be yet visible
     window.requestIdleCallback(() => openLink(link));
   };
 
-  toggleModal = () => {
-    this.setState( prevState => (
-      {isOpen: !prevState.isOpen}
+  toggleModal = (): void => {
+    this.setState(prevState => (
+      { isOpen: !prevState.isOpen }
     ));
   };
 
@@ -87,12 +88,12 @@ class Page extends React.Component<unknown, PageState> {
           <i className="fa fa-file-import"/>
           <input type="file" id="files" name="files[]"
                  accept="application/json"
-                 onChange={(e) => this.handleFileSelect(e)}/>
+                 onChange={(e): void => this.handleFileSelect(e)}/>
         </label>
 
         <label className="toolbar-icon"
                title="Toggle shortcuts visibility"
-               style={style} onClick={() => this.onClickKeyboard()}>
+               style={style} onClick={(): void => this.onClickKeyboard()}>
           <i className="fa fa-keyboard"/>
         </label>
 
@@ -107,7 +108,7 @@ class Page extends React.Component<unknown, PageState> {
     </AppConfigContext.Provider>;
   }
 
-  reloadAll(myLinks?: MMLinks | null) {
+  reloadAll(myLinks?: MMLinks | null): void {
     if (!myLinks) {
       return;
     }
@@ -124,7 +125,7 @@ class Page extends React.Component<unknown, PageState> {
     });
   }
 
-  onClickKeyboard() {
+  onClickKeyboard(): void {
     if (this.myLinksHolder) {
       this.hideShortcuts = !this.hideShortcuts;
       this.setState({
@@ -133,13 +134,12 @@ class Page extends React.Component<unknown, PageState> {
     }
   }
 
-  handleFileSelect(evt: ChangeEvent<HTMLInputElement>) {
+  handleFileSelect(evt: ChangeEvent<HTMLInputElement>): void {
     if (!evt.target) {
       return;
     }
     const file = evt.target.files && evt.target.files[0];
-    // onChange is not called when the path is the same
-    // so we force the change
+    // onChange is not called when the path is the same so, we force the change
     evt.target.value = '';
     if (file) {
       Config.fromFile(file, (myLinks?: MMLinks | null) => {
@@ -169,7 +169,7 @@ class Page extends React.Component<unknown, PageState> {
 }
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-function App() {
+function App(): JSX.Element {
   return <Page/>;
 }
 

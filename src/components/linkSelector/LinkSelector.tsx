@@ -1,7 +1,8 @@
 import React, { ChangeEvent, ReactNode, RefObject } from 'react';
 import Fuse from 'fuse.js';
 import './LinkSelector.css';
-import { faviconUrlByLink, Link, Widget } from '../../model/MyLinks';
+import { faviconUrlByLink } from '../../model/MyLinks';
+import { Link, Widget } from '../../model/MyLinks-interface';
 import { AppConfigContext } from '../../common/AppConfigContext';
 
 interface Result {
@@ -111,8 +112,8 @@ export class LinkSelector extends React.Component<LinkSelectorProps, LinkSelecto
           <i className="fas fa-search icon"/>
           <input type="text"
                  ref={this.inputRef}
-                 onKeyDown={this.onKeyDown}
-                 onChange={this.onChange}
+                 onKeyDown={(e): void => this.onKeyDown(e)}
+                 onChange={(e): void => this.onChange(e)}
                  placeholder="Search"
                  spellCheck="false"
                  className="input-box"/>
@@ -121,8 +122,8 @@ export class LinkSelector extends React.Component<LinkSelectorProps, LinkSelecto
           <ul>
             {this.state.result.map((r, i) =>
               <li
-                onClick={(e) => this.onClick(e, i)}
-                onDoubleClick={(e) => this.onDoubleClick(e, i)}
+                onClick={(e): void => this.onClick(e, i)}
+                onDoubleClick={(e): void => this.onDoubleClick(e, i)}
                 className={i === this.state.selectedIndex ? 'selected' : 'none'}
                 ref={this.listRefs.get(r.id) ?? null}
                 key={r.id}><i className="list-image">{this.image(r.link)}</i>
