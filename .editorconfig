@@ -18,9 +18,13 @@ ij_wrap_on_typing = false
 ij_blade_keep_indents_on_empty_lines = false
 
 [*.css]
+indent_size = 2
+tab_width = 2
+ij_continuation_indent_size = 4
 ij_css_align_closing_brace_with_properties = false
 ij_css_blank_lines_around_nested_selector = 1
 ij_css_blank_lines_between_blocks = 1
+ij_css_block_comment_add_space = false
 ij_css_brace_placement = end_of_line
 ij_css_enforce_quotes_on_format = false
 ij_css_hex_color_long_format = false
