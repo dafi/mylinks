@@ -8,6 +8,7 @@
   --label-font-size: 0.875em;
   --widget-background-color: #fff;
   --widget-border-color: gray;
+  --widget-border-radius: 6px;
 }
 
 body {
@@ -118,6 +119,7 @@ body {
   margin: 5px 10px;
   background-color: var(--widget-background-color, #ff0000);
   box-shadow: 8px 8px 6px rgba(0,0,0,.2);
+  border-radius: var(--widget-border-radius);
 }
 
 .ml-widget:hover .ml-toolbar {
@@ -192,6 +194,8 @@ body {
 
 .ml-widget-show-minimized-window {
   position: relative;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
 }
 
 .ml-widget-show-minimized-list-container {
@@ -202,6 +206,9 @@ body {
   border-right: 1px solid var(--widget-border-color);
   border-bottom: 1px solid var(--widget-border-color);
   left: -1px;
+  box-shadow: 8px 8px 6px rgba(0,0,0,.2);
+  border-bottom-left-radius: var(--widget-border-radius);
+  border-bottom-right-radius: var(--widget-border-radius);
 }
 
 .ml-widget-show-minimized-list-visible {
