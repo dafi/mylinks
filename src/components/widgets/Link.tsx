@@ -8,6 +8,9 @@ export interface LinkProps {
 }
 
 export class Link extends React.Component<LinkProps, unknown> {
+  static contextType = AppConfigContext;
+  context!: React.ContextType<typeof AppConfigContext>;
+
   render(): ReactNode {
     const appConfig = this.context;
     const item = this.props.value;
@@ -39,5 +42,3 @@ export class Link extends React.Component<LinkProps, unknown> {
     return <div className="missing-favicon ml-missing-favicon"/>;
   }
 }
-
-Link.contextType = AppConfigContext;

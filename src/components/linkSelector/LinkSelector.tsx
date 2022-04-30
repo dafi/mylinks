@@ -1,9 +1,9 @@
-import React, { ChangeEvent, ReactNode, RefObject } from 'react';
 import Fuse from 'fuse.js';
-import './LinkSelector.css';
+import React, { ChangeEvent, ReactNode, RefObject } from 'react';
+import { AppConfigContext } from '../../common/AppConfigContext';
 import { faviconUrlByLink } from '../../model/MyLinks';
 import { Link, Widget } from '../../model/MyLinks-interface';
-import { AppConfigContext } from '../../common/AppConfigContext';
+import './LinkSelector.css';
 
 interface Result {
   id: string;
@@ -21,6 +21,8 @@ interface LinkSelectorState {
 }
 
 export class LinkSelector extends React.Component<LinkSelectorProps, LinkSelectorState> {
+  static contextType = AppConfigContext;
+  context!: React.ContextType<typeof AppConfigContext>;
   private listRefs = new Map<string, RefObject<HTMLLIElement>>();
   private inputRef: RefObject<HTMLInputElement> = React.createRef();
   private fuse: Fuse<Link>;
@@ -127,7 +129,7 @@ export class LinkSelector extends React.Component<LinkSelectorProps, LinkSelecto
                 className={i === this.state.selectedIndex ? 'selected' : 'none'}
                 ref={this.listRefs.get(r.id) ?? null}
                 key={r.id}><i className="list-image">{this.image(r.link)}</i>
-                <div>{r.link.widget?.title || ''} - {r.link.label}</div>
+                <div>{r.link.label} {r.link.widget?.title ? ` - ${r.link.widget.title}` : ''}</div>
               </li>
             )}
           </ul>
@@ -170,6 +172,3 @@ export class LinkSelector extends React.Component<LinkSelectorProps, LinkSelecto
     return <div className="missing-image missing-favicon"/>;
   }
 }
-
-LinkSelector.contextType = AppConfigContext;
-
