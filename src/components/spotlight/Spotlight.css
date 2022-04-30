@@ -1,0 +1,17 @@
+.spotlight-backdrop {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.3);
+  padding: 50px;
+}
+
+.spotlight-modal {
+  background-color: #fff;
+  border-radius: 5px;
+  margin: 0 auto;
+  max-width: 750px;
+  min-height: 40px;
+}
