@@ -8,9 +8,16 @@ type MyLinksCallback = (myLinks?: MyLinks) => void;
 
 export default class Config {
   static fromData(onLoadCallback: OnLoadCallback): void {
-    ConfigReader.loadData((myLinks?: MyLinks) => {
-      onLoadCallback(myLinks);
-    });
+    const configUrl = new URL(location.href).searchParams.get('c');
+    if (configUrl) {
+      ConfigReader.loadFromUrl(configUrl, (myLinks?: MyLinks) => {
+        onLoadCallback(myLinks);
+      });
+    } else {
+      ConfigReader.loadData((myLinks?: MyLinks) => {
+        onLoadCallback(myLinks);
+      });
+    }
   }
 
   static fromFile(file: File, onLoadCallback: OnLoadCallback): void {
@@ -55,5 +62,12 @@ class ConfigReader {
       })();
 
     reader.readAsText(file);
+  }
+
+  static loadFromUrl(url: string, onLoadCallback: MyLinksCallback): void {
+    fetch(url)
+      .then(async response => response.json())
+      .then(data => onLoadCallback(data as MyLinks))
+      .catch(e => window.alert(e));
   }
 }
