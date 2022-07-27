@@ -1,7 +1,7 @@
 import { Link, MyLinks, Widget } from './MyLinks-interface';
 
 const FaviconWidth = 16;
-const FavIconHeight = 16;
+const FaviconHeight = 16;
 
 export function openAllLinks(wd: Widget): void {
   wd.list.reverse().forEach(openLink);
@@ -113,7 +113,6 @@ export class MyLinksHolder {
       return;
     }
 
-    MyLinksHolder.setColor('--missing-favicon-color', theme.missingFavIconColor);
     MyLinksHolder.setColor('--link-key-background', theme.linkKeyBackground);
     MyLinksHolder.setColor('--link-key-color', theme.linkKeyColor);
   }
@@ -139,7 +138,7 @@ export class MyLinksHolder {
     return null;
   }
 
-  applyColorToFavIcon(color?: string): void {
+  applyColorToFavicon(color?: string): void {
     if (!color) {
       return;
     }
@@ -150,7 +149,7 @@ export class MyLinksHolder {
     const image = new Image();
     image.src = favicon.href;
     image.onload = (): void => {
-      const favImage = this.createImage(image, FaviconWidth, FavIconHeight, color);
+      const favImage = this.createImage(image, FaviconWidth, FaviconHeight, color);
       if (favImage) {
         favicon.type = 'image/x-icon';
         favicon.href = favImage;

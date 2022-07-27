@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react';
 import { AppConfigContext } from '../../common/AppConfigContext';
-import { faviconUrlByLink } from '../../model/MyLinks';
 import { Link as MLLink } from '../../model/MyLinks-interface';
+import { LinkIcon } from './LinkIcon';
 
 export interface LinkProps {
   value: MLLink;
@@ -22,7 +22,7 @@ export class Link extends React.Component<LinkProps, unknown> {
       <a href={item.url} target="_blank" rel="noopener noreferrer" className="ml-widget-item-link">
         <div className="content">
           <div className="left-items">
-            {this.image(item)}
+            <LinkIcon link={item}/>
             <div className="label">{item.label}</div>
           </div>
           <div className="right-items">
@@ -31,14 +31,5 @@ export class Link extends React.Component<LinkProps, unknown> {
         </div>
       </a>
     );
-  }
-
-  image(item: MLLink): JSX.Element {
-    const faviconUrl = faviconUrlByLink(item, this.context.faviconService);
-
-    if (faviconUrl) {
-      return <img src={faviconUrl} className="ml-favicon" alt=""/>;
-    }
-    return <div className="missing-favicon ml-missing-favicon"/>;
   }
 }

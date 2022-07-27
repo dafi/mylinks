@@ -115,7 +115,7 @@ class Page extends React.Component<unknown, PageState> {
     this.myLinksHolder = new MyLinksHolder(myLinks);
     this.myLinksHolder.applyBackground();
     this.myLinksHolder.applyTheme();
-    this.myLinksHolder.applyColorToFavIcon(myLinks.theme?.missingFavIconColor);
+    this.myLinksHolder.applyColorToFavicon(myLinks.theme?.faviconColor);
 
     UIInput.instance().setup(this.myLinksHolder);
     this.setState({
@@ -159,7 +159,7 @@ class Page extends React.Component<unknown, PageState> {
   buildConfig(myLinks: MMLinks): AppConfig {
     return {
       theme: {
-        missingFavIconColor: myLinks.theme?.missingFavIconColor,
+        faviconColor: myLinks.theme?.faviconColor,
       },
       faviconService: myLinks.config?.faviconService,
       hideShortcuts: this.hideShortcuts

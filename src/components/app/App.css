@@ -3,7 +3,7 @@
 :root {
   --link-key-background: #eee;
   --link-key-color: #333;
-  --missing-favicon-color: yellow;
+  --favicon-color: blue;
   --title-font-size: 0.875em;
   --label-font-size: 0.875em;
   --widget-background-color: #fff;
@@ -126,21 +126,6 @@ body {
   display: block;
 }
 
-.ml-favicon {
-  width: 16px;
-  height: 16px;
-  line-height: 16px;
-  background-repeat: no-repeat;
-  background-position: center center;
-  background-size: 16px 16px;
-  margin-right: 6px;
-}
-
-.ml-favicon img {
-  max-width: 16px;
-  max-height: 16px;
-}
-
 .ml-toolbar {
   float: right;
   line-height: 34px;
@@ -165,20 +150,6 @@ body {
   50% {
     transform: scale(0.8);
   }
-}
-
-.missing-favicon {
-  width: 16px;
-  height: 16px;
-  background-color: var(--missing-favicon-color, yellow);
-  /*noinspection CssInvalidFunction*/
-  mask: svg-load('../../img/missingFavicon.svg') no-repeat 50% 50%;
-  mask-size: cover;
-}
-
-.ml-missing-favicon {
-  display: inline-block;
-  margin-right: 6px;
 }
 
 .ml-widget a:focus {

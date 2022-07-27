@@ -1,77 +1,73 @@
 :root {
-    --link-selector-input-font-size: 2em;
-    --link-selector-input-color: blue;
+  --link-selector-input-font-size: 2em;
+  --link-selector-input-color: blue;
 }
 
 .link-selector {
-    padding: 10px 0 10px 0;
+  padding: 10px 0 10px 0;
 }
 
 .link-selector .input-box {
-    width: 100%;
-    border: 0;
-    font-size: var(--link-selector-input-font-size);
-    color: var(--link-selector-input-color);
+  width: 100%;
+  border: 0;
+  font-size: var(--link-selector-input-font-size);
+  color: var(--link-selector-input-color);
 }
 
 .link-selector .input-box:focus {
-    outline: none;
+  outline: none;
 }
 
 .link-selector ul {
-    list-style: none;
-    max-height: 300px;
-    margin: 0;
-    overflow: auto;
-    padding: 0;
-    text-indent: 10px;
+  list-style: none;
+  max-height: 300px;
+  margin: 0;
+  overflow: auto;
+  padding: 0;
+  text-indent: 10px;
 }
 
 .link-selector li {
-    line-height: 25px;
-    user-select: none;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    padding: 4px;
+  line-height: 25px;
+  user-select: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  padding: 4px;
 }
 
 .link-selector li:hover {
-    background-color: lightgray;
-    color: black;
+  background-color: lightgray;
+  color: black;
 }
 
 .link-selector .selected {
-    background: blue;
-    color: #fff;
+  background: blue;
+  color: #fff;
 }
 
 .link-selector .input-container {
-    display: flex;
-    width: 100%;
+  display: flex;
+  width: 100%;
 }
 
 /* Style the form icons */
 .link-selector .icon {
-    min-width: 50px;
-    text-align: center;
-    font-size: var(--link-selector-input-font-size);
-    color: var(--link-selector-input-color);
+  min-width: 50px;
+  text-align: center;
+  font-size: var(--link-selector-input-font-size);
+  color: var(--link-selector-input-color);
 }
 
 .link-selector .list-image {
-    background: white;
-    border-radius: 50%;
-    display: inline-block;
-    padding: 5px;
+  background: white;
+  border-radius: 50%;
+  display: inline-block;
+  padding: 5px;
+  width: 16px;
+  height: 16px;
 }
 
 .link-selector .list-image img {
-    width: 16px;
-    height: 16px;
-    display: block;
-}
-
-.link-selector .list-image .missing-image {
-    display: block;
+  display: block;
 }

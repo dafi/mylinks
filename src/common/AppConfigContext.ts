@@ -1,13 +1,8 @@
 import React from 'react';
-
-export interface Theme {
-  missingFavIconColor: string;
-  linkKeyBackground?: string;
-  linkKeyColor?: string;
-}
+import { Theme } from '../model/MyLinks-interface';
 
 const defaultTheme: Theme = {
-  missingFavIconColor: 'blue',
+  faviconColor: 'blue',
 };
 
 export interface AppConfig {

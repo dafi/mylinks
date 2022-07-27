@@ -1,6 +1,6 @@
 export interface Theme {
   backgroundImage?: string;
-  missingFavIconColor: string;
+  faviconColor: string;
   linkKeyBackground?: string;
   linkKeyColor?: string;
 }
