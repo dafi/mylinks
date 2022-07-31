@@ -6,10 +6,8 @@
   "extends": [
     "eslint:recommended",
     "plugin:react/recommended",
-    "plugin:@typescript-eslint/recommended",
     "plugin:jsdoc/recommended",
     "./.eslint-jscode.json",
-    "./.eslint-typescript.json",
     "./.eslint-react.json"
   ],
   "parser": "@typescript-eslint/parser",
@@ -31,6 +29,15 @@
     "jsdoc/require-jsdoc": 0
   },
   "overrides": [
+    {
+      // Moved inside the overrides section to avoid errors reported
+      // on js files using @typescript-eslint/* rules
+      "files": ["**/*.ts", "**/*.tsx"],
+      "extends": [
+        "plugin:@typescript-eslint/recommended",
+        "./.eslint-typescript.json"
+      ]
+    },
     {
       "files": ["src/components/**/*.tsx"],
       "rules": {
