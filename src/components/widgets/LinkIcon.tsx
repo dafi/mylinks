@@ -5,10 +5,10 @@ import { Link as MLLink } from '../../model/MyLinks-interface';
 import './LinkIcon.css';
 
 const colors = [
-  '#FF5666', '#FFCB47', '#A9714B', '#531cb3',
-  '#8377D1', '#28C2FF', '#3066BE', '#963484',
-  '#729B79', '#44CF6C', '#3498db', '#FF0000',
-  '#FE5D9F',
+  '#FF5666', '#A9714B', '#531CB3', '#28C2FF', '#3066BE', '#963484',
+  '#729B79', '#44CF6C', '#3498DB', '#AAAAAA', '#0074D9', '#3D9970',
+  '#2ECC40', '#B10DC9', '#0000FF', '#00FFFF', '#008080', '#00FF00',
+  '#FF851B', '#FFA500', '#FF0000', '#F012BE', '#FF00FF',
 ];
 
 export interface LinkIconProps {
@@ -36,7 +36,7 @@ export class LinkIcon extends React.Component<LinkIconProps, unknown> {
     };
 
     const firstLetter = label.charAt(0);
-    return <div style={style} className="link-icon-missing-favicon">{firstLetter}</div>;
+    return <div style={style} className="link-icon-favicon-missing">{firstLetter}</div>;
   }
 
   hash(str: string): number {

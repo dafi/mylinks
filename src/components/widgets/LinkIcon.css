@@ -15,7 +15,7 @@
   min-height: 16px;
 }
 
-.link-icon-missing-favicon {
+.link-icon-favicon-missing {
   width: 16px;
   height: 16px;
   max-width: 16px;
@@ -32,6 +32,7 @@
   text-transform: capitalize;
   text-indent: 0;
   font-style: normal;
+  font-size: 0.9em;
   font-weight: bold;
   line-height: 0;
 }
