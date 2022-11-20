@@ -7,19 +7,29 @@ export interface LinkProps {
   value: MLLink;
 }
 
-export class Link extends React.Component<LinkProps, unknown> {
+export interface LinkState {
+  isMouseOver: boolean;
+}
+
+export class Link extends React.Component<LinkProps, LinkState> {
   static contextType = AppConfigContext;
   context!: React.ContextType<typeof AppConfigContext>;
 
+  constructor(props: LinkProps) {
+    super(props);
+    this.state = { isMouseOver: false };
+  }
+
   render(): ReactNode {
-    const appConfig = this.context;
     const item = this.props.value;
 
     const style = {
-      visibility: appConfig.hideShortcuts || !item.shortcut ? 'collapse' : 'visible'
+      visibility: this.isShortcutVisible() ? 'visible' : 'collapse'
     } as React.CSSProperties;
     return (
-      <a href={item.url} target="_blank" rel="noopener noreferrer" className="ml-widget-item-link">
+      <a href={item.url} target="_blank" rel="noopener noreferrer" className="ml-widget-item-link"
+         onMouseOver={(): void => this.setMouseOver(true)}
+         onMouseOut={(): void => this.setMouseOver(false)}>
         <div className="content">
           <div className="left-items">
             <LinkIcon link={item}/>
@@ -31,5 +41,22 @@ export class Link extends React.Component<LinkProps, unknown> {
         </div>
       </a>
     );
+  }
+
+  private isShortcutVisible(): boolean {
+    const appConfig = this.context;
+    const item = this.props.value;
+
+    if (!item.shortcut) {
+      return false;
+    }
+    if (!appConfig.hideShortcuts) {
+      return true;
+    }
+    return this.state.isMouseOver;
+  }
+
+  private setMouseOver(isOver: boolean): void {
+    this.setState({ isMouseOver: isOver });
   }
 }
