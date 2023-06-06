@@ -47,10 +47,14 @@ export class UIInput {
     if (e.ctrlKey || e.shiftKey || e.altKey || e.metaKey) {
       return false;
     }
-    if (e.key === 'a') {
-      this.buffer = '';
-      this.openFromMousePosition();
-    } else if (this.myLinksHolder) {
+    if (this.isBufferEmpty()) {
+      if (e.key === 'a') {
+        this.buffer = '';
+        this.openFromMousePosition();
+        return true;
+      }
+    }
+    if (this.myLinksHolder) {
       this.buffer += e.key;
       const link = this.findLinkByShortcut(this.myLinksHolder.myLinks);
       if (link) {
@@ -88,5 +92,9 @@ export class UIInput {
         openAllLinks(widget);
       }
     }
+  }
+
+  isBufferEmpty(): boolean {
+    return this.buffer.length === 0;
   }
 }
