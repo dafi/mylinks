@@ -1,13 +1,8 @@
-import Fuse from 'fuse.js';
 import React, { ChangeEvent, ReactNode, RefObject } from 'react';
+import { LinkSearch, LinkSearchResult } from '../../common/LinkSearch';
 import { Link, Widget } from '../../model/MyLinks-interface';
 import './LinkSelector.css';
 import { LinkIcon } from '../widgets/LinkIcon';
-
-interface Result {
-  id: string;
-  link: Link;
-}
 
 export interface LinkSelectorProps {
   widgets: [Widget[]] | undefined;
@@ -15,14 +10,14 @@ export interface LinkSelectorProps {
 }
 
 interface LinkSelectorState {
-  result: Result[];
+  result: LinkSearchResult[];
   selectedIndex: number;
 }
 
 export class LinkSelector extends React.Component<LinkSelectorProps, LinkSelectorState> {
   private listRefs = new Map<string, RefObject<HTMLLIElement>>();
   private inputRef: RefObject<HTMLInputElement> = React.createRef();
-  private fuse: Fuse<Link>;
+  private linkSearch = new LinkSearch();
 
   constructor(props: LinkSelectorProps) {
     super(props);
@@ -36,10 +31,7 @@ export class LinkSelector extends React.Component<LinkSelectorProps, LinkSelecto
     this.onDoubleClick = this.onDoubleClick.bind(this);
 
     const links = this.props.widgets?.flat().map(w => w.list).flat() || [];
-    const options = {
-      keys: ['label']
-    };
-    this.fuse = new Fuse(links, options);
+    this.linkSearch.setLinks(links);
   }
 
   moveFocusToSearch(): void {
@@ -128,7 +120,8 @@ export class LinkSelector extends React.Component<LinkSelectorProps, LinkSelecto
                 key={r.id}><i className="list-image">
                 <LinkIcon link={r.link}/>
               </i>
-                <div>{r.link.label} {r.link.widget?.title ? ` - ${r.link.widget.title}` : ''}</div>
+                <div>
+                  <span dangerouslySetInnerHTML={{ __html: r.highlighted }}/>{r.link.widget?.title ? ` - ${r.link.widget.title}` : ''}</div>
               </li>
             )}
           </ul>
@@ -139,26 +132,13 @@ export class LinkSelector extends React.Component<LinkSelectorProps, LinkSelecto
 
   onChange(e: ChangeEvent<HTMLInputElement>): void {
     const pattern = e.target.value;
-    const result = this.filter(pattern);
+    const result = this.linkSearch.filter(pattern);
 
-    this.listRefs = result.reduce((acc, r) => {
-      acc.set(r.id, React.createRef());
-      return acc;
-    }, new Map<string, RefObject<HTMLLIElement>>());
+    this.listRefs.clear();
 
     this.setState({
       result: result,
       selectedIndex: result.length ? 0 : -1
     });
-  }
-
-  filter(pattern: string): Result[] {
-    if (pattern.length === 0) {
-      return [];
-    }
-
-    return this.fuse.search(pattern).map(result =>
-      ({ id: result.item.id, link: result.item })
-    );
   }
 }
