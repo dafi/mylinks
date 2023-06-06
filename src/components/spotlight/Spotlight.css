@@ -14,4 +14,5 @@
   margin: 0 auto;
   max-width: 750px;
   min-height: 40px;
+  border: 1px solid #000;
 }
