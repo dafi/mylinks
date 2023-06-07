@@ -1,14 +1,16 @@
-import React, { ChangeEvent, ReactNode } from 'react';
+import React, { ReactNode } from 'react';
 
 import { AppConfig, appConfigClone, AppConfigContext } from '../../common/AppConfigContext';
 import Config from '../../common/Config';
 import { UIInput } from '../../common/UIInput';
+import { MyLinksEvent } from '../../model/Events';
 import { MyLinksHolder, openLink } from '../../model/MyLinks';
 import { Link, MyLinks as MMLinks, Widget } from '../../model/MyLinks-interface';
 import { LinkSelector } from '../linkSelector/LinkSelector';
 import Spotlight from '../spotlight/Spotlight';
 import { Grid } from '../widgets/Grid';
 import './App.css';
+import { AppToolbar } from './AppToolbar';
 import './toolbar-icon.css';
 
 const STORAGE_PREF_HIDE_SHORTCUTS = 'hideShortcuts';
@@ -73,29 +75,30 @@ class Page extends React.Component<unknown, PageState> {
     ));
   };
 
-  render(): ReactNode {
-    const style = {
-      visibility: this.state.hasShortcuts ? 'visible' : 'collapse'
-    } as React.CSSProperties;
+  private onClickToolbar(e: MyLinksEvent): void {
+    if (e.target === 'file') {
+      this.onFileSelect(e.data as File);
+    } else if (e.target === 'shortcut') {
+      this.onShortcut();
+    }
+  }
 
+  onFileSelect(file: File): void {
+    Config.fromFile(file, (myLinks?: MMLinks | null) => {
+      this.reloadAll(myLinks);
+    });
+  }
+
+  render(): ReactNode {
     return <AppConfigContext.Provider value={this.state.config}>
       <div className="ml-wrapper">
         <div className="ml-grid">
           <Grid columns={this.state.columns}/>
         </div>
 
-        <label className="toolbar-icon" title="Load configuration from local file">
-          <i className="fa fa-file-import"/>
-          <input type="file" id="files" name="files[]"
-                 accept="application/json"
-                 onChange={(e): void => this.handleFileSelect(e)}/>
-        </label>
-
-        <label className="toolbar-icon"
-               title="Toggle shortcuts visibility"
-               style={style} onClick={(): void => this.onClickKeyboard()}>
-          <i className="fa fa-keyboard"/>
-        </label>
+        <AppToolbar
+          hasShortcuts={this.state.hasShortcuts}
+          action={(e): void => this.onClickToolbar(e)}/>
 
         <Spotlight show={this.state.isOpen}
                    onClose={this.toggleModal}>
@@ -125,25 +128,11 @@ class Page extends React.Component<unknown, PageState> {
     });
   }
 
-  onClickKeyboard(): void {
+  onShortcut(): void {
     if (this.myLinksHolder) {
       this.hideShortcuts = !this.hideShortcuts;
       this.setState({
         config: this.buildConfig(this.myLinksHolder.myLinks)
-      });
-    }
-  }
-
-  handleFileSelect(evt: ChangeEvent<HTMLInputElement>): void {
-    if (!evt.target) {
-      return;
-    }
-    const file = evt.target.files && evt.target.files[0];
-    // onChange is not called when the path is the same so, we force the change
-    evt.target.value = '';
-    if (file) {
-      Config.fromFile(file, (myLinks?: MMLinks | null) => {
-        this.reloadAll(myLinks);
       });
     }
   }
@@ -165,7 +154,6 @@ class Page extends React.Component<unknown, PageState> {
       hideShortcuts: this.hideShortcuts
     };
   }
-
 }
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
