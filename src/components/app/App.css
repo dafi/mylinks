@@ -21,7 +21,7 @@ body {
   margin: 5px;
 }
 
-.ml-widget-label h2 {
+.ml-widget-title {
   color: #000;
   display: inline;
   flex-grow: 1;
@@ -97,14 +97,14 @@ body {
   width: 100%;
 }
 
-.ml-rows ul {
+.ml-widget ul {
   list-style-type: none;
   min-height: 23px;
   overflow-x: hidden;
   margin: 0;
 }
 
-.ml-rows li {
+.ml-widget li {
   margin-bottom: 2px;
 }
 
@@ -118,8 +118,12 @@ body {
   border: 1px solid var(--widget-border-color);
   margin: 5px 10px;
   background-color: var(--widget-background-color, #ff0000);
-  box-shadow: 8px 8px 6px rgba(0,0,0,.2);
+  box-shadow: 8px 8px 6px rgba(0, 0, 0, .2);
   border-radius: var(--widget-border-radius);
+}
+
+.ml-widget:hover .hover-toolbar {
+  display: block;
 }
 
 .ml-widget:hover .ml-toolbar {
@@ -163,13 +167,21 @@ body {
   max-height: 100%;
 }
 
-.ml-widget-show-minimized-window {
+.collapsed .ml-widget-list {
+  display: none;
+}
+
+.collapsed.collapsed-visible .ml-widget-list {
+  display: block;
+}
+
+.collapsed-visible {
   position: relative;
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
 }
 
-.ml-widget-show-minimized-list-container {
+.collapsed-visible .ml-widget-list-container {
   position: absolute;
   width: 100%;
   background-color: var(--widget-background-color);
@@ -177,15 +189,7 @@ body {
   border-right: 1px solid var(--widget-border-color);
   border-bottom: 1px solid var(--widget-border-color);
   left: -1px;
-  box-shadow: 8px 8px 6px rgba(0,0,0,.2);
+  box-shadow: 8px 8px 6px rgba(0, 0, 0, .2);
   border-bottom-left-radius: var(--widget-border-radius);
   border-bottom-right-radius: var(--widget-border-radius);
-}
-
-.ml-widget-show-minimized-list-visible {
-  display: block;
-}
-
-.ml-widget-show-minimized-list-hidden {
-  display: none;
 }

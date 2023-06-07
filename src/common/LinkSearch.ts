@@ -1,6 +1,6 @@
 import Fuse from 'fuse.js';
 import type { Link as MMLink } from '../model/MyLinks-interface';
-import { highlight } from './TextUtil';
+import { highlight } from './HtmlUtil';
 
 const fuseOptions = {
   keys: ['label'],

@@ -27,11 +27,11 @@ export class UIInput {
     this.mouseY = 0;
   }
 
-  findElement(el: Element | null, className: string): Element | null {
+  findWidgetId(el: Element | null, dataAttribute: string): string | null {
     while (el) {
-      const isWidget = Array.from(el.classList).some(i => i === className);
-      if (isWidget) {
-        return el;
+      const widgetId = el.getAttribute(dataAttribute);
+      if (widgetId) {
+        return widgetId;
       }
       el = el.parentElement;
     }
@@ -84,10 +84,11 @@ export class UIInput {
     if (!this.myLinksHolder) {
       return;
     }
-    const el = this.findElement(
-      document.elementFromPoint(this.mouseX, this.mouseY), 'ml-widget') as HTMLElement;
-    if (el && el.dataset.listId) {
-      const widget = this.myLinksHolder.findWidgetById(el.dataset.listId);
+    const widgetId = this.findWidgetId(
+      document.elementFromPoint(this.mouseX, this.mouseY),
+      'data-list-id');
+    if (widgetId) {
+      const widget = this.myLinksHolder.findWidgetById(widgetId);
       if (widget) {
         openAllLinks(widget);
       }

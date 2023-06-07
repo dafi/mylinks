@@ -28,8 +28,8 @@ export class Link extends React.Component<LinkProps, LinkState> {
     } as React.CSSProperties;
     return (
       <a href={item.url} target="_blank" rel="noopener noreferrer" className="ml-widget-item-link"
-         onMouseOver={(): void => this.setMouseOver(true)}
-         onMouseOut={(): void => this.setMouseOver(false)}>
+         onMouseEnter={(): void => this.setMouseOver(true)}
+         onMouseLeave={(): void => this.setMouseOver(false)}>
         <div className="content">
           <div className="left-items">
             <LinkIcon link={item}/>

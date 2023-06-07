@@ -46,6 +46,11 @@ export class LinkSelector extends React.Component<LinkSelectorProps, LinkSelecto
   }
 
   onClick(e: React.MouseEvent<HTMLElement>, index: number): void {
+    // skip if a dblclick is in progress
+    // https://developer.mozilla.org/en-US/docs/Web/API/UIEvent/detail
+    if (e.detail !== 1) {
+      return;
+    }
     e.preventDefault();
     e.stopPropagation();
 

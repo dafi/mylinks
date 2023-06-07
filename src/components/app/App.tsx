@@ -7,7 +7,7 @@ import { MyLinksHolder, openLink } from '../../model/MyLinks';
 import { Link, MyLinks as MMLinks, Widget } from '../../model/MyLinks-interface';
 import { LinkSelector } from '../linkSelector/LinkSelector';
 import Spotlight from '../spotlight/Spotlight';
-import * as MyLinks from '../widgets/Widgets';
+import { Grid } from '../widgets/Grid';
 import './App.css';
 import './toolbar-icon.css';
 
@@ -81,7 +81,7 @@ class Page extends React.Component<unknown, PageState> {
     return <AppConfigContext.Provider value={this.state.config}>
       <div className="ml-wrapper">
         <div className="ml-grid">
-          <MyLinks.Grid columns={this.state.columns}/>
+          <Grid columns={this.state.columns}/>
         </div>
 
         <label className="toolbar-icon" title="Load configuration from local file">
