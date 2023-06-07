@@ -2,7 +2,7 @@ import React, { ReactNode } from 'react';
 import { MyLinksEvent } from '../../model/Events';
 import { Widget as MLWidget } from '../../model/MyLinks-interface';
 import { Link } from './Link';
-import { WidgetToolbar } from './WidgetToolbar';
+import { WidgetToolbar, WidgetToolbarActionType } from './WidgetToolbar';
 
 export interface WidgetProps {
   value: MLWidget;
@@ -54,7 +54,7 @@ export class Widget extends React.Component<WidgetProps, WidgetState> {
     return cls;
   }
 
-  onClickToolbar(_: MyLinksEvent): void {
+  onClickToolbar(_: MyLinksEvent<WidgetToolbarActionType>): void {
     this.toggleWidgetSize();
   }
 

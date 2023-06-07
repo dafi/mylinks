@@ -1,13 +1,15 @@
 import React, { ReactNode } from 'react';
-import { MyLinkAction } from '../../model/Events';
+import { MyLinkActionCallback } from '../../model/Events';
 import { openAllLinks } from '../../model/MyLinks';
 import { Widget as MLWidget } from '../../model/MyLinks-interface';
+
+export type WidgetToolbarActionType = 'collapse';
 
 interface WidgetToolbarProps {
   collapsed: boolean;
   widget: MLWidget;
   classNames?: string;
-  action: MyLinkAction;
+  action: MyLinkActionCallback<WidgetToolbarActionType>;
 }
 
 interface WidgetToolbarState {

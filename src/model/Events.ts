@@ -1,6 +1,6 @@
-export interface MyLinksEvent {
-  target: string;
+export interface MyLinksEvent<Actions> {
+  target: Actions;
   data?: unknown;
 }
 
-export type MyLinkAction = (data: MyLinksEvent) => void;
+export type MyLinkActionCallback<A> = (data: MyLinksEvent<A>) => void;

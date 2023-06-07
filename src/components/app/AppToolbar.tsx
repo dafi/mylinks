@@ -1,9 +1,11 @@
 import React, { ChangeEvent, ReactNode } from 'react';
-import { MyLinkAction } from '../../model/Events';
+import { MyLinkActionCallback } from '../../model/Events';
+
+export type AppToolbarActionType = 'file' | 'shortcut';
 
 interface AppToolbarProps {
   hasShortcuts: boolean;
-  action: MyLinkAction;
+  action: MyLinkActionCallback<AppToolbarActionType>;
 }
 
 export class AppToolbar extends React.Component<AppToolbarProps, unknown> {

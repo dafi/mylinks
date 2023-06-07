@@ -10,7 +10,7 @@ import { LinkSelector } from '../linkSelector/LinkSelector';
 import Spotlight from '../spotlight/Spotlight';
 import { Grid } from '../widgets/Grid';
 import './App.css';
-import { AppToolbar } from './AppToolbar';
+import { AppToolbar, AppToolbarActionType } from './AppToolbar';
 import './toolbar-icon.css';
 
 const STORAGE_PREF_HIDE_SHORTCUTS = 'hideShortcuts';
@@ -75,7 +75,7 @@ class Page extends React.Component<unknown, PageState> {
     ));
   };
 
-  private onClickToolbar(e: MyLinksEvent): void {
+  private onClickToolbar(e: MyLinksEvent<AppToolbarActionType>): void {
     if (e.target === 'file') {
       this.onFileSelect(e.data as File);
     } else if (e.target === 'shortcut') {
