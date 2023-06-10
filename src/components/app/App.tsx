@@ -6,8 +6,7 @@ import { UIInput } from '../../common/UIInput';
 import { MyLinksEvent } from '../../model/Events';
 import { MyLinksHolder, openLink } from '../../model/MyLinks';
 import { Link, MyLinks as MMLinks, Widget } from '../../model/MyLinks-interface';
-import { LinkSelector } from '../linkSelector/LinkSelector';
-import Spotlight from '../spotlight/Spotlight';
+import { LinkFinderDialog } from '../linkFinderDialog/LinkFinderDialog';
 import { Grid } from '../widgets/Grid';
 import './App.css';
 import { AppToolbar, AppToolbarActionType } from './AppToolbar';
@@ -24,7 +23,7 @@ export interface PageState {
   columns: [Widget[]];
   config: AppConfig;
   hasShortcuts: boolean;
-  isOpen: boolean;
+  isFinderOpen: boolean;
 }
 
 class Page extends React.Component<unknown, PageState> {
@@ -34,46 +33,43 @@ class Page extends React.Component<unknown, PageState> {
     super(props);
     const config = appConfigClone();
     config.hideShortcuts = this.hideShortcuts;
-    this.state = { columns: [[]], config: config, hasShortcuts: false, isOpen: false };
+    this.state = { columns: [[]], config: config, hasShortcuts: false, isFinderOpen: false };
   }
 
   keyDown(e: KeyboardEvent): boolean {
-    if (this.state.isOpen) {
-      if (e.key === 'Escape') {
-        this.toggleModal();
-        return true;
-      }
-      return false;
+    const isThisTarget = e.currentTarget === e.target;
+
+    // ignore events bubbling from other listeners
+    if (!isThisTarget) {
+      return true;
     }
+
     if (e.key === ' ') {
       e.stopPropagation();
       e.preventDefault();
 
-      this.toggleModal();
+      this.showLinkFinder(true);
       return true;
     }
     return UIInput.instance().keyDown(e);
   }
 
   componentDidMount(): void {
-    document.addEventListener('keydown', (e) => this.keyDown(e), false);
+    document.body.addEventListener('keydown', (e) => this.keyDown(e), false);
     Config.fromData((myLinks?: MMLinks | null) => {
       this.reloadAll(myLinks);
     });
   }
 
   onLinkSelected = (link: Link): void => {
-    this.toggleModal();
     // Ensure the DOM is updated and the dialog is hidden when the link is open
     // This is necessary because when returning to myLinks window/tab, the dialog can be yet visible
     window.requestIdleCallback(() => openLink(link));
   };
 
-  toggleModal = (): void => {
-    this.setState(prevState => (
-      { isOpen: !prevState.isOpen }
-    ));
-  };
+  showLinkFinder(isOpen: boolean): void {
+    this.setState({ isFinderOpen: isOpen });
+  }
 
   private onClickToolbar(e: MyLinksEvent<AppToolbarActionType>): void {
     if (e.target === 'file') {
@@ -89,6 +85,16 @@ class Page extends React.Component<unknown, PageState> {
     });
   }
 
+  renderLinkFinder(): ReactNode {
+    if (this.state.isFinderOpen) {
+      return <LinkFinderDialog isOpen={this.state.isFinderOpen}
+                               onClose={(): void => this.showLinkFinder(false)}
+                               onLinkSelected={this.onLinkSelected}
+                               widgets={this.myLinksHolder?.myLinks.columns}/>;
+    }
+    return null;
+  }
+
   render(): ReactNode {
     return <AppConfigContext.Provider value={this.state.config}>
       <div className="ml-wrapper">
@@ -100,12 +106,7 @@ class Page extends React.Component<unknown, PageState> {
           hasShortcuts={this.state.hasShortcuts}
           action={(e): void => this.onClickToolbar(e)}/>
 
-        <Spotlight show={this.state.isOpen}
-                   onClose={this.toggleModal}>
-          <LinkSelector
-            onSelected={this.onLinkSelected}
-            widgets={this.myLinksHolder?.myLinks.columns}/>
-        </Spotlight>
+        {this.renderLinkFinder()}
 
       </div>
     </AppConfigContext.Provider>;

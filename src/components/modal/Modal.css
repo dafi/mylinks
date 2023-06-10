@@ -1,4 +1,4 @@
-.spotlight-backdrop {
+.modal-backdrop {
   position: fixed;
   top: 0;
   bottom: 0;
@@ -8,7 +8,7 @@
   padding: 50px;
 }
 
-.spotlight-modal {
+.modal-container {
   background-color: #fff;
   border-radius: 5px;
   margin: 0 auto;
