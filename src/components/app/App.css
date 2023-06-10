@@ -1,19 +1,45 @@
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap');
 
 :root {
+  --app-backgrond-color: #666;
+  --box-shadow-color1: rgba(0, 0, 0, .2);
+  --box-shadow-color2: rgba(255, 255, 255, .7);
+
+  --link-label-color: #444;
   --link-key-background: #eee;
   --link-key-color: #333;
+  --link-label-font-size: 0.875em;
+  --link-underline-color: #999;
+  --link-key-border-color: #b4b4b4;
+
+  --link-selector-input-font-size: 2em;
+  --link-selector-input-color: blue;
+  --link-selector-selected-item-background-color: blue;
+  --link-selector-selected-item-text-color: #fff;
+  --link-selector-hover-item-background-color: lightgray;
+  --link-selector-hover-item-text-color: #000;
+  --link-selector-image-background-color: #fff;
+
   --favicon-color: blue;
-  --title-font-size: 0.875em;
-  --label-font-size: 0.875em;
+
+  --widget-title-color: #000;
+  --widget-title-font-size: 0.875em;
   --widget-background-color: #fff;
   --widget-border-color: gray;
   --widget-border-radius: 6px;
+  --widget-toolbar-icon-color: #000;
+
+  --toolbar-icon-background-color: #ddd;
+  --toolbar-icon-text-color: #333;
+
+  --dialog-background-color: #fff;
+  --dialog-border-color: #000;
+  --dialog-backdrop-color: rgba(0, 0, 0, 0.3);
 }
 
 body {
   font-family: 'Open Sans', sans-serif;
-  color: #666;
+  color: var(--app-backgrond-color);
 }
 
 .ml-wrapper {
@@ -22,10 +48,10 @@ body {
 }
 
 .ml-widget-title {
-  color: #000;
+  color: var(--widget-title-color);
   display: inline;
   flex-grow: 1;
-  font-size: var(--title-font-size);
+  font-size: var(--widget-title-font-size);
   line-height: 34px;
   margin: 0;
   overflow: hidden;
@@ -39,9 +65,9 @@ body {
 }
 
 .ml-widget-item-link {
-  color: #444;
+  color: var(--link-label-color);
   display: block;
-  font-size: var(--label-font-size);
+  font-size: var(--link-label-font-size);
   text-decoration: none;
 }
 
@@ -51,7 +77,7 @@ body {
   width: 0;
   height: 2px;
   transition: width .3s;
-  background: #999;
+  background: var(--link-underline-color);
 }
 
 .ml-widget-item-link:hover::after {
@@ -59,10 +85,8 @@ body {
 }
 
 .ml-widget-item-link .content {
-  color: #444;
   display: flex;
   justify-content: space-between;
-  text-decoration: none;
 }
 
 .ml-widget-item-link .left-items {
@@ -79,8 +103,8 @@ body {
   border-radius: 3px;
   background-color: var(--link-key-background, #eee);
   color: var(--link-key-color, #333);
-  border: 1px solid #b4b4b4;
-  box-shadow: 0 1px 1px rgba(0, 0, 0, .2), 0 2px 0 0 rgba(255, 255, 255, .7) inset;
+  border: 1px solid var(--link-key-border-color);
+  box-shadow: 0 1px 1px var(--box-shadow-color1), 0 2px 0 0 var(--box-shadow-color2) inset;
   font-size: 1.1em;
   font-weight: 700;
   line-height: 1;
@@ -118,7 +142,7 @@ body {
   border: 1px solid var(--widget-border-color);
   margin: 5px 10px;
   background-color: var(--widget-background-color, #ff0000);
-  box-shadow: 8px 8px 6px rgba(0, 0, 0, .2);
+  box-shadow: 8px 8px 6px var(--box-shadow-color1);
   border-radius: var(--widget-border-radius);
 }
 
@@ -139,7 +163,7 @@ body {
 
 .ml-toolbar .icon {
   padding-right: 8px;
-  color: #000;
+  color: var(--widget-toolbar-icon-color);
 }
 
 .ml-toolbar .icon:hover {
@@ -189,7 +213,7 @@ body {
   border-right: 1px solid var(--widget-border-color);
   border-bottom: 1px solid var(--widget-border-color);
   left: -1px;
-  box-shadow: 8px 8px 6px rgba(0, 0, 0, .2);
+  box-shadow: 8px 8px 6px var(--box-shadow-color1);
   border-bottom-left-radius: var(--widget-border-radius);
   border-bottom-right-radius: var(--widget-border-radius);
 }
