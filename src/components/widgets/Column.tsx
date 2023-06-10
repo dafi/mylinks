@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react';
 import { Widget as MLWidget } from '../../model/MyLinks-interface';
-import { Widget } from './Widgets';
+import { Widget } from './Widget';
 
 export interface ColumnProps {
   value: MLWidget[];
