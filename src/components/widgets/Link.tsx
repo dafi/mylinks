@@ -20,12 +20,16 @@ export class Link extends React.Component<LinkProps, LinkState> {
     this.state = { isMouseOver: false };
   }
 
+  private renderShortcut(): ReactNode | null {
+    if (this.isShortcutVisible()) {
+      return <kbd>{this.props.value.shortcut}</kbd>;
+    }
+    return null;
+  }
+
   render(): ReactNode {
     const item = this.props.value;
 
-    const style = {
-      visibility: this.isShortcutVisible() ? 'visible' : 'collapse'
-    } as React.CSSProperties;
     return (
       <a href={item.url} target="_blank" rel="noopener noreferrer" className="ml-widget-item-link"
          onMouseEnter={(): void => this.setMouseOver(true)}
@@ -36,7 +40,7 @@ export class Link extends React.Component<LinkProps, LinkState> {
             <div className="label">{item.label}</div>
           </div>
           <div className="right-items">
-            <kbd style={style}>{item.shortcut}</kbd>
+            {this.renderShortcut()}
           </div>
         </div>
       </a>
