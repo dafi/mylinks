@@ -12,18 +12,13 @@ interface WidgetToolbarProps {
   action: MyLinkActionCallback<WidgetToolbarActionType>;
 }
 
-interface WidgetToolbarState {
-  collapsed: boolean;
-}
-
-export class WidgetToolbar extends React.Component<WidgetToolbarProps, WidgetToolbarState> {
+export class WidgetToolbar extends React.Component<WidgetToolbarProps, unknown> {
   constructor(props: WidgetToolbarProps) {
     super(props);
-    this.state = { collapsed: this.props.collapsed };
   }
 
   render(): ReactNode {
-    const collapseIcon = this.state.collapsed ? 'fa fa-angle-down' : 'fa fa-angle-up';
+    const collapseIcon = this.props.collapsed ? 'fa fa-angle-down' : 'fa fa-angle-up';
     const classNames = this.props.classNames ?? '';
 
     return (
