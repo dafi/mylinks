@@ -8,12 +8,10 @@ const defaultTheme: Theme = {
 export interface AppConfig {
   theme: Theme;
   faviconService?: string;
-  hideShortcuts: boolean;
 }
 
 const defaultAppConfig: AppConfig = {
   theme: defaultTheme,
-  hideShortcuts: false
 };
 
 // deep copy the configuration

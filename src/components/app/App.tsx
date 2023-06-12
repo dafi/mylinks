@@ -1,6 +1,7 @@
 import React, { ReactNode } from 'react';
 
 import { AppConfig, appConfigClone, AppConfigContext } from '../../common/AppConfigContext';
+import { AppUIStateContext, AppUIState } from '../../common/AppUIStateContext';
 import Config from '../../common/Config';
 import { UIInput } from '../../common/UIInput';
 import { MyLinksEvent } from '../../model/Events';
@@ -23,6 +24,7 @@ export interface PageState {
   columns: [Widget[]];
   config: AppConfig;
   hasShortcuts: boolean;
+  uiState: AppUIState;
   isFinderOpen: boolean;
 }
 
@@ -32,8 +34,8 @@ class Page extends React.Component<unknown, PageState> {
   constructor(props: unknown) {
     super(props);
     const config = appConfigClone();
-    config.hideShortcuts = this.hideShortcuts;
-    this.state = { columns: [[]], config: config, hasShortcuts: false, isFinderOpen: false };
+    const uiState: AppUIState = { hideShortcuts: this.hideShortcuts };
+    this.state = { columns: [[]], config: config, hasShortcuts: false, isFinderOpen: false, uiState };
   }
 
   keyDown(e: KeyboardEvent): boolean {
@@ -97,18 +99,20 @@ class Page extends React.Component<unknown, PageState> {
 
   render(): ReactNode {
     return <AppConfigContext.Provider value={this.state.config}>
-      <div className="ml-wrapper">
-        <div className="ml-grid">
-          <Grid columns={this.state.columns}/>
+      <AppUIStateContext.Provider value={this.state.uiState}>
+        <div className="ml-wrapper">
+          <div className="ml-grid">
+            <Grid columns={this.state.columns}/>
+          </div>
+
+          <AppToolbar
+            hasShortcuts={this.state.hasShortcuts}
+            action={(e): void => this.onClickToolbar(e)}/>
+
+          {this.renderLinkFinder()}
+
         </div>
-
-        <AppToolbar
-          hasShortcuts={this.state.hasShortcuts}
-          action={(e): void => this.onClickToolbar(e)}/>
-
-        {this.renderLinkFinder()}
-
-      </div>
+      </AppUIStateContext.Provider>
     </AppConfigContext.Provider>;
   }
 
@@ -130,12 +134,12 @@ class Page extends React.Component<unknown, PageState> {
   }
 
   onShortcut(): void {
-    if (this.myLinksHolder) {
-      this.hideShortcuts = !this.hideShortcuts;
-      this.setState({
-        config: this.buildConfig(this.myLinksHolder.myLinks)
-      });
-    }
+    this.hideShortcuts = !this.hideShortcuts;
+    this.setState({
+      uiState: {
+        hideShortcuts: this.hideShortcuts
+      }
+    });
   }
 
   get hideShortcuts(): boolean {
@@ -152,7 +156,6 @@ class Page extends React.Component<unknown, PageState> {
         faviconColor: myLinks.theme?.faviconColor,
       },
       faviconService: myLinks.config?.faviconService,
-      hideShortcuts: this.hideShortcuts
     };
   }
 }

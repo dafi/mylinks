@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { AppConfigContext } from '../../common/AppConfigContext';
+import { AppUIStateContext } from '../../common/AppUIStateContext';
 import { Link as MLLink } from '../../model/MyLinks-interface';
 import { LinkIcon } from './LinkIcon';
 
@@ -12,8 +12,8 @@ export interface LinkState {
 }
 
 export class Link extends React.Component<LinkProps, LinkState> {
-  static contextType = AppConfigContext;
-  context!: React.ContextType<typeof AppConfigContext>;
+  static contextType = AppUIStateContext;
+  context!: React.ContextType<typeof AppUIStateContext>;
 
   constructor(props: LinkProps) {
     super(props);
@@ -25,6 +25,22 @@ export class Link extends React.Component<LinkProps, LinkState> {
       return <kbd>{this.props.value.shortcut}</kbd>;
     }
     return null;
+  }
+
+  private isShortcutVisible(): boolean {
+    const item = this.props.value;
+
+    if (!item.shortcut) {
+      return false;
+    }
+    if (!this.context.hideShortcuts) {
+      return true;
+    }
+    return this.state.isMouseOver;
+  }
+
+  private setMouseOver(isOver: boolean): void {
+    this.setState({ isMouseOver: isOver });
   }
 
   render(): ReactNode {
@@ -45,22 +61,5 @@ export class Link extends React.Component<LinkProps, LinkState> {
         </div>
       </a>
     );
-  }
-
-  private isShortcutVisible(): boolean {
-    const appConfig = this.context;
-    const item = this.props.value;
-
-    if (!item.shortcut) {
-      return false;
-    }
-    if (!appConfig.hideShortcuts) {
-      return true;
-    }
-    return this.state.isMouseOver;
-  }
-
-  private setMouseOver(isOver: boolean): void {
-    this.setState({ isMouseOver: isOver });
   }
 }
