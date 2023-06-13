@@ -2,6 +2,7 @@ import React, { ReactNode } from 'react';
 import { AppUIStateContext } from '../../common/AppUIStateContext';
 import { Link as MLLink } from '../../model/MyLinks-interface';
 import { LinkIcon } from './LinkIcon';
+import './Link.css';
 
 export interface LinkProps {
   value: MLLink;
@@ -47,19 +48,23 @@ export class Link extends React.Component<LinkProps, LinkState> {
     const item = this.props.value;
 
     return (
-      <a href={item.url} target="_blank" rel="noopener noreferrer" className="ml-widget-item-link"
-         onMouseEnter={(): void => this.setMouseOver(true)}
-         onMouseLeave={(): void => this.setMouseOver(false)}>
-        <div className="content">
-          <div className="left-items">
-            <LinkIcon link={item}/>
-            <div className="label">{item.label}</div>
+      <div className="ml-link-container">
+        <div className="ml-link-items-container">
+          <div className="left">
+            <a href={item.url} target="_blank" rel="noopener noreferrer"
+               onMouseEnter={(): void => this.setMouseOver(true)}
+               onMouseLeave={(): void => this.setMouseOver(false)}>
+              <div className="content">
+                <LinkIcon link={item}/>
+                <div className="label">{item.label}</div>
+              </div>
+            </a>
           </div>
-          <div className="right-items">
+          <div className="right">
             {this.renderShortcut()}
           </div>
         </div>
-      </a>
+      </div>
     );
   }
 }
