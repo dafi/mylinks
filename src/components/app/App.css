@@ -35,6 +35,11 @@
   --dialog-background-color: #fff;
   --dialog-border-color: #000;
   --dialog-backdrop-color: rgba(0, 0, 0, 0.3);
+
+  --action-color: #aaa;
+  --action-background-color: #fff;
+  --action-hover-color: #577be7;
+  --action-hover-background-color: #fff;
 }
 
 body {

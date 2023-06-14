@@ -1,7 +1,7 @@
 import React, { ChangeEvent, ReactNode } from 'react';
 import { MyLinkActionCallback } from '../../model/Events';
 
-export type AppToolbarActionType = 'file' | 'shortcut';
+export type AppToolbarActionType = 'file' | 'shortcut' | 'editLinks';
 
 interface AppToolbarProps {
   hasShortcuts: boolean;
@@ -25,6 +25,10 @@ export class AppToolbar extends React.Component<AppToolbarProps, unknown> {
     this.props.action({ target: 'shortcut' });
   }
 
+  private onClickEdit(): void {
+    this.props.action({ target: 'editLinks' });
+  }
+
   render(): ReactNode {
     const style = {
       visibility: this.props.hasShortcuts ? 'visible' : 'collapse'
@@ -43,6 +47,12 @@ export class AppToolbar extends React.Component<AppToolbarProps, unknown> {
                title="Toggle shortcuts visibility"
                style={style} onClick={(): void => this.onClickKeyboard()}>
           <i className="fa fa-keyboard"/>
+        </label>
+
+        <label className="toolbar-icon"
+               title="Edit Links"
+               onClick={(): void => this.onClickEdit()}>
+          <i className="fa fa-edit"/>
         </label>
       </div>
     );

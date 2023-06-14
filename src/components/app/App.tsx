@@ -7,6 +7,7 @@ import { UIInput } from '../../common/UIInput';
 import { MyLinksEvent } from '../../model/Events';
 import { MyLinksHolder, openLink } from '../../model/MyLinks';
 import { Link, MyLinks as MMLinks, Widget } from '../../model/MyLinks-interface';
+import { EditLinkDialog } from '../editLinkDialog/EditLinkDialog';
 import { LinkFinderDialog } from '../linkFinderDialog/LinkFinderDialog';
 import { Grid } from '../widgets/Grid';
 import './App.css';
@@ -26,6 +27,8 @@ export interface PageState {
   hasShortcuts: boolean;
   uiState: AppUIState;
   isFinderOpen: boolean;
+  isEditLinkOpen?: boolean;
+  linkEdited?: Link;
 }
 
 class Page extends React.Component<unknown, PageState> {
@@ -34,7 +37,7 @@ class Page extends React.Component<unknown, PageState> {
   constructor(props: unknown) {
     super(props);
     const config = appConfigClone();
-    const uiState: AppUIState = { hideShortcuts: this.hideShortcuts };
+    const uiState: AppUIState = { hideShortcuts: this.hideShortcuts, hideEditMode: true };
     this.state = { columns: [[]], config: config, hasShortcuts: false, isFinderOpen: false, uiState };
   }
 
@@ -73,15 +76,45 @@ class Page extends React.Component<unknown, PageState> {
     this.setState({ isFinderOpen: isOpen });
   }
 
+  showEditLinkDialog(isOpen: boolean, link?: Link): void {
+    this.setState({ isEditLinkOpen: isOpen, linkEdited: link });
+  }
+
   private onClickToolbar(e: MyLinksEvent<AppToolbarActionType>): void {
     if (e.target === 'file') {
       this.onFileSelect(e.data as File);
     } else if (e.target === 'shortcut') {
       this.onShortcut();
+    } else if (e.target === 'editLinks') {
+      this.onShowEditLink();
     }
   }
 
-  onFileSelect(file: File): void {
+  onShortcut(): void {
+    this.hideShortcuts = !this.hideShortcuts;
+    this.setState({
+      uiState: {
+        hideShortcuts: this.hideShortcuts,
+        hideEditMode: true,
+      }
+    });
+  }
+
+  private onShowEditLink(): void {
+    this.setState(prevState => ({
+      uiState: {
+        hideShortcuts: prevState.uiState.hideShortcuts,
+        hideEditMode: !prevState.uiState.hideEditMode,
+        onEdit: (l: Link): void => this.onEditLink(l)
+      }
+    }));
+  }
+
+  private onEditLink(link: Link): void {
+    this.showEditLinkDialog(true, link);
+  }
+
+  private onFileSelect(file: File): void {
     Config.fromFile(file, (myLinks?: MMLinks | null) => {
       this.reloadAll(myLinks);
     });
@@ -93,6 +126,15 @@ class Page extends React.Component<unknown, PageState> {
                                onClose={(): void => this.showLinkFinder(false)}
                                onLinkSelected={this.onLinkSelected}
                                widgets={this.myLinksHolder?.myLinks.columns}/>;
+    }
+    return null;
+  }
+
+  renderEditLinkDialog(): ReactNode {
+    if (this.state.isEditLinkOpen && this.state.linkEdited) {
+      return <EditLinkDialog isOpen={this.state.isEditLinkOpen}
+                             onClose={(): void => this.showEditLinkDialog(false)}
+                             link={this.state.linkEdited}/>;
     }
     return null;
   }
@@ -110,6 +152,7 @@ class Page extends React.Component<unknown, PageState> {
             action={(e): void => this.onClickToolbar(e)}/>
 
           {this.renderLinkFinder()}
+          {this.renderEditLinkDialog()}
 
         </div>
       </AppUIStateContext.Provider>
@@ -130,15 +173,6 @@ class Page extends React.Component<unknown, PageState> {
       config: this.buildConfig(myLinks),
       columns: myLinks.columns,
       hasShortcuts: this.myLinksHolder.hasShortcuts()
-    });
-  }
-
-  onShortcut(): void {
-    this.hideShortcuts = !this.hideShortcuts;
-    this.setState({
-      uiState: {
-        hideShortcuts: this.hideShortcuts
-      }
     });
   }
 

@@ -3,6 +3,7 @@ import { AppUIStateContext } from '../../common/AppUIStateContext';
 import { Link as MLLink } from '../../model/MyLinks-interface';
 import { LinkIcon } from './LinkIcon';
 import './Link.css';
+import './Edit.css';
 
 export interface LinkProps {
   value: MLLink;
@@ -28,6 +29,14 @@ export class Link extends React.Component<LinkProps, LinkState> {
     return null;
   }
 
+  private renderEditAction(): ReactNode | null {
+    if (this.context.hideEditMode) {
+      return null;
+    }
+    return <span className="edit-actions"
+                 onClick={(e): void => this.onEdit(e)}>Edit Link</span>;
+  }
+
   private isShortcutVisible(): boolean {
     const item = this.props.value;
 
@@ -42,6 +51,14 @@ export class Link extends React.Component<LinkProps, LinkState> {
 
   private setMouseOver(isOver: boolean): void {
     this.setState({ isMouseOver: isOver });
+  }
+
+  private onEdit(e: React.MouseEvent<HTMLElement>): void {
+    e.stopPropagation();
+    e.preventDefault();
+    if (this.context.onEdit) {
+      this.context.onEdit(this.props.value);
+    }
   }
 
   render(): ReactNode {
@@ -61,6 +78,7 @@ export class Link extends React.Component<LinkProps, LinkState> {
             </a>
           </div>
           <div className="right">
+            {this.renderEditAction()}
             {this.renderShortcut()}
           </div>
         </div>
