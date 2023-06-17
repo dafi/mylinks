@@ -8,42 +8,6 @@ export function openLink(link: Link): void {
   window.open(link.url);
 }
 
-export function faviconUrlByLink(
-  link: Link,
-  faviconUrlBuilder: string | null | undefined
-): string | null {
-  const faviconUrl = link.favicon;
-
-  if (faviconUrl) {
-    // url contains protocol
-    if (/^.*:\/\//.test(faviconUrl)) {
-      return faviconUrl;
-    }
-    return faviconUrlBuilder?.replace('$1', faviconUrl) || null;
-  }
-  if (faviconUrl?.length === 0) {
-    return null;
-  }
-  return buildFaviconUrl(link.url, faviconUrlBuilder);
-}
-
-export function buildFaviconUrl(
-  url: string,
-  faviconUrlBuilder: string | null | undefined
-): string | null {
-  if (faviconUrlBuilder) {
-    try {
-      const host = new URL(url).host;
-      if (host) {
-        return faviconUrlBuilder.replace('$1', host);
-      }
-    } catch {
-      // eslint-disable-next-line no-empty
-    }
-  }
-  return null;
-}
-
 export function filterMyLinks(
   myLinks: MyLinks,
   callback: (widget: Widget, link: Link) => boolean

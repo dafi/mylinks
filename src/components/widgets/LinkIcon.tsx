@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react';
 import { AppConfigContext } from '../../common/AppConfigContext';
-import { faviconUrlByLink } from '../../model/MyLinks';
+import { faviconUrlByLink } from '../../common/Favicon';
 import { Link as MLLink } from '../../model/MyLinks-interface';
 import './LinkIcon.css';
 

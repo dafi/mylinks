@@ -3,6 +3,7 @@ import React, { ReactNode } from 'react';
 import { AppConfig, appConfigClone, AppConfigContext } from '../../common/AppConfigContext';
 import { AppUIStateContext, AppUIState } from '../../common/AppUIStateContext';
 import Config from '../../common/Config';
+import { applyColorToFavicon } from '../../common/Favicon';
 import { MyLinksHolder } from '../../common/MyLinksHolder';
 import { UIInput } from '../../common/UIInput';
 import { MyLinksEvent } from '../../model/Events';
@@ -167,7 +168,7 @@ class Page extends React.Component<unknown, PageState> {
     this.myLinksHolder = new MyLinksHolder(myLinks);
     this.myLinksHolder.applyBackground();
     this.myLinksHolder.applyTheme();
-    this.myLinksHolder.applyColorToFavicon(myLinks.theme?.faviconColor);
+    applyColorToFavicon(myLinks.theme?.faviconColor);
 
     UIInput.instance().setup(this.myLinksHolder);
     this.setState({
