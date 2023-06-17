@@ -24,7 +24,7 @@ export interface Config {
 }
 
 export interface MyLinks {
-  theme: Theme;
+  theme?: Theme;
   columns: [Widget[]];
   config?: Config;
 }
