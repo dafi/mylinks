@@ -40,7 +40,6 @@ export function buildFaviconUrl(
 }
 
 export function applyColorToFavicon(
-  // color: string | undefined | null,
   color: string,
   options?: Readonly<{ favicon?: HTMLLinkElement; width?: number; height?: number }>
 ): void {
