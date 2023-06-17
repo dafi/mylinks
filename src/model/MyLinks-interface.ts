@@ -11,7 +11,6 @@ export interface Link {
   url: string;
   favicon?: string;
   shortcut?: string;
-  widget?: Widget;
 }
 
 export interface Widget {
@@ -30,3 +29,8 @@ export interface MyLinks {
   config?: Config;
 }
 
+export interface MyLinksLookup {
+  findLinksByShortcut(shortcut: string): Link[];
+  findWidgetById(widgetId: string): Widget | undefined;
+  findWidgetByLinkId(linkId: string): Widget | undefined;
+}

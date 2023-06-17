@@ -3,9 +3,10 @@ import React, { ReactNode } from 'react';
 import { AppConfig, appConfigClone, AppConfigContext } from '../../common/AppConfigContext';
 import { AppUIStateContext, AppUIState } from '../../common/AppUIStateContext';
 import Config from '../../common/Config';
+import { MyLinksHolder } from '../../common/MyLinksHolder';
 import { UIInput } from '../../common/UIInput';
 import { MyLinksEvent } from '../../model/Events';
-import { MyLinksHolder, openLink } from '../../model/MyLinks';
+import { openLink } from '../../model/MyLinks';
 import { Link, MyLinks as MMLinks, Widget } from '../../model/MyLinks-interface';
 import { EditLinkDialog } from '../editLinkDialog/EditLinkDialog';
 import { LinkFinderDialog } from '../linkFinderDialog/LinkFinderDialog';
@@ -190,6 +191,7 @@ class Page extends React.Component<unknown, PageState> {
         faviconColor: myLinks.theme?.faviconColor,
       },
       faviconService: myLinks.config?.faviconService,
+      myLinksLookup: this.myLinksHolder,
     };
   }
 }

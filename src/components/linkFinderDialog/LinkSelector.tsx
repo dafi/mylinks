@@ -3,6 +3,7 @@ import { LinkSearch, LinkSearchResult } from '../../common/LinkSearch';
 import { Link, Widget } from '../../model/MyLinks-interface';
 import './LinkSelector.css';
 import { LinkIcon } from '../widgets/LinkIcon';
+import { AppConfigContext } from '../../common/AppConfigContext';
 
 export interface LinkSelectorProps {
   widgets: [Widget[]] | undefined;
@@ -15,6 +16,9 @@ interface LinkSelectorState {
 }
 
 export class LinkSelector extends React.Component<LinkSelectorProps, LinkSelectorState> {
+  static contextType = AppConfigContext;
+  context!: React.ContextType<typeof AppConfigContext>;
+
   private listRefs = new Map<string, RefObject<HTMLLIElement>>();
   private inputRef: RefObject<HTMLInputElement> = React.createRef();
   private linkSearch = new LinkSearch();
@@ -101,6 +105,11 @@ export class LinkSelector extends React.Component<LinkSelectorProps, LinkSelecto
     e.preventDefault();
   }
 
+  private widgetTitle(link: Link): string {
+    const title = this.context.myLinksLookup?.findWidgetByLinkId(link.id)?.title;
+    return title ? ` - ${title}` : '';
+  }
+
   render(): ReactNode {
     return (
       <div className="link-selector">
@@ -126,7 +135,7 @@ export class LinkSelector extends React.Component<LinkSelectorProps, LinkSelecto
                 <LinkIcon link={r.link}/>
               </i>
                 <div>
-                  <span dangerouslySetInnerHTML={{ __html: r.highlighted }}/>{r.link.widget?.title ? ` - ${r.link.widget.title}` : ''}</div>
+                  <span dangerouslySetInnerHTML={{ __html: r.highlighted }}/>{this.widgetTitle(r.link)}</div>
               </li>
             )}
           </ul>

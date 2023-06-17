@@ -1,11 +1,11 @@
-import { filterMyLinks, MyLinksHolder, openAllLinks, openLink } from '../model/MyLinks';
-import { Link, MyLinks } from '../model/MyLinks-interface';
+import { openAllLinks, openLink } from '../model/MyLinks';
+import { Link, MyLinksLookup } from '../model/MyLinks-interface';
 
 export class UIInput {
   private static mInstance: UIInput;
   private mouseX = 0;
   private mouseY = 0;
-  private myLinksHolder?: MyLinksHolder;
+  private myLinksLookup?: MyLinksLookup;
   private buffer = '';
 
   static instance(): UIInput {
@@ -20,8 +20,8 @@ export class UIInput {
     document.addEventListener('mouseenter', (e) => this.storeMousePosition(e), false);
   }
 
-  setup(myLinksHolder: MyLinksHolder): void {
-    this.myLinksHolder = myLinksHolder;
+  setup(myLinksLookup: MyLinksLookup): void {
+    this.myLinksLookup = myLinksLookup;
 
     this.mouseX = 0;
     this.mouseY = 0;
@@ -54,9 +54,9 @@ export class UIInput {
         return true;
       }
     }
-    if (this.myLinksHolder) {
+    if (this.myLinksLookup) {
       this.buffer += e.key;
-      const link = this.findLinkByShortcut(this.myLinksHolder.myLinks);
+      const link = this.findLinkByShortcut();
       if (link) {
         openLink(link);
       }
@@ -65,30 +65,30 @@ export class UIInput {
     return true;
   }
 
-  private findLinkByShortcut(myLinks: MyLinks): Link | null {
-    const arr = filterMyLinks(myLinks, (w, l) =>
-      l.shortcut?.startsWith(this.buffer) === true
-    );
+  private findLinkByShortcut(): Link | null {
+    if (this.myLinksLookup) {
+      const arr = this.myLinksLookup.findLinksByShortcut(this.buffer);
 
-    if (arr.length === 0) {
-      // not found
-      this.buffer = '';
-    } else if (arr.length === 1 && arr[0].shortcut === this.buffer) {
-      this.buffer = '';
-      return arr[0];
+      if (arr.length === 0) {
+        // not found
+        this.buffer = '';
+      } else if (arr.length === 1 && arr[0].shortcut === this.buffer) {
+        this.buffer = '';
+        return arr[0];
+      }
     }
     return null;
   }
 
   private openFromMousePosition(): void {
-    if (!this.myLinksHolder) {
+    if (!this.myLinksLookup) {
       return;
     }
     const widgetId = this.findWidgetId(
       document.elementFromPoint(this.mouseX, this.mouseY),
       'data-list-id');
     if (widgetId) {
-      const widget = this.myLinksHolder.findWidgetById(widgetId);
+      const widget = this.myLinksLookup.findWidgetById(widgetId);
       if (widget) {
         openAllLinks(widget);
       }

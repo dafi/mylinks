@@ -1,5 +1,5 @@
 import React from 'react';
-import { Theme } from '../model/MyLinks-interface';
+import { Theme, MyLinksLookup } from '../model/MyLinks-interface';
 
 const defaultTheme: Theme = {
   faviconColor: 'blue',
@@ -8,6 +8,7 @@ const defaultTheme: Theme = {
 export interface AppConfig {
   theme: Theme;
   faviconService?: string;
+  myLinksLookup?: MyLinksLookup;
 }
 
 const defaultAppConfig: AppConfig = {
