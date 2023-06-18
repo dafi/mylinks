@@ -1,15 +1,25 @@
-import React, { ReactNode, RefObject } from 'react';
+import React, { ChangeEvent, ReactNode, RefObject } from 'react';
 import { Link } from '../../model/MyLinks-interface';
 import { DialogProps } from '../modal/Dialog';
 import Modal from '../modal/Modal';
 import './EditLinkDialog.css';
 
 export interface EditLinkDialogProps extends DialogProps {
-  link: Link;
+  link: Readonly<Link>;
+  onSave: (result: Readonly<EditLinkResult>, original: Readonly<Link>) => void;
 }
 
-export class EditLinkDialog extends React.Component<EditLinkDialogProps, unknown> {
+export type EditLinkResult = Pick<Link, 'label' | 'url' | 'shortcut'>;
+type EditLinkDialogState = EditLinkResult;
+
+export class EditLinkDialog extends React.Component<EditLinkDialogProps, EditLinkDialogState> {
   private inputRef: RefObject<HTMLInputElement> = React.createRef();
+
+  constructor(props: EditLinkDialogProps) {
+    super(props);
+    const { label, url, shortcut } = props.link;
+    this.state = { label, url, shortcut };
+  }
 
   onClose(): void {
     this.props.onClose();
@@ -26,8 +36,27 @@ export class EditLinkDialog extends React.Component<EditLinkDialogProps, unknown
     this.moveFocusToSearch();
   }
 
+  private onClickSave(e: React.MouseEvent<HTMLButtonElement>): void {
+    e.preventDefault();
+
+    this.props.onSave(this.state, this.props.link);
+    this.onClose();
+  }
+
+  onChangeLabel(e: ChangeEvent<HTMLInputElement>): void {
+    this.setState({ label: e.target.value });
+  }
+
+  onChangeUrl(e: ChangeEvent<HTMLInputElement>): void {
+    this.setState({ url: e.target.value });
+  }
+
+  onChangeShortcut(e: ChangeEvent<HTMLInputElement>): void {
+    this.setState({ shortcut: e.target.value });
+  }
+
   render(): ReactNode {
-    const link = this.props.link;
+    const { label, url, shortcut } = this.state;
 
     return (
       <Modal isOpen={this.props.isOpen}
@@ -39,18 +68,35 @@ export class EditLinkDialog extends React.Component<EditLinkDialogProps, unknown
             <ul className="flex-outer">
               <li>
                 <label htmlFor="link-label">Label</label>
-                <input ref={this.inputRef} type="text" value={link.label} id="link-label" placeholder="Videos"/>
+                <input
+                  id="link-label"
+                  ref={this.inputRef}
+                  type="text"
+                  defaultValue={label}
+                  onChange={(e): void => this.onChangeLabel(e)}
+                  placeholder="Videos"
+                />
               </li>
               <li>
                 <label htmlFor="link-url">Url</label>
-                <input type="text" value={link.url} id="link-url" placeholder="https://youtube.com"/>
+                <input
+                  id="link-url"
+                  type="text"
+                  defaultValue={url}
+                  onChange={(e): void => this.onChangeUrl(e)}
+                  placeholder="https://youtube.com"/>
               </li>
               <li>
                 <label htmlFor="shortcut">Shortcut</label>
-                <input type="text" value={link.shortcut} id="shortcut" placeholder="press the key combination to assign"/>
+                <input
+                  id="shortcut"
+                  type="text"
+                  defaultValue={shortcut}
+                  onChange={(e): void => this.onChangeShortcut(e)}
+                  placeholder="press the key combination to assign"/>
               </li>
               <li>
-                <button type="submit">Submit</button>
+                <button onClick={(e): void => this.onClickSave(e)}>Save</button>
               </li>
             </ul>
           </form>

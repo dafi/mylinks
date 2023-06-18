@@ -27,6 +27,12 @@
   margin: 5px;
   font-size: 1.2em;
   opacity: 0.3;
+  display: inline-block;
+  min-width: 24px;
+  max-width: 24px;
+  min-height: 24px;
+  max-height: 24px;
+  text-align: center;
 }
 
 .toolbar-icon:hover {

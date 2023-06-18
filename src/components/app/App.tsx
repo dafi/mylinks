@@ -9,7 +9,7 @@ import { UIInput } from '../../common/UIInput';
 import { MyLinksEvent } from '../../model/Events';
 import { openLink } from '../../model/MyLinks';
 import { Link, MyLinks as MMLinks, Widget } from '../../model/MyLinks-interface';
-import { EditLinkDialog } from '../editLinkDialog/EditLinkDialog';
+import { EditLinkDialog, EditLinkResult } from '../editLinkDialog/EditLinkDialog';
 import { LinkFinderDialog } from '../linkFinderDialog/LinkFinderDialog';
 import { Grid } from '../widgets/Grid';
 import './App.css';
@@ -23,7 +23,7 @@ const STORAGE_PREF_HIDE_SHORTCUTS = 'hideShortcuts';
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 declare const window: any;
 
-export interface PageState {
+interface PageState {
   columns: [Widget[]];
   config: AppConfig;
   hasShortcuts: boolean;
@@ -83,16 +83,26 @@ class Page extends React.Component<unknown, PageState> {
   }
 
   private onClickToolbar(e: MyLinksEvent<AppToolbarActionType>): void {
-    if (e.target === 'file') {
-      this.onFileSelect(e.data as File);
+    if (e.target === 'loadConfig') {
+      this.onLoadConfig(e.data as File);
     } else if (e.target === 'shortcut') {
       this.onShortcut();
     } else if (e.target === 'editLinks') {
       this.onShowEditLink();
+    } else if (e.target === 'saveConfig') {
+      this.onSaveConfig();
     }
   }
 
-  onShortcut(): void {
+  private onSaveConfig(): void {
+    if (this.myLinksHolder) {
+      const indentSpaces = 2;
+      const w = window.open();
+      w.document.write(`<pre>${JSON.stringify(this.myLinksHolder.myLinks, null, indentSpaces)}</prev>`);
+    }
+  }
+
+  private onShortcut(): void {
     this.hideShortcuts = !this.hideShortcuts;
     this.setState({
       uiState: {
@@ -116,10 +126,20 @@ class Page extends React.Component<unknown, PageState> {
     this.showEditLinkDialog(true, link);
   }
 
-  private onFileSelect(file: File): void {
+  private onLoadConfig(file: File): void {
     Config.fromFile(file, (myLinks?: MMLinks | null) => {
       this.reloadAll(myLinks);
     });
+  }
+
+  private onSaveLink(result: Readonly<EditLinkResult>, original: Link): void {
+    if (this.myLinksHolder) {
+      original.label = result.label;
+      original.url = result.url;
+      original.shortcut = result.shortcut;
+
+      Config.saveData(this.myLinksHolder.myLinks, (myLinks) => this.reloadAll(myLinks));
+    }
   }
 
   renderLinkFinder(): ReactNode {
@@ -135,6 +155,7 @@ class Page extends React.Component<unknown, PageState> {
   renderEditLinkDialog(): ReactNode {
     if (this.state.isEditLinkOpen && this.state.linkEdited) {
       return <EditLinkDialog isOpen={this.state.isEditLinkOpen}
+                             onSave={(r, o): void => this.onSaveLink(r, o)}
                              onClose={(): void => this.showEditLinkDialog(false)}
                              link={this.state.linkEdited}/>;
     }
@@ -150,7 +171,7 @@ class Page extends React.Component<unknown, PageState> {
           </div>
 
           <AppToolbar
-            hasShortcuts={this.state.hasShortcuts}
+            myLinksHolder={this.myLinksHolder}
             action={(e): void => this.onClickToolbar(e)}/>
 
           {this.renderLinkFinder()}
@@ -165,14 +186,15 @@ class Page extends React.Component<unknown, PageState> {
     if (!myLinks) {
       return;
     }
+    const config = this.buildConfig(myLinks);
     this.myLinksHolder = new MyLinksHolder(myLinks);
     this.myLinksHolder.applyBackground();
     this.myLinksHolder.applyTheme();
-    applyColorToFavicon(myLinks.theme?.faviconColor);
+    applyColorToFavicon(config.theme.faviconColor);
 
     UIInput.instance().setup(this.myLinksHolder);
     this.setState({
-      config: this.buildConfig(myLinks),
+      config,
       columns: myLinks.columns,
       hasShortcuts: this.myLinksHolder.hasShortcuts()
     });
@@ -189,7 +211,7 @@ class Page extends React.Component<unknown, PageState> {
   buildConfig(myLinks: MMLinks): AppConfig {
     return {
       theme: {
-        faviconColor: myLinks.theme?.faviconColor,
+        faviconColor: myLinks.theme?.faviconColor || this.state.config.theme.faviconColor,
       },
       faviconService: myLinks.config?.faviconService,
       myLinksLookup: this.myLinksHolder,

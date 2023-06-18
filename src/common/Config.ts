@@ -3,6 +3,7 @@ import { MyLinks } from '../model/MyLinks-interface';
 const STORAGE_PREF_DATA = 'myLinksData';
 
 export type OnLoadCallback = (myLinks?: MyLinks | null | undefined) => void;
+export type OnSaveCallback = (myLinks: MyLinks) => void;
 
 type MyLinksCallback = (myLinks?: MyLinks) => void;
 
@@ -24,6 +25,10 @@ export default class Config {
     ConfigReader.loadFromFile(file, (myLinks?: MyLinks) => {
       onLoadCallback(myLinks);
     });
+  }
+
+  static saveData(data: MyLinks, onSaveCallback: OnSaveCallback): void {
+    ConfigReader.saveData(data, onSaveCallback);
   }
 }
 
@@ -69,5 +74,10 @@ class ConfigReader {
       .then(async response => response.json())
       .then(data => onLoadCallback(data as MyLinks))
       .catch(e => window.alert(e));
+  }
+
+  static saveData(data: MyLinks, onSaveCallback: OnSaveCallback): void {
+    localStorage.setItem(STORAGE_PREF_DATA, JSON.stringify(data));
+    onSaveCallback(data);
   }
 }
