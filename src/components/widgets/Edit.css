@@ -1,8 +1,8 @@
 .ml-link-container .edit-actions {
   margin-right: 5px;
   cursor: pointer;
-  color: var(--action-color);
-  background-color: var(--action-background-color);
+  color: var(--action-color-disabled);
+  background-color: var(--action-background-color-disabled);
 }
 
 .ml-link-container:hover .edit-actions {
@@ -10,7 +10,7 @@
 }
 
 .ml-link-container:hover .edit-actions:hover {
-  color: var(--action-hover-color);
-  background-color: var(--action-hover-background-color);
+  color: var(--action-color);
+  background-color: var(--action-background-color);
 }
 

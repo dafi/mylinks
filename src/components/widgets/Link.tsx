@@ -1,12 +1,14 @@
 import React, { ReactNode } from 'react';
 import { AppUIStateContext } from '../../common/AppUIStateContext';
-import { Link as MLLink } from '../../model/MyLinks-interface';
-import { LinkIcon } from './LinkIcon';
-import './Link.css';
+import { Link as MLLink, Widget } from '../../model/MyLinks-interface';
 import './Edit.css';
+import './Link.css';
+import { LinkIcon } from './LinkIcon';
 
 export interface LinkProps {
-  value: MLLink;
+  link: MLLink;
+  widget: Widget;
+  editable: boolean;
 }
 
 export interface LinkState {
@@ -24,23 +26,23 @@ export class Link extends React.Component<LinkProps, LinkState> {
 
   private renderShortcut(): ReactNode | null {
     if (this.isShortcutVisible()) {
-      return <kbd>{this.props.value.shortcut}</kbd>;
+      return <kbd>{this.props.link.shortcut}</kbd>;
     }
     return null;
   }
 
   private renderEditAction(): ReactNode | null {
-    if (this.context.hideEditMode) {
-      return null;
+    if (this.props.editable) {
+      return <span className="edit-actions"
+                   onClick={(e): void => this.onEdit(e)}>Edit Link</span>;
     }
-    return <span className="edit-actions"
-                 onClick={(e): void => this.onEdit(e)}>Edit Link</span>;
+    return null;
   }
 
   private isShortcutVisible(): boolean {
-    const item = this.props.value;
+    const link = this.props.link;
 
-    if (!item.shortcut) {
+    if (!link.shortcut) {
       return false;
     }
     if (!this.context.hideShortcuts) {
@@ -57,23 +59,27 @@ export class Link extends React.Component<LinkProps, LinkState> {
     e.stopPropagation();
     e.preventDefault();
     if (this.context.onEdit) {
-      this.context.onEdit(this.props.value);
+      this.context.onEdit({
+        link: this.props.link,
+        widget: this.props.widget,
+        editType: 'update'
+      });
     }
   }
 
   render(): ReactNode {
-    const item = this.props.value;
+    const link = this.props.link;
 
     return (
       <div className="ml-link-container">
         <div className="ml-link-items-container">
           <div className="left">
-            <a href={item.url} target="_blank" rel="noopener noreferrer"
+            <a href={link.url} target="_blank" rel="noopener noreferrer"
                onMouseEnter={(): void => this.setMouseOver(true)}
                onMouseLeave={(): void => this.setMouseOver(false)}>
               <div className="content">
-                <LinkIcon link={item}/>
-                <div className="label">{item.label}</div>
+                <LinkIcon link={link}/>
+                <div className="label">{link.label}</div>
               </div>
             </a>
           </div>

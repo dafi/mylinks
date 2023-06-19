@@ -1,0 +1,19 @@
+.ml-widget-button-container {
+  margin: 5px;
+}
+
+.ml-widget-button-container .button {
+  color: var(--action-background-color);
+  background-color: var(--action-color);
+  cursor: pointer;
+  display: block;
+  margin: 5px auto;
+  width: 100%;
+  border-style: none;
+  padding: 5px;
+}
+
+.ml-widget-button-container .button:hover {
+  color: var(--action-background-color);
+  background-color: var(--action-color-60);
+}

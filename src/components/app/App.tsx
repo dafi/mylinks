@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react';
 
 import { AppConfig, appConfigClone, AppConfigContext } from '../../common/AppConfigContext';
-import { AppUIStateContext, AppUIState } from '../../common/AppUIStateContext';
+import { AppUIStateContext, AppUIState, EditLinkData } from '../../common/AppUIStateContext';
 import Config from '../../common/Config';
 import { applyColorToFavicon } from '../../common/Favicon';
 import { isKeyboardEventConsumer } from '../../common/HtmlUtil';
@@ -31,7 +31,7 @@ interface PageState {
   uiState: AppUIState;
   isFinderOpen: boolean;
   isEditLinkOpen?: boolean;
-  linkEdited?: Link;
+  editLinkData?: EditLinkData;
 }
 
 class Page extends React.Component<unknown, PageState> {
@@ -40,7 +40,10 @@ class Page extends React.Component<unknown, PageState> {
   constructor(props: unknown) {
     super(props);
     const config = appConfigClone();
-    const uiState: AppUIState = { hideShortcuts: this.hideShortcuts, hideEditMode: true };
+    const uiState: AppUIState = {
+      hideShortcuts: this.hideShortcuts,
+      onEdit: (editLinkData: EditLinkData): void => this.onEditLink(editLinkData),
+    };
     this.state = { columns: [[]], config: config, hasShortcuts: false, isFinderOpen: false, uiState };
   }
 
@@ -79,8 +82,8 @@ class Page extends React.Component<unknown, PageState> {
     this.setState({ isFinderOpen: isOpen });
   }
 
-  showEditLinkDialog(isOpen: boolean, link?: Link): void {
-    this.setState({ isEditLinkOpen: isOpen, linkEdited: link });
+  showEditLinkDialog(isOpen: boolean, editLinkData?: EditLinkData): void {
+    this.setState({ isEditLinkOpen: isOpen, editLinkData });
   }
 
   private onClickToolbar(e: MyLinksEvent<AppToolbarActionType>): void {
@@ -88,8 +91,6 @@ class Page extends React.Component<unknown, PageState> {
       this.onLoadConfig(e.data as File);
     } else if (e.target === 'shortcut') {
       this.onShortcut();
-    } else if (e.target === 'editLinks') {
-      this.onShowEditLink();
     } else if (e.target === 'saveConfig') {
       this.onSaveConfig();
     }
@@ -108,23 +109,12 @@ class Page extends React.Component<unknown, PageState> {
     this.setState({
       uiState: {
         hideShortcuts: this.hideShortcuts,
-        hideEditMode: true,
       }
     });
   }
 
-  private onShowEditLink(): void {
-    this.setState(prevState => ({
-      uiState: {
-        hideShortcuts: prevState.uiState.hideShortcuts,
-        hideEditMode: !prevState.uiState.hideEditMode,
-        onEdit: (l: Link): void => this.onEditLink(l)
-      }
-    }));
-  }
-
-  private onEditLink(link: Link): void {
-    this.showEditLinkDialog(true, link);
+  private onEditLink(editLinkData: EditLinkData): void {
+    this.showEditLinkDialog(true, editLinkData);
   }
 
   private onLoadConfig(file: File): void {
@@ -133,11 +123,18 @@ class Page extends React.Component<unknown, PageState> {
     });
   }
 
-  private onSaveLink(result: Readonly<EditLinkResult>, original: Link): void {
+  private onSaveLink(result: Readonly<EditLinkResult>, editLinkData: EditLinkData): void {
     if (this.myLinksHolder) {
-      original.label = result.label;
-      original.url = result.url;
-      original.shortcut = result.shortcut;
+      if (editLinkData.editType === 'update') {
+        editLinkData.link.label = result.label;
+        editLinkData.link.url = result.url;
+        editLinkData.link.shortcut = result.shortcut;
+      } else if (editLinkData.editType === 'new') {
+        editLinkData.link.label = result.label;
+        editLinkData.link.url = result.url;
+        editLinkData.link.shortcut = result.shortcut;
+        editLinkData.widget.list.push(editLinkData.link);
+      }
 
       Config.saveData(this.myLinksHolder.myLinks, (myLinks) => this.reloadAll(myLinks));
     }
@@ -154,11 +151,11 @@ class Page extends React.Component<unknown, PageState> {
   }
 
   renderEditLinkDialog(): ReactNode {
-    if (this.state.isEditLinkOpen && this.state.linkEdited) {
+    if (this.state.isEditLinkOpen && this.state.editLinkData) {
       return <EditLinkDialog isOpen={this.state.isEditLinkOpen}
                              onSave={(r, o): void => this.onSaveLink(r, o)}
                              onClose={(): void => this.showEditLinkDialog(false)}
-                             link={this.state.linkEdited}/>;
+                             data={this.state.editLinkData}/>;
     }
     return null;
   }

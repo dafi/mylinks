@@ -1,8 +1,10 @@
 import React, { ReactNode } from 'react';
+import { AppUIStateContext } from '../../common/AppUIStateContext';
 import { MyLinksEvent } from '../../model/Events';
 import { Widget as MLWidget } from '../../model/MyLinks-interface';
 import { Link } from './Link';
 import { WidgetToolbar, WidgetToolbarActionType } from './WidgetToolbar';
+import './Widget.css';
 
 export interface WidgetProps {
   value: MLWidget;
@@ -10,6 +12,7 @@ export interface WidgetProps {
 
 interface WidgetState {
   collapsed: boolean;
+  editable: boolean;
 }
 
 interface WidgetExtraCssClass {
@@ -17,12 +20,14 @@ interface WidgetExtraCssClass {
 }
 
 export class Widget extends React.Component<WidgetProps, WidgetState> {
+  static contextType = AppUIStateContext;
+  context!: React.ContextType<typeof AppUIStateContext>;
   private startCollapsed = false;
 
   constructor(props: WidgetProps) {
     super(props);
     this.startCollapsed = localStorage.getItem(`${this.props.value.id}-collapsed`) === 't';
-    this.state = { collapsed: this.startCollapsed };
+    this.state = { collapsed: this.startCollapsed, editable: false };
   }
 
   toggleCollapse(collapsed: boolean): void {
@@ -54,13 +59,46 @@ export class Widget extends React.Component<WidgetProps, WidgetState> {
     return cls;
   }
 
-  onClickToolbar(_: MyLinksEvent<WidgetToolbarActionType>): void {
-    this.toggleWidgetSize();
+  onClickToolbar(e: MyLinksEvent<WidgetToolbarActionType>): void {
+    if (e.target === 'collapse') {
+      this.toggleWidgetSize();
+    } else if (e.target === 'edit') {
+      this.setState({
+        editable: e.data as boolean
+      });
+    }
+  }
+
+  onAddLink(): void {
+    if (this.context.onEdit) {
+      const widget = this.props.value;
+      this.context.onEdit({
+        link: { id: `${widget.id}-${new Date().getTime()}`, url: '', shortcut: '', label: '' },
+        widget,
+        editType: 'new'
+      });
+    }
+  }
+
+  renderButtons(): ReactNode | null {
+    if (this.state.editable) {
+      return (
+        <div className="ml-widget-button-container">
+          <button className="button" onClick={(): void => this.onAddLink()}>Add New Link</button>
+        </div>
+      );
+    }
+    return null;
   }
 
   render(): ReactNode {
     const widget = this.props.value;
-    const items = widget.list.map(v => <li key={v.url}><Link value={v}/></li>);
+    const items = widget.list.map(v => <li key={v.url}>
+      <Link
+        link={v}
+        widget={widget}
+        editable={this.state.editable}/>
+    </li>);
     const cls = this.cssExtraClasses();
 
     return (
@@ -79,6 +117,7 @@ export class Widget extends React.Component<WidgetProps, WidgetState> {
         <div className="ml-widget-list-container">
           <ul className="ml-widget-list">{items}</ul>
         </div>
+        {this.renderButtons()}
       </div>);
   }
 }

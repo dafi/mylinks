@@ -3,7 +3,7 @@ import { MyLinksHolder } from '../../common/MyLinksHolder';
 import { MyLinkActionCallback } from '../../model/Events';
 
 const actions = [
-  'loadConfig', 'saveConfig', 'shortcut', 'editLinks',
+  'loadConfig', 'saveConfig', 'shortcut',
 ] as const;
 export type AppToolbarActionType = (typeof actions)[number];
 
@@ -43,9 +43,6 @@ export class AppToolbar extends React.Component<AppToolbarProps, unknown> {
     const saveConfigStyle = {
       visibility: myLinksHolder?.myLinks ? 'visible' : 'collapse'
     } as React.CSSProperties;
-    const editStyle = {
-      visibility: myLinksHolder?.myLinks.columns ? 'visible' : 'collapse'
-    } as React.CSSProperties;
 
     return (
       <div className="toolbar-container">
@@ -70,14 +67,6 @@ export class AppToolbar extends React.Component<AppToolbarProps, unknown> {
                style={shortcutStyle}
                onClick={(e): void => this.onButtonClick(e)}>
           <i className="fa fa-keyboard"/>
-        </label>
-
-        <label className="toolbar-icon"
-               data-action="editLinks"
-               title="Edit Links"
-               style={editStyle}
-               onClick={(e): void => this.onButtonClick(e)}>
-          <i className="fa fa-edit"/>
         </label>
       </div>
     );
