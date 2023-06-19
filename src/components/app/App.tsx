@@ -4,6 +4,7 @@ import { AppConfig, appConfigClone, AppConfigContext } from '../../common/AppCon
 import { AppUIStateContext, AppUIState } from '../../common/AppUIStateContext';
 import Config from '../../common/Config';
 import { applyColorToFavicon } from '../../common/Favicon';
+import { isKeyboardEventConsumer } from '../../common/HtmlUtil';
 import { MyLinksHolder } from '../../common/MyLinksHolder';
 import { UIInput } from '../../common/UIInput';
 import { MyLinksEvent } from '../../model/Events';
@@ -44,7 +45,7 @@ class Page extends React.Component<unknown, PageState> {
   }
 
   keyDown(e: KeyboardEvent): boolean {
-    const isThisTarget = e.currentTarget === e.target;
+    const isThisTarget = e.currentTarget === e.target || !isKeyboardEventConsumer(e.target as HTMLElement);
 
     // ignore events bubbling from other listeners
     if (!isThisTarget) {

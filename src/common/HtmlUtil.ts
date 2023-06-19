@@ -16,3 +16,11 @@ export function highlight(
 
   return result;
 }
+
+export function isKeyboardEventConsumer(el: HTMLElement | undefined | null): boolean {
+  if (!el) {
+    return false;
+  }
+  return el.nodeName === 'INPUT' || el.nodeName === 'TEXTAREA';
+}
+
