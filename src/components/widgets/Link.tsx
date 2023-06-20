@@ -36,7 +36,7 @@ export class Link extends React.Component<LinkProps, LinkState> {
       return (
         <span>
           <i className="fas fa-trash-alt edit-actions danger"
-             title="Edit"
+             title="Delete"
              onClick={(e): void => this.onEdit(e, 'delete')}/>
           <i className="fa fa-edit edit-actions"
              title="Edit" onClick={(e): void => this.onEdit(e, 'update')}/>
