@@ -25,7 +25,7 @@ export class Link extends React.Component<LinkProps, LinkState> {
   }
 
   private renderShortcut(): ReactNode | null {
-    if (this.isShortcutVisible()) {
+    if (!this.props.editable && this.isShortcutVisible()) {
       return <kbd>{this.props.link.shortcut}</kbd>;
     }
     return null;
