@@ -83,6 +83,10 @@ class Page extends React.Component<unknown, PageState> {
   }
 
   showEditLinkDialog(isOpen: boolean, editLinkData?: EditLinkData): void {
+    if (editLinkData?.editType === 'delete') {
+      this.onSaveLink(undefined, editLinkData);
+      return;
+    }
     this.setState({ isEditLinkOpen: isOpen, editLinkData });
   }
 
@@ -123,21 +127,39 @@ class Page extends React.Component<unknown, PageState> {
     });
   }
 
-  private onSaveLink(result: Readonly<EditLinkResult>, editLinkData: EditLinkData): void {
-    if (this.myLinksHolder) {
-      if (editLinkData.editType === 'update') {
-        editLinkData.link.label = result.label;
-        editLinkData.link.url = result.url;
-        editLinkData.link.shortcut = result.shortcut;
-      } else if (editLinkData.editType === 'new') {
-        editLinkData.link.label = result.label;
-        editLinkData.link.url = result.url;
-        editLinkData.link.shortcut = result.shortcut;
-        editLinkData.widget.list.push(editLinkData.link);
-      }
-
-      Config.saveData(this.myLinksHolder.myLinks, (myLinks) => this.reloadAll(myLinks));
+  private onSaveLink(result: Readonly<EditLinkResult> | undefined, editLinkData: EditLinkData): void {
+    if (!this.myLinksHolder) {
+      return;
     }
+    const editType = editLinkData.editType;
+    if (editType === 'update' || editType === 'new') {
+      if (result) {
+        if (editType === 'update') {
+          editLinkData.link.label = result.label;
+          editLinkData.link.url = result.url;
+          editLinkData.link.shortcut = result.shortcut;
+        } else if (editType === 'new') {
+          editLinkData.link.label = result.label;
+          editLinkData.link.url = result.url;
+          editLinkData.link.shortcut = result.shortcut;
+          editLinkData.widget.list.push(editLinkData.link);
+        }
+      } else {
+        alert(`Link result is mandatory for edit type ${editType}`);
+        return;
+      }
+    }
+    if (editType === 'delete') {
+      const response = confirm(`Delete link "${editLinkData.link.label}"?`);
+      if (response) {
+        const index = editLinkData.widget.list.findIndex(l => l.id === editLinkData.link.id);
+        if (index >= 0) {
+          editLinkData.widget.list.splice(index, 1);
+        }
+      }
+    }
+
+    Config.saveData(this.myLinksHolder.myLinks, (myLinks) => this.reloadAll(myLinks));
   }
 
   renderLinkFinder(): ReactNode {

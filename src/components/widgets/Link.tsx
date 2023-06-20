@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { AppUIStateContext } from '../../common/AppUIStateContext';
+import { AppUIStateContext, EditLinkData } from '../../common/AppUIStateContext';
 import { Link as MLLink, Widget } from '../../model/MyLinks-interface';
 import './Edit.css';
 import './Link.css';
@@ -33,8 +33,15 @@ export class Link extends React.Component<LinkProps, LinkState> {
 
   private renderEditAction(): ReactNode | null {
     if (this.props.editable) {
-      return <span className="edit-actions"
-                   onClick={(e): void => this.onEdit(e)}>Edit Link</span>;
+      return (
+        <span>
+          <i className="fas fa-trash-alt edit-actions danger"
+             title="Edit"
+             onClick={(e): void => this.onEdit(e, 'delete')}/>
+          <i className="fa fa-edit edit-actions"
+             title="Edit" onClick={(e): void => this.onEdit(e, 'update')}/>
+        </span>
+      );
     }
     return null;
   }
@@ -55,14 +62,14 @@ export class Link extends React.Component<LinkProps, LinkState> {
     this.setState({ isMouseOver: isOver });
   }
 
-  private onEdit(e: React.MouseEvent<HTMLElement>): void {
+  private onEdit(e: React.MouseEvent<HTMLElement>, editType: EditLinkData['editType']): void {
     e.stopPropagation();
     e.preventDefault();
     if (this.context.onEdit) {
       this.context.onEdit({
         link: this.props.link,
         widget: this.props.widget,
-        editType: 'update'
+        editType
       });
     }
   }

@@ -5,6 +5,8 @@
   --box-shadow-color1: rgba(0, 0, 0, .2);
   --box-shadow-color2: rgba(255, 255, 255, .7);
 
+  --app-danger-text-color: #ff0000;
+
   --link-label-color: #444;
   --link-key-background: #eee;
   --link-key-color: #333;
