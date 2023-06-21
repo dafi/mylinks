@@ -10,26 +10,12 @@ interface WidgetToolbarProps {
   widget: MLWidget;
   classNames?: string;
   action: MyLinkActionCallback<WidgetToolbarActionType>;
-}
-
-interface WidgetToolbarState {
   editable: boolean;
 }
 
-export class WidgetToolbar extends React.Component<WidgetToolbarProps, WidgetToolbarState> {
+export class WidgetToolbar extends React.Component<WidgetToolbarProps, unknown> {
   constructor(props: WidgetToolbarProps) {
     super(props);
-    this.state = { editable: false };
-  }
-
-  onToggleEdit(): void {
-    this.setState(prevState => {
-      const newState = {
-        editable: !prevState.editable
-      };
-      this.props.action({ target: 'edit', data: newState.editable });
-      return newState;
-    });
   }
 
   render(): ReactNode {
@@ -37,14 +23,14 @@ export class WidgetToolbar extends React.Component<WidgetToolbarProps, WidgetToo
     const collapseTitle = this.props.collapsed ? 'Expand content' : 'Collapse content';
     const classNames = this.props.classNames ?? '';
     const editStyle: React.CSSProperties = {
-      color: this.state.editable ? 'var(--action-color)' : ''
+      color: this.props.editable ? 'var(--action-color)' : ''
     };
 
     return (
       <span className={`ml-toolbar ${classNames}`}>
-        <i className="fa fa-edit icon" style={editStyle} onClick={(): void => this.onToggleEdit()} title="Edit"/>
-        <i className={`${collapseIcon} icon`} onClick={(): void => this.props.action({ target: 'collapse' })} title={collapseTitle}/>
+        <i className="fa fa-edit icon" style={editStyle} onClick={(): void => this.props.action({ target: 'edit' })} title="Edit"/>
         <i className="fa fa-external-link-alt icon" onClick={(): void => openAllLinks(this.props.widget)} title="Open all links"/>
+        <i className={`${collapseIcon} icon`} onClick={(): void => this.props.action({ target: 'collapse' })} title={collapseTitle}/>
       </span>
     );
   }
