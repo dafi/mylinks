@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react';
 
 import { AppConfig, appConfigClone, AppConfigContext } from '../../common/AppConfigContext';
-import { AppUIStateContext, AppUIState, EditLinkData } from '../../common/AppUIStateContext';
+import { EditDataType, AppUIState, AppUIStateContext, EditLinkData, isEditLinkData } from '../../common/AppUIStateContext';
 import Config from '../../common/Config';
 import { applyColorToFavicon } from '../../common/Favicon';
 import { isKeyboardEventConsumer } from '../../common/HtmlUtil';
@@ -42,7 +42,7 @@ class Page extends React.Component<unknown, PageState> {
     const config = appConfigClone();
     const uiState: AppUIState = {
       hideShortcuts: this.hideShortcuts,
-      onEdit: (editLinkData: EditLinkData): void => this.onEditLink(editLinkData),
+      onEdit: (editLinkData): void => this.onEditData(editLinkData),
     };
     this.state = { columns: [[]], config: config, hasShortcuts: false, isFinderOpen: false, uiState };
   }
@@ -117,8 +117,10 @@ class Page extends React.Component<unknown, PageState> {
     });
   }
 
-  private onEditLink(editLinkData: EditLinkData): void {
-    this.showEditLinkDialog(true, editLinkData);
+  private onEditData(editData: EditDataType): void {
+    if (isEditLinkData(editData)) {
+      this.showEditLinkDialog(true, editData);
+    }
   }
 
   private onLoadConfig(file: File): void {
@@ -132,13 +134,13 @@ class Page extends React.Component<unknown, PageState> {
       return;
     }
     const editType = editLinkData.editType;
-    if (editType === 'update' || editType === 'new') {
+    if (editType === 'update' || editType === 'create') {
       if (result) {
         if (editType === 'update') {
           editLinkData.link.label = result.label;
           editLinkData.link.url = result.url;
           editLinkData.link.shortcut = result.shortcut;
-        } else if (editType === 'new') {
+        } else if (editType === 'create') {
           editLinkData.link.label = result.label;
           editLinkData.link.url = result.url;
           editLinkData.link.shortcut = result.shortcut;
