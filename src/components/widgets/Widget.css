@@ -1,3 +1,55 @@
+.ml-widget {
+  flex: 1;
+  border: 1px solid var(--widget-border-color);
+  margin: 5px 10px;
+  background-color: var(--widget-background-color, #ff0000);
+  box-shadow: 8px 8px 6px var(--box-shadow-color1);
+  border-radius: var(--widget-border-radius);
+}
+
+.ml-widget a:focus {
+  outline: 0;
+  font-weight: bold;
+}
+
+.ml-widget ul {
+  list-style-type: none;
+  min-height: 23px;
+  overflow-x: hidden;
+  margin: 0;
+}
+
+.ml-widget li {
+  margin-bottom: 2px;
+}
+
+.ml-widget:hover .hover-toolbar {
+  display: block;
+}
+
+.ml-widget:hover .ml-toolbar {
+  display: block;
+}
+
+.ml-widget-title {
+  color: var(--widget-title-color);
+  display: inline;
+  flex-grow: 1;
+  font-size: var(--widget-title-font-size);
+  line-height: 34px;
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  padding: 0 10px 10px 10px;
+}
+
+.ml-widget-title .edit-title {
+  font-weight: bold;
+  border-style: none;
+  color: var(--action-color);
+}
+
 .ml-widget-button-container {
   margin: 5px;
 }
@@ -11,9 +63,41 @@
   width: 100%;
   border-style: none;
   padding: 5px;
+  border-radius: 4px;
 }
 
 .ml-widget-button-container .button:hover {
   color: var(--action-background-color);
   background-color: var(--action-color-60);
+}
+
+.ml-widget-list {
+  padding: 0 10px 10px 10px;
+}
+
+.collapsed .ml-widget-list {
+  display: none;
+}
+
+.collapsed.collapsed-visible .ml-widget-list {
+  display: block;
+}
+
+.collapsed-visible {
+  position: relative;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.collapsed-visible .ml-widget-list-container {
+  position: absolute;
+  width: 100%;
+  background-color: var(--widget-background-color);
+  border-left: 1px solid var(--widget-border-color);
+  border-right: 1px solid var(--widget-border-color);
+  border-bottom: 1px solid var(--widget-border-color);
+  left: -1px;
+  box-shadow: 8px 8px 6px var(--box-shadow-color1);
+  border-bottom-left-radius: var(--widget-border-radius);
+  border-bottom-right-radius: var(--widget-border-radius);
 }
