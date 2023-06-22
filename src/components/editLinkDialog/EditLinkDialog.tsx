@@ -1,17 +1,15 @@
 import React, { ChangeEvent, ReactNode, RefObject } from 'react';
-import { EditLinkData } from '../../common/AppUIStateContext';
-import { Link } from '../../model/MyLinks-interface';
+import { EditLinkData, LinkEditedProperties } from '../../common/AppUIStateContext';
 import { DialogProps } from '../modal/Dialog';
 import Modal from '../modal/Modal';
 import './EditLinkDialog.css';
 
 export interface EditLinkDialogProps extends DialogProps {
   data: Readonly<EditLinkData>;
-  onSave: (result: Readonly<EditLinkResult>, editLinkData: Readonly<EditLinkData>) => void;
+  onSave: (editLinkData: EditLinkData) => void;
 }
 
-export type EditLinkResult = Pick<Link, 'label' | 'url' | 'shortcut'>;
-type EditLinkDialogState = EditLinkResult;
+type EditLinkDialogState = LinkEditedProperties;
 
 export class EditLinkDialog extends React.Component<EditLinkDialogProps, EditLinkDialogState> {
   private inputRef: RefObject<HTMLInputElement> = React.createRef();
@@ -40,7 +38,7 @@ export class EditLinkDialog extends React.Component<EditLinkDialogProps, EditLin
   private onClickSave(e: React.MouseEvent<HTMLButtonElement>): void {
     e.preventDefault();
 
-    this.props.onSave(this.state, this.props.data);
+    this.props.onSave({ ...this.props.data, editedProperties: this.state });
     this.onClose();
   }
 

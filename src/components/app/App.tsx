@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react';
 
 import { AppConfig, appConfigClone, AppConfigContext } from '../../common/AppConfigContext';
-import { EditDataType, AppUIState, AppUIStateContext, EditLinkData, isEditLinkData } from '../../common/AppUIStateContext';
+import { AppUIState, AppUIStateContext, EditDataType, EditLinkData, EditWidgetData, isEditLinkData } from '../../common/AppUIStateContext';
 import Config from '../../common/Config';
 import { applyColorToFavicon } from '../../common/Favicon';
 import { isKeyboardEventConsumer } from '../../common/HtmlUtil';
@@ -10,7 +10,7 @@ import { UIInput } from '../../common/UIInput';
 import { MyLinksEvent } from '../../model/Events';
 import { openLink } from '../../model/MyLinks';
 import { Link, MyLinks as MMLinks, Widget } from '../../model/MyLinks-interface';
-import { EditLinkDialog, EditLinkResult } from '../editLinkDialog/EditLinkDialog';
+import { EditLinkDialog } from '../editLinkDialog/EditLinkDialog';
 import { LinkFinderDialog } from '../linkFinderDialog/LinkFinderDialog';
 import { Grid } from '../widgets/Grid';
 import './App.css';
@@ -84,7 +84,7 @@ class Page extends React.Component<unknown, PageState> {
 
   showEditLinkDialog(isOpen: boolean, editLinkData?: EditLinkData): void {
     if (editLinkData?.editType === 'delete') {
-      this.onSaveLink(undefined, editLinkData);
+      this.onSaveLink(editLinkData);
       return;
     }
     this.setState({ isEditLinkOpen: isOpen, editLinkData });
@@ -120,6 +120,8 @@ class Page extends React.Component<unknown, PageState> {
   private onEditData(editData: EditDataType): void {
     if (isEditLinkData(editData)) {
       this.showEditLinkDialog(true, editData);
+    } else {
+      this.onSaveWidget(editData);
     }
   }
 
@@ -129,25 +131,26 @@ class Page extends React.Component<unknown, PageState> {
     });
   }
 
-  private onSaveLink(result: Readonly<EditLinkResult> | undefined, editLinkData: EditLinkData): void {
+  private onSaveLink(editLinkData: EditLinkData): void {
     if (!this.myLinksHolder) {
       return;
     }
     const editType = editLinkData.editType;
     if (editType === 'update' || editType === 'create') {
-      if (result) {
+      const editedProperties = editLinkData.editedProperties;
+      if (editedProperties) {
         if (editType === 'update') {
-          editLinkData.link.label = result.label;
-          editLinkData.link.url = result.url;
-          editLinkData.link.shortcut = result.shortcut;
+          editLinkData.link.label = editedProperties.label;
+          editLinkData.link.url = editedProperties.url;
+          editLinkData.link.shortcut = editedProperties.shortcut;
         } else if (editType === 'create') {
-          editLinkData.link.label = result.label;
-          editLinkData.link.url = result.url;
-          editLinkData.link.shortcut = result.shortcut;
+          editLinkData.link.label = editedProperties.label;
+          editLinkData.link.url = editedProperties.url;
+          editLinkData.link.shortcut = editedProperties.shortcut;
           editLinkData.widget.list.push(editLinkData.link);
         }
       } else {
-        alert(`Link result is mandatory for edit type ${editType}`);
+        alert(`Edited properties are mandatory for edit type ${editType}`);
         return;
       }
     }
@@ -164,6 +167,18 @@ class Page extends React.Component<unknown, PageState> {
     Config.saveData(this.myLinksHolder.myLinks, (myLinks) => this.reloadAll(myLinks));
   }
 
+  private onSaveWidget(editData: EditWidgetData): void {
+    if (!this.myLinksHolder) {
+      return;
+    }
+    if (editData.editType === 'update') {
+      if (editData.editedProperties) {
+        editData.widget.title = editData.editedProperties.title;
+        Config.saveData(this.myLinksHolder.myLinks, (myLinks) => this.reloadAll(myLinks));
+      }
+    }
+  }
+
   renderLinkFinder(): ReactNode {
     if (this.state.isFinderOpen) {
       return <LinkFinderDialog isOpen={this.state.isFinderOpen}
@@ -177,7 +192,7 @@ class Page extends React.Component<unknown, PageState> {
   renderEditLinkDialog(): ReactNode {
     if (this.state.isEditLinkOpen && this.state.editLinkData) {
       return <EditLinkDialog isOpen={this.state.isEditLinkOpen}
-                             onSave={(r, o): void => this.onSaveLink(r, o)}
+                             onSave={(o): void => this.onSaveLink(o)}
                              onClose={(): void => this.showEditLinkDialog(false)}
                              data={this.state.editLinkData}/>;
     }

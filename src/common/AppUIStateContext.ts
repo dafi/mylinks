@@ -1,16 +1,20 @@
 import React from 'react';
 import { Link, Widget } from '../model/MyLinks-interface';
 
-export interface EditData {
+export type LinkEditedProperties = Pick<Link, 'label' | 'url' | 'shortcut'>;
+export type WidgetEditedProperties = Pick<Widget, 'title'>;
+
+export interface EditData<T> {
   position?: number;
   editType: 'create' | 'update' | 'delete';
+  editedProperties?: T;
 }
 
-export interface EditWidgetData extends EditData {
+export interface EditWidgetData extends EditData<WidgetEditedProperties> {
   widget: Widget;
 }
 
-export interface EditLinkData extends EditData {
+export interface EditLinkData extends EditData<LinkEditedProperties> {
   link: Link;
   widget: Widget;
 }
