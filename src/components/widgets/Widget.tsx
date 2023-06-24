@@ -1,11 +1,13 @@
 import React, { ReactNode, RefObject } from 'react';
 import { AppUIStateContext } from '../../common/AppUIStateContext';
-import { debounce } from '../../common/debounce';
 import { MyLinksEvent } from '../../model/Events';
 import { Widget as MLWidget } from '../../model/MyLinks-interface';
+import { InputText } from '../inputText/InputText';
 import { Link } from './Link';
 import './Widget.css';
 import { WidgetToolbar, WidgetToolbarActionType } from './WidgetToolbar';
+
+const debounceTimeout = 1500;
 
 export interface WidgetProps {
   value: MLWidget;
@@ -24,8 +26,7 @@ export class Widget extends React.Component<WidgetProps, WidgetState> {
   static contextType = AppUIStateContext;
   context!: React.ContextType<typeof AppUIStateContext>;
   private startCollapsed = false;
-
-  private inputRef: RefObject<HTMLInputElement> = React.createRef();
+  private inputRef: RefObject<InputText> = React.createRef();
 
   constructor(props: WidgetProps) {
     super(props);
@@ -87,22 +88,23 @@ export class Widget extends React.Component<WidgetProps, WidgetState> {
     }
   }
 
-  onChangeTitle(e: React.ChangeEvent<HTMLInputElement>): void {
-    if (this.context.onEdit) {
-      const widget = this.props.value;
+  private saveTitle(title: string): void {
+    const widget = this.props.value;
+    if (this.context.onEdit && widget.title !== title) {
       this.context.onEdit({
         widget,
         editType: 'update',
-        editedProperties: { title: e.target.value }
+        editedProperties: { title }
       });
     }
   }
 
   private onKeydownTitle(e: React.KeyboardEvent<HTMLInputElement>): void {
     if (e.key === 'Escape' || e.key === 'Enter') {
-      this.setState({
-        editable: false
-      });
+      this.onToggleEdit();
+      if (this.inputRef.current?.value) {
+        this.saveTitle(this.inputRef.current?.value);
+      }
     }
   }
 
@@ -121,25 +123,17 @@ export class Widget extends React.Component<WidgetProps, WidgetState> {
     const widget = this.props.value;
 
     if (this.state.editable) {
-      const waitMS = 1500;
-      const returnedFunction = debounce(a => {
-        this.onChangeTitle(a as React.ChangeEvent<HTMLInputElement>);
-      }, waitMS);
-
-      return <input type="text"
-                    ref={this.inputRef}
-                    className="edit-title"
-                    defaultValue={widget.title}
-                    onKeyDown={(e): void => this.onKeydownTitle(e)}
-                    onChange={returnedFunction}/>;
+      return <InputText
+        ref={this.inputRef}
+        autofocus={true}
+        className="edit-title"
+        debounce={debounceTimeout}
+        defaultValue={widget.title}
+        onKeyDown={(e): void => this.onKeydownTitle(e)}
+        onText={(v): void => this.saveTitle(v)}
+      />;
     }
     return widget.title;
-  }
-
-  componentDidUpdate(): void {
-    if (this.state.editable) {
-      this.inputRef.current?.focus();
-    }
   }
 
   render(): ReactNode {
