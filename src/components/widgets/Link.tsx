@@ -34,13 +34,13 @@ export class Link extends React.Component<LinkProps, LinkState> {
   private renderEditAction(): ReactNode | null {
     if (this.props.editable) {
       return (
-        <span>
-          <i className="fas fa-trash-alt edit-actions danger"
+        <>
+          <i className="fas fa-trash-alt edit-actions danger text-action-secondary"
              title="Delete"
              onClick={(e): void => this.onEdit(e, 'delete')}/>
-          <i className="fa fa-edit edit-actions"
+          <i className="fa fa-edit edit-actions text-action-secondary"
              title="Edit" onClick={(e): void => this.onEdit(e, 'update')}/>
-        </span>
+        </>
       );
     }
     return null;
