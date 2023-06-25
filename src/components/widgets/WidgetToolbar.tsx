@@ -32,7 +32,7 @@ export class WidgetToolbar extends React.Component<WidgetToolbarProps, unknown> 
         <i className={`${editClassNames} icon`}
            style={editStyle}
            onClick={(): void => this.props.action({ target: 'edit' })}
-           title="Allow Edit"/>
+           title="Toggle Edit Mode"/>
         <i className="fa fa-external-link-alt icon" onClick={(): void => openAllLinks(this.props.widget)} title="Open all links"/>
         <i className={`${collapseIcon} icon`} onClick={(): void => this.props.action({ target: 'collapse' })} title={collapseTitle}/>
       </span>
