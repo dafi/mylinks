@@ -1,6 +1,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap');
 
 :root {
+  --font-xm: 0.75rem;
+  --font-sm: 0.875rem;
+  --font-xl: 1.25rem;
+  --font-2xl: 2rem;
+
   --app-backgrond-color: #666;
   --box-shadow-color1: rgba(0, 0, 0, .2);
   --box-shadow-color2: rgba(255, 255, 255, .7);
@@ -10,22 +15,12 @@
   --link-label-color: #444;
   --link-key-background: #eee;
   --link-key-color: #333;
-  --link-label-font-size: 0.875em;
   --link-underline-color: #999;
   --link-key-border-color: #b4b4b4;
-
-  --link-selector-input-font-size: 2em;
-  --link-selector-input-color: blue;
-  --link-selector-selected-item-background-color: blue;
-  --link-selector-selected-item-text-color: #fff;
-  --link-selector-hover-item-background-color: lightgray;
-  --link-selector-hover-item-text-color: #000;
-  --link-selector-image-background-color: #fff;
 
   --favicon-color: blue;
 
   --widget-title-color: #000;
-  --widget-title-font-size: 0.875em;
   --widget-background-color: #fff;
   --widget-border-color: gray;
   --widget-border-radius: 6px;
@@ -38,11 +33,14 @@
   --dialog-border-color: #000;
   --dialog-backdrop-color: rgba(0, 0, 0, 0.3);
 
-  --action-color-disabled: #aaa;
-  --action-background-color-disabled: #fff;
-  --action-color: #577be7;
-  --action-background-color: #fff;
-  --action-color-60: rgba(66, 133, 244, 0.6);
+  --color-white: #fff;
+  --color-black: #000;
+
+  --action-color-primary: #577be7;
+  --action-color-primary-60: rgba(66, 133, 244, 0.6);
+
+  --action-color-secondary: #aaa;
+  --action-color-secondary-60: rgba(160, 160, 160, 0.6);
 }
 
 body {
@@ -53,6 +51,38 @@ body {
 .ml-wrapper {
   padding: 5px;
   margin: 5px;
+}
+
+.text-white {
+  color: var(--color-white);
+}
+
+.text-action-primary {
+  color: var(--action-color-primary);
+}
+
+.text-action-secondary {
+  color: var(--action-color-secondary);
+}
+
+.bg-action-primary {
+  background-color: var(--action-color-primary);
+}
+
+.bg-action-secondary {
+  background-color: var(--action-color-secondary);
+}
+
+.bg-white {
+  background-color: var(--color-white);
+}
+
+.hover.bg-action-primary:hover {
+  background-color: var(--action-color-primary-60);
+}
+
+.hover.bg-action-secondary:hover {
+  background-color: var(--action-color-secondary-60);
 }
 
 .ml-rows {

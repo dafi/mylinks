@@ -24,7 +24,7 @@
   justify-content: space-between;
   align-items: normal;
   align-content: normal;
-  font-size: var(--link-label-font-size);
+  font-size: var(--font-sm);
 }
 
 .ml-link-items-container .left {
@@ -63,7 +63,7 @@
   color: var(--link-key-color, #333);
   border: 1px solid var(--link-key-border-color);
   box-shadow: 0 1px 1px var(--box-shadow-color1), 0 2px 0 0 var(--box-shadow-color2) inset;
-  font-size: 1.1em;
+  font-size: var(--font-xm);
   font-weight: 700;
   line-height: 1;
   padding: 0 4px;

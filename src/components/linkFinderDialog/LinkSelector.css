@@ -5,8 +5,8 @@
 .link-selector .input-box {
   width: 100%;
   border: 0;
-  font-size: var(--link-selector-input-font-size);
-  color: var(--link-selector-input-color);
+  font-size: var(--font-2xl);
+  color: var(--action-color-primary);
 }
 
 .link-selector .input-box:focus {
@@ -32,13 +32,13 @@
 }
 
 .link-selector li:hover {
-  background-color: var(--link-selector-hover-item-background-color);
-  color: var(--link-selector-hover-item-text-color);
+  background-color: var(--action-color-secondary);
+  color: var(--color-black);
 }
 
 .link-selector .selected {
-  background: var(--link-selector-selected-item-background-color);
-  color: var(--link-selector-selected-item-text-color);
+  background: var(--action-color-primary);
+  color: var(--color-white);
 }
 
 .link-selector .input-container {
@@ -50,12 +50,12 @@
 .link-selector .icon {
   min-width: 50px;
   text-align: center;
-  font-size: var(--link-selector-input-font-size);
-  color: var(--link-selector-input-color);
+  font-size: var(--font-2xl);
+  color: var(--action-color-primary);
 }
 
 .link-selector .list-image {
-  background: var(--link-selector-image-background-color);
+  background: var(--color-white);
   border-radius: 50%;
   display: inline-block;
   padding: 5px;

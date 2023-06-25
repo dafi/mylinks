@@ -35,7 +35,7 @@
   color: var(--widget-title-color);
   display: inline;
   flex-grow: 1;
-  font-size: var(--widget-title-font-size);
+  font-size: var(--font-sm);
   line-height: 34px;
   margin: 0;
   overflow: hidden;
@@ -47,7 +47,7 @@
 .ml-widget-title .edit-title {
   font-weight: bold;
   border-style: none;
-  color: var(--action-color);
+  color: var(--action-color-primary);
 }
 
 .ml-widget-button-container {
@@ -55,8 +55,8 @@
 }
 
 .ml-widget-button-container .button {
-  color: var(--action-background-color);
-  background-color: var(--action-color);
+  color: var(--color-white);
+  background-color: var(--action-color-primary);
   cursor: pointer;
   display: block;
   margin: 5px auto;
@@ -67,8 +67,8 @@
 }
 
 .ml-widget-button-container .button:hover {
-  color: var(--action-background-color);
-  background-color: var(--action-color-60);
+  color: var(--color-white);
+  background-color: var(--action-color-primary-60);
 }
 
 .ml-widget-list {
