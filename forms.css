@@ -53,6 +53,11 @@
   padding: 15px;
 }
 
+.flex-outer li:last-child {
+  border-top: 1px solid var(--action-color-secondary);
+  padding-top: 10px;
+}
+
 .flex-outer li .toolbar {
   margin-left: auto;
 }
