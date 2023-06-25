@@ -95,7 +95,14 @@ export class EditLinkDialog extends React.Component<EditLinkDialogProps, EditLin
                   placeholder="press the key combination to assign"/>
               </li>
               <li>
-                <button onClick={(e): void => this.onClickSave(e)}>Save</button>
+                <div className="toolbar">
+                  <button
+                    className="text-white bg-action-primary hover"
+                    onClick={(e): void => this.onClickSave(e)}>Save</button>
+                  <button
+                    className="text-white bg-action-secondary hover"
+                    onClick={(): void => this.onClose()}>Cancel</button>
+                </div>
               </li>
             </ul>
           </form>
