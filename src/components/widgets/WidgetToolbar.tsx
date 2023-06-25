@@ -25,10 +25,14 @@ export class WidgetToolbar extends React.Component<WidgetToolbarProps, unknown> 
     const editStyle: React.CSSProperties = {
       color: this.props.editable ? 'var(--action-color)' : ''
     };
+    const editClassNames = this.props.editable ? 'fas fa-toggle-on' : 'fas fa-toggle-off';
 
     return (
       <span className={`ml-toolbar ${classNames}`}>
-        <i className="fa fa-edit icon" style={editStyle} onClick={(): void => this.props.action({ target: 'edit' })} title="Edit"/>
+        <i className={`${editClassNames} icon`}
+           style={editStyle}
+           onClick={(): void => this.props.action({ target: 'edit' })}
+           title="Allow Edit"/>
         <i className="fa fa-external-link-alt icon" onClick={(): void => openAllLinks(this.props.widget)} title="Open all links"/>
         <i className={`${collapseIcon} icon`} onClick={(): void => this.props.action({ target: 'collapse' })} title={collapseTitle}/>
       </span>
