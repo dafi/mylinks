@@ -1,0 +1,20 @@
+.ml-toolbar {
+  float: right;
+  line-height: 34px;
+  cursor: pointer;
+  display: none;
+}
+
+.ml-toolbar .icon {
+  padding-right: 8px;
+  color: var(--widget-toolbar-icon-color);
+}
+
+.ml-toolbar .icon:hover {
+  animation-name: pulse;
+  animation-duration: 0.7s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+

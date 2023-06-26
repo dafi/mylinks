@@ -14,7 +14,7 @@ import { openLink } from '../../model/MyLinks';
 import { Link, MyLinks as MMLinks, Widget } from '../../model/MyLinks-interface';
 import { EditLinkDialog } from '../editLinkDialog/EditLinkDialog';
 import { LinkFinderDialog } from '../linkFinderDialog/LinkFinderDialog';
-import { Grid } from '../widgets/Grid';
+import { Grid } from '../widgets/grid/Grid';
 import './App.css';
 import { AppToolbar, AppToolbarActionType } from './AppToolbar';
 import './toolbar-icon.css';

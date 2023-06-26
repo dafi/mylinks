@@ -2,7 +2,7 @@ import React, { ChangeEvent, ReactNode, RefObject } from 'react';
 import { LinkSearch, LinkSearchResult } from '../../common/LinkSearch';
 import { Link, Widget } from '../../model/MyLinks-interface';
 import './LinkSelector.css';
-import { LinkIcon } from '../widgets/LinkIcon';
+import { LinkIcon } from '../widgets/linkIcon/LinkIcon';
 import { AppConfigContext } from '../../contexts/AppConfigContext';
 
 export interface LinkSelectorProps {

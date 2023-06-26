@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react';
-import { Widget as MLWidget } from '../../model/MyLinks-interface';
-import { Column } from './Column';
+import { Widget as MLWidget } from '../../../model/MyLinks-interface';
+import { Column } from '../column/Column';
 
 export interface GridProps {
   columns: [MLWidget[]];

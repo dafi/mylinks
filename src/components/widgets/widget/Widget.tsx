@@ -1,11 +1,11 @@
 import React, { ReactNode, RefObject } from 'react';
-import { AppUIStateContext } from '../../contexts/AppUIStateContext';
-import { MyLinksEvent } from '../../model/Events';
-import { Widget as MLWidget } from '../../model/MyLinks-interface';
-import { InputText } from '../inputText/InputText';
-import { Link } from './Link';
+import { AppUIStateContext } from '../../../contexts/AppUIStateContext';
+import { MyLinksEvent } from '../../../model/Events';
+import { Widget as MLWidget } from '../../../model/MyLinks-interface';
+import { InputText } from '../../inputText/InputText';
+import { Link } from '../link/Link';
 import './Widget.css';
-import { WidgetToolbar, WidgetToolbarActionType } from './WidgetToolbar';
+import { WidgetToolbar, WidgetToolbarActionType } from '../widgetToolbar/WidgetToolbar';
 
 const debounceTimeout = 1500;
 

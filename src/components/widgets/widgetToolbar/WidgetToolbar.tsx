@@ -1,7 +1,8 @@
 import React, { ReactNode } from 'react';
-import { MyLinkActionCallback } from '../../model/Events';
-import { openAllLinks } from '../../model/MyLinks';
-import { Widget as MLWidget } from '../../model/MyLinks-interface';
+import { MyLinkActionCallback } from '../../../model/Events';
+import { openAllLinks } from '../../../model/MyLinks';
+import { Widget as MLWidget } from '../../../model/MyLinks-interface';
+import './widgetToolbar.css';
 
 export type WidgetToolbarActionType = 'collapse' | 'edit';
 
@@ -23,7 +24,7 @@ export class WidgetToolbar extends React.Component<WidgetToolbarProps, unknown> 
     const collapseTitle = this.props.collapsed ? 'Expand content' : 'Collapse content';
     const classNames = this.props.classNames ?? '';
     const editStyle: React.CSSProperties = {
-      color: this.props.editable ? 'var(--action-color)' : ''
+      color: this.props.editable ? 'var(--action-color-primary)' : ''
     };
     const editClassNames = this.props.editable ? 'fas fa-toggle-on' : 'fas fa-toggle-off';
 
