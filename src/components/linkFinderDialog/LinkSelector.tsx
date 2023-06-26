@@ -3,7 +3,7 @@ import { LinkSearch, LinkSearchResult } from '../../common/LinkSearch';
 import { Link, Widget } from '../../model/MyLinks-interface';
 import './LinkSelector.css';
 import { LinkIcon } from '../widgets/LinkIcon';
-import { AppConfigContext } from '../../common/AppConfigContext';
+import { AppConfigContext } from '../../contexts/AppConfigContext';
 
 export interface LinkSelectorProps {
   widgets: [Widget[]] | undefined;

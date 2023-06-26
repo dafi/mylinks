@@ -1,5 +1,5 @@
 import React, { ReactNode, RefObject } from 'react';
-import { AppUIStateContext } from '../../common/AppUIStateContext';
+import { AppUIStateContext } from '../../contexts/AppUIStateContext';
 import { MyLinksEvent } from '../../model/Events';
 import { Widget as MLWidget } from '../../model/MyLinks-interface';
 import { InputText } from '../inputText/InputText';

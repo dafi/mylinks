@@ -1,5 +1,5 @@
 import React, { ChangeEvent, ReactNode, RefObject } from 'react';
-import { EditLinkData, LinkEditedProperties } from '../../common/AppUIStateContext';
+import { EditLinkData, LinkEditedProperties } from '../../model/EditData-interface';
 import { DialogProps } from '../modal/Dialog';
 import Modal from '../modal/Modal';
 import './EditLinkDialog.css';

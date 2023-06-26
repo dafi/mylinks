@@ -1,5 +1,6 @@
 import React, { ReactNode } from 'react';
-import { AppUIStateContext, EditLinkData } from '../../common/AppUIStateContext';
+import { AppUIStateContext } from '../../contexts/AppUIStateContext';
+import { EditLinkData } from '../../model/EditData-interface';
 import { Link as MLLink, Widget } from '../../model/MyLinks-interface';
 import './Edit.css';
 import './Link.css';
