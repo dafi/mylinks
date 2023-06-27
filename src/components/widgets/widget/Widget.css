@@ -75,11 +75,11 @@
   padding: 0 10px 10px 10px;
 }
 
-.collapsed .ml-widget-list {
+.collapsed .ml-widget-control-box {
   display: none;
 }
 
-.collapsed.collapsed-visible .ml-widget-list {
+.collapsed.collapsed-visible .ml-widget-control-box {
   display: block;
 }
 
@@ -89,7 +89,7 @@
   border-bottom-right-radius: 0;
 }
 
-.collapsed-visible .ml-widget-list-container {
+.collapsed-visible .ml-widget-container {
   position: absolute;
   width: 100%;
   background-color: var(--widget-background-color);

@@ -161,10 +161,12 @@ export class Widget extends React.Component<WidgetProps, WidgetState> {
             action={(e): void => this.onClickToolbar(e)}
             classNames={'hover-toolbar'}/>
         </div>
-        <div className="ml-widget-list-container">
-          <ul className="ml-widget-list">{items}</ul>
+        <div className="ml-widget-container">
+          <div className="ml-widget-control-box">
+            <ul className="ml-widget-list">{items}</ul>
+            {this.renderButtons()}
+          </div>
         </div>
-        {this.renderButtons()}
       </div>);
   }
 }
