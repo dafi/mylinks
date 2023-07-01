@@ -2,9 +2,13 @@
   flex: 1;
   border: 1px solid var(--widget-border-color);
   margin: 5px 10px;
-  background-color: var(--widget-background-color, #ff0000);
+  background-color: color-mix(in srgb, var(--widget-background-color, #ff0000) 93%, transparent);
   box-shadow: 8px 8px 6px var(--box-shadow-color1);
   border-radius: var(--widget-border-radius);
+}
+
+.ml-widget:hover {
+  background-color:  var(--widget-background-color, #ff0000);
 }
 
 .ml-widget a:focus {
