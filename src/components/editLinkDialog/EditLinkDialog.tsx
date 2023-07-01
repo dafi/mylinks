@@ -9,15 +9,17 @@ export interface EditLinkDialogProps extends DialogProps {
   onSave: (editLinkData: EditLinkData) => void;
 }
 
-type EditLinkDialogState = LinkEditedProperties;
+// https://stackoverflow.com/questions/57773734/how-to-use-partially-the-computed-property-name-on-a-type-definition/57774343#57774343
+// compound properties must be strings so, we allow to index elements by string
+type EditLinkDialogState = LinkEditedProperties & Record<string, string | undefined>;
 
 export class EditLinkDialog extends React.Component<EditLinkDialogProps, EditLinkDialogState> {
   private inputRef: RefObject<HTMLInputElement> = React.createRef();
 
   constructor(props: EditLinkDialogProps) {
     super(props);
-    const { label, url, shortcut } = props.data.link;
-    this.state = { label, url, shortcut };
+    const { label, url, shortcut, favicon } = props.data.link;
+    this.state = { label, url, shortcut, favicon };
   }
 
   onClose(): void {
@@ -42,20 +44,15 @@ export class EditLinkDialog extends React.Component<EditLinkDialogProps, EditLin
     this.onClose();
   }
 
-  onChangeLabel(e: ChangeEvent<HTMLInputElement>): void {
-    this.setState({ label: e.target.value });
-  }
-
-  onChangeUrl(e: ChangeEvent<HTMLInputElement>): void {
-    this.setState({ url: e.target.value });
-  }
-
-  onChangeShortcut(e: ChangeEvent<HTMLInputElement>): void {
-    this.setState({ shortcut: e.target.value });
+  onChange(e: ChangeEvent<HTMLInputElement>): void {
+    const action = e.target.dataset.action;
+    if (action) {
+      this.setState({ [action]: e.target.value });
+    }
   }
 
   render(): ReactNode {
-    const { label, url, shortcut } = this.state;
+    const { label, url, shortcut, favicon } = this.state;
 
     return (
       <Modal isOpen={this.props.isOpen}
@@ -68,30 +65,39 @@ export class EditLinkDialog extends React.Component<EditLinkDialogProps, EditLin
               <li>
                 <label htmlFor="link-label">Label</label>
                 <input
-                  id="link-label"
+                  data-action='label'
                   ref={this.inputRef}
                   type="text"
                   defaultValue={label}
-                  onChange={(e): void => this.onChangeLabel(e)}
+                  onChange={(e): void => this.onChange(e)}
                   placeholder="Videos"
                 />
               </li>
               <li>
                 <label htmlFor="link-url">Url</label>
                 <input
-                  id="link-url"
+                  data-action="url"
                   type="text"
                   defaultValue={url}
-                  onChange={(e): void => this.onChangeUrl(e)}
+                  onChange={(e): void => this.onChange(e)}
                   placeholder="https://youtube.com"/>
+              </li>
+              <li>
+                <label htmlFor="shortcut">Favicon URL</label>
+                <input
+                  data-action="favicon"
+                  type="text"
+                  defaultValue={favicon}
+                  onChange={(e): void => this.onChange(e)}
+                  placeholder="favicon url"/>
               </li>
               <li>
                 <label htmlFor="shortcut">Shortcut</label>
                 <input
-                  id="shortcut"
+                  data-action="shortcut"
                   type="text"
                   defaultValue={shortcut}
-                  onChange={(e): void => this.onChangeShortcut(e)}
+                  onChange={(e): void => this.onChange(e)}
                   placeholder="press the key combination to assign"/>
               </li>
               <li>

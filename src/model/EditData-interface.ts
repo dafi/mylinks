@@ -6,7 +6,7 @@ export interface EditData<T> {
   editedProperties?: T;
 }
 
-export type LinkEditedProperties = Pick<Link, 'label' | 'url' | 'shortcut'>;
+export type LinkEditedProperties = Pick<Link, 'label' | 'url' | 'shortcut' | 'favicon'>;
 export type WidgetEditedProperties = Pick<Widget, 'title'>;
 
 export interface EditWidgetData extends EditData<WidgetEditedProperties> {
