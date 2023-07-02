@@ -100,7 +100,9 @@ export class Widget extends React.Component<WidgetProps, WidgetState> {
   }
 
   private onKeydownTitle(e: React.KeyboardEvent<HTMLInputElement>): void {
-    if (e.key === 'Escape' || e.key === 'Enter') {
+    if (e.key === 'Escape') {
+      this.onToggleEdit();
+    } else if (e.key === 'Enter') {
       this.onToggleEdit();
       if (this.inputRef.current?.value) {
         this.saveTitle(this.inputRef.current?.value);
