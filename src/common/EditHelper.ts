@@ -37,31 +37,38 @@ function prepareLinkForSave(editData: EditLinkData): boolean {
   return canSave;
 }
 
-function applyLinkProperties(edited: LinkEditedProperties, link: Link): void {
+function applyLinkProperties(edited: LinkEditedProperties, link: Link): boolean {
+  let modified = false;
   for (const p in edited) {
     if (Object.hasOwn(edited, p)) {
       const value = edited[p as keyof LinkEditedProperties];
-      if (value) {
-        link[p as keyof Link] = value;
-      } else {
-        delete link[p as keyof Link];
+      const propName = p as keyof Link;
+      if (link[propName] !== value) {
+        modified = true;
+        if (value) {
+          link[propName] = value;
+        } else {
+          delete link[propName];
+        }
       }
     }
   }
+  return modified;
 }
 
 
 function createLink(editData: EditLinkData): boolean {
-  applyLinkProperties(safeEditedProperties(editData), editData.link);
-  editData.widget.list.push(editData.link);
+  const modified = applyLinkProperties(safeEditedProperties(editData), editData.link);
 
-  return true;
+  if (modified) {
+    editData.widget.list.push(editData.link);
+  }
+
+  return modified;
 }
 
 function updateLink(editData: EditLinkData): boolean {
-  applyLinkProperties(safeEditedProperties(editData), editData.link);
-
-  return true;
+  return applyLinkProperties(safeEditedProperties(editData), editData.link);
 }
 
 function deleteLink(editData: EditLinkData): boolean {
