@@ -6,7 +6,7 @@ import { LinkSelector } from './LinkSelector';
 
 export interface LinkFinderDialogProps extends DialogProps {
   onLinkSelected: (link: Link) => void;
-  widgets?: [Widget[]];
+  widgets?: Widget[][];
 }
 
 export class LinkFinderDialog extends React.Component<LinkFinderDialogProps, unknown> {

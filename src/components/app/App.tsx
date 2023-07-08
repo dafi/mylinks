@@ -27,7 +27,7 @@ const STORAGE_PREF_HIDE_SHORTCUTS = 'hideShortcuts';
 declare const window: any;
 
 interface PageState {
-  columns: [Widget[]];
+  columns: Widget[][];
   config: AppConfig;
   hasShortcuts: boolean;
   uiState: AppUIState;

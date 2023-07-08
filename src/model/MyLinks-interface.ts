@@ -16,7 +16,7 @@ export interface Link {
 export interface Widget {
   id: string;
   title: string;
-  list: [Link];
+  list: Link[];
 }
 
 export interface Config {
@@ -25,7 +25,7 @@ export interface Config {
 
 export interface MyLinks {
   theme?: Theme;
-  columns: [Widget[]];
+  columns: Widget[][];
   config?: Config;
 }
 

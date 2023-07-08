@@ -3,7 +3,7 @@ import { Widget as MLWidget } from '../../../model/MyLinks-interface';
 import { Column } from '../column/Column';
 
 export interface GridProps {
-  columns: [MLWidget[]];
+  columns: MLWidget[][];
 }
 
 export class Grid extends React.Component<GridProps, unknown> {

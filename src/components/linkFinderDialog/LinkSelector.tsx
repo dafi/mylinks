@@ -6,7 +6,7 @@ import { LinkIcon } from '../widgets/linkIcon/LinkIcon';
 import { AppConfigContext } from '../../contexts/AppConfigContext';
 
 export interface LinkSelectorProps {
-  widgets: [Widget[]] | undefined;
+  widgets: Widget[][] | undefined;
   onSelected: (link: Link) => void;
 }
 
