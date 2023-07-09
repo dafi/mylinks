@@ -10,6 +10,7 @@ export interface LinkProps {
   link: MLLink;
   widget: Widget;
   editable: boolean;
+  draggable?: boolean;
 }
 
 export interface LinkState {
@@ -77,12 +78,14 @@ export class Link extends React.Component<LinkProps, LinkState> {
 
   render(): ReactNode {
     const link = this.props.link;
+    const draggable = this.props.draggable === undefined ? true : this.props.draggable;
 
     return (
       <div className="ml-link-container">
         <div className="ml-link-items-container">
           <div className="left">
             <a href={link.url} target="_blank" rel="noopener noreferrer"
+               draggable={draggable}
                onMouseEnter={(): void => this.setMouseOver(true)}
                onMouseLeave={(): void => this.setMouseOver(false)}>
               <div className="content">

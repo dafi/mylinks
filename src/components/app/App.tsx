@@ -121,7 +121,11 @@ class Page extends React.Component<unknown, PageState> {
 
   private onEditData(editData: EditDataType): void {
     if (isEditLinkData(editData)) {
-      this.showEditLinkDialog(true, editData);
+      if (editData.editType === 'update' || editData.editType === 'create') {
+        this.showEditLinkDialog(true, editData);
+      } else {
+        this.onSave(editData);
+      }
     } else {
       this.onSave(editData);
     }

@@ -4,8 +4,9 @@ import { MyLinksEvent } from '../../../model/Events';
 import { Widget as MLWidget } from '../../../model/MyLinks-interface';
 import { InputText } from '../../inputText/InputText';
 import { Link } from '../link/Link';
-import './Widget.css';
 import { WidgetToolbar, WidgetToolbarActionType } from '../widgetToolbar/WidgetToolbar';
+import './Widget.css';
+import { DraggableListItem } from './DraggableListItem';
 
 const debounceTimeout = 1500;
 
@@ -138,15 +139,36 @@ export class Widget extends React.Component<WidgetProps, WidgetState> {
     return widget.title;
   }
 
+  onDrop(sourceId: string, destId: string): void {
+    const links = this.props.value.list;
+    const fromIndex = links.findIndex(l => l.url === sourceId);
+    const toIndex = links.findIndex(l => l.url === destId);
+    if (this.context.onEdit && fromIndex >= 0 && toIndex >= 0) {
+      this.context.onEdit({
+        link: links[fromIndex],
+        editType: 'move',
+        widget: this.props.value,
+        position: { fromIndex, toIndex }
+      });
+    }
+  }
+
   render(): ReactNode {
     const widget = this.props.value;
     const editable = this.state.editable;
-    const items = widget.list.map(v => <li key={v.url}>
-      <Link
-        link={v}
-        widget={widget}
-        editable={editable}/>
-    </li>);
+    const items = widget.list.map(v =>
+      <DraggableListItem
+        key={v.url}
+        id={v.url}
+        draggable={editable}
+        onDrop={(s, d): void => this.onDrop(s, d)}>
+        <Link
+          link={v}
+          draggable={!editable}
+          widget={widget}
+          editable={editable}/>
+      </DraggableListItem>);
+
     const cls = this.cssExtraClasses();
 
     return (

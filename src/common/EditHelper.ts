@@ -1,5 +1,6 @@
 import { EditData, EditDataType, EditLinkData, EditWidgetData, LinkEditedProperties } from '../model/EditData-interface';
 import { Link } from '../model/MyLinks-interface';
+import { move } from './ArrayUtil';
 
 export function isEditLinkData(editData: EditDataType): editData is EditLinkData {
   return (editData as EditLinkData).link !== undefined;
@@ -23,18 +24,16 @@ function safeEditedProperties<T>(editData: EditData<T>): T {
 }
 
 function prepareLinkForSave(editData: EditLinkData): boolean {
-  let canSave = false;
-  const editType = editData.editType;
-
-  if (editType === 'update') {
-    canSave = updateLink(editData);
-  } else if (editType === 'create') {
-    canSave = createLink(editData);
-  } else if (editType === 'delete') {
-    canSave = deleteLink(editData);
+  switch (editData.editType) {
+    case 'create':
+      return createLink(editData);
+    case 'update':
+      return updateLink(editData);
+    case 'delete':
+      return deleteLink(editData);
+    case 'move':
+      return moveLink(editData);
   }
-
-  return canSave;
 }
 
 function applyLinkProperties(edited: LinkEditedProperties, link: Link): boolean {
@@ -80,6 +79,17 @@ function deleteLink(editData: EditLinkData): boolean {
     }
   }
   return response;
+}
+
+function moveLink(editData: EditLinkData): boolean {
+  if (editData.position) {
+    const { fromIndex, toIndex } = editData.position;
+    if (fromIndex >= 0 && toIndex >= 0) {
+      editData.widget.list = move(editData.widget.list, fromIndex, toIndex);
+      return true;
+    }
+  }
+  return false;
 }
 
 function prepareWidgetForSave(editData: EditWidgetData): boolean {

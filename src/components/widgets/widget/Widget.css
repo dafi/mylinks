@@ -11,7 +11,8 @@
   background-color:  var(--widget-background-color, #ff0000);
 }
 
-.ml-widget a:focus {
+.ml-widget li[draggable=false] a:focus,
+.ml-widget li:not([draggable]) a:focus {
   outline: 0;
   font-weight: bold;
 }
@@ -23,8 +24,16 @@
   margin: 0;
 }
 
+.ml-widget li.dragging {
+  opacity: 0.5;
+}
+
 .ml-widget li {
   margin-bottom: 2px;
+}
+
+li.over {
+  border-top: 2px solid var(--action-color-primary);
 }
 
 .ml-widget:hover .hover-toolbar {

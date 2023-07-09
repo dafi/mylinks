@@ -4,16 +4,16 @@
   width: 100%;
 }
 
-.ml-link-container:after {
+.ml-link-container a[draggable=true]:after {
   content: "";
   display: block;
   width: 0;
   height: 2px;
   transition: width .3s;
-  background: var(--link-underline-color);
+  background-color: var(--link-underline-color);
 }
 
-.ml-link-container:hover:after {
+.ml-link-container a[draggable=true]:hover:after {
   width: 100%;
 }
 

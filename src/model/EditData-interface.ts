@@ -1,8 +1,9 @@
 import { Link, Widget } from './MyLinks-interface';
 
+export type EditType = 'create' | 'update' | 'delete' | 'move';
+
 export interface EditData<T> {
-  position?: number;
-  editType: 'create' | 'update' | 'delete';
+  editType: EditType;
   editedProperties?: T;
 }
 
@@ -16,6 +17,7 @@ export interface EditWidgetData extends EditData<WidgetEditedProperties> {
 export interface EditLinkData extends EditData<LinkEditedProperties> {
   link: Link;
   widget: Widget;
+  position?: { fromIndex: number; toIndex: number };
 }
 
 export type EditDataType = EditLinkData | EditWidgetData;
