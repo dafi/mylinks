@@ -29,8 +29,13 @@ export interface MyLinks {
   config?: Config;
 }
 
+export interface ShortcutUsage {
+  type: 'system' | 'user';
+  links: Link[];
+}
+
 export interface MyLinksLookup {
-  findLinksByShortcut(shortcut: string): Link[];
+  findShortcutUsage(shortcut: string): ShortcutUsage;
   findWidgetById(widgetId: string): Widget | undefined;
   findWidgetByLinkId(linkId: string): Widget | undefined;
 }

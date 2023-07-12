@@ -67,7 +67,7 @@ export class UIInput {
 
   private findLinkByShortcut(): Link | null {
     if (this.myLinksLookup) {
-      const arr = this.myLinksLookup.findLinksByShortcut(this.buffer);
+      const arr = this.myLinksLookup.findShortcutUsage(this.buffer).links;
 
       if (arr.length === 0) {
         // not found
