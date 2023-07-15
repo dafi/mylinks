@@ -1,17 +1,15 @@
 import React, { ReactNode } from 'react';
-
-import { AppConfig, appConfigClone, AppConfigContext } from '../../contexts/AppConfigContext';
-import { AppUIState, AppUIStateContext } from '../../contexts/AppUIStateContext';
 import Config from '../../common/Config';
 import { isEditLinkData, prepareForSave } from '../../common/EditHelper';
-import { applyColorToFavicon } from '../../common/Favicon';
 import { isKeyboardEventConsumer } from '../../common/HtmlUtil';
-import { MyLinksHolder } from '../../common/MyLinksHolder';
 import { UIInput } from '../../common/UIInput';
+import { AppConfigContextProvider } from '../../contexts/AppConfigContextProvider';
+
+import { AppUIState, AppUIStateContext } from '../../contexts/AppUIStateContext';
 import { EditDataType, EditLinkData, EditWidgetData } from '../../model/EditData-interface';
 import { MyLinksEvent } from '../../model/Events';
 import { openLink } from '../../model/MyLinks';
-import { Link, MyLinks as MMLinks, Widget } from '../../model/MyLinks-interface';
+import { Link, MyLinks as MMLinks } from '../../model/MyLinks-interface';
 import { EditLinkDialog } from '../editLinkDialog/EditLinkDialog';
 import { LinkFinderDialog } from '../linkFinderDialog/LinkFinderDialog';
 import { Grid } from '../widgets/grid/Grid';
@@ -27,9 +25,7 @@ const STORAGE_PREF_HIDE_SHORTCUTS = 'hideShortcuts';
 declare const window: any;
 
 interface PageState {
-  columns: Widget[][];
-  config: AppConfig;
-  hasShortcuts: boolean;
+  myLinks?: MMLinks;
   uiState: AppUIState;
   isFinderOpen: boolean;
   isEditLinkOpen?: boolean;
@@ -37,16 +33,13 @@ interface PageState {
 }
 
 class Page extends React.Component<unknown, PageState> {
-  private myLinksHolder?: MyLinksHolder;
-
   constructor(props: unknown) {
     super(props);
-    const config = appConfigClone();
     const uiState: AppUIState = {
       hideShortcuts: this.hideShortcuts,
       onEdit: (editLinkData): void => this.onEditData(editLinkData),
     };
-    this.state = { columns: [[]], config: config, hasShortcuts: false, isFinderOpen: false, uiState };
+    this.state = { isFinderOpen: false, uiState };
   }
 
   keyDown(e: KeyboardEvent): boolean {
@@ -69,8 +62,8 @@ class Page extends React.Component<unknown, PageState> {
 
   componentDidMount(): void {
     document.body.addEventListener('keydown', (e) => this.keyDown(e), false);
-    Config.fromData((myLinks?: MMLinks | null) => {
-      this.reloadAll(myLinks);
+    Config.fromData((myLinks: MMLinks | undefined) => {
+      this.setState({ myLinks });
     });
   }
 
@@ -103,10 +96,10 @@ class Page extends React.Component<unknown, PageState> {
   }
 
   private onSaveConfig(): void {
-    if (this.myLinksHolder) {
+    if (this.state.myLinks) {
       const indentSpaces = 2;
       const w = window.open();
-      w.document.write(`<pre>${JSON.stringify(this.myLinksHolder.myLinks, null, indentSpaces)}</prev>`);
+      w.document.write(`<pre>${JSON.stringify(this.state.myLinks, null, indentSpaces)}</prev>`);
     }
   }
 
@@ -132,18 +125,18 @@ class Page extends React.Component<unknown, PageState> {
   }
 
   private onLoadConfig(file: File): void {
-    Config.fromFile(file, (myLinks?: MMLinks | null) => {
-      this.reloadAll(myLinks);
+    Config.fromFile(file, (myLinks: MMLinks | undefined) => {
+      this.setState({ myLinks });
     });
   }
 
   private onSave(editLinkData: EditLinkData | EditWidgetData): void {
-    if (!this.myLinksHolder) {
+    if (!this.state.myLinks) {
       return;
     }
     try {
       if (prepareForSave(editLinkData)) {
-        Config.saveData(this.myLinksHolder.myLinks, (myLinks) => this.reloadAll(myLinks));
+        Config.saveData(this.state.myLinks, (myLinks) => this.setState({ myLinks }));
       }
     } catch (e) {
       alert((e as Error).message);
@@ -155,7 +148,7 @@ class Page extends React.Component<unknown, PageState> {
       return <LinkFinderDialog isOpen={this.state.isFinderOpen}
                                onClose={(): void => this.showLinkFinder(false)}
                                onLinkSelected={this.onLinkSelected}
-                               widgets={this.myLinksHolder?.myLinks.columns}/>;
+                               widgets={this.state.myLinks?.columns}/>;
     }
     return null;
   }
@@ -171,15 +164,14 @@ class Page extends React.Component<unknown, PageState> {
   }
 
   render(): ReactNode {
-    return <AppConfigContext.Provider value={this.state.config}>
+    return <AppConfigContextProvider myLinks={this.state.myLinks}>
       <AppUIStateContext.Provider value={this.state.uiState}>
         <div className="ml-wrapper">
           <div className="ml-grid">
-            <Grid columns={this.state.columns}/>
+            <Grid columns={this.state.myLinks?.columns || []}/>
           </div>
 
           <AppToolbar
-            myLinksHolder={this.myLinksHolder}
             action={(e): void => this.onClickToolbar(e)}/>
 
           {this.renderLinkFinder()}
@@ -187,25 +179,7 @@ class Page extends React.Component<unknown, PageState> {
 
         </div>
       </AppUIStateContext.Provider>
-    </AppConfigContext.Provider>;
-  }
-
-  reloadAll(myLinks?: MMLinks | null): void {
-    if (!myLinks) {
-      return;
-    }
-    const config = this.buildConfig(myLinks);
-    this.myLinksHolder = new MyLinksHolder(myLinks);
-    this.myLinksHolder.applyBackground();
-    this.myLinksHolder.applyTheme();
-    applyColorToFavicon(config.theme.faviconColor);
-
-    UIInput.instance().setup(this.myLinksHolder);
-    this.setState({
-      config,
-      columns: myLinks.columns,
-      hasShortcuts: this.myLinksHolder.hasShortcuts()
-    });
+    </AppConfigContextProvider>;
   }
 
   get hideShortcuts(): boolean {
@@ -215,19 +189,8 @@ class Page extends React.Component<unknown, PageState> {
   set hideShortcuts(v: boolean) {
     localStorage.setItem(STORAGE_PREF_HIDE_SHORTCUTS, v ? '1' : '0');
   }
-
-  buildConfig(myLinks: MMLinks): AppConfig {
-    return {
-      theme: {
-        faviconColor: myLinks.theme?.faviconColor || this.state.config.theme.faviconColor,
-      },
-      faviconService: myLinks.config?.faviconService,
-      myLinksLookup: this.myLinksHolder,
-    };
-  }
 }
 
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 function App(): JSX.Element {
   return <Page/>;
 }

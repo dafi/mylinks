@@ -2,10 +2,10 @@ import { MyLinks } from '../model/MyLinks-interface';
 
 const STORAGE_PREF_DATA = 'myLinksData';
 
-export type OnLoadCallback = (myLinks?: MyLinks | null | undefined) => void;
+export type OnLoadCallback = (myLinks: MyLinks | undefined) => void;
 export type OnSaveCallback = (myLinks: MyLinks) => void;
 
-type MyLinksCallback = (myLinks?: MyLinks) => void;
+type MyLinksCallback = (myLinks: MyLinks | undefined) => void;
 
 export default class Config {
   static fromData(onLoadCallback: OnLoadCallback): void {

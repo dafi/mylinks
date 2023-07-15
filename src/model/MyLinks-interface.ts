@@ -38,4 +38,5 @@ export interface MyLinksLookup {
   findShortcutUsage(shortcut: string): ShortcutUsage;
   findWidgetById(widgetId: string): Widget | undefined;
   findWidgetByLinkId(linkId: string): Widget | undefined;
+  hasShortcuts(): boolean;
 }

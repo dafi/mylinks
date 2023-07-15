@@ -1,7 +1,7 @@
 import React from 'react';
 import { Theme, MyLinksLookup } from '../model/MyLinks-interface';
 
-const defaultTheme: Theme = {
+export const defaultTheme: Theme = {
   faviconColor: 'blue',
 };
 
@@ -11,11 +11,8 @@ export interface AppConfig {
   myLinksLookup?: MyLinksLookup;
 }
 
-const defaultAppConfig: AppConfig = {
+export const defaultAppConfig: AppConfig = {
   theme: defaultTheme,
 };
-
-// deep copy the configuration
-export const appConfigClone = (): AppConfig => JSON.parse(JSON.stringify(defaultAppConfig)) as AppConfig;
 
 export const AppConfigContext = React.createContext<AppConfig>(defaultAppConfig);
