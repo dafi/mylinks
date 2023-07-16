@@ -3,7 +3,6 @@ import { AppUIStateContext } from '../../../contexts/AppUIStateContext';
 import { Link as MLLink, Widget } from '../../../model/MyLinks-interface';
 import { LinkIcon } from '../linkIcon/LinkIcon';
 import { LinkToolbar } from './LinkToolbar';
-import './Edit.css';
 import './Link.css';
 
 interface LinkProps {

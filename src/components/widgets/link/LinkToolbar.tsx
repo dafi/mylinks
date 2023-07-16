@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import { AppUIStateContext } from '../../../contexts/AppUIStateContext';
 import { EditType } from '../../../model/EditData-interface';
 import { Link as MLLink, Widget } from '../../../model/MyLinks-interface';
+import './Edit.css';
 
 interface LinkToolbarProps {
   visible: boolean;
