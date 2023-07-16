@@ -1,55 +1,24 @@
-import React, { ChangeEvent, ReactNode, RefObject } from 'react';
+import React, { ChangeEvent, RefObject, useContext, useEffect, useState } from 'react';
 import { LinkSearch, LinkSearchResult } from '../../common/LinkSearch';
-import { Link, Widget } from '../../model/MyLinks-interface';
-import './LinkSelector.css';
-import { LinkIcon } from '../widgets/linkIcon/LinkIcon';
 import { AppConfigContext } from '../../contexts/AppConfigContext';
+import { Link, Widget } from '../../model/MyLinks-interface';
+import { LinkIcon } from '../widgets/linkIcon/LinkIcon';
+import './LinkSelector.css';
 
-export interface LinkSelectorProps {
+interface LinkSelectorProps {
   widgets: Widget[][] | undefined;
   onSelected: (link: Link) => void;
 }
 
-interface LinkSelectorState {
-  result: LinkSearchResult[];
-  selectedIndex: number;
-}
-
-export class LinkSelector extends React.Component<LinkSelectorProps, LinkSelectorState> {
-  static contextType = AppConfigContext;
-  context!: React.ContextType<typeof AppConfigContext>;
-
-  private listRefs = new Map<string, RefObject<HTMLLIElement>>();
-  private inputRef: RefObject<HTMLInputElement> = React.createRef();
-  private linkSearch = new LinkSearch();
-
-  constructor(props: LinkSelectorProps) {
-    super(props);
-    this.state = {
-      result: [],
-      selectedIndex: -1
-    };
-    this.onChange = this.onChange.bind(this);
-    this.onKeyDown = this.onKeyDown.bind(this);
-    this.onClick = this.onClick.bind(this);
-    this.onDoubleClick = this.onDoubleClick.bind(this);
-
-    const links = this.props.widgets?.flat().map(w => w.list).flat() || [];
-    this.linkSearch.setLinks(links);
-  }
-
-  moveFocusToSearch(): void {
-    const el = this.inputRef?.current;
+export function LinkSelector(props: LinkSelectorProps): JSX.Element {
+  function moveFocusToSearch(): void {
+    const el = inputRef?.current;
     if (el) {
       el.focus();
     }
   }
 
-  componentDidMount(): void {
-    this.moveFocusToSearch();
-  }
-
-  onClick(e: React.MouseEvent<HTMLElement>, index: number): void {
+  function onClick(e: React.MouseEvent<HTMLElement>): void {
     // skip if a dblclick is in progress
     // https://developer.mozilla.org/en-US/docs/Web/API/UIEvent/detail
     if (e.detail !== 1) {
@@ -58,23 +27,27 @@ export class LinkSelector extends React.Component<LinkSelectorProps, LinkSelecto
     e.preventDefault();
     e.stopPropagation();
 
-    this.moveFocusToSearch();
+    const strIndex = e.currentTarget.dataset.index;
+    const index = strIndex === undefined ? 0 : +strIndex;
 
-    this.setState({
-      selectedIndex: index
-    });
+    moveFocusToSearch();
+    setSelectedIndex(index);
   }
 
-  onDoubleClick(e: React.MouseEvent<HTMLElement>, index: number): void {
+  function onDoubleClick(e: React.MouseEvent<HTMLElement>): void {
     e.preventDefault();
     e.stopPropagation();
 
-    this.moveFocusToSearch();
-    this.props.onSelected(this.state.result[index].link);
+    moveFocusToSearch();
+
+    const strIndex = e.currentTarget.dataset.index;
+    const index = strIndex === undefined ? 0 : +strIndex;
+
+    props.onSelected(result[index].link);
   }
 
-  onKeyDown(e: React.KeyboardEvent<HTMLInputElement>): void {
-    const currIndex = this.state.selectedIndex;
+  function onKeyDown(e: React.KeyboardEvent<HTMLInputElement>): void {
+    const currIndex = selectedIndex;
     let newIndex = -1;
 
     if (e.key === 'ArrowUp') {
@@ -82,77 +55,83 @@ export class LinkSelector extends React.Component<LinkSelectorProps, LinkSelecto
         newIndex = currIndex - 1;
       }
     } else if (e.key === 'ArrowDown') {
-      if (currIndex < (this.state.result.length - 1)) {
+      if (currIndex < (result.length - 1)) {
         newIndex = currIndex + 1;
       }
     } else if (e.key === 'Enter') {
       if (currIndex >= 0) {
-        this.props.onSelected(this.state.result[currIndex].link);
+        props.onSelected(result[currIndex].link);
       }
     } else {
       return;
     }
     if (newIndex !== -1) {
-      const item = this.state.result[newIndex];
-      const liElement = this.listRefs.get(item.id)?.current;
+      const item = result[newIndex];
+      const liElement = listRefs.get(item.id)?.current;
       if (liElement) {
         liElement.scrollIntoView({ block: 'nearest', inline: 'nearest' });
       }
-      this.setState({
-        selectedIndex: newIndex
-      });
+      setSelectedIndex(newIndex);
     }
     e.preventDefault();
   }
 
-  private widgetTitle(link: Link): string {
-    const title = this.context.myLinksLookup?.findWidgetByLinkId(link.id)?.title;
+  function onChange(e: ChangeEvent<HTMLInputElement>): void {
+    listRefs.clear();
+    const pattern = e.target.value;
+    setResult(linkSearch.filter(pattern));
+    setSelectedIndex(result.length ? 0 : -1);
+  }
+
+  function widgetTitle(link: Link): string {
+    const title = appConfigContext.myLinksLookup?.findWidgetByLinkId(link.id)?.title;
     return title ? ` - ${title}` : '';
   }
 
-  render(): ReactNode {
-    return (
-      <div className="link-selector">
-        <div className="input-container">
-          <i className="fas fa-search icon"/>
-          <input type="text"
-                 ref={this.inputRef}
-                 onKeyDown={(e): void => this.onKeyDown(e)}
-                 onChange={(e): void => this.onChange(e)}
-                 placeholder="Search"
-                 spellCheck="false"
-                 className="input-box"/>
-        </div>
-        <div className="list">
-          <ul>
-            {this.state.result.map((r, i) =>
-              <li
-                onClick={(e): void => this.onClick(e, i)}
-                onDoubleClick={(e): void => this.onDoubleClick(e, i)}
-                className={i === this.state.selectedIndex ? 'selected' : 'none'}
-                ref={this.listRefs.get(r.id) ?? null}
-                key={r.id}><i className="list-image">
-                <LinkIcon link={r.link}/>
-              </i>
-                <div>
-                  <span dangerouslySetInnerHTML={{ __html: r.highlighted }}/>{this.widgetTitle(r.link)}</div>
-              </li>
-            )}
-          </ul>
-        </div>
+  const appConfigContext = useContext(AppConfigContext);
+  const listRefs = new Map<string, RefObject<HTMLLIElement>>();
+  const inputRef: RefObject<HTMLInputElement> = React.createRef();
+  const linkSearch = new LinkSearch();
+  const [result, setResult] = useState<LinkSearchResult[]>([]);
+  const [selectedIndex, setSelectedIndex] = useState(-1);
+
+  const links = props.widgets?.flat().map(w => w.list).flat() || [];
+  linkSearch.setLinks(links);
+
+  useEffect(() => {
+    moveFocusToSearch();
+  }, []);
+
+  return (
+    <div className="link-selector">
+      <div className="input-container">
+        <i className="fas fa-search icon"/>
+        <input type="text"
+               ref={inputRef}
+               onKeyDown={onKeyDown}
+               onChange={onChange}
+               placeholder="Search"
+               spellCheck="false"
+               className="input-box"/>
       </div>
-    );
-  }
-
-  onChange(e: ChangeEvent<HTMLInputElement>): void {
-    const pattern = e.target.value;
-    const result = this.linkSearch.filter(pattern);
-
-    this.listRefs.clear();
-
-    this.setState({
-      result: result,
-      selectedIndex: result.length ? 0 : -1
-    });
-  }
+      <div className="list">
+        <ul>
+          {result.map((r, i) =>
+            <li
+              onClick={onClick}
+              onDoubleClick={onDoubleClick}
+              data-index={i}
+              className={i === selectedIndex ? 'selected' : 'none'}
+              ref={listRefs.get(r.id) ?? null}
+              key={r.id}><i className="list-image">
+              <LinkIcon link={r.link}/>
+            </i>
+              <div>
+                <span dangerouslySetInnerHTML={{ __html: r.highlighted }}/>{widgetTitle(r.link)}</div>
+            </li>
+          )}
+        </ul>
+      </div>
+    </div>
+  );
 }

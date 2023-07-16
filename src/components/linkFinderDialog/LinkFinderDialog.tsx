@@ -1,32 +1,30 @@
-import React, { ReactNode } from 'react';
+import React from 'react';
+import { Link, Widget } from '../../model/MyLinks-interface';
 import { DialogProps } from '../modal/Dialog';
 import Modal from '../modal/Modal';
-import { Link, Widget } from '../../model/MyLinks-interface';
 import { LinkSelector } from './LinkSelector';
 
-export interface LinkFinderDialogProps extends DialogProps {
+interface LinkFinderDialogProps extends DialogProps {
   onLinkSelected: (link: Link) => void;
   widgets?: Widget[][];
 }
 
-export class LinkFinderDialog extends React.Component<LinkFinderDialogProps, unknown> {
-  onClose(): void {
-    this.props.onClose();
+export function LinkFinderDialog(props: LinkFinderDialogProps): JSX.Element {
+  function onClose(): void {
+    props.onClose();
   }
 
-  onSelected(link: Link): void {
-    this.props.onLinkSelected(link);
-    this.onClose();
+  function onSelected(link: Link): void {
+    props.onLinkSelected(link);
+    onClose();
   }
 
-  render(): ReactNode {
-    return (
-      <Modal isOpen={this.props.isOpen}
-             onClose={(): void => this.onClose()}>
-        <LinkSelector
-          onSelected={(l): void => this.onSelected(l)}
-          widgets={this.props.widgets}/>
-      </Modal>
-    );
-  }
+  return (
+    <Modal isOpen={props.isOpen}
+           onClose={(): void => onClose()}>
+      <LinkSelector
+        onSelected={(l): void => onSelected(l)}
+        widgets={props.widgets}/>
+    </Modal>
+  );
 }
