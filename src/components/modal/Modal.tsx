@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React, { ReactNode, useEffect, useState } from 'react';
 import './Modal.css';
 
 export interface ModalProp {
@@ -7,49 +7,32 @@ export interface ModalProp {
   children: ReactNode;
 }
 
-interface ModalState {
-  isOpen: boolean;
-}
-
-let clickEventListener: (e: KeyboardEvent) => boolean;
-
-class Modal extends React.Component<ModalProp, ModalState> {
-
-  constructor(props: ModalProp) {
-    super(props);
-    this.state = { isOpen: props.isOpen };
-    clickEventListener = (e: KeyboardEvent): boolean => this.keyDown(e);
-  }
-
-  keyDown(e: KeyboardEvent): boolean {
+export default function Modal(props: ModalProp): JSX.Element | null {
+  function keyDown(e: KeyboardEvent): boolean {
     if (e.key === 'Escape') {
-      this.setState({ isOpen: false });
-      this.props.onClose();
+      setIsOpen(false);
+      props.onClose();
     }
     return true;
   }
+  const [isOpen, setIsOpen] = useState(props.isOpen);
 
-  componentDidMount(): void {
-    document.addEventListener('keydown', clickEventListener);
+  useEffect(() => {
+    document.addEventListener('keydown', keyDown);
+    return () => {
+      document.removeEventListener('keydown', keyDown);
+    };
+  }, []);
+
+  if (!isOpen) {
+    return null;
   }
 
-  componentWillUnmount(): void {
-    document.removeEventListener('keydown', clickEventListener);
-  }
-
-  render(): ReactNode {
-    if (!this.state.isOpen) {
-      return null;
-    }
-
-    return (
-      <div className="modal-backdrop">
-        <div className="modal-container">
-          {this.props.children}
-        </div>
+  return (
+    <div className="modal-backdrop">
+      <div className="modal-container">
+        {props.children}
       </div>
-    );
-  }
+    </div>
+  );
 }
-
-export default Modal;
