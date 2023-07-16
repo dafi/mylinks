@@ -1,6 +1,6 @@
-import React, { ReactNode } from 'react';
-import { AppConfigContext } from '../../../contexts/AppConfigContext';
+import React, { useContext } from 'react';
 import { faviconUrlByLink } from '../../../common/Favicon';
+import { AppConfigContext } from '../../../contexts/AppConfigContext';
 import { Link as MLLink } from '../../../model/MyLinks-interface';
 import './LinkIcon.css';
 
@@ -11,38 +11,32 @@ const colors = [
   '#FF851B', '#FFA500', '#FF0000', '#F012BE', '#FF00FF',
 ];
 
-export interface LinkIconProps {
+function hash(str: string): number {
+  // the worst way to compute a hash value, but we only need that it is deterministic
+  return Array
+    .from(str)
+    .reduce((p, c) => p + c.charCodeAt(0), str.length);
+}
+
+interface LinkIconProps {
   link: MLLink;
   faviconService?: string | null | undefined;
 }
 
-export class LinkIcon extends React.Component<LinkIconProps, unknown> {
-  static contextType = AppConfigContext;
-  context!: React.ContextType<typeof AppConfigContext>;
+export function LinkIcon(props: LinkIconProps): JSX.Element {
+  const appConfig = useContext(AppConfigContext);
+  const faviconUrl = faviconUrlByLink(props.link, props.faviconService ?? appConfig.faviconService);
 
-  render(): ReactNode {
-    const appConfig = this.context;
-    const faviconService = this.props.faviconService ?? appConfig.faviconService;
-    const faviconUrl = faviconUrlByLink(this.props.link, faviconService);
-
-    if (faviconUrl) {
-      return <img src={faviconUrl} className="link-icon-favicon" alt=""/>;
-    }
-
-    const label = this.props.link.label;
-    const style: React.CSSProperties = {
-      color: '#fff',
-      backgroundColor: colors[this.hash(label) % colors.length]
-    };
-
-    const firstLetter = label.charAt(0);
-    return <div style={style} className="link-icon-favicon-missing">{firstLetter}</div>;
+  if (faviconUrl) {
+    return <img src={faviconUrl} className="link-icon-favicon" alt=""/>;
   }
 
-  hash(str: string): number {
-    // the worst way to compute a hash value, but we only need that it is deterministic
-    return Array
-      .from(str)
-      .reduce((p, c) => p + c.charCodeAt(0), str.length);
-  }
+  const label = props.link.label;
+  const style: React.CSSProperties = {
+    color: '#fff',
+    backgroundColor: colors[hash(label) % colors.length]
+  };
+
+  const firstLetter = label.charAt(0);
+  return <div style={style} className="link-icon-favicon-missing">{firstLetter}</div>;
 }
