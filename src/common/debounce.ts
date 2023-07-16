@@ -1,7 +1,6 @@
 // https://levelup.gitconnected.com/debounce-in-javascript-improve-your-applications-performance-5b01855e086
 /**
  * Trigger the func only after the wait timeout
- *
  * @param func the callback called at expire time
  * @param wait the time to wait in millisecond
  * @returns array containing two functions

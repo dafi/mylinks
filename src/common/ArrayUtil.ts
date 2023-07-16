@@ -1,6 +1,5 @@
 /**
  * Move element from position `from` to position `to`
- *
  * @param arr the array
  * @param from the from position
  * @param to the to position
