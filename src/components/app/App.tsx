@@ -1,27 +1,19 @@
 import React, { ReactNode, useEffect, useState } from 'react';
 import Config from '../../common/Config';
-import { isEditLinkData, prepareForSave } from '../../common/EditHelper';
 import { isKeyboardEventConsumer } from '../../common/HtmlUtil';
 import { UIInput } from '../../common/UIInput';
 import { AppConfigContextProvider } from '../../contexts/AppConfigContextProvider';
-
-import { AppUIState, AppUIStateContext } from '../../contexts/AppUIStateContext';
-import { EditDataType, EditLinkData, EditWidgetData } from '../../model/EditData-interface';
+import { AppUIState } from '../../contexts/AppUIStateContext';
+import { AppUIStateContextProvider, EditCompleteResult } from '../../contexts/AppUIStateContextProvider';
 import { MyLinksEvent } from '../../model/Events';
 import { openLink } from '../../model/MyLinks';
 import { Link, MyLinks as MMLinks } from '../../model/MyLinks-interface';
-import { EditLinkDialog } from '../editLinkDialog/EditLinkDialog';
 import { LinkFinderDialog } from '../linkFinderDialog/LinkFinderDialog';
 import { Grid } from '../widgets/grid/Grid';
 import './App.css';
 import { getHideShortcuts, toggleHideShortcuts } from './App.utils';
 import { AppToolbar, AppToolbarActionType } from './AppToolbar';
 import './toolbar-icon.css';
-
-interface LinkDialogData {
-  isOpen: boolean;
-  data?: EditLinkData;
-}
 
 function Page(): JSX.Element {
   function keyDown(e: KeyboardEvent): boolean {
@@ -48,14 +40,6 @@ function Page(): JSX.Element {
     window.requestIdleCallback(() => openLink(link));
   };
 
-  function showEditLinkDialog(isOpen: boolean, data?: EditLinkData): void {
-    if (data?.editType === 'delete') {
-      onSave(data);
-      return;
-    }
-    setEditLinkDialog({ isOpen, data });
-  }
-
   function onClickToolbar(e: MyLinksEvent<AppToolbarActionType>): void {
     if (e.target === 'loadConfig') {
       onLoadConfig(e.data as File);
@@ -81,34 +65,26 @@ function Page(): JSX.Element {
     });
   }
 
-  function onEditData(editData: EditDataType): void {
-    if (isEditLinkData(editData)) {
-      if (editData.editType === 'update' || editData.editType === 'create') {
-        showEditLinkDialog(true, editData);
-      } else {
-        onSave(editData);
-      }
-    } else {
-      onSave(editData);
-    }
-  }
-
   function onLoadConfig(file: File): void {
     Config.fromFile(file, (mmLinks: MMLinks | undefined) => {
-      setMyLinks(mmLinks);
+      setMyLinks(mmLinks ? { ...mmLinks } : undefined);
     });
   }
 
-  function onSave(data: EditLinkData | EditWidgetData): void {
-    if (!myLinks) {
-      return;
-    }
-    try {
-      if (prepareForSave(data)) {
-        Config.saveData(myLinks, (mmLinks) => setMyLinks(mmLinks));
-      }
-    } catch (e) {
-      alert((e as Error).message);
+  function onEditComplete(result: EditCompleteResult): void {
+    switch (result.type) {
+      case 'success':
+        if (myLinks) {
+          Config.saveData(myLinks, (mmLinks) => {
+            setMyLinks({ ...mmLinks });
+          });
+        }
+        break;
+      case 'error':
+        if (result.error) {
+          alert(result.error.message);
+        }
+        break;
     }
   }
 
@@ -122,26 +98,13 @@ function Page(): JSX.Element {
     return null;
   }
 
-  function renderEditLinkDialog(): ReactNode {
-    const { isOpen, data } = editLinkDialog;
-    if (isOpen && data) {
-      return <EditLinkDialog isOpen={isOpen}
-                             onSave={onSave}
-                             onClose={(): void => showEditLinkDialog(false)}
-                             data={data}/>;
-    }
-    return null;
-  }
-
   const defaultUiState: AppUIState = {
     hideShortcuts: getHideShortcuts(),
-    onEdit: onEditData,
   };
 
   const [myLinks, setMyLinks] = useState<MMLinks>();
   const [uiState, setUiState] = useState(defaultUiState);
   const [isFinderOpen, setIsFinderOpen] = useState(false);
-  const [editLinkDialog, setEditLinkDialog] = useState<LinkDialogData>({ isOpen: false });
 
   useEffect(() => {
     document.body.addEventListener('keydown', keyDown, false);
@@ -152,7 +115,7 @@ function Page(): JSX.Element {
   }, []);
 
   return <AppConfigContextProvider myLinks={myLinks}>
-    <AppUIStateContext.Provider value={uiState}>
+    <AppUIStateContextProvider uiState={uiState} onEditComplete={onEditComplete}>
       <div className="ml-wrapper">
         <div className="ml-grid">
           <Grid columns={myLinks?.columns || []}/>
@@ -162,10 +125,9 @@ function Page(): JSX.Element {
           action={onClickToolbar}/>
 
         {renderLinkFinder()}
-        {renderEditLinkDialog()}
 
       </div>
-    </AppUIStateContext.Provider>
+    </AppUIStateContextProvider>
   </AppConfigContextProvider>;
 }
 
