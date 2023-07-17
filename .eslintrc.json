@@ -39,7 +39,7 @@
       ]
     },
     {
-      "files": ["src/components/**/*.tsx"],
+      "files": ["src/**/*.tsx"],
       "rules": {
         "max-lines-per-function": [
           "error", 200
