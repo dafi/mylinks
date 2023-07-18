@@ -23,12 +23,11 @@ export function LinkToolbar({ visible, link, widget }: LinkToolbarProps): JSX.El
       });
     }
   }
+  const context = useContext(AppUIStateContext);
 
   if (!visible) {
     return null;
   }
-
-  const context = useContext(AppUIStateContext);
 
   return (
     <>
