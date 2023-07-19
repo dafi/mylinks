@@ -1,67 +1,65 @@
-import React, { ChangeEvent, ReactNode, RefObject } from 'react';
+import React, { ChangeEvent, ForwardedRef, forwardRef, InputHTMLAttributes, useEffect, useImperativeHandle, useRef, useState } from 'react';
 import { debounce } from '../../common/debounce';
 
 export interface InputTextProps {
-  autofocus?: boolean;
-  defaultValue?: string;
   onText?: (value: string) => void;
-  onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
-  debounce?: number;
-  className?: string;
+  debounceTimeout?: number;
 }
 
-export class InputText extends React.Component<InputTextProps, unknown> {
-  private inputRef: RefObject<HTMLInputElement> = React.createRef();
-  private stopDebounceCallback?: () => void;
-  private onInputChange?: (value: string) => void;
+export interface InputTextHandle {
+  value(): string;
+}
 
-  constructor(props: InputTextProps) {
-    super(props);
-  }
-
-  get value(): string | undefined {
-    return this.inputRef.current?.value;
-  }
-
-  focus(): void {
-    this.inputRef.current?.focus();
-  }
-
-  onChange(e: ChangeEvent<HTMLInputElement>): void {
-    if (this.onInputChange) {
-      this.onInputChange(e.target.value);
+export const InputText = forwardRef(function(
+  {
+    autoFocus,
+    defaultValue,
+    className,
+    debounceTimeout,
+    onText,
+    onKeyDown
+  }: InputTextProps & InputHTMLAttributes<HTMLInputElement>,
+  ref: ForwardedRef<InputTextHandle>
+): JSX.Element {
+  function onChange(e: ChangeEvent<HTMLInputElement>): void {
+    if (onInputChange) {
+      onInputChange(e.target.value);
     }
   }
 
-  componentDidMount(): void {
-    if (this.props.autofocus === true) {
-      this.inputRef.current?.focus();
+  const inputRef = useRef<HTMLInputElement>(null);
+  const [onInputChange, setOnInputChange] = useState<(value: string) => void>();
+
+  useEffect(() => {
+    if (autoFocus === true) {
+      inputRef.current?.focus();
     }
-    const userOnChange = this.props.onText;
-    if (this.props.debounce && userOnChange) {
+    const userOnChange = onText;
+    if (debounceTimeout && userOnChange) {
       const [debounceCallback, stopDebounceCallback] = debounce(a => {
         userOnChange(a as string);
-      }, this.props.debounce);
-      this.onInputChange = debounceCallback;
-      this.stopDebounceCallback = stopDebounceCallback;
+      }, debounceTimeout);
+      setOnInputChange(() => debounceCallback);
+
+      return () => {
+        stopDebounceCallback();
+      };
     } else {
-      this.onInputChange = userOnChange;
+      setOnInputChange(() => userOnChange);
     }
-  }
+  }, []);
 
-  componentWillUnmount(): void {
-    if (this.stopDebounceCallback) {
-      this.stopDebounceCallback();
-    }
-  }
+  useImperativeHandle(ref, () => ({
+    value(): string {
+      return inputRef.current?.value ?? '';
+    },
+  }), []);
 
-  render(): ReactNode {
-    return <input
-      type="text"
-      ref={this.inputRef}
-      className={this.props.className}
-      defaultValue={this.props.defaultValue}
-      onKeyDown={this.props.onKeyDown}
-      onChange={(e): void => this.onChange(e)}/>;
-  }
-}
+  return <input
+    type="text"
+    ref={inputRef}
+    className={className}
+    defaultValue={defaultValue}
+    onKeyDown={onKeyDown}
+    onChange={onChange}/>;
+});

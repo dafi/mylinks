@@ -1,7 +1,7 @@
-import React, { RefObject, useContext } from 'react';
+import React, { useContext, useRef } from 'react';
 import { AppUIStateContext } from '../../../contexts/AppUIStateContext';
 import { Widget } from '../../../model/MyLinks-interface';
-import { InputText } from '../../inputText/InputText';
+import { InputText, InputTextHandle } from '../../inputText/InputText';
 
 const debounceTimeout = 1500;
 
@@ -27,19 +27,19 @@ export default function WidgetTitle({ editable, widget, onToggleEdit }: WidgetTi
       onToggleEdit();
     } else if (e.key === 'Enter') {
       onToggleEdit();
-      saveTitle(inputRef.current?.value);
+      saveTitle(inputRef.current?.value());
     }
   }
 
   const context = useContext(AppUIStateContext);
-  const inputRef: RefObject<InputText> = React.createRef();
+  const inputRef = useRef<InputTextHandle>(null);
 
   if (editable) {
     return <InputText
       ref={inputRef}
-      autofocus={true}
+      autoFocus={true}
       className="edit-title"
-      debounce={debounceTimeout}
+      debounceTimeout={debounceTimeout}
       defaultValue={widget.title}
       onKeyDown={onKeydownTitle}
       onText={saveTitle}
