@@ -1,4 +1,4 @@
-import React, { ChangeEvent, RefObject, useContext, useEffect, useState } from 'react';
+import React, { ChangeEvent, RefObject, useContext, useEffect, useRef, useState } from 'react';
 import { LinkSearch, LinkSearchResult } from '../../common/LinkSearch';
 import { AppConfigContext } from '../../contexts/AppConfigContext';
 import { Link, Widget } from '../../model/MyLinks-interface';
@@ -90,7 +90,7 @@ export function LinkSelector(props: LinkSelectorProps): JSX.Element {
 
   const appConfigContext = useContext(AppConfigContext);
   const listRefs = new Map<string, RefObject<HTMLLIElement>>();
-  const inputRef: RefObject<HTMLInputElement> = React.createRef();
+  const inputRef = useRef<HTMLInputElement>(null);
   const linkSearch = new LinkSearch();
   const [result, setResult] = useState<LinkSearchResult[]>([]);
   const [selectedIndex, setSelectedIndex] = useState(-1);

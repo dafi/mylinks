@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useEffect, useState } from 'react';
+import React, { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { EditLinkData } from '../../model/EditData-interface';
 import { DialogProps } from '../modal/Dialog';
 import Modal from '../modal/Modal';
@@ -32,7 +32,7 @@ export function EditLinkDialog({ isOpen, data, onSave, onClose }: EditLinkDialog
     inputRef.current?.focus();
   }, []);
 
-  const inputRef = React.createRef<HTMLInputElement>();
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const [label, setLabel] = useState(data.link.label);
   const [url, setUrl] = useState(data.link.url);
