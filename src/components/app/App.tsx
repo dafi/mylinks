@@ -89,11 +89,11 @@ function Page(): JSX.Element {
   }
 
   function renderLinkFinder(): ReactNode {
-    if (isFinderOpen) {
+    if (isFinderOpen && myLinks) {
       return <LinkFinderDialog isOpen={isFinderOpen}
                                onClose={(): void => setIsFinderOpen(false)}
                                onLinkSelected={onLinkSelected}
-                               widgets={myLinks?.columns}/>;
+                               widgets={myLinks.columns}/>;
     }
     return null;
   }

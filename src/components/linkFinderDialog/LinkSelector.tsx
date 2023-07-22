@@ -6,7 +6,7 @@ import { LinkIcon } from '../widgets/linkIcon/LinkIcon';
 import './LinkSelector.css';
 
 interface LinkSelectorProps {
-  widgets: Widget[][] | undefined;
+  widgets: Widget[][];
   onSelected: (link: Link) => void;
 }
 
@@ -95,7 +95,7 @@ export function LinkSelector(props: LinkSelectorProps): JSX.Element {
   const [result, setResult] = useState<LinkSearchResult[]>([]);
   const [selectedIndex, setSelectedIndex] = useState(-1);
 
-  const links = props.widgets?.flat().map(w => w.list).flat() || [];
+  const links = props.widgets.flat().map(w => w.list).flat() || [];
   linkSearch.setLinks(links);
 
   useEffect(() => {
