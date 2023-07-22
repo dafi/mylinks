@@ -49,8 +49,9 @@ export function EditLinkDialog({ isOpen, data, onSave, onClose }: EditLinkDialog
   });
 
   return (
-    <Modal isOpen={isOpen}
-           onClose={onCloseDialog}>
+    <Modal
+      isOpen={isOpen}
+      onClose={onCloseDialog}>
       <div className="edit-link-dialog">
         <h2 className="title">Edit Link</h2>
 
@@ -97,10 +98,12 @@ export function EditLinkDialog({ isOpen, data, onSave, onClose }: EditLinkDialog
             <li>
               <div className="toolbar">
                 <button
+                  type="button"
                   className="text-white bg-action-primary hover"
                   onClick={onClickSave}>Save
                 </button>
                 <button
+                  type="button"
                   className="text-white bg-action-secondary hover"
                   onClick={onCloseDialog}>Cancel
                 </button>
