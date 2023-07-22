@@ -1,5 +1,5 @@
 import React, { ChangeEvent, useEffect, useRef, useState } from 'react';
-import { EditLinkData } from '../../model/EditData-interface';
+import { EditLinkData, LinkEditedProperties } from '../../model/EditData-interface';
 import { DialogProps } from '../modal/Dialog';
 import Modal from '../modal/Modal';
 import './EditLinkDialog.css';
@@ -9,6 +9,10 @@ export interface EditLinkDialogProps extends DialogProps {
   onSave: (editLinkData: EditLinkData) => void;
 }
 
+// https://stackoverflow.com/questions/57773734/how-to-use-partially-the-computed-property-name-on-a-type-definition/57774343#57774343
+// compound properties must be strings so, we allow to index elements by string
+type EditLinkDialogState = LinkEditedProperties & Record<string, string | undefined>;
+
 export function EditLinkDialog({ isOpen, data, onSave, onClose }: EditLinkDialogProps): JSX.Element {
   function onCloseDialog(): void {
     onClose();
@@ -17,14 +21,17 @@ export function EditLinkDialog({ isOpen, data, onSave, onClose }: EditLinkDialog
   function onClickSave(e: React.MouseEvent<HTMLButtonElement>): void {
     e.preventDefault();
 
-    onSave({ ...data, editedProperties: { label, url, shortcut, favicon } });
+    onSave({ ...data, editedProperties: form });
     onCloseDialog();
   }
 
   function onChange(e: ChangeEvent<HTMLInputElement>): void {
     const action = e.target.dataset.action;
     if (action) {
-      actionMap[action](e.target.value);
+      setForm(prevState => {
+        prevState[action] = e.target.value;
+        return prevState;
+      });
     }
   }
 
@@ -34,17 +41,12 @@ export function EditLinkDialog({ isOpen, data, onSave, onClose }: EditLinkDialog
 
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const [label, setLabel] = useState(data.link.label);
-  const [url, setUrl] = useState(data.link.url);
-  const [shortcut, setShortcut] = useState(data.link.shortcut);
-  const [favicon, setFavicon] = useState(data.link.favicon);
-
-  const actionMap: Record<string, (v: string) => void> = {
-    label: setLabel,
-    url: setUrl,
-    shortcut: setShortcut,
-    favicon: setFavicon
-  };
+  const [form, setForm] = useState<EditLinkDialogState>({
+    label: data.link.label,
+    url: data.link.url,
+    shortcut: data.link.shortcut,
+    favicon: data.link.favicon
+  });
 
   return (
     <Modal isOpen={isOpen}
@@ -60,7 +62,7 @@ export function EditLinkDialog({ isOpen, data, onSave, onClose }: EditLinkDialog
                 data-action="label"
                 ref={inputRef}
                 type="text"
-                defaultValue={label}
+                defaultValue={form.label}
                 onChange={onChange}
                 placeholder="Videos"
               />
@@ -70,27 +72,27 @@ export function EditLinkDialog({ isOpen, data, onSave, onClose }: EditLinkDialog
               <input
                 data-action="url"
                 type="text"
-                defaultValue={url}
+                defaultValue={form.url}
                 onChange={onChange}
-                placeholder="https://youtube.com"/>
+                placeholder="https://youtube.com" />
             </li>
             <li>
               <label htmlFor="shortcut">Favicon URL</label>
               <input
                 data-action="favicon"
                 type="text"
-                defaultValue={favicon}
+                defaultValue={form.favicon}
                 onChange={onChange}
-                placeholder="favicon url"/>
+                placeholder="favicon url" />
             </li>
             <li>
               <label htmlFor="shortcut">Shortcut</label>
               <input
                 data-action="shortcut"
                 type="text"
-                defaultValue={shortcut}
+                defaultValue={form.shortcut}
                 onChange={onChange}
-                placeholder="press the key combination to assign"/>
+                placeholder="press the key combination to assign" />
             </li>
             <li>
               <div className="toolbar">

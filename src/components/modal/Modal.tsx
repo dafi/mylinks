@@ -7,22 +7,28 @@ export interface ModalProp {
   children: ReactNode;
 }
 
-export default function Modal(props: ModalProp): JSX.Element | null {
-  function keyDown(e: KeyboardEvent): boolean {
-    if (e.key === 'Escape') {
-      setIsOpen(false);
-      props.onClose();
-    }
-    return true;
-  }
-  const [isOpen, setIsOpen] = useState(props.isOpen);
+export default function Modal(
+  {
+    onClose,
+    isOpen: isDialogOpen,
+    children,
+  }: ModalProp
+): JSX.Element | null {
+  const [isOpen, setIsOpen] = useState(isDialogOpen);
 
   useEffect(() => {
+    function keyDown(e: KeyboardEvent): boolean {
+      if (e.key === 'Escape') {
+        setIsOpen(false);
+        onClose();
+      }
+      return true;
+    }
     document.addEventListener('keydown', keyDown);
     return () => {
       document.removeEventListener('keydown', keyDown);
     };
-  }, []);
+  }, [onClose]);
 
   if (!isOpen) {
     return null;
@@ -31,7 +37,7 @@ export default function Modal(props: ModalProp): JSX.Element | null {
   return (
     <div className="modal-backdrop">
       <div className="modal-container">
-        {props.children}
+        {children}
       </div>
     </div>
   );
