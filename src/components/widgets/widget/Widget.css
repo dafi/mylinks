@@ -2,16 +2,16 @@
   flex: 1;
   border: 1px solid var(--widget-border-color);
   margin: 5px 10px;
-  background-color: color-mix(in srgb, var(--widget-background-color, #ff0000) 93%, transparent);
+  background-color: color-mix(in srgb, var(--widget-background-color, #f00) 93%, transparent);
   box-shadow: 8px 8px 6px var(--box-shadow-color1);
   border-radius: var(--widget-border-radius);
 }
 
 .ml-widget:hover {
-  background-color:  var(--widget-background-color, #ff0000);
+  background-color:  var(--widget-background-color, #f00);
 }
 
-.ml-widget li[draggable=false] a:focus,
+.ml-widget li[draggable="false"] a:focus,
 .ml-widget li:not([draggable]) a:focus {
   outline: 0;
   font-weight: bold;
@@ -54,7 +54,7 @@ li.over {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  padding: 0 10px 10px 10px;
+  padding: 0 10px 10px;
 }
 
 .ml-widget-title .edit-title {
@@ -85,7 +85,7 @@ li.over {
 }
 
 .ml-widget-list {
-  padding: 0 10px 10px 10px;
+  padding: 0 10px 10px;
 }
 
 .collapsed .ml-widget-control-box {
