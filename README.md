@@ -14,7 +14,13 @@ If configurations are stored on Dropbox be sure to replace `dropbox.com` with `d
 
 ## Eslint
 
-    npx eslint . --ext .js,.jsx,.ts,.tsx
+    npx eslint --no-color src
+
+## Stylelint
+
+Ignore the `build` directory and use only `src`
+
+    npx stylelint "src/**/*.css"
 
 ## Local deploy
 
