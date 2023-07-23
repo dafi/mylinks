@@ -95,7 +95,8 @@
         },
         "SwitchCase": 1,
         "ignoredNodes": [
-          "JSXElement *"
+          "JSXElement *",
+          "JSXElement"
         ]
       }
     ],
