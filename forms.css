@@ -21,6 +21,10 @@
   justify-content: space-between;
 }
 
+.flex-inner li {
+  width: 100px;
+}
+
 .flex-outer > li:not(:last-child) {
   margin-bottom: 20px;
 }
@@ -70,8 +74,4 @@
   margin-left: 4px;
   cursor: pointer;
   border-radius: 4px;
-}
-
-.flex-inner li {
-  width: 100px;
 }
