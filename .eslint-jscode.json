@@ -116,6 +116,7 @@
     "no-fallthrough": "error",
     "no-invalid-this": "off",
     "no-multiple-empty-lines": "error",
+    "no-multi-spaces": "error",
     "no-new-wrappers": "error",
     "no-restricted-imports": [
       "error",

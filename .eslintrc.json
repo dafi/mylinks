@@ -6,6 +6,7 @@
   "extends": [
     "eslint:recommended",
     "plugin:react/recommended",
+    "plugin:react-hooks/recommended",
     "plugin:jsdoc/recommended",
     "./.eslint-jscode.json",
     "./.eslint-react.json"
@@ -21,6 +22,7 @@
   },
   "plugins": [
     "react",
+    "react-hooks",
     "@typescript-eslint",
     "jsdoc",
     "import"
