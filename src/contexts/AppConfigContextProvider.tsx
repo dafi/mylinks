@@ -37,5 +37,9 @@ export function AppConfigContextProvider({ myLinks, children }: { myLinks: MyLin
     setConfig(reloadAll(myLinks));
   }, [myLinks]);
 
-  return <AppConfigContext.Provider value={config}>{children}</AppConfigContext.Provider>;
+  return (
+    <AppConfigContext.Provider value={config}>
+      {children}
+    </AppConfigContext.Provider>
+  );
 }

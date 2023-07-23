@@ -90,10 +90,14 @@ function Page(): JSX.Element {
 
   function renderLinkFinder(): ReactNode {
     if (isFinderOpen && myLinks) {
-      return <LinkFinderDialog isOpen={isFinderOpen}
-                               onClose={(): void => setIsFinderOpen(false)}
-                               onLinkSelected={onLinkSelected}
-                               widgets={myLinks.columns}/>;
+      return (
+        <LinkFinderDialog
+          isOpen={isFinderOpen}
+          onClose={(): void => setIsFinderOpen(false)}
+          onLinkSelected={onLinkSelected}
+          widgets={myLinks.columns}
+        />
+      );
     }
     return null;
   }
@@ -114,25 +118,31 @@ function Page(): JSX.Element {
     return () => document.body.removeEventListener('keydown', keyDown);
   }, []);
 
-  return <AppConfigContextProvider myLinks={myLinks}>
-    <AppUIStateContextProvider uiState={uiState} onEditComplete={onEditComplete}>
-      <div className="ml-wrapper">
-        <div className="ml-grid">
-          <Grid columns={myLinks?.columns || []}/>
+  return (
+    <AppConfigContextProvider myLinks={myLinks}>
+      <AppUIStateContextProvider
+        uiState={uiState}
+        onEditComplete={onEditComplete}
+      >
+        <div className="ml-wrapper">
+          <div className="ml-grid">
+            <Grid columns={myLinks?.columns || []} />
+          </div>
+
+          <AppToolbar action={onClickToolbar} />
+
+          {renderLinkFinder()}
+
         </div>
-
-        <AppToolbar
-          action={onClickToolbar}/>
-
-        {renderLinkFinder()}
-
-      </div>
-    </AppUIStateContextProvider>
-  </AppConfigContextProvider>;
+      </AppUIStateContextProvider>
+    </AppConfigContextProvider>
+  );
 }
 
+// Just for App we can declare two components in same file
+// eslint-disable-next-line react/no-multi-comp
 function App(): JSX.Element {
-  return <Page/>;
+  return <Page />;
 }
 
 export default App;

@@ -12,7 +12,14 @@ export interface DraggableListItemProps {
   onDrop: (sourceId: string, destId: string) => void;
 }
 
-export function DraggableListItem(props: DraggableListItemProps): JSX.Element {
+export function DraggableListItem(
+  {
+    id,
+    draggable,
+    children,
+    onDrop,
+  }: DraggableListItemProps
+): JSX.Element {
   function handleDragStart(e: LIDragEvent): void {
     e.dataTransfer.setData('text/plain', e.currentTarget.id);
     e.currentTarget.classList.add('dragging');
@@ -38,7 +45,7 @@ export function DraggableListItem(props: DraggableListItemProps): JSX.Element {
         dragged.parentNode.removeChild(dragged);
         dropped?.insertAdjacentElement('beforebegin', dragged);
 
-        props.onDrop(dragged.id, dropped.id);
+        onDrop(dragged.id, dropped.id);
       }
     }
     e.currentTarget.classList.remove('over');
@@ -48,7 +55,7 @@ export function DraggableListItem(props: DraggableListItemProps): JSX.Element {
     e.currentTarget.classList.remove('over', 'dragging');
   }
 
-  const dragProps = props.draggable ? {
+  const dragProps = draggable ? {
     draggable: true,
     onDragStart: handleDragStart,
     // onDragEnter: handleDragEnter,
@@ -58,8 +65,10 @@ export function DraggableListItem(props: DraggableListItemProps): JSX.Element {
     onDragEnd: handleDragEnd,
   } : null;
   return (
-    <li id={props.id} {...dragProps}>
-      {props.children}
+    // no extra props are passed so, we can spread them
+    // eslint-disable-next-line react/jsx-props-no-spreading
+    <li id={id} {...dragProps}>
+      {children}
     </li>
   );
 }

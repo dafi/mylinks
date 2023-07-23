@@ -51,7 +51,8 @@ export function EditLinkDialog({ isOpen, data, onSave, onClose }: EditLinkDialog
   return (
     <Modal
       isOpen={isOpen}
-      onClose={onCloseDialog}>
+      onClose={onCloseDialog}
+    >
       <div className="edit-link-dialog">
         <h2 className="title">Edit Link</h2>
 
@@ -75,7 +76,8 @@ export function EditLinkDialog({ isOpen, data, onSave, onClose }: EditLinkDialog
                 type="text"
                 defaultValue={form.url}
                 onChange={onChange}
-                placeholder="https://youtube.com" />
+                placeholder="https://youtube.com"
+              />
             </li>
             <li>
               <label htmlFor="shortcut">Favicon URL</label>
@@ -84,7 +86,8 @@ export function EditLinkDialog({ isOpen, data, onSave, onClose }: EditLinkDialog
                 type="text"
                 defaultValue={form.favicon}
                 onChange={onChange}
-                placeholder="favicon url" />
+                placeholder="favicon url"
+              />
             </li>
             <li>
               <label htmlFor="shortcut">Shortcut</label>
@@ -93,19 +96,24 @@ export function EditLinkDialog({ isOpen, data, onSave, onClose }: EditLinkDialog
                 type="text"
                 defaultValue={form.shortcut}
                 onChange={onChange}
-                placeholder="press the key combination to assign" />
+                placeholder="press the key combination to assign"
+              />
             </li>
             <li>
               <div className="toolbar">
                 <button
                   type="button"
                   className="text-white bg-action-primary hover"
-                  onClick={onClickSave}>Save
+                  onClick={onClickSave}
+                >
+                  Save
                 </button>
                 <button
                   type="button"
                   className="text-white bg-action-secondary hover"
-                  onClick={onCloseDialog}>Cancel
+                  onClick={onCloseDialog}
+                >
+                  Cancel
                 </button>
               </div>
             </li>

@@ -20,7 +20,13 @@ interface AppUIStateProps {
   children: ReactNode;
 }
 
-export function AppUIStateContextProvider(props: AppUIStateProps): JSX.Element {
+export function AppUIStateContextProvider(
+  {
+    uiState,
+    onEditComplete,
+    children,
+  }: AppUIStateProps
+): JSX.Element {
   function onEditData(editData: EditDataType): void {
     if (isEditLinkData(editData)) {
       if (editData.editType === 'update' || editData.editType === 'create') {
@@ -36,10 +42,10 @@ export function AppUIStateContextProvider(props: AppUIStateProps): JSX.Element {
   function onSave(data: EditLinkData | EditWidgetData): void {
     try {
       if (prepareForSave(data)) {
-        props.onEditComplete({ type: 'success' });
+        onEditComplete({ type: 'success' });
       }
     } catch (e) {
-      props.onEditComplete({ type: 'error', error: e as Error });
+      onEditComplete({ type: 'error', error: e as Error });
     }
   }
 
@@ -54,20 +60,25 @@ export function AppUIStateContextProvider(props: AppUIStateProps): JSX.Element {
   function renderEditLinkDialog(): ReactNode {
     const { isOpen, data } = dialogData;
     if (isOpen && data) {
-      return <EditLinkDialog
-        isOpen={isOpen}
-        onSave={onSave}
-        onClose={(): void => showEditLinkDialog(false)}
-        data={data}/>;
+      return (
+        <EditLinkDialog
+          isOpen={isOpen}
+          onSave={onSave}
+          onClose={(): void => showEditLinkDialog(false)}
+          data={data}
+        />
+      );
     }
     return null;
   }
 
   const [dialogData, setDialogData] = useState<DialogData>({ isOpen: false });
-  props.uiState.onEdit = onEditData;
+  uiState.onEdit = onEditData;
 
-  return <AppUIStateContext.Provider value={props.uiState}>
-    {props.children}
-    {renderEditLinkDialog()}
-  </AppUIStateContext.Provider>;
+  return (
+    <AppUIStateContext.Provider value={uiState}>
+      {children}
+      {renderEditLinkDialog()}
+    </AppUIStateContext.Provider>
+  );
 }

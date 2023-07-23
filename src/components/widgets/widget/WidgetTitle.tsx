@@ -3,8 +3,6 @@ import { AppUIStateContext } from '../../../contexts/AppUIStateContext';
 import { Widget } from '../../../model/MyLinks-interface';
 import { InputText, InputTextHandle } from '../../inputText/InputText';
 
-const debounceTimeout = 1500;
-
 interface WidgetTitleProps {
   editable: boolean;
   widget: Widget;
@@ -35,15 +33,18 @@ export default function WidgetTitle({ editable, widget, onToggleEdit }: WidgetTi
   const inputRef = useRef<InputTextHandle>(null);
 
   if (editable) {
-    return <InputText
-      ref={inputRef}
-      autoFocus={true}
-      className="edit-title"
-      debounceTimeout={debounceTimeout}
-      defaultValue={widget.title}
-      onKeyDown={onKeydownTitle}
-      onText={saveTitle}
-    />;
+    return (
+      <InputText
+        ref={inputRef}
+        autoFocus
+        className="edit-title"
+        defaultValue={widget.title}
+        onKeyDown={onKeydownTitle}
+        onText={saveTitle}
+      />
+    );
   }
+  // it's necessary to compile, JSX.Element can't be a literal
+  // eslint-disable-next-line react/jsx-no-useless-fragment
   return <>{widget.title}</>;
 }

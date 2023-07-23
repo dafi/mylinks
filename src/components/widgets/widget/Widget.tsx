@@ -52,12 +52,14 @@ export function Widget({ value: widget }: WidgetProps): JSX.Element {
       key={v.id}
       id={v.id}
       draggable={editable}
-      onDrop={(s, d): void => onDrop(s, d)}>
+      onDrop={(s, d): void => onDrop(s, d)}
+    >
       <Link
         link={v}
         draggable={!editable}
         widget={widget}
-        editable={editable} />
+        editable={editable}
+      />
     </DraggableListItem>);
 
   const cls = cssExtraClasses(startCollapsed, collapsed);
@@ -67,7 +69,8 @@ export function Widget({ value: widget }: WidgetProps): JSX.Element {
       className={`ml-widget ${cls.widget}`}
       data-list-id={widget.id}
       onMouseEnter={(): void => setCollapsed(false)}
-      onMouseLeave={(): void => setCollapsed(true)}>
+      onMouseLeave={(): void => setCollapsed(true)}
+    >
       <div>
         <h2 className="ml-widget-title">
           <WidgetTitle editable={editable} widget={widget} onToggleEdit={onToggleEdit} />
@@ -77,7 +80,8 @@ export function Widget({ value: widget }: WidgetProps): JSX.Element {
           widget={widget}
           editable={editable}
           action={(e): void => onClickToolbar(e)}
-          classNames="hover-toolbar" />
+          classNames="hover-toolbar"
+        />
       </div>
       <div className="ml-widget-container">
         <div className="ml-widget-control-box">

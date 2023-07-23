@@ -20,18 +20,27 @@ function hash(str: string): number {
 
 interface LinkIconProps {
   link: MLLink;
-  faviconService?: string | null | undefined;
+  faviconService?: string | null;
 }
 
-export function LinkIcon(props: LinkIconProps): JSX.Element {
-  const appConfig = useContext(AppConfigContext);
-  const faviconUrl = faviconUrlByLink(props.link, props.faviconService ?? appConfig.faviconService);
+const defaultProps = {
+  faviconService: null
+};
+
+export function LinkIcon(
+  {
+    link,
+    faviconService,
+  }: LinkIconProps
+): JSX.Element {
+  const { faviconService: appFaviconService } = useContext(AppConfigContext);
+  const faviconUrl = faviconUrlByLink(link, faviconService ?? appFaviconService);
 
   if (faviconUrl) {
-    return <img src={faviconUrl} className="link-icon-favicon" alt=""/>;
+    return <img src={faviconUrl} className="link-icon-favicon" alt="" />;
   }
 
-  const label = props.link.label;
+  const label = link.label;
   const style: React.CSSProperties = {
     color: '#fff',
     backgroundColor: colors[hash(label) % colors.length]
@@ -40,3 +49,5 @@ export function LinkIcon(props: LinkIconProps): JSX.Element {
   const firstLetter = label.charAt(0);
   return <div style={style} className="link-icon-favicon-missing">{firstLetter}</div>;
 }
+
+LinkIcon.defaultProps = defaultProps;

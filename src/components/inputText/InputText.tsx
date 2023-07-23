@@ -1,10 +1,17 @@
 import React, { ChangeEvent, ForwardedRef, forwardRef, InputHTMLAttributes, useEffect, useImperativeHandle, useRef, useState } from 'react';
 import { debounce } from '../../common/debounce';
 
+const defaultDebounceTimeout = 1500;
+
 export interface InputTextProps {
   onText?: (value: string) => void;
   debounceTimeout?: number;
 }
+
+const defaultProps = {
+  onText: undefined,
+  debounceTimeout: defaultDebounceTimeout
+};
 
 export interface InputTextHandle {
   value(): string;
@@ -55,11 +62,16 @@ export const InputText = forwardRef(function(
     },
   }), []);
 
-  return <input
-    type="text"
-    ref={inputRef}
-    className={className}
-    defaultValue={defaultValue}
-    onKeyDown={onKeyDown}
-    onChange={onChange}/>;
+  return (
+    <input
+      type="text"
+      ref={inputRef}
+      className={className}
+      defaultValue={defaultValue}
+      onKeyDown={onKeyDown}
+      onChange={onChange}
+    />
+  );
 });
+
+InputText.defaultProps = defaultProps;

@@ -23,6 +23,7 @@ export function LinkToolbar({ visible, link, widget }: LinkToolbarProps): JSX.El
       });
     }
   }
+
   const context = useContext(AppUIStateContext);
 
   if (!visible) {
@@ -31,11 +32,16 @@ export function LinkToolbar({ visible, link, widget }: LinkToolbarProps): JSX.El
 
   return (
     <>
-      <i className="fas fa-trash-alt edit-actions danger text-action-secondary"
-         title="Delete"
-         onClick={(e): void => onEdit(e, 'delete')}/>
-      <i className="fa fa-edit edit-actions text-action-secondary"
-         title="Edit" onClick={(e): void => onEdit(e, 'update')}/>
+      <i
+        className="fas fa-trash-alt edit-actions danger text-action-secondary"
+        title="Delete"
+        onClick={(e): void => onEdit(e, 'delete')}
+      />
+      <i
+        className="fa fa-edit edit-actions text-action-secondary"
+        title="Edit"
+        onClick={(e): void => onEdit(e, 'update')}
+      />
     </>
   );
 }

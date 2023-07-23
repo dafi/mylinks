@@ -10,7 +10,12 @@ interface LinkSelectorProps {
   onSelected: (link: Link) => void;
 }
 
-export function LinkSelector(props: LinkSelectorProps): JSX.Element {
+export function LinkSelector(
+  {
+    widgets,
+    onSelected,
+  }: LinkSelectorProps
+): JSX.Element {
   function moveFocusToSearch(): void {
     const el = inputRef?.current;
     if (el) {
@@ -43,7 +48,7 @@ export function LinkSelector(props: LinkSelectorProps): JSX.Element {
     const strIndex = e.currentTarget.dataset.index;
     const index = strIndex === undefined ? 0 : +strIndex;
 
-    props.onSelected(result[index].link);
+    onSelected(result[index].link);
   }
 
   function onKeyDown(e: React.KeyboardEvent<HTMLInputElement>): void {
@@ -60,7 +65,7 @@ export function LinkSelector(props: LinkSelectorProps): JSX.Element {
       }
     } else if (e.key === 'Enter') {
       if (currIndex >= 0) {
-        props.onSelected(result[currIndex].link);
+        onSelected(result[currIndex].link);
       }
     } else {
       return;
@@ -84,18 +89,18 @@ export function LinkSelector(props: LinkSelectorProps): JSX.Element {
   }
 
   function widgetTitle(link: Link): string {
-    const title = appConfigContext.myLinksLookup?.findWidgetByLinkId(link.id)?.title;
+    const title = myLinksLookup?.findWidgetByLinkId(link.id)?.title;
     return title ? ` - ${title}` : '';
   }
 
-  const appConfigContext = useContext(AppConfigContext);
+  const { myLinksLookup } = useContext(AppConfigContext);
   const listRefs = new Map<string, RefObject<HTMLLIElement>>();
   const inputRef = useRef<HTMLInputElement>(null);
   const linkSearch = new LinkSearch();
   const [result, setResult] = useState<LinkSearchResult[]>([]);
   const [selectedIndex, setSelectedIndex] = useState(-1);
 
-  const links = props.widgets.flat().map(w => w.list).flat() || [];
+  const links = widgets.flat().map(w => w.list).flat() || [];
   linkSearch.setLinks(links);
 
   useEffect(() => {
@@ -105,14 +110,16 @@ export function LinkSelector(props: LinkSelectorProps): JSX.Element {
   return (
     <div className="link-selector">
       <div className="input-container">
-        <i className="fas fa-search icon"/>
-        <input type="text"
-               ref={inputRef}
-               onKeyDown={onKeyDown}
-               onChange={onChange}
-               placeholder="Search"
-               spellCheck="false"
-               className="input-box"/>
+        <i className="fas fa-search icon" />
+        <input
+          type="text"
+          ref={inputRef}
+          onKeyDown={onKeyDown}
+          onChange={onChange}
+          placeholder="Search"
+          spellCheck="false"
+          className="input-box"
+        />
       </div>
       <div className="list">
         <ul>
@@ -123,11 +130,16 @@ export function LinkSelector(props: LinkSelectorProps): JSX.Element {
               data-index={i}
               className={i === selectedIndex ? 'selected' : 'none'}
               ref={listRefs.get(r.id) ?? null}
-              key={r.id}><i className="list-image">
-              <LinkIcon link={r.link}/>
-            </i>
+              key={r.id}
+            >
+              <i className="list-image">
+                <LinkIcon link={r.link} />
+              </i>
               <div>
-                <span dangerouslySetInnerHTML={{ __html: r.highlighted }}/>{widgetTitle(r.link)}</div>
+                {/* eslint-disable-next-line react/no-danger */}
+                <span dangerouslySetInnerHTML={{ __html: r.highlighted }} />
+                {widgetTitle(r.link)}
+              </div>
             </li>
           )}
         </ul>

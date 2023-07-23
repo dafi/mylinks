@@ -15,7 +15,11 @@ interface AppToolbarProps {
   action: MyLinkActionCallback<AppToolbarActionType>;
 }
 
-export function AppToolbar(props: AppToolbarProps): JSX.Element {
+export function AppToolbar(
+  {
+    action
+  }: AppToolbarProps
+): JSX.Element {
   function handleFileSelect(evt: ChangeEvent<HTMLInputElement>): void {
     if (!evt.target) {
       return;
@@ -24,28 +28,28 @@ export function AppToolbar(props: AppToolbarProps): JSX.Element {
     // onChange is not called when the path is the same so, we force the change
     evt.target.value = '';
     if (file) {
-      props.action({ target: 'loadConfig', data: file });
+      action({ target: 'loadConfig', data: file });
     }
   }
 
   function onButtonClick(e: React.MouseEvent<HTMLElement>): void {
     if (isAction(e.currentTarget.dataset.action)) {
-      props.action({ target: e.currentTarget.dataset.action });
+      action({ target: e.currentTarget.dataset.action });
     }
   }
 
   function onShowButtons(_e: React.MouseEvent<HTMLElement>): void {
-    setShowButtons(prevShowButtons =>  !prevShowButtons);
+    setShowButtons(prevShowButtons => !prevShowButtons);
   }
 
   const [showButtons, setShowButtons] = useState(false);
-  const context = useContext(AppConfigContext);
+  const { myLinksLookup } = useContext(AppConfigContext);
 
   const shortcutStyle = {
-    visibility: context.myLinksLookup?.hasShortcuts() ? 'visible' : 'collapse'
+    visibility: myLinksLookup?.hasShortcuts() ? 'visible' : 'collapse'
   } as React.CSSProperties;
   const saveConfigStyle = {
-    visibility: context.myLinksLookup ? 'visible' : 'collapse'
+    visibility: myLinksLookup ? 'visible' : 'collapse'
   } as React.CSSProperties;
   const showButtonStyle = {
     display: showButtons ? 'inline' : 'none'
@@ -54,35 +58,50 @@ export function AppToolbar(props: AppToolbarProps): JSX.Element {
 
   return (
     <div className="toolbar-container">
-      <label className="toolbar-icon"
-             title="Show Actions"
-             onClick={onShowButtons}>
-        <i className={`fas ${showButtonIcon}`}></i>
+      <label
+        className="toolbar-icon"
+        title="Show Actions"
+        onClick={onShowButtons}
+      >
+        <i className={`fas ${showButtonIcon}`} />
       </label>
 
-      <div className="toolbar-buttons"
-           style={showButtonStyle}>
-        <label className="toolbar-icon" title="Load configuration from local file">
-          <i className="fa fa-file-import"/>
-          <input type="file" id="files" name="files[]"
-                 accept="application/json"
-                 onChange={handleFileSelect}/>
+      <div
+        className="toolbar-buttons"
+        style={showButtonStyle}
+      >
+        <label
+          className="toolbar-icon"
+          title="Load configuration from local file"
+        >
+          <i className="fa fa-file-import" />
+          <input
+            type="file"
+            id="files"
+            name="files[]"
+            accept="application/json"
+            onChange={handleFileSelect}
+          />
         </label>
 
-        <label className="toolbar-icon"
-               data-action="saveConfig"
-               title="Save Configuration"
-               style={saveConfigStyle}
-               onClick={onButtonClick}>
-          <i className="fas fa-file-download"></i>
+        <label
+          className="toolbar-icon"
+          data-action="saveConfig"
+          title="Save Configuration"
+          style={saveConfigStyle}
+          onClick={onButtonClick}
+        >
+          <i className="fas fa-file-download" />
         </label>
 
-        <label className="toolbar-icon"
-               data-action="shortcut"
-               title="Toggle shortcuts visibility"
-               style={shortcutStyle}
-               onClick={onButtonClick}>
-          <i className="fa fa-keyboard"/>
+        <label
+          className="toolbar-icon"
+          data-action="shortcut"
+          title="Toggle shortcuts visibility"
+          style={shortcutStyle}
+          onClick={onButtonClick}
+        >
+          <i className="fa fa-keyboard" />
         </label>
       </div>
     </div>);

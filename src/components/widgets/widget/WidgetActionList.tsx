@@ -9,8 +9,8 @@ interface WidgetActionListProps {
 
 export default function WidgetActionList({ editable, widget }: WidgetActionListProps): JSX.Element | null {
   function onAddLink(): void {
-    if (context.onEdit) {
-      context.onEdit({
+    if (onEdit) {
+      onEdit({
         link: { id: `${widget.id}-${new Date().getTime()}`, url: '', shortcut: '', label: '' },
         widget,
         editType: 'create'
@@ -18,12 +18,12 @@ export default function WidgetActionList({ editable, widget }: WidgetActionListP
     }
   }
 
-  const context = useContext(AppUIStateContext);
+  const { onEdit } = useContext(AppUIStateContext);
 
   if (editable) {
     return (
       <div className="ml-widget-button-container">
-        <button className="button" onClick={onAddLink}>Add New Link</button>
+        <button type="button" className="button" onClick={onAddLink}>Add New Link</button>
       </div>
     );
   }

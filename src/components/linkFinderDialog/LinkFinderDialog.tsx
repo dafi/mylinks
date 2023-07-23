@@ -9,22 +9,32 @@ interface LinkFinderDialogProps extends DialogProps {
   widgets: Widget[][];
 }
 
-export function LinkFinderDialog(props: LinkFinderDialogProps): JSX.Element {
-  function onClose(): void {
-    props.onClose();
-  }
-
-  function onSelected(link: Link): void {
-    props.onLinkSelected(link);
+export function LinkFinderDialog(
+  {
+    onLinkSelected,
+    widgets,
+    isOpen,
+    onClose,
+  }: LinkFinderDialogProps
+): JSX.Element {
+  function onCloseDialog(): void {
     onClose();
   }
 
+  function onSelected(link: Link): void {
+    onLinkSelected(link);
+    onCloseDialog();
+  }
+
   return (
-    <Modal isOpen={props.isOpen}
-           onClose={(): void => onClose()}>
+    <Modal
+      isOpen={isOpen}
+      onClose={(): void => onCloseDialog()}
+    >
       <LinkSelector
         onSelected={(l): void => onSelected(l)}
-        widgets={props.widgets}/>
+        widgets={widgets}
+      />
     </Modal>
   );
 }
