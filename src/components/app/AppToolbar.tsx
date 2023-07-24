@@ -1,5 +1,5 @@
-import React, { ChangeEvent, useContext, useState } from 'react';
-import { AppConfigContext } from '../../contexts/AppConfigContext';
+import React, { ChangeEvent, useState } from 'react';
+import { useAppConfigContext } from '../../contexts/AppConfigContext';
 import { MyLinkActionCallback } from '../../model/Events';
 
 const actions = [
@@ -43,7 +43,7 @@ export function AppToolbar(
   }
 
   const [showButtons, setShowButtons] = useState(false);
-  const { myLinksLookup } = useContext(AppConfigContext);
+  const { myLinksLookup } = useAppConfigContext();
 
   const shortcutStyle = {
     visibility: myLinksLookup?.hasShortcuts() ? 'visible' : 'collapse'

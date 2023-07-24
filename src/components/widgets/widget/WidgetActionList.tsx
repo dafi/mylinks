@@ -1,5 +1,5 @@
-import React, { useContext } from 'react';
-import { AppUIStateContext } from '../../../contexts/AppUIStateContext';
+import React from 'react';
+import { useAppUIStateContext } from '../../../contexts/AppUIStateContext';
 import { Widget } from '../../../model/MyLinks-interface';
 
 interface WidgetActionListProps {
@@ -18,7 +18,7 @@ export default function WidgetActionList({ editable, widget }: WidgetActionListP
     }
   }
 
-  const { onEdit } = useContext(AppUIStateContext);
+  const { onEdit } = useAppUIStateContext();
 
   if (editable) {
     return (

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Theme, MyLinksLookup } from '../model/MyLinks-interface';
 
 export const defaultTheme: Theme = {
@@ -16,3 +16,5 @@ export const defaultAppConfig: AppConfig = {
 };
 
 export const AppConfigContext = React.createContext<AppConfig>(defaultAppConfig);
+
+export const useAppConfigContext = (): AppConfig => useContext(AppConfigContext);

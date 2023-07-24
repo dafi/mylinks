@@ -1,6 +1,6 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { faviconUrlByLink } from '../../../common/Favicon';
-import { AppConfigContext } from '../../../contexts/AppConfigContext';
+import { useAppConfigContext } from '../../../contexts/AppConfigContext';
 import { Link as MLLink } from '../../../model/MyLinks-interface';
 import './LinkIcon.css';
 
@@ -33,7 +33,7 @@ export function LinkIcon(
     faviconService,
   }: LinkIconProps
 ): JSX.Element {
-  const { faviconService: appFaviconService } = useContext(AppConfigContext);
+  const { faviconService: appFaviconService } = useAppConfigContext();
   const faviconUrl = faviconUrlByLink(link, faviconService ?? appFaviconService);
 
   if (faviconUrl) {

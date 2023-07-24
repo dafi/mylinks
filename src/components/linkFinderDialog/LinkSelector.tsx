@@ -1,6 +1,6 @@
-import React, { ChangeEvent, RefObject, useContext, useEffect, useRef, useState } from 'react';
+import React, { ChangeEvent, RefObject, useEffect, useRef, useState } from 'react';
 import { LinkSearch, LinkSearchResult } from '../../common/LinkSearch';
-import { AppConfigContext } from '../../contexts/AppConfigContext';
+import { useAppConfigContext } from '../../contexts/AppConfigContext';
 import { Link, Widget } from '../../model/MyLinks-interface';
 import { LinkIcon } from '../widgets/linkIcon/LinkIcon';
 import './LinkSelector.css';
@@ -93,7 +93,7 @@ export function LinkSelector(
     return title ? ` - ${title}` : '';
   }
 
-  const { myLinksLookup } = useContext(AppConfigContext);
+  const { myLinksLookup } = useAppConfigContext();
   const listRefs = new Map<string, RefObject<HTMLLIElement>>();
   const inputRef = useRef<HTMLInputElement>(null);
   const linkSearch = new LinkSearch();

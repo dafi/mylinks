@@ -1,5 +1,5 @@
-import React, { useContext } from 'react';
-import { AppUIStateContext } from '../../../contexts/AppUIStateContext';
+import React from 'react';
+import { useAppUIStateContext } from '../../../contexts/AppUIStateContext';
 import { EditType } from '../../../model/EditData-interface';
 import { Link as MLLink, Widget } from '../../../model/MyLinks-interface';
 import './Edit.css';
@@ -24,7 +24,7 @@ export function LinkToolbar({ visible, link, widget }: LinkToolbarProps): JSX.El
     }
   }
 
-  const context = useContext(AppUIStateContext);
+  const context = useAppUIStateContext();
 
   if (!visible) {
     return null;

@@ -1,5 +1,5 @@
-import React, { useContext, useRef } from 'react';
-import { AppUIStateContext } from '../../../contexts/AppUIStateContext';
+import React, { useRef } from 'react';
+import { useAppUIStateContext } from '../../../contexts/AppUIStateContext';
 import { Widget } from '../../../model/MyLinks-interface';
 import { InputText, InputTextHandle } from '../../inputText/InputText';
 
@@ -29,7 +29,7 @@ export default function WidgetTitle({ editable, widget, onToggleEdit }: WidgetTi
     }
   }
 
-  const context = useContext(AppUIStateContext);
+  const context = useAppUIStateContext();
   const inputRef = useRef<InputTextHandle>(null);
 
   if (editable) {

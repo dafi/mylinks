@@ -1,5 +1,5 @@
-import React, { useContext, useState } from 'react';
-import { AppUIStateContext } from '../../../contexts/AppUIStateContext';
+import React, { useState } from 'react';
+import { useAppUIStateContext } from '../../../contexts/AppUIStateContext';
 import useCollapsed from '../../../hooks/useCollapsed/useCollapsed';
 import { MyLinksEvent } from '../../../model/Events';
 import { Widget as MLWidget } from '../../../model/MyLinks-interface';
@@ -42,7 +42,7 @@ export function Widget({ value: widget }: WidgetProps): JSX.Element {
     }
   }
 
-  const { onEdit: appOnEdit } = useContext(AppUIStateContext);
+  const { onEdit: appOnEdit } = useAppUIStateContext();
 
   const [editable, setEditable] = useState(false);
   const { startCollapsed, collapsed, setCollapsed, toggleStartCollapsed } = useCollapsed(widget.id);

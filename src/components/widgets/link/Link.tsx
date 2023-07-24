@@ -1,9 +1,9 @@
-import React, { ReactNode, useContext, useState } from 'react';
-import { AppUIStateContext } from '../../../contexts/AppUIStateContext';
+import React, { ReactNode, useState } from 'react';
+import { useAppUIStateContext } from '../../../contexts/AppUIStateContext';
 import { Link as MLLink, Widget } from '../../../model/MyLinks-interface';
 import { LinkIcon } from '../linkIcon/LinkIcon';
-import { LinkToolbar } from './LinkToolbar';
 import './Link.css';
+import { LinkToolbar } from './LinkToolbar';
 
 interface LinkProps {
   link: MLLink;
@@ -41,7 +41,7 @@ export function Link(
     return isMouseOver;
   }
 
-  const { hideShortcuts } = useContext(AppUIStateContext);
+  const { hideShortcuts } = useAppUIStateContext();
   const [isMouseOver, setIsMouseOver] = useState(false);
 
   return (
