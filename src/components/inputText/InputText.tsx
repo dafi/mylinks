@@ -41,6 +41,9 @@ export const InputText = forwardRef(function(
     if (autoFocus === true) {
       inputRef.current?.focus();
     }
+  }, [autoFocus]);
+
+  useEffect(() => {
     const userOnChange = onText;
     if (debounceTimeout && userOnChange) {
       const [debounceCallback, stopDebounceCallback] = debounce(a => {
@@ -54,7 +57,7 @@ export const InputText = forwardRef(function(
     } else {
       setOnInputChange(() => userOnChange);
     }
-  }, []);
+  }, [onText, debounceTimeout]);
 
   useImperativeHandle(ref, () => ({
     value(): string {
