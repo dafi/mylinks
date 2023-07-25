@@ -12,7 +12,7 @@ import WidgetActionList from './WidgetActionList';
 import WidgetTitle from './WidgetTitle';
 
 export interface WidgetProps {
-  value: MLWidget;
+  readonly value: MLWidget;
 }
 
 export function Widget({ value: widget }: WidgetProps): JSX.Element {

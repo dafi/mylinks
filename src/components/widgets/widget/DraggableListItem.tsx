@@ -6,10 +6,10 @@ type LIDragEvent = React.DragEvent<HTMLLIElement>;
  * Do not use index for id
  */
 export interface DraggableListItemProps {
-  id: string;
-  draggable: boolean;
-  children: ReactNode;
-  onDrop: (sourceId: string, destId: string) => void;
+  readonly id: string;
+  readonly draggable: boolean;
+  readonly children: ReactNode;
+  readonly onDrop: (sourceId: string, destId: string) => void;
 }
 
 export function DraggableListItem(

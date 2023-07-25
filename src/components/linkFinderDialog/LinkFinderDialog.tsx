@@ -5,8 +5,8 @@ import Modal from '../modal/Modal';
 import { LinkSelector } from './LinkSelector';
 
 interface LinkFinderDialogProps extends DialogProps {
-  onLinkSelected: (link: Link) => void;
-  widgets: Widget[][];
+  readonly onLinkSelected: (link: Link) => void;
+  readonly widgets: Widget[][];
 }
 
 export function LinkFinderDialog(

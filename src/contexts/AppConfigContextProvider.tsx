@@ -30,7 +30,12 @@ function buildConfig(holder: MyLinksHolder): AppConfig {
   };
 }
 
-export function AppConfigContextProvider({ myLinks, children }: { myLinks: MyLinks | undefined; children: ReactNode }): JSX.Element {
+interface AppConfigContextProps {
+  readonly myLinks: MyLinks | undefined;
+  readonly children: ReactNode;
+}
+
+export function AppConfigContextProvider({ myLinks, children }: AppConfigContextProps): JSX.Element {
   const [config, setConfig] = useState(defaultAppConfig);
 
   useEffect(() => {

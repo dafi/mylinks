@@ -4,9 +4,9 @@ import { Widget } from '../../../model/MyLinks-interface';
 import { InputText, InputTextHandle } from '../../inputText/InputText';
 
 interface WidgetTitleProps {
-  editable: boolean;
-  widget: Widget;
-  onToggleEdit: () => void;
+  readonly editable: boolean;
+  readonly widget: Widget;
+  readonly onToggleEdit: () => void;
 }
 
 export default function WidgetTitle({ editable, widget, onToggleEdit }: WidgetTitleProps): JSX.Element {

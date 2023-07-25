@@ -3,8 +3,8 @@ import { useAppUIStateContext } from '../../../contexts/AppUIStateContext';
 import { Widget } from '../../../model/MyLinks-interface';
 
 interface WidgetActionListProps {
-  editable: boolean;
-  widget: Widget;
+  readonly editable: boolean;
+  readonly widget: Widget;
 }
 
 export default function WidgetActionList({ editable, widget }: WidgetActionListProps): JSX.Element | null {

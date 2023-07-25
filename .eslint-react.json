@@ -51,6 +51,8 @@
     "react/jsx-curly-spacing" : "error",
     "react/jsx-tag-spacing" : "error",
     "react/jsx-pascal-case" : "error",
-    "react/jsx-boolean-value" : "error"
+    "react/jsx-boolean-value" : "error",
+    "react/prefer-read-only-props": "error",
+    "react/hook-use-state": "error"
   }
 }

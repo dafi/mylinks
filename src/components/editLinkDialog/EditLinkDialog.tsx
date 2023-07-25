@@ -5,8 +5,8 @@ import Modal from '../modal/Modal';
 import './EditLinkDialog.css';
 
 export interface EditLinkDialogProps extends DialogProps {
-  data: Readonly<EditLinkData>;
-  onSave: (editLinkData: EditLinkData) => void;
+  readonly data: Readonly<EditLinkData>;
+  readonly onSave: (editLinkData: EditLinkData) => void;
 }
 
 // https://stackoverflow.com/questions/57773734/how-to-use-partially-the-computed-property-name-on-a-type-definition/57774343#57774343

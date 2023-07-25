@@ -3,7 +3,7 @@ import { Widget as MLWidget } from '../../../model/MyLinks-interface';
 import { Column } from '../column/Column';
 
 interface GridProps {
-  columns: MLWidget[][];
+  readonly columns: MLWidget[][];
 }
 
 export function Grid({ columns }: GridProps): JSX.Element {

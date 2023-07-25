@@ -7,11 +7,11 @@ import './widgetToolbar.css';
 export type WidgetToolbarActionType = 'collapse' | 'edit';
 
 interface WidgetToolbarProps {
-  collapsed: boolean;
-  widget: MLWidget;
-  classNames?: string;
-  action: MyLinkActionCallback<WidgetToolbarActionType>;
-  editable: boolean;
+  readonly collapsed: boolean;
+  readonly widget: MLWidget;
+  readonly classNames?: string;
+  readonly action: MyLinkActionCallback<WidgetToolbarActionType>;
+  readonly editable: boolean;
 }
 
 const defaultProps = {

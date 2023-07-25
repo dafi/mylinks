@@ -15,9 +15,9 @@ interface DialogData {
 }
 
 interface AppUIStateProps {
-  uiState: AppUIState;
-  onEditComplete: (result: EditCompleteResult) => void;
-  children: ReactNode;
+  readonly uiState: AppUIState;
+  readonly onEditComplete: (result: EditCompleteResult) => void;
+  readonly children: ReactNode;
 }
 
 export function AppUIStateContextProvider(

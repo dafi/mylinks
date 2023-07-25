@@ -12,7 +12,7 @@ function isAction(action: string | undefined): action is AppToolbarActionType {
 }
 
 interface AppToolbarProps {
-  action: MyLinkActionCallback<AppToolbarActionType>;
+  readonly action: MyLinkActionCallback<AppToolbarActionType>;
 }
 
 export function AppToolbar(

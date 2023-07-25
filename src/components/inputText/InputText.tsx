@@ -4,8 +4,8 @@ import { debounce } from '../../common/debounce';
 const defaultDebounceTimeout = 1500;
 
 export interface InputTextProps {
-  onText?: (value: string) => void;
-  debounceTimeout?: number;
+  readonly onText?: (value: string) => void;
+  readonly debounceTimeout?: number;
 }
 
 const defaultProps = {

@@ -6,8 +6,8 @@ import { LinkIcon } from '../widgets/linkIcon/LinkIcon';
 import './LinkSelector.css';
 
 interface LinkSelectorProps {
-  widgets: Widget[][];
-  onSelected: (link: Link) => void;
+  readonly widgets: Widget[][];
+  readonly onSelected: (link: Link) => void;
 }
 
 export function LinkSelector(

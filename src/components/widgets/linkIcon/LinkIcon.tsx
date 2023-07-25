@@ -19,8 +19,8 @@ function hash(str: string): number {
 }
 
 interface LinkIconProps {
-  link: MLLink;
-  faviconService?: string | null;
+  readonly link: MLLink;
+  readonly faviconService?: string | null;
 }
 
 const defaultProps = {

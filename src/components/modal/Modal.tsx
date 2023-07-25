@@ -2,9 +2,9 @@ import React, { ReactNode, useEffect, useState } from 'react';
 import './Modal.css';
 
 export interface ModalProp {
-  onClose: () => void;
-  isOpen: boolean;
-  children: ReactNode;
+  readonly onClose: () => void;
+  readonly isOpen: boolean;
+  readonly children: ReactNode;
 }
 
 export default function Modal(

@@ -5,9 +5,9 @@ import { Link as MLLink, Widget } from '../../../model/MyLinks-interface';
 import './Edit.css';
 
 interface LinkToolbarProps {
-  visible: boolean;
-  link: MLLink;
-  widget: Widget;
+  readonly visible: boolean;
+  readonly link: MLLink;
+  readonly widget: Widget;
 }
 
 export function LinkToolbar({ visible, link, widget }: LinkToolbarProps): JSX.Element | null {
