@@ -1,15 +1,15 @@
-import React, { ReactNode, useState } from 'react';
-import { useAppUIStateContext } from '../../../contexts/AppUIStateContext';
+import React, { useState } from 'react';
 import { Link as MLLink, Widget } from '../../../model/MyLinks-interface';
 import { LinkIcon } from '../linkIcon/LinkIcon';
 import './Link.css';
 import { LinkToolbar } from './LinkToolbar';
+import { Shortcut } from './Shortcut';
 
 interface LinkProps {
-  link: MLLink;
-  widget: Widget;
-  editable: boolean;
-  draggable?: boolean;
+  readonly link: MLLink;
+  readonly widget: Widget;
+  readonly editable: boolean;
+  readonly draggable?: boolean;
 }
 
 const defaultProps = {
@@ -24,24 +24,6 @@ export function Link(
     draggable = true,
   }: LinkProps
 ): JSX.Element {
-  function renderShortcut(): ReactNode {
-    if (!editable && isShortcutVisible()) {
-      return <kbd>{link.shortcut}</kbd>;
-    }
-    return null;
-  }
-
-  function isShortcutVisible(): boolean {
-    if (!link.shortcut) {
-      return false;
-    }
-    if (!hideShortcuts) {
-      return true;
-    }
-    return isMouseOver;
-  }
-
-  const { hideShortcuts } = useAppUIStateContext();
   const [isMouseOver, setIsMouseOver] = useState(false);
 
   return (
@@ -64,7 +46,7 @@ export function Link(
         </div>
         <div className="right">
           <LinkToolbar visible={editable} link={link} widget={widget} />
-          {renderShortcut()}
+          <Shortcut shortcut={link.shortcut} visible={!editable} isMouseOver={isMouseOver} />
         </div>
       </div>
     </div>

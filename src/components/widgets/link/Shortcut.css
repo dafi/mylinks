@@ -1,0 +1,13 @@
+.shortcut {
+  border-radius: 3px;
+  background-color: var(--link-key-background, #eee);
+  color: var(--link-key-color, #333);
+  border: 1px solid var(--link-key-border-color);
+  box-shadow: 0 1px 1px var(--box-shadow-color1), 0 2px 0 0 var(--box-shadow-color2) inset;
+  font-size: var(--font-xm);
+  font-weight: 700;
+  line-height: 1;
+  padding: 0 4px;
+  white-space: nowrap;
+}
+
