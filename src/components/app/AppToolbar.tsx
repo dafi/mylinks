@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState } from 'react';
+import { ChangeEvent, CSSProperties, MouseEvent, ReactElement, useState } from 'react';
 import { useAppConfigContext } from '../../contexts/AppConfigContext';
 import { MyLinkActionCallback } from '../../model/Events';
 
@@ -19,12 +19,9 @@ export function AppToolbar(
   {
     action
   }: AppToolbarProps
-): JSX.Element {
+): ReactElement {
   function handleFileSelect(evt: ChangeEvent<HTMLInputElement>): void {
-    if (!evt.target) {
-      return;
-    }
-    const file = evt.target.files && evt.target.files[0];
+    const file = evt.target.files?.[0] ?? null;
     // onChange is not called when the path is the same so, we force the change
     evt.target.value = '';
     if (file) {
@@ -32,28 +29,28 @@ export function AppToolbar(
     }
   }
 
-  function onButtonClick(e: React.MouseEvent<HTMLElement>): void {
+  function onButtonClick(e: MouseEvent<HTMLElement>): void {
     if (isAction(e.currentTarget.dataset.action)) {
       action({ target: e.currentTarget.dataset.action });
     }
   }
 
-  function onShowButtons(_e: React.MouseEvent<HTMLElement>): void {
+  function onShowButtons(_e: MouseEvent<HTMLElement>): void {
     setShowButtons(prevShowButtons => !prevShowButtons);
   }
 
   const [showButtons, setShowButtons] = useState(false);
   const { myLinksLookup } = useAppConfigContext();
 
-  const shortcutStyle = {
+  const shortcutStyle: CSSProperties = {
     visibility: myLinksLookup?.hasShortcuts() ? 'visible' : 'collapse'
-  } as React.CSSProperties;
-  const saveConfigStyle = {
+  };
+  const saveConfigStyle: CSSProperties = {
     visibility: myLinksLookup ? 'visible' : 'collapse'
-  } as React.CSSProperties;
-  const showButtonStyle = {
+  };
+  const showButtonStyle: CSSProperties = {
     display: showButtons ? 'inline' : 'none'
-  } as React.CSSProperties;
+  };
   const showButtonIcon = showButtons ? 'fa-chevron-down' : 'fa-bars';
 
   return (

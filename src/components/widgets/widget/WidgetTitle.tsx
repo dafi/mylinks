@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import { KeyboardEvent, ReactElement, useRef } from 'react';
 import { useAppUIStateContext } from '../../../contexts/AppUIStateContext';
 import { Widget } from '../../../model/MyLinks-interface';
 import { InputText, InputTextHandle } from '../../inputText/InputText';
@@ -9,7 +9,7 @@ interface WidgetTitleProps {
   readonly onToggleEdit: () => void;
 }
 
-export default function WidgetTitle({ editable, widget, onToggleEdit }: WidgetTitleProps): JSX.Element {
+export default function WidgetTitle({ editable, widget, onToggleEdit }: WidgetTitleProps): ReactElement {
   function saveTitle(title: string | undefined): void {
     if (context.onEdit && title && widget.title !== title) {
       context.onEdit({
@@ -20,7 +20,7 @@ export default function WidgetTitle({ editable, widget, onToggleEdit }: WidgetTi
     }
   }
 
-  function onKeydownTitle(e: React.KeyboardEvent<HTMLInputElement>): void {
+  function onKeydownTitle(e: KeyboardEvent<HTMLInputElement>): void {
     if (e.key === 'Escape') {
       onToggleEdit();
     } else if (e.key === 'Enter') {
@@ -44,7 +44,7 @@ export default function WidgetTitle({ editable, widget, onToggleEdit }: WidgetTi
       />
     );
   }
-  // it's necessary to compile, JSX.Element can't be a literal
+  // it's necessary to compile, ReactElement can't be a literal
   // eslint-disable-next-line react/jsx-no-useless-fragment
   return <>{widget.title}</>;
 }

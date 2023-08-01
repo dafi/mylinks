@@ -1,6 +1,6 @@
-import React, { ReactNode } from 'react';
+import { DragEvent, ReactElement } from 'react';
 
-type LIDragEvent = React.DragEvent<HTMLLIElement>;
+type LIDragEvent = DragEvent<HTMLLIElement>;
 
 /**
  * Do not use index for id
@@ -8,7 +8,7 @@ type LIDragEvent = React.DragEvent<HTMLLIElement>;
 export interface DraggableListItemProps {
   readonly id: string;
   readonly draggable: boolean;
-  readonly children: ReactNode;
+  readonly children: ReactElement;
   readonly onDrop: (sourceId: string, destId: string) => void;
 }
 
@@ -19,7 +19,7 @@ export function DraggableListItem(
     children,
     onDrop,
   }: DraggableListItemProps
-): JSX.Element {
+): ReactElement {
   function handleDragStart(e: LIDragEvent): void {
     e.dataTransfer.setData('text/plain', e.currentTarget.id);
     e.currentTarget.classList.add('dragging');
@@ -43,7 +43,7 @@ export function DraggableListItem(
       const dropped = e.currentTarget.closest(dragged.nodeName);
       if (dropped) {
         dragged.parentNode.removeChild(dragged);
-        dropped?.insertAdjacentElement('beforebegin', dragged);
+        dropped.insertAdjacentElement('beforebegin', dragged);
 
         onDrop(dragged.id, dropped.id);
       }

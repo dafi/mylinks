@@ -1,4 +1,4 @@
-import React from 'react';
+import { ReactElement } from 'react';
 import { Link, Widget } from '../../model/MyLinks-interface';
 import { DialogProps } from '../modal/Dialog';
 import Modal from '../modal/Modal';
@@ -16,7 +16,7 @@ export function LinkFinderDialog(
     isOpen,
     onClose,
   }: LinkFinderDialogProps
-): JSX.Element {
+): ReactElement {
   function onCloseDialog(): void {
     onClose();
   }

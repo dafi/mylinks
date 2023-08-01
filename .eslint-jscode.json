@@ -169,6 +169,7 @@
       }
     ],
     "use-isnan": "error",
-    "valid-typeof": "off"
+    "valid-typeof": "off",
+    "import/no-duplicates": "error"
   }
 }

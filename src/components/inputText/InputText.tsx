@@ -1,4 +1,14 @@
-import React, { ChangeEvent, ForwardedRef, forwardRef, InputHTMLAttributes, useEffect, useImperativeHandle, useRef, useState } from 'react';
+import {
+  ChangeEvent,
+  ForwardedRef,
+  forwardRef,
+  InputHTMLAttributes,
+  ReactElement,
+  useEffect,
+  useImperativeHandle,
+  useRef,
+  useState
+} from 'react';
 import { debounce } from '../../common/debounce';
 
 const defaultDebounceTimeout = 1500;
@@ -27,7 +37,7 @@ export const InputText = forwardRef(function(
     onKeyDown
   }: InputTextProps & InputHTMLAttributes<HTMLInputElement>,
   ref: ForwardedRef<InputTextHandle>
-): JSX.Element {
+): ReactElement {
   function onChange(e: ChangeEvent<HTMLInputElement>): void {
     if (onInputChange) {
       onInputChange(e.target.value);

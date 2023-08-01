@@ -28,7 +28,7 @@ export class LinkSearch {
 
     return this.fuse.search(pattern).map(r => {
       const m = r.matches;
-      const highlighted = m && m[0].value ? highlight(m[0].value, m[0].indices) : r.item.label;
+      const highlighted = m?.[0].value ? highlight(m[0].value, m[0].indices) : r.item.label;
       return { id: r.item.id, link: r.item, highlighted };
     });
   }

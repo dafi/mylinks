@@ -7,77 +7,89 @@ export type OnSaveCallback = (myLinks: MyLinks) => void;
 
 type MyLinksCallback = (myLinks: MyLinks | undefined) => void;
 
-export default class Config {
-  static fromData(onLoadCallback: OnLoadCallback): void {
-    const configUrl = new URL(location.href).searchParams.get('c');
-    if (configUrl) {
-      ConfigReader.loadFromUrl(configUrl, (myLinks?: MyLinks) => {
-        onLoadCallback(myLinks);
-      });
-    } else {
-      ConfigReader.loadData((myLinks?: MyLinks) => {
-        onLoadCallback(myLinks);
-      });
-    }
-  }
+export interface LoadConfig {
+  url?: string | null;
+  file?: File | null;
+  callback: OnLoadCallback;
+}
 
-  static fromFile(file: File, onLoadCallback: OnLoadCallback): void {
-    ConfigReader.loadFromFile(file, (myLinks?: MyLinks) => {
-      onLoadCallback(myLinks);
+export interface SaveConfig {
+  data: MyLinks;
+  callback: OnSaveCallback;
+}
+
+export function loadConfig(
+  {
+    url,
+    file,
+    callback
+  }: LoadConfig
+): void {
+  if (url) {
+    loadFromUrl(url, (myLinks?: MyLinks) => {
+      callback(myLinks);
     });
-  }
-
-  static saveData(data: MyLinks, onSaveCallback: OnSaveCallback): void {
-    ConfigReader.saveData(data, onSaveCallback);
+  } else if (file) {
+    loadFromFile(file, (myLinks?: MyLinks) => {
+      callback(myLinks);
+    });
+  } else {
+    loadData((myLinks?: MyLinks) => {
+      callback(myLinks);
+    });
   }
 }
 
-class ConfigReader {
-  static loadData(onLoadCallback: MyLinksCallback): void {
-    let data: MyLinks | undefined;
+function loadData(onLoadCallback: MyLinksCallback): void {
+  let data: MyLinks | undefined;
 
-    const jsonText = localStorage.getItem(STORAGE_PREF_DATA);
-    if (jsonText) {
+  const jsonText = localStorage.getItem(STORAGE_PREF_DATA);
+  if (jsonText) {
+    try {
+      data = loadFromObject(JSON.parse(jsonText));
+    } catch (e) {
+      window.alert(e);
+    }
+  }
+  onLoadCallback(data);
+}
+
+function loadFromObject(json: unknown): MyLinks {
+  return json as MyLinks;
+}
+
+function loadFromFile(file: File, onLoadCallback: MyLinksCallback): void {
+  const reader = new FileReader();
+
+  reader.onload = (() =>
+    (event: ProgressEvent<FileReader>): void => {
+      const result = event.target?.result;
+      const jsonText = typeof result === 'string' ? result : '';
       try {
-        data = ConfigReader.loadFromObject(JSON.parse(jsonText));
+        onLoadCallback(loadFromObject(JSON.parse(jsonText)));
+        localStorage.setItem(STORAGE_PREF_DATA, jsonText);
       } catch (e) {
         window.alert(e);
       }
-    }
-    onLoadCallback(data);
-  }
+    })();
 
-  static loadFromObject(json: unknown): MyLinks {
-    return json as MyLinks;
-  }
-
-  static loadFromFile(file: File, onLoadCallback: MyLinksCallback): void {
-    const reader = new FileReader();
-
-    reader.onload = (() =>
-      (event: ProgressEvent<FileReader>): void => {
-        const result = event.target?.result;
-        const jsonText = typeof result === 'string' ? result : '';
-        try {
-          onLoadCallback(ConfigReader.loadFromObject(JSON.parse(jsonText)));
-          localStorage.setItem(STORAGE_PREF_DATA, jsonText);
-        } catch (e) {
-          window.alert(e);
-        }
-      })();
-
-    reader.readAsText(file);
-  }
-
-  static loadFromUrl(url: string, onLoadCallback: MyLinksCallback): void {
-    fetch(url)
-      .then(async response => response.json())
-      .then(data => onLoadCallback(data as MyLinks))
-      .catch(e => window.alert(e));
-  }
-
-  static saveData(data: MyLinks, onSaveCallback: OnSaveCallback): void {
-    localStorage.setItem(STORAGE_PREF_DATA, JSON.stringify(data));
-    onSaveCallback(data);
-  }
+  reader.readAsText(file);
 }
+
+function loadFromUrl(url: string, onLoadCallback: MyLinksCallback): void {
+  fetch(url)
+    .then(async response => response.json())
+    .then(data => onLoadCallback(data as MyLinks))
+    .catch(e => window.alert(e));
+}
+
+export function saveConfig(
+  {
+    data,
+    callback
+  }: SaveConfig
+): void {
+  localStorage.setItem(STORAGE_PREF_DATA, JSON.stringify(data));
+  callback(data);
+}
+

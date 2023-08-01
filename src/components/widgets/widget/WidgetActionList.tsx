@@ -1,4 +1,4 @@
-import React from 'react';
+import { ReactElement } from 'react';
 import { useAppUIStateContext } from '../../../contexts/AppUIStateContext';
 import { Widget } from '../../../model/MyLinks-interface';
 
@@ -7,7 +7,7 @@ interface WidgetActionListProps {
   readonly widget: Widget;
 }
 
-export default function WidgetActionList({ editable, widget }: WidgetActionListProps): JSX.Element | null {
+export default function WidgetActionList({ editable, widget }: WidgetActionListProps): ReactElement | null {
   function onAddLink(): void {
     if (onEdit) {
       onEdit({

@@ -1,4 +1,4 @@
-import React from 'react';
+import { ReactElement } from 'react';
 import { useAppUIStateContext } from '../../../contexts/AppUIStateContext';
 import './Shortcut.css';
 
@@ -14,7 +14,7 @@ export function Shortcut(
     visible,
     isMouseOver,
   }: ShortcutProps
-): JSX.Element | null {
+): ReactElement | null {
   function isShortcutVisible(): boolean {
     if (!visible) {
       return false;

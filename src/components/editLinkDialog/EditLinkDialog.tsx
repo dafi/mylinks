@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useEffect, useRef, useState } from 'react';
+import { ChangeEvent, MouseEvent, ReactElement, useEffect, useRef, useState } from 'react';
 import { EditLinkData, LinkEditedProperties } from '../../model/EditData-interface';
 import { DialogProps } from '../modal/Dialog';
 import Modal from '../modal/Modal';
@@ -13,12 +13,12 @@ export interface EditLinkDialogProps extends DialogProps {
 // compound properties must be strings so, we allow to index elements by string
 type EditLinkDialogState = LinkEditedProperties & Record<string, string | undefined>;
 
-export function EditLinkDialog({ isOpen, data, onSave, onClose }: EditLinkDialogProps): JSX.Element {
+export function EditLinkDialog({ isOpen, data, onSave, onClose }: EditLinkDialogProps): ReactElement {
   function onCloseDialog(): void {
     onClose();
   }
 
-  function onClickSave(e: React.MouseEvent<HTMLButtonElement>): void {
+  function onClickSave(e: MouseEvent<HTMLButtonElement>): void {
     e.preventDefault();
 
     onSave({ ...data, editedProperties: form });

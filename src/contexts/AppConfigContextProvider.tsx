@@ -1,4 +1,4 @@
-import React, { ReactNode, useEffect, useState } from 'react';
+import { ReactElement, useEffect, useState } from 'react';
 import { applyColorToFavicon } from '../common/Favicon';
 import { MyLinksHolder } from '../common/MyLinksHolder';
 import { UIInput } from '../common/UIInput';
@@ -23,7 +23,7 @@ function reloadAll(myLinks: MyLinks | undefined): AppConfig {
 function buildConfig(holder: MyLinksHolder): AppConfig {
   return {
     theme: {
-      faviconColor: holder.myLinks.theme?.faviconColor || defaultTheme.faviconColor,
+      faviconColor: holder.myLinks.theme?.faviconColor ?? defaultTheme.faviconColor,
     },
     faviconService: holder.myLinks.config?.faviconService,
     myLinksLookup: holder,
@@ -32,10 +32,10 @@ function buildConfig(holder: MyLinksHolder): AppConfig {
 
 interface AppConfigContextProps {
   readonly myLinks: MyLinks | undefined;
-  readonly children: ReactNode;
+  readonly children: ReactElement;
 }
 
-export function AppConfigContextProvider({ myLinks, children }: AppConfigContextProps): JSX.Element {
+export function AppConfigContextProvider({ myLinks, children }: AppConfigContextProps): ReactElement {
   const [config, setConfig] = useState(defaultAppConfig);
 
   useEffect(() => {

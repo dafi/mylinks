@@ -1,4 +1,4 @@
-import React, { ReactNode, useState } from 'react';
+import { ReactElement, useState } from 'react';
 import { isEditLinkData, prepareForSave } from '../common/EditHelper';
 import { EditLinkDialog } from '../components/editLinkDialog/EditLinkDialog';
 import { EditDataType, EditLinkData, EditWidgetData } from '../model/EditData-interface';
@@ -17,7 +17,7 @@ interface DialogData {
 interface AppUIStateProps {
   readonly uiState: AppUIState;
   readonly onEditComplete: (result: EditCompleteResult) => void;
-  readonly children: ReactNode;
+  readonly children: ReactElement;
 }
 
 export function AppUIStateContextProvider(
@@ -26,7 +26,7 @@ export function AppUIStateContextProvider(
     onEditComplete,
     children,
   }: AppUIStateProps
-): JSX.Element {
+): ReactElement {
   function onEditData(editData: EditDataType): void {
     if (isEditLinkData(editData)) {
       if (editData.editType === 'update' || editData.editType === 'create') {
@@ -57,7 +57,7 @@ export function AppUIStateContextProvider(
     setDialogData({ isOpen, data });
   }
 
-  function renderEditLinkDialog(): ReactNode {
+  function renderEditLinkDialog(): ReactElement | null {
     const { isOpen, data } = dialogData;
     if (isOpen && data) {
       return (

@@ -53,6 +53,8 @@
     "react/jsx-pascal-case" : "error",
     "react/jsx-boolean-value" : "error",
     "react/prefer-read-only-props": "error",
-    "react/hook-use-state": "error"
+    "react/hook-use-state": "error",
+    "react/jsx-uses-react": "off",
+    "react/react-in-jsx-scope": "off"
   }
 }

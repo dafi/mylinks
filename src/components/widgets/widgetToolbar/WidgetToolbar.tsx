@@ -1,4 +1,4 @@
-import React from 'react';
+import { CSSProperties, ReactElement } from 'react';
 import { MyLinkActionCallback } from '../../../model/Events';
 import { openAllLinks } from '../../../model/MyLinks';
 import { Widget as MLWidget } from '../../../model/MyLinks-interface';
@@ -26,10 +26,10 @@ export function WidgetToolbar(
     action,
     editable,
   }: WidgetToolbarProps
-): JSX.Element {
+): ReactElement {
   const collapseIcon = collapsed ? 'fa fa-angle-down' : 'fa fa-angle-up';
   const collapseTitle = collapsed ? 'Expand content' : 'Collapse content';
-  const editStyle: React.CSSProperties = {
+  const editStyle: CSSProperties = {
     color: editable ? 'var(--action-color-primary)' : ''
   };
   const editClassNames = editable ? 'fas fa-toggle-on' : 'fas fa-toggle-off';

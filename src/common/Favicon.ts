@@ -14,7 +14,7 @@ export function faviconUrlByLink(
     if (/^.*:\/\//.test(faviconUrl)) {
       return faviconUrl;
     }
-    return faviconUrlBuilder?.replace('$1', faviconUrl) || null;
+    return faviconUrlBuilder?.replace('$1', faviconUrl) ?? null;
   }
   if (faviconUrl?.length === 0) {
     return null;
@@ -46,7 +46,7 @@ export function applyColorToFavicon(
   if (!color) {
     return;
   }
-  const favicon: HTMLLinkElement | null = options?.favicon || document.querySelector('link[rel~="icon"]');
+  const favicon: HTMLLinkElement | null = options?.favicon ?? document.querySelector('link[rel~="icon"]');
   if (!favicon) {
     return;
   }

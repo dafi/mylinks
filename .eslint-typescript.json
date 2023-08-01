@@ -108,10 +108,6 @@
     "@typescript-eslint/no-array-constructor": [
       "error"
     ],
-    "no-duplicate-imports": "off",
-    "@typescript-eslint/no-duplicate-imports": [
-      "error"
-    ],
     "@typescript-eslint/member-delimiter-style": [
       "error",
       {
@@ -198,10 +194,7 @@
       }
     ],
     "@typescript-eslint/restrict-plus-operands": [
-      "error",
-      {
-        "checkCompoundAssignments": true
-      }
+      "error"
     ],
     "@typescript-eslint/semi": [
       "error",

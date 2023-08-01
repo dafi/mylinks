@@ -1,4 +1,4 @@
-import React from 'react';
+import { CSSProperties, ReactElement } from 'react';
 import { faviconUrlByLink } from '../../../common/Favicon';
 import { useAppConfigContext } from '../../../contexts/AppConfigContext';
 import { Link as MLLink } from '../../../model/MyLinks-interface';
@@ -32,7 +32,7 @@ export function LinkIcon(
     link,
     faviconService,
   }: LinkIconProps
-): JSX.Element {
+): ReactElement {
   const { faviconService: appFaviconService } = useAppConfigContext();
   const faviconUrl = faviconUrlByLink(link, faviconService ?? appFaviconService);
 
@@ -41,7 +41,7 @@ export function LinkIcon(
   }
 
   const label = link.label;
-  const style: React.CSSProperties = {
+  const style: CSSProperties = {
     color: '#fff',
     backgroundColor: colors[hash(label) % colors.length]
   };

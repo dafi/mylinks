@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { ReactElement, useState } from 'react';
 import { useAppUIStateContext } from '../../../contexts/AppUIStateContext';
 import useCollapsed from '../../../hooks/useCollapsed/useCollapsed';
 import { MyLinksEvent } from '../../../model/Events';
@@ -15,11 +15,11 @@ export interface WidgetProps {
   readonly value: MLWidget;
 }
 
-export function Widget({ value: widget }: WidgetProps): JSX.Element {
+export function Widget({ value: widget }: WidgetProps): ReactElement {
   function onClickToolbar(e: MyLinksEvent<WidgetToolbarActionType>): void {
     if (e.target === 'collapse') {
       toggleStartCollapsed();
-    } else if (e.target === 'edit') {
+    } else {
       onToggleEdit();
     }
   }

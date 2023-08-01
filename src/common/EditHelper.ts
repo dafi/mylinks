@@ -3,11 +3,11 @@ import { Link } from '../model/MyLinks-interface';
 import { move } from './ArrayUtil';
 
 export function isEditLinkData(editData: EditDataType): editData is EditLinkData {
-  return (editData as EditLinkData).link !== undefined;
+  return 'link' in editData;
 }
 
 export function isEditWidgetData(editData: EditDataType): editData is EditWidgetData {
-  return (editData as EditWidgetData).widget !== undefined;
+  return 'widget' in editData;
 }
 
 export function prepareForSave(editData: EditDataType): boolean {
@@ -47,6 +47,7 @@ function applyLinkProperties(edited: LinkEditedProperties, link: Link): boolean 
         if (value) {
           link[propName] = value;
         } else {
+          // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
           delete link[propName];
         }
       }

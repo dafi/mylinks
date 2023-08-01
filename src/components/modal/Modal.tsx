@@ -1,10 +1,10 @@
-import React, { ReactNode, useEffect, useState } from 'react';
+import { ReactElement, useEffect, useState } from 'react';
 import './Modal.css';
 
 export interface ModalProp {
   readonly onClose: () => void;
   readonly isOpen: boolean;
-  readonly children: ReactNode;
+  readonly children: ReactElement;
 }
 
 export default function Modal(
@@ -13,7 +13,7 @@ export default function Modal(
     isOpen: isDialogOpen,
     children,
   }: ModalProp
-): JSX.Element | null {
+): ReactElement | null {
   const [isOpen, setIsOpen] = useState(isDialogOpen);
 
   useEffect(() => {

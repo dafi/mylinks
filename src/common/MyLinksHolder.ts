@@ -2,7 +2,7 @@ import { filterMyLinks, someMyLinks } from '../model/MyLinks';
 import { MyLinks, MyLinksLookup, ShortcutUsage, Widget } from '../model/MyLinks-interface';
 
 export class MyLinksHolder implements MyLinksLookup {
-  private linkWidgetMap!: Record<string, Widget>;
+  private linkWidgetMap?: Record<string, Widget>;
 
   private static setColor(property: string, color?: string): void {
     if (color) {
@@ -17,12 +17,13 @@ export class MyLinksHolder implements MyLinksLookup {
 
   findWidgetByLinkId(linkId: string): Widget | undefined {
     if (!this.linkWidgetMap) {
-      this.linkWidgetMap = {};
+      const map: Record<string, Widget> = {};
       this.myLinks.columns.flat().forEach(w => {
         w.list.forEach(l => {
-          this.linkWidgetMap[l.id] = w;
+          map[l.id] = w;
         });
       });
+      this.linkWidgetMap = map;
     }
     return this.linkWidgetMap[linkId];
   }
@@ -40,14 +41,14 @@ export class MyLinksHolder implements MyLinksLookup {
     }
     return {
       type: 'user',
-      links: filterMyLinks(this.myLinks, (w, l) =>
+      links: filterMyLinks(this.myLinks, (_w, l) =>
         l.shortcut?.startsWith(shortcut) === true
       )
     };
   }
 
   hasShortcuts(): boolean {
-    return someMyLinks(this.myLinks, (w, l) => !!l.shortcut);
+    return someMyLinks(this.myLinks, (_w, l) => !!l.shortcut);
   }
 
   applyBackground(): void {

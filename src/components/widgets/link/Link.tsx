@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { ReactElement, useState } from 'react';
 import { Link as MLLink, Widget } from '../../../model/MyLinks-interface';
 import { LinkIcon } from '../linkIcon/LinkIcon';
 import './Link.css';
@@ -23,7 +23,7 @@ export function Link(
     editable,
     draggable = true,
   }: LinkProps
-): JSX.Element {
+): ReactElement {
   const [isMouseOver, setIsMouseOver] = useState(false);
 
   return (

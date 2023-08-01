@@ -1,5 +1,5 @@
-import React, { ReactNode, useEffect, useState } from 'react';
-import Config from '../../common/Config';
+import { ReactElement, useEffect, useState } from 'react';
+import { loadConfig, saveConfig } from '../../common/Config';
 import { isKeyboardEventConsumer } from '../../common/HtmlUtil';
 import { UIInput } from '../../common/UIInput';
 import { AppConfigContextProvider } from '../../contexts/AppConfigContextProvider';
@@ -15,7 +15,7 @@ import { getHideShortcuts, toggleHideShortcuts } from './App.utils';
 import { AppToolbar, AppToolbarActionType } from './AppToolbar';
 import './toolbar-icon.css';
 
-function Page(): JSX.Element {
+function Page(): ReactElement {
   function keyDown(e: KeyboardEvent): boolean {
     const isThisTarget = e.currentTarget === e.target || !isKeyboardEventConsumer(e.target as HTMLElement);
 
@@ -45,7 +45,7 @@ function Page(): JSX.Element {
       onLoadConfig(e.data as File);
     } else if (e.target === 'shortcut') {
       onShortcut();
-    } else if (e.target === 'saveConfig') {
+    } else {
       onSaveConfig();
     }
   }
@@ -66,8 +66,11 @@ function Page(): JSX.Element {
   }
 
   function onLoadConfig(file: File): void {
-    Config.fromFile(file, (mmLinks: MMLinks | undefined) => {
-      setMyLinks(mmLinks ? { ...mmLinks } : undefined);
+    loadConfig({
+      file,
+      callback: (mmLinks: MMLinks | undefined) => {
+        setMyLinks(mmLinks ? { ...mmLinks } : undefined);
+      }
     });
   }
 
@@ -75,8 +78,11 @@ function Page(): JSX.Element {
     switch (result.type) {
       case 'success':
         if (myLinks) {
-          Config.saveData(myLinks, (mmLinks) => {
-            setMyLinks({ ...mmLinks });
+          saveConfig({
+            data: myLinks,
+            callback: (mmLinks) => {
+              setMyLinks({ ...mmLinks });
+            }
           });
         }
         break;
@@ -88,7 +94,7 @@ function Page(): JSX.Element {
     }
   }
 
-  function renderLinkFinder(): ReactNode {
+  function renderLinkFinder(): ReactElement | null {
     if (isFinderOpen && myLinks) {
       return (
         <LinkFinderDialog
@@ -112,8 +118,9 @@ function Page(): JSX.Element {
 
   useEffect(() => {
     document.body.addEventListener('keydown', keyDown, false);
-    Config.fromData((mmLinks: MMLinks | undefined) => {
-      setMyLinks(mmLinks);
+    loadConfig({
+      url: new URL(location.href).searchParams.get('c'),
+      callback: setMyLinks
     });
     return () => document.body.removeEventListener('keydown', keyDown);
   }, []);
@@ -126,7 +133,7 @@ function Page(): JSX.Element {
       >
         <div className="ml-wrapper">
           <div className="ml-grid">
-            <Grid columns={myLinks?.columns || []} />
+            <Grid columns={myLinks?.columns ?? []} />
           </div>
 
           <AppToolbar action={onClickToolbar} />
@@ -141,7 +148,7 @@ function Page(): JSX.Element {
 
 // Just for App we can declare two components in same file
 // eslint-disable-next-line react/no-multi-comp
-function App(): JSX.Element {
+function App(): ReactElement {
   return <Page />;
 }
 

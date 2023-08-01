@@ -7,6 +7,7 @@
     "eslint:recommended",
     "plugin:react/recommended",
     "plugin:react-hooks/recommended",
+    "plugin:react/jsx-runtime",
     "plugin:jsdoc/recommended",
     "./.eslint-jscode.json",
     "./.eslint-react.json"
@@ -36,7 +37,8 @@
       // on js files using @typescript-eslint/* rules
       "files": ["**/*.ts", "**/*.tsx"],
       "extends": [
-        "plugin:@typescript-eslint/recommended",
+        "plugin:@typescript-eslint/strict-type-checked",
+        "plugin:@typescript-eslint/stylistic-type-checked",
         "./.eslint-typescript.json"
       ]
     },

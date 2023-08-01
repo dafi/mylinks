@@ -1,4 +1,4 @@
-import React, { ChangeEvent, RefObject, useEffect, useRef, useState } from 'react';
+import { ChangeEvent, KeyboardEvent, MouseEvent, ReactElement, RefObject, useEffect, useRef, useState } from 'react';
 import { LinkSearch, LinkSearchResult } from '../../common/LinkSearch';
 import { useAppConfigContext } from '../../contexts/AppConfigContext';
 import { Link, Widget } from '../../model/MyLinks-interface';
@@ -15,15 +15,15 @@ export function LinkSelector(
     widgets,
     onSelected,
   }: LinkSelectorProps
-): JSX.Element {
+): ReactElement {
   function moveFocusToSearch(): void {
-    const el = inputRef?.current;
+    const el = inputRef.current;
     if (el) {
       el.focus();
     }
   }
 
-  function onClick(e: React.MouseEvent<HTMLElement>): void {
+  function onClick(e: MouseEvent<HTMLElement>): void {
     // skip if a dblclick is in progress
     // https://developer.mozilla.org/en-US/docs/Web/API/UIEvent/detail
     if (e.detail !== 1) {
@@ -39,7 +39,7 @@ export function LinkSelector(
     setSelectedIndex(index);
   }
 
-  function onDoubleClick(e: React.MouseEvent<HTMLElement>): void {
+  function onDoubleClick(e: MouseEvent<HTMLElement>): void {
     e.preventDefault();
     e.stopPropagation();
 
@@ -51,7 +51,7 @@ export function LinkSelector(
     onSelected(result[index].link);
   }
 
-  function onKeyDown(e: React.KeyboardEvent<HTMLInputElement>): void {
+  function onKeyDown(e: KeyboardEvent<HTMLInputElement>): void {
     const currIndex = selectedIndex;
     let newIndex = -1;
 
@@ -100,7 +100,7 @@ export function LinkSelector(
   const [result, setResult] = useState<LinkSearchResult[]>([]);
   const [selectedIndex, setSelectedIndex] = useState(-1);
 
-  const links = widgets.flat().map(w => w.list).flat() || [];
+  const links = widgets.flat().map(w => w.list).flat();
   linkSearch.setLinks(links);
 
   useEffect(() => {

@@ -2,7 +2,7 @@ import { openAllLinks, openLink } from '../model/MyLinks';
 import { Link, MyLinksLookup } from '../model/MyLinks-interface';
 
 export class UIInput {
-  private static mInstance: UIInput;
+  private static mInstance?: UIInput;
   private mouseX = 0;
   private mouseY = 0;
   private myLinksLookup?: MyLinksLookup;
