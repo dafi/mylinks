@@ -5,8 +5,6 @@ const STORAGE_PREF_DATA = 'myLinksData';
 export type OnLoadCallback = (myLinks: MyLinks | undefined) => void;
 export type OnSaveCallback = (myLinks: MyLinks) => void;
 
-type MyLinksCallback = (myLinks: MyLinks | undefined) => void;
-
 export interface LoadConfig {
   url?: string | null;
   file?: File | null;
@@ -26,21 +24,15 @@ export function loadConfig(
   }: LoadConfig
 ): void {
   if (url) {
-    loadFromUrl(url, (myLinks?: MyLinks) => {
-      callback(myLinks);
-    });
+    loadFromUrl(url, callback);
   } else if (file) {
-    loadFromFile(file, (myLinks?: MyLinks) => {
-      callback(myLinks);
-    });
+    loadFromFile(file, callback);
   } else {
-    loadData((myLinks?: MyLinks) => {
-      callback(myLinks);
-    });
+    loadData(callback);
   }
 }
 
-function loadData(onLoadCallback: MyLinksCallback): void {
+function loadData(onLoadCallback: OnLoadCallback): void {
   let data: MyLinks | undefined;
 
   const jsonText = localStorage.getItem(STORAGE_PREF_DATA);
@@ -58,7 +50,7 @@ function loadFromObject(json: unknown): MyLinks {
   return json as MyLinks;
 }
 
-function loadFromFile(file: File, onLoadCallback: MyLinksCallback): void {
+function loadFromFile(file: File, onLoadCallback: OnLoadCallback): void {
   const reader = new FileReader();
 
   reader.onload = (() =>
@@ -76,7 +68,7 @@ function loadFromFile(file: File, onLoadCallback: MyLinksCallback): void {
   reader.readAsText(file);
 }
 
-function loadFromUrl(url: string, onLoadCallback: MyLinksCallback): void {
+function loadFromUrl(url: string, onLoadCallback: OnLoadCallback): void {
   fetch(url)
     .then(async response => response.json())
     .then(data => onLoadCallback(data as MyLinks))
