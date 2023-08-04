@@ -6,7 +6,7 @@ import { LinkSelector } from './LinkSelector';
 
 interface LinkFinderDialogProps extends DialogProps {
   readonly onLinkSelected: (link: Link) => void;
-  readonly widgets: Widget[][];
+  readonly widgets: Widget[][] | undefined;
 }
 
 export function LinkFinderDialog(
@@ -16,7 +16,7 @@ export function LinkFinderDialog(
     isOpen,
     onClose,
   }: LinkFinderDialogProps
-): ReactElement {
+): ReactElement | null {
   function onCloseDialog(): void {
     onClose();
   }
@@ -26,13 +26,17 @@ export function LinkFinderDialog(
     onCloseDialog();
   }
 
+  if (!widgets) {
+    return null;
+  }
+
   return (
     <Modal
       isOpen={isOpen}
       onClose={(): void => onCloseDialog()}
     >
       <LinkSelector
-        onSelected={(l): void => onSelected(l)}
+        onSelected={onSelected}
         widgets={widgets}
       />
     </Modal>

@@ -94,20 +94,6 @@ function Page(): ReactElement {
     }
   }
 
-  function renderLinkFinder(): ReactElement | null {
-    if (isFinderOpen && myLinks) {
-      return (
-        <LinkFinderDialog
-          isOpen={isFinderOpen}
-          onClose={(): void => setIsFinderOpen(false)}
-          onLinkSelected={onLinkSelected}
-          widgets={myLinks.columns}
-        />
-      );
-    }
-    return null;
-  }
-
   const defaultUiState: AppUIState = {
     hideShortcuts: getHideShortcuts(),
   };
@@ -138,7 +124,12 @@ function Page(): ReactElement {
 
           <AppToolbar action={onClickToolbar} />
 
-          {renderLinkFinder()}
+          <LinkFinderDialog
+            isOpen={isFinderOpen}
+            onClose={(): void => setIsFinderOpen(false)}
+            onLinkSelected={onLinkSelected}
+            widgets={myLinks?.columns}
+          />
 
         </div>
       </AppUIStateContextProvider>

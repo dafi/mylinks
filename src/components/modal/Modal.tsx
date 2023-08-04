@@ -1,4 +1,4 @@
-import { ReactElement, useEffect, useState } from 'react';
+import { ReactElement, useEffect } from 'react';
 import './Modal.css';
 
 export interface ModalProp {
@@ -10,16 +10,13 @@ export interface ModalProp {
 export default function Modal(
   {
     onClose,
-    isOpen: isDialogOpen,
+    isOpen,
     children,
   }: ModalProp
 ): ReactElement | null {
-  const [isOpen, setIsOpen] = useState(isDialogOpen);
-
   useEffect(() => {
     function keyDown(e: KeyboardEvent): boolean {
       if (e.key === 'Escape') {
-        setIsOpen(false);
         onClose();
       }
       return true;
