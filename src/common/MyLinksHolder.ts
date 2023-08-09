@@ -1,5 +1,7 @@
 import { filterMyLinks, someMyLinks } from '../model/MyLinks';
-import { MyLinks, MyLinksLookup, ShortcutUsage, Widget } from '../model/MyLinks-interface';
+import { MyLinks, MyLinksLookup, Widget } from '../model/MyLinks-interface';
+import { Shortcut } from './Shortcut.ts';
+import { SystemShortcutManager } from './SystemShortcutManager.ts';
 
 export class MyLinksHolder implements MyLinksLookup {
   private linkWidgetMap?: Record<string, Widget>;
@@ -32,19 +34,18 @@ export class MyLinksHolder implements MyLinksLookup {
     return this.myLinks.columns.flat().find(w => w.id === id);
   }
 
-  findShortcutUsage(shortcut: string): ShortcutUsage {
-    if (['a', ' '].includes(shortcut)) {
-      return {
-        type: 'system',
-        links: []
-      };
+  findShortcuts(shortcut: string): Shortcut[] {
+    const systemShortcut = SystemShortcutManager.instance().find(shortcut);
+    if (systemShortcut.length) {
+      return systemShortcut;
     }
-    return {
-      type: 'user',
-      links: filterMyLinks(this.myLinks, (_w, l) =>
-        l.shortcut?.startsWith(shortcut) === true
-      )
-    };
+    return filterMyLinks(this.myLinks, (_w, l) =>
+      l.shortcut?.startsWith(shortcut) === true
+    ).map(link => ({
+      shortcut: link.shortcut ?? shortcut,
+      type: 'link',
+      link
+    }));
   }
 
   hasShortcuts(): boolean {

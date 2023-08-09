@@ -1,3 +1,5 @@
+import { Shortcut } from '../common/Shortcut.ts';
+
 export interface Theme {
   backgroundImage?: string;
   faviconColor: string;
@@ -29,13 +31,8 @@ export interface MyLinks {
   config?: Config;
 }
 
-export interface ShortcutUsage {
-  type: 'system' | 'user';
-  links: Link[];
-}
-
 export interface MyLinksLookup {
-  findShortcutUsage(shortcut: string): ShortcutUsage;
+  findShortcuts(shortcut: string): Shortcut[];
   findWidgetById(widgetId: string): Widget | undefined;
   findWidgetByLinkId(linkId: string): Widget | undefined;
   hasShortcuts(): boolean;

@@ -1,5 +1,7 @@
 import { openAllLinks, openLink } from '../model/MyLinks';
-import { Link, MyLinksLookup } from '../model/MyLinks-interface';
+import { MyLinksLookup } from '../model/MyLinks-interface';
+import { isKeyboardEventConsumer } from './HtmlUtil.ts';
+import { isLinkShortcut, isSystemShortcut, Shortcut } from './Shortcut.ts';
 
 export class UIInput {
   private static mInstance?: UIInput;
@@ -44,43 +46,49 @@ export class UIInput {
   }
 
   keyDown(e: KeyboardEvent): boolean {
+    const isThisTarget = e.currentTarget === e.target || !isKeyboardEventConsumer(e.target as HTMLElement);
+
+    // ignore events bubbling from other listeners
+    if (!isThisTarget) {
+      return true;
+    }
     if (e.ctrlKey || e.shiftKey || e.altKey || e.metaKey) {
       return false;
     }
-    if (this.isBufferEmpty()) {
-      if (e.key === 'a') {
-        this.buffer = '';
-        this.openFromMousePosition();
-        return true;
-      }
-    }
     if (this.myLinksLookup) {
       this.buffer += e.key;
-      const link = this.findLinkByShortcut();
-      if (link) {
-        openLink(link);
+
+      if (this.execShortcut(this.myLinksLookup.findShortcuts(this.buffer))) {
+        e.stopPropagation();
+        e.preventDefault();
+        return true;
       }
     }
 
     return true;
   }
 
-  private findLinkByShortcut(): Link | null {
-    if (this.myLinksLookup) {
-      const arr = this.myLinksLookup.findShortcutUsage(this.buffer).links;
+  private execShortcut(shortcuts: Shortcut[]): boolean {
+    if (shortcuts.length === 0) {
+      // not found
+      this.buffer = '';
+    } else if (shortcuts.length === 1 && shortcuts[0].shortcut === this.buffer) {
+      this.buffer = '';
+      const shortcut = shortcuts[0];
 
-      if (arr.length === 0) {
-        // not found
-        this.buffer = '';
-      } else if (arr.length === 1 && arr[0].shortcut === this.buffer) {
-        this.buffer = '';
-        return arr[0];
+      if (isSystemShortcut(shortcut)) {
+        shortcut.callback();
+      } else if (isLinkShortcut(shortcut)) {
+        openLink(shortcut.link);
+      } else {
+        return false;
       }
+      return true;
     }
-    return null;
+    return false;
   }
 
-  private openFromMousePosition(): void {
+  openFromMousePosition(): void {
     if (!this.myLinksLookup) {
       return;
     }
@@ -93,9 +101,5 @@ export class UIInput {
         openAllLinks(widget);
       }
     }
-  }
-
-  isBufferEmpty(): boolean {
-    return this.buffer.length === 0;
   }
 }

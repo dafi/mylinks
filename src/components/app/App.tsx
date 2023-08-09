@@ -1,6 +1,6 @@
 import { ReactElement, useEffect, useState } from 'react';
 import { loadConfig, saveConfig } from '../../common/Config';
-import { isKeyboardEventConsumer } from '../../common/HtmlUtil';
+import { SystemShortcutManager } from '../../common/SystemShortcutManager.ts';
 import { UIInput } from '../../common/UIInput';
 import { AppConfigContextProvider } from '../../contexts/AppConfigContextProvider';
 import { AppUIState } from '../../contexts/AppUIStateContext';
@@ -16,24 +16,6 @@ import { AppToolbar, AppToolbarActionType } from './AppToolbar';
 import './toolbar-icon.css';
 
 function Page(): ReactElement {
-  function keyDown(e: KeyboardEvent): boolean {
-    const isThisTarget = e.currentTarget === e.target || !isKeyboardEventConsumer(e.target as HTMLElement);
-
-    // ignore events bubbling from other listeners
-    if (!isThisTarget) {
-      return true;
-    }
-
-    if (e.key === ' ') {
-      e.stopPropagation();
-      e.preventDefault();
-
-      setIsFinderOpen(true);
-      return true;
-    }
-    return UIInput.instance().keyDown(e);
-  }
-
   const onLinkSelected = (link: Link): void => {
     // Ensure the DOM is updated and the dialog is hidden when the link is open
     // This is necessary because when returning to myLinks window/tab, the dialog can be yet visible
@@ -103,6 +85,13 @@ function Page(): ReactElement {
   const [isFinderOpen, setIsFinderOpen] = useState(false);
 
   useEffect(() => {
+    SystemShortcutManager.instance().add({ shortcut: ' ', callback: () => setIsFinderOpen(true) });
+    SystemShortcutManager.instance().add({ shortcut: 'a', callback: () => UIInput.instance().openFromMousePosition() });
+
+    function keyDown(e: KeyboardEvent): boolean {
+      return UIInput.instance().keyDown(e);
+    }
+
     document.body.addEventListener('keydown', keyDown, false);
     loadConfig({
       url: new URL(location.href).searchParams.get('c'),
