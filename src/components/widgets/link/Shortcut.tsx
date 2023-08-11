@@ -1,4 +1,6 @@
 import { ReactElement } from 'react';
+
+import { splitShortcut } from '../../../common/ShortcutUtil.ts';
 import { useAppUIStateContext } from '../../../contexts/AppUIStateContext';
 import './Shortcut.css';
 
@@ -30,5 +32,13 @@ export function Shortcut(
 
   const { hideShortcuts } = useAppUIStateContext();
 
-  return isShortcutVisible() ? <kbd className="shortcut">{shortcut}</kbd> : null;
+  if (isShortcutVisible()) {
+    return (
+      <>
+        {/* eslint-disable-next-line react/no-array-index-key */}
+        {splitShortcut(shortcut).map((s, i) => <kbd key={i} className="shortcut">{s}</kbd>)}
+      </>
+    );
+  }
+  return null;
 }

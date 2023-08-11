@@ -11,3 +11,6 @@
   white-space: nowrap;
 }
 
+.shortcut:not(:last-child) {
+  margin-right: 1px;
+}
