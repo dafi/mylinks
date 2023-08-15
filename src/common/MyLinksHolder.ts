@@ -7,14 +7,6 @@ import { SystemShortcutManager } from './SystemShortcutManager.ts';
 export class MyLinksHolder implements MyLinksLookup {
   private mLinkCache?: LinkCache;
 
-  private static setColor(property: string, color?: string): void {
-    if (color) {
-      document.documentElement.style.setProperty(property, color);
-    } else {
-      document.documentElement.style.removeProperty(property);
-    }
-  }
-
   constructor(public readonly myLinks: MyLinks) {
   }
 
@@ -55,27 +47,6 @@ export class MyLinksHolder implements MyLinksLookup {
 
   hasShortcuts(): boolean {
     return someMyLinks(this.myLinks, (_w, l) => !!l.shortcut);
-  }
-
-  applyBackground(): void {
-    const bkg = this.myLinks.theme?.backgroundImage;
-    const body = document.body;
-    if (bkg) {
-      body.style.backgroundImage = `url(${bkg})`;
-    } else {
-      body.style.backgroundImage = '';
-    }
-  }
-
-  applyTheme(): void {
-    const theme = this.myLinks.theme;
-
-    if (!theme) {
-      return;
-    }
-
-    MyLinksHolder.setColor('--link-key-background', theme.linkKeyBackground);
-    MyLinksHolder.setColor('--link-key-color', theme.linkKeyColor);
   }
 
   findLinkArray(shortcutPattern: KeyCombination): LinkArrayShortcut[] {

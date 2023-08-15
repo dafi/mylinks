@@ -1,6 +1,6 @@
 import { ReactElement, useEffect, useState } from 'react';
-import { applyColorToFavicon } from '../common/Favicon';
 import { MyLinksHolder } from '../common/MyLinksHolder';
+import { applyTheme } from '../common/ThemeUtil.ts';
 import { UIInput } from '../common/UIInput';
 import { MyLinks } from '../model/MyLinks-interface';
 import { AppConfig, AppConfigContext, defaultAppConfig, defaultTheme } from './AppConfigContext';
@@ -10,19 +10,17 @@ function reloadAll(myLinks: MyLinks | undefined): AppConfig {
     return defaultAppConfig;
   }
   const myLinksHolder = new MyLinksHolder(myLinks);
-  myLinksHolder.applyBackground();
-  myLinksHolder.applyTheme();
   UIInput.instance().setup(myLinksHolder);
 
   const config = buildConfig(myLinksHolder);
-  applyColorToFavicon(config.theme.faviconColor);
-
+  applyTheme(config.theme);
   return config;
 }
 
 function buildConfig(holder: MyLinksHolder): AppConfig {
   return {
     theme: {
+      ...holder.myLinks.theme,
       faviconColor: holder.myLinks.theme?.faviconColor ?? defaultTheme.faviconColor,
     },
     faviconService: holder.myLinks.config?.faviconService,
