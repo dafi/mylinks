@@ -1,7 +1,11 @@
 import { Link, MyLinks, Widget } from './MyLinks-interface';
 
-export function openAllLinks(wd: Widget): void {
-  wd.list.reverse().forEach(openLink);
+export function openWidgetLinks(wd: Widget): void {
+  openLinks(wd.list.reverse());
+}
+
+export function openLinks(links: Link[]): void {
+  links.forEach(openLink);
 }
 
 export function openLink(link: Link): void {

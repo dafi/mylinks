@@ -1,5 +1,9 @@
 import { Shortcut } from '../common/Shortcut.ts';
 
+export type WidgetId = string;
+export type LinkId = string;
+export type KeyCombination = string;
+
 export interface Theme {
   backgroundImage?: string;
   faviconColor: string;
@@ -8,15 +12,15 @@ export interface Theme {
 }
 
 export interface Link {
-  id: string;
+  id: LinkId;
   label: string;
   url: string;
   favicon?: string;
-  shortcut?: string;
+  shortcut?: KeyCombination;
 }
 
 export interface Widget {
-  id: string;
+  id: WidgetId;
   title: string;
   list: Link[];
 }
@@ -25,15 +29,20 @@ export interface Config {
   faviconService?: string;
 }
 
+export interface MultiOpen {
+  shortcuts: Record<KeyCombination, LinkId[]>;
+}
+
 export interface MyLinks {
   theme?: Theme;
   columns: Widget[][];
   config?: Config;
+  multiOpen?: MultiOpen;
 }
 
 export interface MyLinksLookup {
-  findShortcuts(shortcut: string): Shortcut[];
-  findWidgetById(widgetId: string): Widget | undefined;
-  findWidgetByLinkId(linkId: string): Widget | undefined;
+  findShortcuts(shortcut: KeyCombination): Shortcut[];
+  findWidgetById(widgetId: WidgetId): Widget | undefined;
+  findWidgetByLinkId(linkId: LinkId): Widget | undefined;
   hasShortcuts(): boolean;
 }

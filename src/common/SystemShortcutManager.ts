@@ -1,3 +1,4 @@
+import { KeyCombination } from '../model/MyLinks-interface.ts';
 import { SystemShortcut } from './Shortcut.ts';
 
 export class SystemShortcutManager {
@@ -14,11 +15,15 @@ export class SystemShortcutManager {
   private constructor() {
   }
 
-  find(shortcut: string): SystemShortcut[] {
+  find(shortcut: KeyCombination): SystemShortcut[] {
     return this.shortcuts.filter(s => s.shortcut.startsWith(shortcut));
   }
 
-  add(shortcut: Omit<SystemShortcut, 'type'>): void {
+  add(shortcut: Omit<SystemShortcut, 'type'>): boolean {
+    if (this.shortcuts.find(s => s.shortcut === shortcut.shortcut)) {
+      return false;
+    }
     this.shortcuts.push({ ...shortcut, type: 'system' });
+    return true;
   }
 }

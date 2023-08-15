@@ -1,6 +1,6 @@
 import { CSSProperties, ReactElement } from 'react';
 import { MyLinkActionCallback } from '../../../model/Events';
-import { openAllLinks } from '../../../model/MyLinks';
+import { openWidgetLinks } from '../../../model/MyLinks';
 import { Widget as MLWidget } from '../../../model/MyLinks-interface';
 import './widgetToolbar.css';
 
@@ -44,7 +44,7 @@ export function WidgetToolbar(
         />
         <i
           className="fa fa-external-link-alt icon"
-          onClick={(): void => openAllLinks(widget)}
+          onClick={(): void => openWidgetLinks(widget)}
           title="Open all links"
         />
         <i

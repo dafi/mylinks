@@ -1,10 +1,11 @@
 import { filterMyLinks, someMyLinks } from '../model/MyLinks';
-import { MyLinks, MyLinksLookup, Widget } from '../model/MyLinks-interface';
-import { Shortcut } from './Shortcut.ts';
+import { KeyCombination, LinkId, MyLinks, MyLinksLookup, Widget, WidgetId } from '../model/MyLinks-interface';
+import { LinkCache } from './LinkCache.ts';
+import { LinkArrayShortcut, LinkShortcut, Shortcut } from './Shortcut.ts';
 import { SystemShortcutManager } from './SystemShortcutManager.ts';
 
 export class MyLinksHolder implements MyLinksLookup {
-  private linkWidgetMap?: Record<string, Widget>;
+  private mLinkCache?: LinkCache;
 
   private static setColor(property: string, color?: string): void {
     if (color) {
@@ -17,35 +18,39 @@ export class MyLinksHolder implements MyLinksLookup {
   constructor(public readonly myLinks: MyLinks) {
   }
 
-  findWidgetByLinkId(linkId: string): Widget | undefined {
-    if (!this.linkWidgetMap) {
-      const map: Record<string, Widget> = {};
-      this.myLinks.columns.flat().forEach(w => {
-        w.list.forEach(l => {
-          map[l.id] = w;
-        });
-      });
-      this.linkWidgetMap = map;
+  get linkCache(): LinkCache {
+    if (!this.mLinkCache) {
+      this.mLinkCache = new LinkCache(this.myLinks.columns);
     }
-    return this.linkWidgetMap[linkId];
+    return this.mLinkCache;
   }
 
-  findWidgetById(id: string): Widget | undefined {
+  findWidgetByLinkId(linkId: LinkId): Widget | undefined {
+    return this.linkCache.find(linkId)?.widget;
+  }
+
+  findWidgetById(id: WidgetId): Widget | undefined {
     return this.myLinks.columns.flat().find(w => w.id === id);
   }
 
-  findShortcuts(shortcut: string): Shortcut[] {
+  findShortcuts(shortcut: KeyCombination): Shortcut[] {
     const systemShortcut = SystemShortcutManager.instance().find(shortcut);
     if (systemShortcut.length) {
       return systemShortcut;
     }
+
+    const multiLinks = this.findLinkArray(shortcut);
+    if (multiLinks.length) {
+      return multiLinks;
+    }
+
     return filterMyLinks(this.myLinks, (_w, l) =>
       l.shortcut?.startsWith(shortcut) === true
     ).map(link => ({
       shortcut: link.shortcut ?? shortcut,
       type: 'link',
       link
-    }));
+    } as LinkShortcut));
   }
 
   hasShortcuts(): boolean {
@@ -71,5 +76,21 @@ export class MyLinksHolder implements MyLinksLookup {
 
     MyLinksHolder.setColor('--link-key-background', theme.linkKeyBackground);
     MyLinksHolder.setColor('--link-key-color', theme.linkKeyColor);
+  }
+
+  findLinkArray(shortcutPattern: KeyCombination): LinkArrayShortcut[] {
+    if (!this.myLinks.multiOpen) {
+      return [];
+    }
+    return Object
+      .entries(this.myLinks.multiOpen.shortcuts)
+      .filter(([shortcut, _]) => shortcut.startsWith(shortcutPattern))
+      .map(([shortcut, idLinks]) => (
+        {
+          shortcut,
+          type: 'linkArray',
+          links: idLinks.map(id => this.linkCache.find(id)?.link)
+        } as LinkArrayShortcut)
+      );
   }
 }

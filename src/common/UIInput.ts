@@ -1,7 +1,7 @@
-import { openAllLinks, openLink } from '../model/MyLinks';
+import { openLink, openLinks, openWidgetLinks } from '../model/MyLinks';
 import { MyLinksLookup } from '../model/MyLinks-interface';
 import { isKeyboardEventConsumer } from './HtmlUtil.ts';
-import { isLinkShortcut, isSystemShortcut, Shortcut } from './Shortcut.ts';
+import { isLinkShortcut, isLinkArrayShortcut, isSystemShortcut, Shortcut } from './Shortcut.ts';
 
 export class UIInput {
   private static mInstance?: UIInput;
@@ -80,6 +80,8 @@ export class UIInput {
         shortcut.callback();
       } else if (isLinkShortcut(shortcut)) {
         openLink(shortcut.link);
+      } else if (isLinkArrayShortcut(shortcut)) {
+        openLinks(shortcut.links);
       } else {
         return false;
       }
@@ -98,7 +100,7 @@ export class UIInput {
     if (widgetId) {
       const widget = this.myLinksLookup.findWidgetById(widgetId);
       if (widget) {
-        openAllLinks(widget);
+        openWidgetLinks(widget);
       }
     }
   }
