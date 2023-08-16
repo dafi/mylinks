@@ -1,19 +1,5 @@
 import { createContext, useContext } from 'react';
-import { MyLinksLookup, Theme } from '../model/MyLinks-interface';
-
-export const defaultTheme: Theme = {
-  faviconColor: 'blue',
-};
-
-export interface AppConfig {
-  theme: Theme;
-  faviconService?: string;
-  myLinksLookup?: MyLinksLookup;
-}
-
-export const defaultAppConfig: AppConfig = {
-  theme: defaultTheme,
-};
+import { AppConfig, defaultAppConfig } from './AppConfig.ts';
 
 export const AppConfigContext = createContext<AppConfig>(defaultAppConfig);
 

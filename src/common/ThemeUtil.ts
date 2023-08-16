@@ -1,6 +1,10 @@
 import { Theme } from '../model/MyLinks-interface.ts';
 import { applyColorToFavicon } from './Favicon.ts';
 
+export const defaultTheme: Readonly<Theme> = {
+  faviconColor: 'blue',
+};
+
 export function applyTheme(theme: Theme): void {
   applyBackground(theme.backgroundImage);
   applyColors(theme);
@@ -16,11 +20,7 @@ export function applyBackground(backgroundImage?: string): void {
   }
 }
 
-export function applyColors(theme?: Theme): void {
-  if (!theme) {
-    return;
-  }
-
+export function applyColors(theme: Theme): void {
   setColor('--link-key-background', theme.linkKeyBackground);
   setColor('--link-key-color', theme.linkKeyColor);
 }
