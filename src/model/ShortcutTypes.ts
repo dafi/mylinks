@@ -1,9 +1,5 @@
-import { KeyCombination, Link } from '../model/MyLinks-interface.ts';
-
-export interface Shortcut {
-  readonly shortcut: KeyCombination;
-  readonly type: 'system' | 'link' | 'linkArray';
-}
+import { Link } from './MyLinks-interface.ts';
+import { Shortcut } from './Shortcut.ts';
 
 export interface SystemShortcut extends Shortcut {
   readonly callback: () => void;

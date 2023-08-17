@@ -1,7 +1,8 @@
 import { MyLinksHolder } from '../common/MyLinksHolder.ts';
 import { applyTheme, defaultTheme } from '../common/ThemeUtil.ts';
 import { UIInput } from '../common/UIInput.ts';
-import { MyLinks, MyLinksLookup, Theme } from '../model/MyLinks-interface.ts';
+import { MyLinks, Theme } from '../model/MyLinks-interface.ts';
+import { MyLinksLookup } from '../model/MyLinksLookup.ts';
 
 export interface AppConfig {
   theme: Theme;

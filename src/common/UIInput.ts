@@ -1,7 +1,8 @@
 import { openLink, openLinks, openWidgetLinks } from '../model/MyLinks';
-import { MyLinksLookup } from '../model/MyLinks-interface';
+import { MyLinksLookup } from '../model/MyLinksLookup.ts';
+import { Shortcut } from '../model/Shortcut.ts';
+import { isLinkArrayShortcut, isLinkShortcut, isSystemShortcut } from '../model/ShortcutTypes.ts';
 import { isKeyboardEventConsumer } from './HtmlUtil.ts';
-import { isLinkShortcut, isLinkArrayShortcut, isSystemShortcut, Shortcut } from './Shortcut.ts';
 
 export class UIInput {
   private static mInstance?: UIInput;

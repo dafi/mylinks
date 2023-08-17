@@ -1,5 +1,5 @@
-import { KeyCombination } from '../model/MyLinks-interface.ts';
-import { SystemShortcut } from './Shortcut.ts';
+import { KeyCombination } from '../model/Shortcut.ts';
+import { SystemShortcut } from '../model/ShortcutTypes.ts';
 
 export class SystemShortcutManager {
   private static mInstance?: SystemShortcutManager;
