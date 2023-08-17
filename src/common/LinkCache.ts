@@ -1,4 +1,4 @@
-import { Link, LinkId, Widget } from '../model/MyLinks-interface.ts';
+import { Link, LinkId, Widget } from '../model/MyLinks-interface';
 
 export interface LinkCacheItem {
   readonly link: Link;

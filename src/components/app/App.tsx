@@ -1,6 +1,6 @@
 import { ReactElement, useEffect, useState } from 'react';
 import { loadConfig, saveConfig } from '../../common/Config';
-import { SystemShortcutManager } from '../../common/SystemShortcutManager.ts';
+import { SystemShortcutManager } from '../../common/SystemShortcutManager';
 import { UIInput } from '../../common/UIInput';
 import { AppConfigContextProvider } from '../../contexts/AppConfigContextProvider';
 import { AppUIState } from '../../contexts/AppUIStateContext';

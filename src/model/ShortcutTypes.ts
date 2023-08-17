@@ -1,5 +1,5 @@
-import { Link } from './MyLinks-interface.ts';
-import { Shortcut } from './Shortcut.ts';
+import { Link } from './MyLinks-interface';
+import { Shortcut } from './Shortcut';
 
 export interface SystemShortcut extends Shortcut {
   readonly callback: () => void;

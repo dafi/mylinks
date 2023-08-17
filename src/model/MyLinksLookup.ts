@@ -1,5 +1,5 @@
-import { LinkId, Widget, WidgetId } from './MyLinks-interface.ts';
-import { KeyCombination, Shortcut } from './Shortcut.ts';
+import { LinkId, Widget, WidgetId } from './MyLinks-interface';
+import { KeyCombination, Shortcut } from './Shortcut';
 
 export interface MyLinksLookup {
   findShortcuts(shortcut: KeyCombination): Shortcut[];

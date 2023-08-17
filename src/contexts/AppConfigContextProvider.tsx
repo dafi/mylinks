@@ -1,7 +1,7 @@
 import { ReactElement, useEffect, useState } from 'react';
 import { MyLinks } from '../model/MyLinks-interface';
 import { AppConfigContext } from './AppConfigContext';
-import { defaultAppConfig, reloadAll } from './AppConfig.ts';
+import { defaultAppConfig, reloadAll } from './AppConfig';
 
 interface AppConfigContextProps {
   readonly myLinks: MyLinks | undefined;

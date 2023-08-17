@@ -1,5 +1,5 @@
-import { Theme } from '../model/MyLinks-interface.ts';
-import { applyColorToFavicon } from './Favicon.ts';
+import { Theme } from '../model/MyLinks-interface';
+import { applyColorToFavicon } from './Favicon';
 
 export const defaultTheme: Readonly<Theme> = {
   faviconColor: 'blue',

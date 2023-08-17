@@ -1,10 +1,10 @@
 import { filterMyLinks, someMyLinks } from '../model/MyLinks';
 import { LinkId, MyLinks, Widget, WidgetId } from '../model/MyLinks-interface';
-import { MyLinksLookup } from '../model/MyLinksLookup.ts';
-import { KeyCombination, Shortcut } from '../model/Shortcut.ts';
-import { LinkArrayShortcut, LinkShortcut } from '../model/ShortcutTypes.ts';
-import { LinkCache } from './LinkCache.ts';
-import { SystemShortcutManager } from './SystemShortcutManager.ts';
+import { MyLinksLookup } from '../model/MyLinksLookup';
+import { KeyCombination, Shortcut } from '../model/Shortcut';
+import { LinkArrayShortcut, LinkShortcut } from '../model/ShortcutTypes';
+import { LinkCache } from './LinkCache';
+import { SystemShortcutManager } from './SystemShortcutManager';
 
 export class MyLinksHolder implements MyLinksLookup {
   private mLinkCache?: LinkCache;

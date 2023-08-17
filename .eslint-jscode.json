@@ -70,6 +70,10 @@
     "id-match": "error",
     "import/no-deprecated": "warn",
     "import/order": "error",
+    "import/extensions": [
+      "error", "never"
+    ],
+    "import/no-cycle": "error",
     "indent": ["error", 2],
     "jsdoc/check-alignment": "error",
     "jsdoc/check-indentation": "error",

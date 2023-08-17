@@ -1,4 +1,4 @@
-import { KeyCombination } from './Shortcut.ts';
+import { KeyCombination } from './Shortcut';
 
 export type WidgetId = string;
 export type LinkId = string;
