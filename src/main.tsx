@@ -1,3 +1,4 @@
+/* eslint-disable import/default, import/no-named-as-default-member */
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './components/app/App';

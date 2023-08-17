@@ -1,9 +1,9 @@
 {
-  "env": {
-    "browser": true,
-    "es6": true
+  "env" : {
+    "browser" : true,
+    "es6" : true
   },
-  "extends": [
+  "extends" : [
     "eslint:recommended",
     "plugin:react/recommended",
     "plugin:react-hooks/recommended",
@@ -14,58 +14,67 @@
     "./.eslint-jscode.json",
     "./.eslint-react.json"
   ],
-  "parser": "@typescript-eslint/parser",
-  "parserOptions": {
-    "project": ["tsconfig.json"],
-    "ecmaFeatures": {
-      "jsx": true
+  "parser" : "@typescript-eslint/parser",
+  "parserOptions" : {
+    "project" : [
+      "tsconfig.json"
+    ],
+    "ecmaFeatures" : {
+      "jsx" : true
     },
-    "ecmaVersion": 2018,
-    "sourceType": "module"
+    "ecmaVersion" : 2018,
+    "sourceType" : "module"
   },
-  "plugins": [
+  "plugins" : [
     "react",
     "react-hooks",
     "@typescript-eslint",
     "jsdoc",
     "import"
   ],
-  "rules": {
-    "jsdoc/require-jsdoc": 0
+  "rules" : {
+    "jsdoc/require-jsdoc" : 0
   },
-  "overrides": [
+  "overrides" : [
     {
       // Moved inside the overrides section to avoid errors reported
       // on js files using @typescript-eslint/* rules
-      "files": ["**/*.ts", "**/*.tsx"],
-      "extends": [
+      "files" : [
+        "**/*.ts",
+        "**/*.tsx"
+      ],
+      "extends" : [
         "plugin:@typescript-eslint/strict-type-checked",
         "plugin:@typescript-eslint/stylistic-type-checked",
         "./.eslint-typescript.json"
       ]
     },
     {
-      "files": ["src/**/*.tsx"],
-      "rules": {
-        "max-lines-per-function": [
-          "error", 200
+      "files" : [
+        "src/**/*.tsx"
+      ],
+      "rules" : {
+        "max-lines-per-function" : [
+          "error",
+          200
         ]
       }
     }
   ],
-  "settings": {
-    "react": {
-      "version": "detect"
+  "settings" : {
+    "react" : {
+      "version" : "detect"
     },
-    "settings": {
-      // taken from https://github.com/import-js/eslint-import-resolver-typescript#configuration
-      "import/parsers": {
-        "@typescript-eslint/parser": [".ts", ".tsx"]
-      },
-      "import/resolver": {
-        "typescript": {
-          "alwaysTryTypes": true
-        }
+    // taken from https://github.com/import-js/eslint-import-resolver-typescript#configuration
+    "import/parsers" : {
+      "@typescript-eslint/parser" : [
+        ".ts",
+        ".tsx"
+      ]
+    },
+    "import/resolver" : {
+      "typescript" : {
+        "alwaysTryTypes" : true
       }
     }
   }
