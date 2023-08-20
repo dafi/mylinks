@@ -6,11 +6,11 @@ export interface AppUIState {
   onEdit?: (editData: EditDataType) => void;
 }
 
-const defaultAppUIState = {
+const defaultAppUIState: AppUIState = {
   hideShortcuts: false,
 };
 
-export const AppUIStateContext = createContext<AppUIState>(defaultAppUIState);
+export const AppUIStateContext = createContext(defaultAppUIState);
 
 export const useAppUIStateContext = (): AppUIState => useContext(AppUIStateContext);
 
