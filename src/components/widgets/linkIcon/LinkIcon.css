@@ -6,6 +6,7 @@
   background-position: center center;
   background-size: 16px 16px;
   margin-right: 6px;
+  display: block;
 }
 
 .link-icon-favicon img {
