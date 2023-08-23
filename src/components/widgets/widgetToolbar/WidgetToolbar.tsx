@@ -1,4 +1,4 @@
-import { CSSProperties, ReactElement } from 'react';
+import { ReactElement } from 'react';
 import { MyLinkActionCallback } from '../../../model/Events';
 import { openWidgetLinks } from '../../../model/MyLinks';
 import { Widget as MLWidget } from '../../../model/MyLinks-interface';
@@ -29,16 +29,12 @@ export function WidgetToolbar(
 ): ReactElement {
   const collapseIcon = collapsed ? 'fa fa-angle-down' : 'fa fa-angle-up';
   const collapseTitle = collapsed ? 'Expand content' : 'Collapse content';
-  const editStyle: CSSProperties = {
-    color: editable ? 'var(--action-color-primary)' : ''
-  };
-  const editClassNames = editable ? 'fas fa-toggle-on' : 'fas fa-toggle-off';
+  const editClassNames = editable ? 'fas fa-toggle-on editable-on' : 'fas fa-toggle-off';
 
   return (
     <span className={`ml-toolbar ${classNames}`}>
         <i
           className={`${editClassNames} icon`}
-          style={editStyle}
           onClick={(): void => action({ target: 'edit' })}
           title="Toggle Edit Mode"
         />
