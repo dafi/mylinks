@@ -50,9 +50,7 @@ function Page(): ReactElement {
   function onLoadConfig(file: File): void {
     loadConfig({
       file,
-      callback: (mmLinks: MMLinks | undefined) => {
-        setMyLinks(mmLinks ? { ...mmLinks } : undefined);
-      }
+      callback: mmLinks => setMyLinks(mmLinks ? { ...mmLinks } : undefined)
     });
   }
 
@@ -62,9 +60,7 @@ function Page(): ReactElement {
         if (myLinks) {
           saveConfig({
             data: myLinks,
-            callback: (mmLinks) => {
-              setMyLinks({ ...mmLinks });
-            }
+            callback: mmLinks => setMyLinks({ ...mmLinks })
           });
         }
         break;
