@@ -84,8 +84,9 @@ export function LinkSelector(
   function onChange(e: ChangeEvent<HTMLInputElement>): void {
     listRefs.clear();
     const pattern = e.target.value;
-    setResult(linkSearch.filter(pattern));
-    setSelectedIndex(result.length ? 0 : -1);
+    const r = linkSearch.filter(pattern);
+    setSelectedIndex(r.length ? 0 : -1);
+    setResult(r);
   }
 
   function widgetTitle(link: Link): string {
