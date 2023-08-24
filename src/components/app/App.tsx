@@ -8,12 +8,12 @@ import { AppUIStateContextProvider, EditCompleteResult } from '../../contexts/Ap
 import { MyLinksEvent } from '../../model/Events';
 import { openLink } from '../../model/MyLinks';
 import { Link, MyLinks as MMLinks } from '../../model/MyLinks-interface';
+import { AppToolbarActionType } from '../appToolbar/AppToolbarButtonTypes';
 import { LinkFinderDialog } from '../linkFinderDialog/LinkFinderDialog';
 import { Grid } from '../widgets/grid/Grid';
 import './App.css';
+import { AppToolbar } from '../appToolbar/AppToolbar';
 import { getHideShortcuts, toggleHideShortcuts } from './App.utils';
-import { AppToolbar, AppToolbarActionType } from './AppToolbar';
-import './toolbar-icon.css';
 
 function Page(): ReactElement {
   const onLinkSelected = (link: Link): void => {
