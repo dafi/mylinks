@@ -55,6 +55,7 @@
     "react/prefer-read-only-props": "error",
     "react/hook-use-state": "error",
     "react/jsx-uses-react": "off",
-    "react/react-in-jsx-scope": "off"
+    "react/react-in-jsx-scope": "off",
+    "react/require-default-props": "error"
   }
 }
