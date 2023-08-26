@@ -1,38 +1,26 @@
-import { ReactElement, useEffect } from 'react';
+import { ReactElement } from 'react';
 import './Modal.css';
+import { useModal } from './useModal';
 
 export interface ModalProp {
-  readonly onClose: () => void;
-  readonly isOpen: boolean;
+  readonly id: string;
   readonly children: ReactElement;
 }
 
 export default function Modal(
   {
-    onClose,
-    isOpen,
+    id,
     children,
   }: ModalProp
 ): ReactElement | null {
-  useEffect(() => {
-    function keyDown(e: KeyboardEvent): boolean {
-      if (e.key === 'Escape') {
-        onClose();
-      }
-      return true;
-    }
-    document.addEventListener('keydown', keyDown);
-    return () => {
-      document.removeEventListener('keydown', keyDown);
-    };
-  }, [onClose]);
+  const { visible } = useModal(id);
 
-  if (!isOpen) {
+  if (!visible) {
     return null;
   }
 
   return (
-    <div className="modal-backdrop">
+    <div id={`modal-${id}`} key={id} className="modal-backdrop">
       <div className="modal-container">
         {children}
       </div>
