@@ -9,7 +9,8 @@ import { MyLinksEvent } from '../../model/Events';
 import { openLink } from '../../model/MyLinks';
 import { Link, MyLinks as MMLinks } from '../../model/MyLinks-interface';
 import { AppToolbarActionType } from '../appToolbar/AppToolbarButtonTypes';
-import { LinkFinderDialog } from '../linkFinderDialog/LinkFinderDialog';
+import { LinkFinderDialog, linkFinderDialogId } from '../linkFinderDialog/LinkFinderDialog';
+import { getModal } from '../modal/ModalHandler';
 import { Grid } from '../widgets/grid/Grid';
 import './App.css';
 import { AppToolbar } from '../appToolbar/AppToolbar';
@@ -17,6 +18,7 @@ import { getHideShortcuts, toggleHideShortcuts } from './App.utils';
 
 function Page(): ReactElement {
   const onLinkSelected = (link: Link): void => {
+    getModal(linkFinderDialogId)?.close();
     // Ensure the DOM is updated and the dialog is hidden when the link is open
     // This is necessary because when returning to myLinks window/tab, the dialog can be yet visible
     window.requestIdleCallback(() => openLink(link));
@@ -78,10 +80,9 @@ function Page(): ReactElement {
 
   const [myLinks, setMyLinks] = useState<MMLinks>();
   const [uiState, setUiState] = useState(defaultUiState);
-  const [isFinderOpen, setIsFinderOpen] = useState(false);
 
   useEffect(() => {
-    SystemShortcutManager.instance().add({ shortcut: ' ', callback: () => setIsFinderOpen(true) });
+    SystemShortcutManager.instance().add({ shortcut: ' ', callback: () => getModal(linkFinderDialogId)?.open() });
     SystemShortcutManager.instance().add({ shortcut: 'a', callback: () => UIInput.instance().openFromMousePosition() });
 
     function keyDown(e: KeyboardEvent): boolean {
@@ -110,8 +111,6 @@ function Page(): ReactElement {
           <AppToolbar action={onClickToolbar} />
 
           <LinkFinderDialog
-            isOpen={isFinderOpen}
-            onClose={(): void => setIsFinderOpen(false)}
             onLinkSelected={onLinkSelected}
             widgets={myLinks?.columns}
           />

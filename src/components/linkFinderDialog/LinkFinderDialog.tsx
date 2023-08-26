@@ -1,10 +1,11 @@
 import { ReactElement } from 'react';
 import { Link, Widget } from '../../model/MyLinks-interface';
-import { DialogProps } from '../modal/Dialog';
 import Modal from '../modal/Modal';
 import { LinkSelector } from './LinkSelector';
 
-interface LinkFinderDialogProps extends DialogProps {
+export const linkFinderDialogId = 'finderDialog';
+
+interface LinkFinderDialogProps {
   readonly onLinkSelected: (link: Link) => void;
   readonly widgets: Widget[][] | undefined;
 }
@@ -13,17 +14,10 @@ export function LinkFinderDialog(
   {
     onLinkSelected,
     widgets,
-    isOpen,
-    onClose,
   }: LinkFinderDialogProps
 ): ReactElement | null {
-  function onCloseDialog(): void {
-    onClose();
-  }
-
   function onSelected(link: Link): void {
     onLinkSelected(link);
-    onCloseDialog();
   }
 
   if (!widgets) {
@@ -31,10 +25,7 @@ export function LinkFinderDialog(
   }
 
   return (
-    <Modal
-      isOpen={isOpen}
-      onClose={(): void => onCloseDialog()}
-    >
+    <Modal id={linkFinderDialogId}>
       <LinkSelector
         onSelected={onSelected}
         widgets={widgets}
