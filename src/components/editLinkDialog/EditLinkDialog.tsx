@@ -8,13 +8,9 @@ import './EditLinkDialog.css';
 export const editLinkDialogId = 'editLinkDialog';
 
 export interface EditLinkDialogProps {
-  readonly data?: Readonly<EditLinkData>;
+  readonly data: Readonly<EditLinkData>;
   readonly onSave: (editLinkData: EditLinkData) => void;
 }
-
-const defaultProps = {
-  data: undefined
-};
 
 // https://stackoverflow.com/questions/57773734/how-to-use-partially-the-computed-property-name-on-a-type-definition/57774343#57774343
 // compound properties must be strings so, we allow to index elements by string
@@ -28,9 +24,7 @@ export function EditLinkDialog({ data, onSave }: EditLinkDialogProps): ReactElem
   function onClickSave(e: MouseEvent<HTMLButtonElement>): void {
     e.preventDefault();
 
-    if (data) {
-      onSave({ ...data, editedProperties: form });
-    }
+    onSave({ ...data, editedProperties: form });
     onCloseDialog(CloseResultCode.Ok);
   }
 
@@ -56,21 +50,12 @@ export function EditLinkDialog({ data, onSave }: EditLinkDialogProps): ReactElem
   });
 
   useEffect(() => {
-    if (data) {
-      setForm({
-        label: data.link.label,
-        url: data.link.url,
-        shortcut: data.link.shortcut,
-        favicon: data.link.favicon
-      });
-    } else {
-      setForm({
-        label: '',
-        url: '',
-        shortcut: '',
-        favicon: ''
-      });
-    }
+    setForm({
+      label: data.link.label,
+      url: data.link.url,
+      shortcut: data.link.shortcut,
+      favicon: data.link.favicon
+    });
   }, [data]);
 
   useEffect(() => {
@@ -157,5 +142,3 @@ export function EditLinkDialog({ data, onSave }: EditLinkDialogProps): ReactElem
     </Modal>
   );
 }
-
-EditLinkDialog.defaultProps = defaultProps;

@@ -4,21 +4,23 @@ import { SystemShortcutManager } from '../../common/SystemShortcutManager';
 import { UIInput } from '../../common/UIInput';
 import { AppConfigContextProvider } from '../../contexts/AppConfigContextProvider';
 import { AppUIState } from '../../contexts/AppUIStateContext';
-import { AppUIStateContextProvider, EditCompleteResult } from '../../contexts/AppUIStateContextProvider';
+import { AppUIStateContextProvider } from '../../contexts/AppUIStateContextProvider';
+import { EditComplete } from '../../hooks/useEditLink/useEditLink';
 import { MyLinksEvent } from '../../model/Events';
 import { openLink } from '../../model/MyLinks';
 import { Link, MyLinks as MMLinks } from '../../model/MyLinks-interface';
+import { AppToolbar } from '../appToolbar/AppToolbar';
 import { AppToolbarActionType } from '../appToolbar/AppToolbarButtonTypes';
 import { LinkFinderDialog, linkFinderDialogId } from '../linkFinderDialog/LinkFinderDialog';
 import { getModal } from '../modal/ModalHandler';
+import { CloseResultCode } from '../modal/ModalTypes';
 import { Grid } from '../widgets/grid/Grid';
 import './App.css';
-import { AppToolbar } from '../appToolbar/AppToolbar';
 import { getHideShortcuts, toggleHideShortcuts } from './App.utils';
 
 function Page(): ReactElement {
   const onLinkSelected = (link: Link): void => {
-    getModal(linkFinderDialogId)?.close();
+    getModal(linkFinderDialogId)?.close(CloseResultCode.Ok);
     // Ensure the DOM is updated and the dialog is hidden when the link is open
     // This is necessary because when returning to myLinks window/tab, the dialog can be yet visible
     window.requestIdleCallback(() => openLink(link));
@@ -56,7 +58,7 @@ function Page(): ReactElement {
     });
   }
 
-  function onEditComplete(result: EditCompleteResult): void {
+  function onEditComplete(result: EditComplete): void {
     switch (result.type) {
       case 'success':
         if (myLinks) {
@@ -67,9 +69,7 @@ function Page(): ReactElement {
         }
         break;
       case 'error':
-        if (result.error) {
-          alert(result.error.message);
-        }
+        alert(result.error.message);
         break;
     }
   }
