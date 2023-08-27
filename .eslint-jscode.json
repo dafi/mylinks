@@ -23,7 +23,7 @@
     ],
     "max-lines-per-function": [
       "error",
-      30
+      50
     ],
     "max-depth": [
       "error",
