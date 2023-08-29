@@ -8,15 +8,18 @@ import { AppUIStateContextProvider } from '../../contexts/AppUIStateContextProvi
 import { EditComplete } from '../../hooks/useEditLink/useEditLink';
 import { MyLinksEvent } from '../../model/Events';
 import { openLink } from '../../model/MyLinks';
-import { Link, MyLinks as MMLinks } from '../../model/MyLinks-interface';
+import { Link, MyLinks } from '../../model/MyLinks-interface';
 import { AppToolbar } from '../appToolbar/AppToolbar';
 import { AppToolbarActionType } from '../appToolbar/AppToolbarButtonTypes';
 import { LinkFinderDialog, linkFinderDialogId } from '../linkFinderDialog/LinkFinderDialog';
 import { getModal } from '../modal/ModalHandler';
 import { CloseResultCode } from '../modal/ModalTypes';
+import { settingsDialogId } from '../settingsDialog/SettingsDialog';
 import { Grid } from '../widgets/grid/Grid';
 import './App.css';
 import { getHideShortcuts, toggleHideShortcuts } from './App.utils';
+
+type EditAction = 'editLink' | 'editSettings';
 
 function Page(): ReactElement {
   const onLinkSelected = (link: Link): void => {
@@ -27,16 +30,23 @@ function Page(): ReactElement {
   };
 
   function onClickToolbar(e: MyLinksEvent<AppToolbarActionType>): void {
-    if (e.target === 'loadConfig') {
-      onLoadConfig(e.data as File);
-    } else if (e.target === 'shortcut') {
-      onShortcut();
-    } else {
-      onSaveConfig();
+    switch (e.target) {
+      case 'loadConfig':
+        onLoadConfig(e.data as File);
+        break;
+      case 'exportConfig':
+        onExportConfig();
+        break;
+      case 'shortcut':
+        onShortcut();
+        break;
+      case 'settingsDialog':
+        getModal(settingsDialogId)?.open();
+        break;
     }
   }
 
-  function onSaveConfig(): void {
+  function onExportConfig(): void {
     if (myLinks) {
       const indentSpaces = 2;
       const w = window.open();
@@ -58,16 +68,18 @@ function Page(): ReactElement {
     });
   }
 
-  function onEditComplete(result: EditComplete): void {
+  function onEditComplete(editAction: EditAction, result: EditComplete): void {
     switch (result.type) {
-      case 'success':
-        if (myLinks) {
+      case 'success': {
+        const data = editAction === 'editLink' ? myLinks : result.data as MyLinks;
+        if (data) {
           saveConfig({
-            data: myLinks,
+            data,
             callback: mmLinks => setMyLinks({ ...mmLinks })
           });
         }
         break;
+      }
       case 'error':
         alert(result.error.message);
         break;
@@ -77,8 +89,7 @@ function Page(): ReactElement {
   const defaultUiState: AppUIState = {
     hideShortcuts: getHideShortcuts(),
   };
-
-  const [myLinks, setMyLinks] = useState<MMLinks>();
+  const [myLinks, setMyLinks] = useState<MyLinks>();
   const [uiState, setUiState] = useState(defaultUiState);
 
   useEffect(() => {
@@ -98,10 +109,13 @@ function Page(): ReactElement {
   }, []);
 
   return (
-    <AppConfigContextProvider myLinks={myLinks}>
+    <AppConfigContextProvider
+      myLinks={myLinks}
+      onEditComplete={(result): void => onEditComplete('editSettings', result )}
+    >
       <AppUIStateContextProvider
         uiState={uiState}
-        onEditComplete={onEditComplete}
+        onEditComplete={(result): void => onEditComplete('editLink', result )}
       >
         <div className="ml-wrapper">
           <div className="ml-grid">
