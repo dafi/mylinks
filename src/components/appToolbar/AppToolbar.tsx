@@ -36,7 +36,7 @@ export function AppToolbar(
   const showButtonStyle: CSSProperties = {
     display: showButtons ? 'inline' : 'none'
   };
-  const settingsStyle: CSSProperties = {
+  const editSettingsStyle: CSSProperties = {
     visibility: myLinksLookup ? 'visible' : 'collapse'
   };
   const showButtonIcon = showButtons ? 'fa-chevron-down' : 'fa-bars';
@@ -83,11 +83,11 @@ export function AppToolbar(
         />
 
         <AppToolbarButton
-          title="Show Application Settings"
+          title="Edit Application Settings"
           className="toolbar-icon"
           action="settingsDialog"
           icon="fa fa-cogs"
-          style={settingsStyle}
+          style={editSettingsStyle}
           onAction={onAction}
         />
       </div>
