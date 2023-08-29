@@ -30,11 +30,14 @@ export function AppToolbar(
   const shortcutStyle: CSSProperties = {
     visibility: myLinksLookup?.hasShortcuts() ? 'visible' : 'collapse'
   };
-  const saveConfigStyle: CSSProperties = {
+  const exportConfigStyle: CSSProperties = {
     visibility: myLinksLookup ? 'visible' : 'collapse'
   };
   const showButtonStyle: CSSProperties = {
     display: showButtons ? 'inline' : 'none'
+  };
+  const settingsStyle: CSSProperties = {
+    visibility: myLinksLookup ? 'visible' : 'collapse'
   };
   const showButtonIcon = showButtons ? 'fa-chevron-down' : 'fa-bars';
 
@@ -62,11 +65,11 @@ export function AppToolbar(
         />
 
         <AppToolbarButton
-          title="Save Configuration"
+          title="Export Configuration"
           className="toolbar-icon"
-          action="saveConfig"
+          action="exportConfig"
           icon="fas fa-file-download"
-          style={saveConfigStyle}
+          style={exportConfigStyle}
           onAction={onAction}
         />
 
@@ -76,6 +79,15 @@ export function AppToolbar(
           action="shortcut"
           icon="fa fa-keyboard"
           style={shortcutStyle}
+          onAction={onAction}
+        />
+
+        <AppToolbarButton
+          title="Show Application Settings"
+          className="toolbar-icon"
+          action="settingsDialog"
+          icon="fa fa-cogs"
+          style={settingsStyle}
           onAction={onAction}
         />
       </div>
