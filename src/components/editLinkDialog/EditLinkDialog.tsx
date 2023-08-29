@@ -3,7 +3,7 @@ import { EditLinkData, LinkEditedProperties } from '../../model/EditData-interfa
 import Modal from '../modal/Modal';
 import { getModal } from '../modal/ModalHandler';
 import { CloseResultCode } from '../modal/ModalTypes';
-import './EditLinkDialog.css';
+import '../modal/StandardDialog.css';
 
 export const editLinkDialogId = 'editLinkDialog';
 
@@ -17,6 +17,18 @@ export interface EditLinkDialogProps {
 type EditLinkDialogState = LinkEditedProperties & Record<string, string | undefined>;
 
 export function EditLinkDialog({ data, onSave }: EditLinkDialogProps): ReactElement {
+  return (
+    <Modal id={editLinkDialogId}>
+      <div className="standard-dialog">
+        <h2 className="title">Edit Link</h2>
+
+        <EditLinkForm data={data} onSave={onSave} />
+      </div>
+    </Modal>
+  );
+}
+
+function EditLinkForm({ data, onSave }: EditLinkDialogProps): ReactElement {
   function onCloseDialog(code: CloseResultCode): void {
     getModal(editLinkDialogId)?.close(code);
   }
@@ -45,100 +57,78 @@ export function EditLinkDialog({ data, onSave }: EditLinkDialogProps): ReactElem
   const inputRef = useRef<HTMLInputElement>(null);
 
   const [form, setForm] = useState<EditLinkDialogState>({
-    label: '',
-    url:  '',
+    ...data.link
   });
-
-  useEffect(() => {
-    setForm({
-      label: data.link.label,
-      url: data.link.url,
-      shortcut: data.link.shortcut,
-      favicon: data.link.favicon
-    });
-  }, [data]);
 
   useEffect(() => {
     inputRef.current?.focus();
   }, [form]);
 
-  // defaultValue is not updated using state, wo we declare the key
-  // https://stackoverflow.com/a/69590829/195893
-  // https://legacy.reactjs.org/blog/2018/06/07/you-probably-dont-need-derived-state.html#recommendation-fully-uncontrolled-component-with-a-key
-
   return (
-    <Modal id={editLinkDialogId}>
-      <div className="edit-link-dialog">
-        <h2 className="title">Edit Link</h2>
-
-        <form>
-          <ul className="flex-outer">
-            <li>
-              <label htmlFor="link-label">Label</label>
-              <input
-                data-action="label"
-                ref={inputRef}
-                type="text"
-                key={form.label}
-                defaultValue={form.label}
-                onChange={onChange}
-                placeholder="Videos"
-              />
-            </li>
-            <li>
-              <label htmlFor="link-url">Url</label>
-              <input
-                data-action="url"
-                type="text"
-                defaultValue={form.url}
-                key={form.url}
-                onChange={onChange}
-                placeholder="https://youtube.com"
-              />
-            </li>
-            <li>
-              <label htmlFor="shortcut">Favicon URL</label>
-              <input
-                data-action="favicon"
-                type="text"
-                defaultValue={form.favicon}
-                key={form.favicon}
-                onChange={onChange}
-                placeholder="favicon url"
-              />
-            </li>
-            <li>
-              <label htmlFor="shortcut">Shortcut</label>
-              <input
-                data-action="shortcut"
-                type="text"
-                defaultValue={form.shortcut}
-                key={form.shortcut}
-                onChange={onChange}
-                placeholder="press the key combination to assign"
-              />
-            </li>
-            <li>
-              <div className="toolbar">
-                <button
-                  type="button"
-                  className="text-white bg-action-primary hover"
-                  onClick={onClickSave}
-                >
-                  Save
-                </button>
-                <button
-                  type="button"
-                  className="text-white bg-action-secondary hover"
-                  onClick={onClickCancel}
-                >
-                  Cancel
-                </button>
-              </div>
-            </li>
-          </ul>
-        </form>
-      </div>
-    </Modal>
+    <form>
+      <ul className="flex-outer">
+        <li>
+          <label htmlFor="link-label">Label</label>
+          <input
+            data-action="label"
+            ref={inputRef}
+            type="text"
+            defaultValue={form.label}
+            onChange={onChange}
+            placeholder="Videos"
+          />
+        </li>
+        <li>
+          <label htmlFor="link-url">Url</label>
+          <input
+            data-action="url"
+            type="text"
+            defaultValue={form.url}
+            onChange={onChange}
+            placeholder="https://youtube.com"
+          />
+        </li>
+        <li>
+          <label htmlFor="shortcut">Favicon URL</label>
+          <input
+            data-action="favicon"
+            type="text"
+            defaultValue={form.favicon}
+            onChange={onChange}
+            placeholder="favicon url"
+          />
+        </li>
+        <li>
+          <label htmlFor="shortcut">Shortcut</label>
+          <input
+            data-action="shortcut"
+            type="text"
+            defaultValue={form.shortcut}
+            onChange={onChange}
+            placeholder="press the key combination to assign"
+          />
+        </li>
+        <li className="toolbar">
+          <div className="label" />
+          <div className="toolbar-left" />
+          <div className="toolbar-right">
+            <button
+              type="button"
+              className="text-white bg-action-primary hover"
+              onClick={onClickSave}
+            >
+              Save
+            </button>
+            <button
+              type="button"
+              className="text-white bg-action-secondary hover"
+              onClick={onClickCancel}
+            >
+              Cancel
+            </button>
+          </div>
+        </li>
+      </ul>
+    </form>
   );
 }
