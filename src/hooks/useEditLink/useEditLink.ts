@@ -6,6 +6,7 @@ import { EditDataType, EditLinkData, EditWidgetData } from '../../model/EditData
 
 export interface EditCompleteSuccess {
   type: 'success';
+  data?: unknown;
 }
 
 export interface EditCompleteError {
