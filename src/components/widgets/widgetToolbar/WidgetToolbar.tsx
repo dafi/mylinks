@@ -27,14 +27,14 @@ export function WidgetToolbar(
     editable,
   }: WidgetToolbarProps
 ): ReactElement {
-  const collapseIcon = collapsed ? 'fa fa-angle-down' : 'fa fa-angle-up';
+  const collapseClassNames = collapsed ? 'fa fa-angle-down icon' : 'fa fa-angle-up icon';
   const collapseTitle = collapsed ? 'Expand content' : 'Collapse content';
-  const editClassNames = editable ? 'fas fa-toggle-on editable-on' : 'fas fa-toggle-off';
+  const editClassNames = editable ? 'fas fa-toggle-on icon editable-on' : 'fas fa-toggle-off icon';
 
   return (
     <span className={`ml-toolbar ${classNames}`}>
         <i
-          className={`${editClassNames} icon`}
+          className={editClassNames}
           onClick={(): void => action({ target: 'edit' })}
           title="Toggle Edit Mode"
         />
@@ -44,7 +44,7 @@ export function WidgetToolbar(
           title="Open all links"
         />
         <i
-          className={`${collapseIcon} icon`}
+          className={collapseClassNames}
           onClick={(): void => action({ target: 'collapse' })}
           title={collapseTitle}
         />
