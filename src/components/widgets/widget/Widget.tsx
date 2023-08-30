@@ -52,7 +52,7 @@ export function Widget({ value: widget }: WidgetProps): ReactElement {
       key={v.id}
       id={v.id}
       draggable={editable}
-      onDrop={(s, d): void => onDrop(s, d)}
+      onDrop={onDrop}
     >
       <Link
         link={v}
@@ -79,7 +79,7 @@ export function Widget({ value: widget }: WidgetProps): ReactElement {
           collapsed={startCollapsed}
           widget={widget}
           editable={editable}
-          action={(e): void => onClickToolbar(e)}
+          action={onClickToolbar}
           classNames="hover-toolbar"
         />
       </div>
