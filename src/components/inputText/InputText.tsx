@@ -1,15 +1,6 @@
-import {
-  ChangeEvent,
-  ForwardedRef,
-  forwardRef,
-  InputHTMLAttributes,
-  ReactElement,
-  useEffect,
-  useImperativeHandle,
-  useRef,
-  useState
-} from 'react';
+import { ChangeEvent, ForwardedRef, forwardRef, InputHTMLAttributes, ReactElement, useEffect, useImperativeHandle, useState } from 'react';
 import { debounce } from '../../common/debounce';
+import { useAutoFocus } from '../../hooks/useAutoFocus/useAutoFocus';
 
 const defaultDebounceTimeout = 1500;
 
@@ -44,14 +35,8 @@ export const InputText = forwardRef(function(
     }
   }
 
-  const inputRef = useRef<HTMLInputElement>(null);
+  const inputRef = useAutoFocus<HTMLInputElement>(null, [autoFocus]);
   const [onInputChange, setOnInputChange] = useState<(value: string) => void>();
-
-  useEffect(() => {
-    if (autoFocus === true) {
-      inputRef.current?.focus();
-    }
-  }, [autoFocus]);
 
   useEffect(() => {
     const userOnChange = onText;
@@ -73,7 +58,7 @@ export const InputText = forwardRef(function(
     value(): string {
       return inputRef.current?.value ?? '';
     },
-  }), []);
+  }), [inputRef]);
 
   return (
     <input
