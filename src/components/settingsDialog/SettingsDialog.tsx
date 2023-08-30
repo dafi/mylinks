@@ -1,4 +1,4 @@
-import { ChangeEvent, MouseEvent, ReactElement, useRef, useState } from 'react';
+import { ChangeEvent, MouseEvent, ReactElement, useState } from 'react';
 import { applyColorToFavicon } from '../../common/Favicon';
 import { applyBackground } from '../../common/ThemeUtil';
 import { useAppConfigContext } from '../../contexts/AppConfigContext';
@@ -67,8 +67,6 @@ function SettingsForm({ onSave }: SettingsProps): ReactElement {
     }
   }
 
-  const inputRef = useRef<HTMLInputElement>(null);
-
   const { theme, faviconService } = useAppConfigContext();
   const [form, setForm] = useState<SettingsDialogState>({
     backgroundImage: theme.backgroundImage,
@@ -83,7 +81,7 @@ function SettingsForm({ onSave }: SettingsProps): ReactElement {
           <label htmlFor="background-image">Background Image</label>
           <input
             data-action="backgroundImage"
-            ref={inputRef}
+            data-auto-focus="true"
             type="text"
             id="background-image"
             defaultValue={form.backgroundImage}

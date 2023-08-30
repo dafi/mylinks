@@ -1,4 +1,4 @@
-import { ChangeEvent, MouseEvent, ReactElement, useEffect, useRef, useState } from 'react';
+import { ChangeEvent, MouseEvent, ReactElement, useState } from 'react';
 import { EditLinkData, LinkEditedProperties } from '../../model/EditData-interface';
 import Modal from '../modal/Modal';
 import { getModal } from '../modal/ModalHandler';
@@ -54,15 +54,9 @@ function EditLinkForm({ data, onSave }: EditLinkDialogProps): ReactElement {
     }
   }
 
-  const inputRef = useRef<HTMLInputElement>(null);
-
   const [form, setForm] = useState<EditLinkDialogState>({
     ...data.link
   });
-
-  useEffect(() => {
-    inputRef.current?.focus();
-  }, [form]);
 
   return (
     <form>
@@ -71,7 +65,7 @@ function EditLinkForm({ data, onSave }: EditLinkDialogProps): ReactElement {
           <label htmlFor="link-label">Label</label>
           <input
             data-action="label"
-            ref={inputRef}
+            data-auto-focus="true"
             type="text"
             defaultValue={form.label}
             onChange={onChange}

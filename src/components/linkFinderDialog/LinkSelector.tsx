@@ -1,4 +1,4 @@
-import { ChangeEvent, KeyboardEvent, MouseEvent, ReactElement, RefObject, useEffect, useRef, useState } from 'react';
+import { ChangeEvent, KeyboardEvent, MouseEvent, ReactElement, RefObject, useRef, useState } from 'react';
 import { LinkSearch, LinkSearchResult } from '../../common/LinkSearch';
 import { useAppConfigContext } from '../../contexts/AppConfigContext';
 import { Link, Widget } from '../../model/MyLinks-interface';
@@ -17,10 +17,7 @@ export function LinkSelector(
   }: LinkSelectorProps
 ): ReactElement {
   function moveFocusToSearch(): void {
-    const el = inputRef.current;
-    if (el) {
-      el.focus();
-    }
+    inputRef.current?.focus();
   }
 
   function onClick(e: MouseEvent<HTMLElement>): void {
@@ -104,16 +101,13 @@ export function LinkSelector(
   const links = widgets.flat().map(w => w.list).flat();
   linkSearch.setLinks(links);
 
-  useEffect(() => {
-    moveFocusToSearch();
-  }, []);
-
   return (
     <div className="link-selector">
       <div className="input-container">
         <i className="fas fa-search icon" />
         <input
           type="text"
+          data-auto-focus="true"
           ref={inputRef}
           onKeyDown={onKeyDown}
           onChange={onChange}
