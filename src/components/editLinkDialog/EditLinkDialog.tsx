@@ -36,7 +36,8 @@ function EditLinkForm({ data, onSave }: EditLinkDialogProps): ReactElement {
   function onClickSave(e: MouseEvent<HTMLButtonElement>): void {
     e.preventDefault();
 
-    onSave({ ...data, editedProperties: form });
+    const originalProperties = { ...data.link };
+    onSave({ ...data, edited: form, original: originalProperties });
     onCloseDialog(CloseResultCode.Ok);
   }
 

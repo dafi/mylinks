@@ -15,7 +15,8 @@ export default function WidgetTitle({ editable, widget, onToggleEdit }: WidgetTi
       context.onEdit({
         widget,
         editType: 'update',
-        editedProperties: { title }
+        edited: { title },
+        original: { title: widget.title },
       });
     }
   }

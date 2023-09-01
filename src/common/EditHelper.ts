@@ -15,7 +15,7 @@ export function prepareForSave(editData: EditDataType): boolean {
 }
 
 function safeEditedProperties<T>(editData: EditData<T>): T {
-  const editedProperties = editData.editedProperties;
+  const editedProperties = editData.edited;
 
   if (editedProperties) {
     return editedProperties;

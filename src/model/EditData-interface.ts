@@ -4,7 +4,8 @@ export type EditType = 'create' | 'update' | 'delete' | 'move';
 
 export interface EditData<T> {
   editType: EditType;
-  editedProperties?: T;
+  edited?: T;
+  original: T;
 }
 
 export type LinkEditedProperties = Pick<Link, 'label' | 'url' | 'shortcut' | 'favicon'>;
