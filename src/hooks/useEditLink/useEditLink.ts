@@ -3,7 +3,7 @@ import { isEditLinkData, prepareForSave } from '../../common/EditHelper';
 
 import { editLinkDialogId } from '../../components/editLinkDialog/EditLinkDialogTypes';
 import { getModal } from '../../components/modal/ModalHandler';
-import { EditDataType, EditLinkData } from '../../model/EditData-interface';
+import { EditDataType, LinkEditData } from '../../model/EditData-interface';
 
 export interface EditCompleteSuccess {
   type: 'success';
@@ -18,7 +18,7 @@ export interface EditCompleteError {
 export type EditComplete = EditCompleteSuccess | EditCompleteError;
 
 interface UseEditLink {
-  editLinkData: EditLinkData;
+  editLinkData: LinkEditData;
   /**
    * Begin the edit operation then save edited data, this can require to show a dialog or immediately call save
    * @param editData the data to edit/save
@@ -34,9 +34,9 @@ interface UseEditLink {
  * @returns the UseEditLink object
  */
 export function useEditLink(onEditComplete: (result: EditComplete) => void): UseEditLink {
-  const [editLinkData, setEditLinkData] = useState<EditLinkData>({
+  const [editLinkData, setEditLinkData] = useState<LinkEditData>({
     editType: 'create',
-    original: { label: '', url: '' },
+    edited: { label: '', url: '' },
     link: { id: '', label: '', url: '' },
     widget: { id: '', title: '', list: [] }
   });

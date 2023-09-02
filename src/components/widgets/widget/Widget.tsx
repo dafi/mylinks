@@ -36,6 +36,7 @@ export function Widget({ value: widget }: WidgetProps): ReactElement {
       appOnEdit({
         link: links[fromIndex],
         editType: 'move',
+        original: links[fromIndex],
         widget,
         position: { fromIndex, toIndex }
       });

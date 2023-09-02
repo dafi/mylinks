@@ -12,6 +12,7 @@ export default function WidgetActionList({ editable, widget }: WidgetActionListP
     if (onEdit) {
       onEdit({
         link: { id: `${widget.id}-${new Date().getTime()}`, url: '', shortcut: '', label: '' },
+        edited: { url: '', shortcut: '', label: '' },
         widget,
         editType: 'create'
       });

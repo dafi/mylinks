@@ -17,11 +17,22 @@ export function LinkToolbar({ visible, link, widget }: LinkToolbarProps): ReactE
     const editType = e.currentTarget.dataset.action as EditType;
 
     if (context.onEdit) {
-      context.onEdit({
-        link,
-        widget,
-        editType
-      });
+      if (editType === 'delete') {
+        context.onEdit({
+          link,
+          widget,
+          editType,
+          original: link,
+        });
+      } else if (editType === 'update') {
+        context.onEdit({
+          link,
+          widget,
+          editType,
+          edited: link,
+          original: { ...link },
+        });
+      }
     }
   }
 

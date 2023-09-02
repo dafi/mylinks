@@ -1,5 +1,5 @@
 import { ChangeEvent, MouseEvent, ReactElement, useState } from 'react';
-import { EditLinkData, LinkEditedProperties } from '../../model/EditData-interface';
+import { LinkEditData, LinkEditableProperties } from '../../model/EditData-interface';
 import Modal from '../modal/Modal';
 import { getModal } from '../modal/ModalHandler';
 import { CloseResultCode } from '../modal/ModalTypes';
@@ -7,13 +7,13 @@ import '../modal/StandardDialog.css';
 import { editLinkDialogId } from './EditLinkDialogTypes';
 
 export interface EditLinkDialogProps {
-  readonly data: Readonly<EditLinkData>;
-  readonly onSave: (editLinkData: EditLinkData) => void;
+  readonly data: Readonly<LinkEditData>;
+  readonly onSave: (editLinkData: LinkEditData) => void;
 }
 
 // https://stackoverflow.com/questions/57773734/how-to-use-partially-the-computed-property-name-on-a-type-definition/57774343#57774343
 // compound properties must be strings so, we allow to index elements by string
-type EditLinkDialogState = LinkEditedProperties & Record<string, string | undefined>;
+type EditLinkDialogState = LinkEditableProperties & Record<string, string | undefined>;
 
 export function EditLinkDialog({ data, onSave }: EditLinkDialogProps): ReactElement {
   return (
@@ -36,7 +36,19 @@ function EditLinkForm({ data, onSave }: EditLinkDialogProps): ReactElement {
     e.preventDefault();
 
     const originalProperties = { ...data.link };
-    onSave({ ...data, edited: form, original: originalProperties });
+    switch (data.editType) {
+      case 'create':
+        onSave({ ...data, edited: form });
+        break;
+      case 'delete':
+        onSave({ ...data, original: form });
+        break;
+      case 'update':
+        onSave({ ...data, edited: form, original: originalProperties });
+        break;
+      default:
+        throw new Error(`Not implemented yet: ${data.editType} case`);
+    }
     onCloseDialog(CloseResultCode.Ok);
   }
 
