@@ -8,7 +8,7 @@ import { editLinkDialogId } from './EditLinkDialogTypes';
 
 export interface EditLinkDialogProps {
   readonly data: Readonly<LinkEditData>;
-  readonly onSave: (editLinkData: LinkEditData) => void;
+  readonly onSave: (linkEditData: LinkEditData) => void;
 }
 
 // https://stackoverflow.com/questions/57773734/how-to-use-partially-the-computed-property-name-on-a-type-definition/57774343#57774343

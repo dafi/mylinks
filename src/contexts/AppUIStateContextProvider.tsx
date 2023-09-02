@@ -16,7 +16,7 @@ export function AppUIStateContextProvider(
     children,
   }: AppUIStateProps
 ): ReactElement {
-  const { onBeginEdit, onSave, editLinkData } = useEditLink(onEditComplete);
+  const { onBeginEdit, onSave, linkEditData } = useEditLink(onEditComplete);
   uiState.onEdit = onBeginEdit;
 
   return (
@@ -25,7 +25,7 @@ export function AppUIStateContextProvider(
 
       <EditLinkDialog
         onSave={onSave}
-        data={editLinkData}
+        data={linkEditData}
       />
 
     </AppUIStateContext.Provider>

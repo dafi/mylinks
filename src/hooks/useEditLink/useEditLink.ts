@@ -1,5 +1,5 @@
 import { useCallback, useState } from 'react';
-import { isEditLinkData, prepareForSave } from '../../common/EditHelper';
+import { isLinkEditData, prepareForSave } from '../../common/EditHelper';
 
 import { editLinkDialogId } from '../../components/editLinkDialog/EditLinkDialogTypes';
 import { getModal } from '../../components/modal/ModalHandler';
@@ -18,7 +18,7 @@ export interface EditCompleteError {
 export type EditComplete = EditCompleteSuccess | EditCompleteError;
 
 interface UseEditLink {
-  editLinkData: LinkEditData;
+  linkEditData: LinkEditData;
   /**
    * Begin the edit operation then save edited data, this can require to show a dialog or immediately call save
    * @param editData the data to edit/save
@@ -34,7 +34,7 @@ interface UseEditLink {
  * @returns the UseEditLink object
  */
 export function useEditLink(onEditComplete: (result: EditComplete) => void): UseEditLink {
-  const [editLinkData, setEditLinkData] = useState<LinkEditData>({
+  const [linkEditData, setLinkEditData] = useState<LinkEditData>({
     editType: 'create',
     edited: { label: '', url: '' },
     link: { id: '', label: '', url: '' },
@@ -52,9 +52,9 @@ export function useEditLink(onEditComplete: (result: EditComplete) => void): Use
   }, [onEditComplete]);
 
   const onBeginEdit = useCallback((editData: EditDataType): void => {
-    if (isEditLinkData(editData)) {
+    if (isLinkEditData(editData)) {
       if (editData.editType === 'update' || editData.editType === 'create') {
-        setEditLinkData(editData);
+        setLinkEditData(editData);
         getModal(editLinkDialogId)?.open();
       } else {
         onSave(editData);
@@ -64,5 +64,5 @@ export function useEditLink(onEditComplete: (result: EditComplete) => void): Use
     }
   }, [onSave]);
 
-  return { editLinkData, onBeginEdit, onSave };
+  return { linkEditData, onBeginEdit, onSave };
 }

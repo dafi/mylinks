@@ -11,12 +11,12 @@ import {
 import { Link } from '../model/MyLinks-interface';
 import { move } from './ArrayUtil';
 
-export function isEditLinkData(editData: EditDataType): editData is LinkEditData {
+export function isLinkEditData(editData: EditDataType): editData is LinkEditData {
   return 'link' in editData;
 }
 
 export function prepareForSave(editData: EditDataType): boolean {
-  return isEditLinkData(editData) ? prepareLinkForSave(editData) : prepareWidgetForSave(editData);
+  return isLinkEditData(editData) ? prepareLinkForSave(editData) : prepareWidgetForSave(editData);
 }
 
 function prepareLinkForSave(editData: LinkEditData): boolean {
