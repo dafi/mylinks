@@ -6,8 +6,7 @@ import { Config, Theme } from '../../model/MyLinks-interface';
 import Modal from '../modal/Modal';
 import { getModal } from '../modal/ModalHandler';
 import { CloseResultCode } from '../modal/ModalTypes';
-
-export const settingsDialogId = 'settingsDialog';
+import { settingsDialogId } from './SettingsDialogTypes';
 
 type SettingsDialogState = Theme & Config & Record<string, string | undefined>;
 

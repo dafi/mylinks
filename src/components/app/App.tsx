@@ -11,10 +11,12 @@ import { openLink } from '../../model/MyLinks';
 import { Link, MyLinks } from '../../model/MyLinks-interface';
 import { AppToolbar } from '../appToolbar/AppToolbar';
 import { AppToolbarActionType } from '../appToolbar/AppToolbarButtonTypes';
-import { LinkFinderDialog, linkFinderDialogId } from '../linkFinderDialog/LinkFinderDialog';
+import { LinkFinderDialog } from '../linkFinderDialog/LinkFinderDialog';
+import { linkFinderDialogId } from '../linkFinderDialog/LinkFinderDialogTypes';
 import { getModal } from '../modal/ModalHandler';
 import { CloseResultCode } from '../modal/ModalTypes';
-import { settingsDialogId } from '../settingsDialog/SettingsDialog';
+
+import { settingsDialogId } from '../settingsDialog/SettingsDialogTypes';
 import { Grid } from '../widgets/grid/Grid';
 import './App.css';
 import { getHideShortcuts, toggleHideShortcuts } from './App.utils';

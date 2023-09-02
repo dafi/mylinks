@@ -1,9 +1,8 @@
 import { ReactElement } from 'react';
 import { Link, Widget } from '../../model/MyLinks-interface';
 import Modal from '../modal/Modal';
+import { linkFinderDialogId } from './LinkFinderDialogTypes';
 import { LinkSelector } from './LinkSelector';
-
-export const linkFinderDialogId = 'finderDialog';
 
 interface LinkFinderDialogProps {
   readonly onLinkSelected: (link: Link) => void;

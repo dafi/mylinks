@@ -4,8 +4,7 @@ import Modal from '../modal/Modal';
 import { getModal } from '../modal/ModalHandler';
 import { CloseResultCode } from '../modal/ModalTypes';
 import '../modal/StandardDialog.css';
-
-export const editLinkDialogId = 'editLinkDialog';
+import { editLinkDialogId } from './EditLinkDialogTypes';
 
 export interface EditLinkDialogProps {
   readonly data: Readonly<EditLinkData>;

@@ -1,6 +1,7 @@
 import { useCallback, useState } from 'react';
 import { isEditLinkData, prepareForSave } from '../../common/EditHelper';
-import { editLinkDialogId } from '../../components/editLinkDialog/EditLinkDialog';
+
+import { editLinkDialogId } from '../../components/editLinkDialog/EditLinkDialogTypes';
 import { getModal } from '../../components/modal/ModalHandler';
 import { EditDataType, EditLinkData } from '../../model/EditData-interface';
 
