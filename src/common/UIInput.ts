@@ -1,8 +1,8 @@
-import { openLink, openLinks, openWidgetLinks } from '../model/MyLinks';
+import { openWidgetLinks } from '../model/MyLinks';
 import { MyLinksLookup } from '../model/MyLinksLookup';
-import { Shortcut } from '../model/Shortcut';
-import { isLinkArrayShortcut, isLinkShortcut, isSystemShortcut } from '../model/ShortcutTypes';
+import { Shortcut } from './shortcut/Shortcut';
 import { isKeyboardEventConsumer } from './HtmlUtil';
+import { ShortcutManager } from './shortcut/ShortcutManager';
 
 export class UIInput {
   private static mInstance?: UIInput;
@@ -59,7 +59,7 @@ export class UIInput {
     if (this.myLinksLookup) {
       this.buffer += e.key;
 
-      if (this.execShortcut(this.myLinksLookup.findShortcuts(this.buffer))) {
+      if (this.execShortcut(ShortcutManager.instance().find(this.buffer))) {
         e.stopPropagation();
         e.preventDefault();
         return true;
@@ -75,17 +75,7 @@ export class UIInput {
       this.buffer = '';
     } else if (shortcuts.length === 1 && shortcuts[0].shortcut === this.buffer) {
       this.buffer = '';
-      const shortcut = shortcuts[0];
-
-      if (isSystemShortcut(shortcut)) {
-        shortcut.callback();
-      } else if (isLinkShortcut(shortcut)) {
-        openLink(shortcut.link);
-      } else if (isLinkArrayShortcut(shortcut)) {
-        openLinks(shortcut.links);
-      } else {
-        return false;
-      }
+      shortcuts[0].callback();
       return true;
     }
     return false;

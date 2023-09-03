@@ -1,6 +1,5 @@
 import { ReactElement, useEffect, useState } from 'react';
 import { loadConfig, saveConfig } from '../../common/Config';
-import { SystemShortcutManager } from '../../common/SystemShortcutManager';
 import { UIInput } from '../../common/UIInput';
 import { AppConfigContextProvider } from '../../contexts/AppConfigContextProvider';
 import { AppUIState } from '../../contexts/AppUIStateContext';
@@ -15,7 +14,6 @@ import { LinkFinderDialog } from '../linkFinderDialog/LinkFinderDialog';
 import { linkFinderDialogId } from '../linkFinderDialog/LinkFinderDialogTypes';
 import { getModal } from '../modal/ModalHandler';
 import { CloseResultCode } from '../modal/ModalTypes';
-
 import { settingsDialogId } from '../settingsDialog/SettingsDialogTypes';
 import { Grid } from '../widgets/grid/Grid';
 import './App.css';
@@ -95,9 +93,6 @@ function Page(): ReactElement {
   const [uiState, setUiState] = useState(defaultUiState);
 
   useEffect(() => {
-    SystemShortcutManager.instance().add({ shortcut: ' ', callback: () => getModal(linkFinderDialogId)?.open() });
-    SystemShortcutManager.instance().add({ shortcut: 'a', callback: () => UIInput.instance().openFromMousePosition() });
-
     function keyDown(e: KeyboardEvent): boolean {
       return UIInput.instance().keyDown(e);
     }

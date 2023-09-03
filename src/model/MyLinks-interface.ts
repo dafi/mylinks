@@ -1,4 +1,4 @@
-import { KeyCombination } from './Shortcut';
+import { KeyCombination } from '../common/shortcut/Shortcut';
 
 export type WidgetId = string;
 export type LinkId = string;

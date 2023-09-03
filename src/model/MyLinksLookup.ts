@@ -1,8 +1,7 @@
-import { LinkId, Widget, WidgetId } from './MyLinks-interface';
-import { KeyCombination, Shortcut } from './Shortcut';
+import { Link, LinkId, Widget, WidgetId } from './MyLinks-interface';
 
 export interface MyLinksLookup {
-  findShortcuts(shortcut: KeyCombination): Shortcut[];
+  findLinkById(linkId: LinkId): Link | undefined;
 
   findWidgetById(widgetId: WidgetId): Widget | undefined;
 
