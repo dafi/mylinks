@@ -1,4 +1,4 @@
-import { Link, LinkId, Widget } from '../model/MyLinks-interface';
+import { Link, Widget } from '../model/MyLinks-interface';
 
 export interface LinkCacheItem {
   readonly link: Link;
@@ -6,21 +6,21 @@ export interface LinkCacheItem {
 }
 
 export class LinkCache {
-  private map = new Map<LinkId, LinkCacheItem>();
+  private itemByLinkId = new Map<string, LinkCacheItem>();
 
   constructor(widgets: Widget[][]) {
     this.fillMap(widgets);
   }
 
-  find(linkId: LinkId): LinkCacheItem | undefined {
-    return this.map.get(linkId);
+  find(linkId: string): LinkCacheItem | undefined {
+    return this.itemByLinkId.get(linkId);
   }
 
   private fillMap(widgets: Widget[][]): void {
-    this.map.clear();
+    this.itemByLinkId.clear();
     widgets.flat().forEach(widget => {
       widget.list.forEach(link => {
-        this.map.set(link.id, { link, widget });
+        this.itemByLinkId.set(link.id, { link, widget });
       });
     });
   }

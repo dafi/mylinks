@@ -1,6 +1,4 @@
-export type KeyCombination = string;
-
 export interface Shortcut {
-  readonly shortcut: KeyCombination;
+  readonly shortcut: string;
   readonly callback: () => void;
 }

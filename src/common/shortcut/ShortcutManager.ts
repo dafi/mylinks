@@ -1,4 +1,4 @@
-import { KeyCombination, Shortcut } from './Shortcut';
+import { Shortcut } from './Shortcut';
 
 export class ShortcutManager {
   private static mInstance?: ShortcutManager;
@@ -14,7 +14,7 @@ export class ShortcutManager {
   private constructor() {
   }
 
-  find(shortcut: KeyCombination): Shortcut[] {
+  find(shortcut: string): Shortcut[] {
     return this.shortcuts.filter(s => s.shortcut.startsWith(shortcut));
   }
 

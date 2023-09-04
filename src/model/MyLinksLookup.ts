@@ -1,11 +1,11 @@
-import { Link, LinkId, Widget, WidgetId } from './MyLinks-interface';
+import { Link, Widget } from './MyLinks-interface';
 
 export interface MyLinksLookup {
-  findLinkById(linkId: LinkId): Link | undefined;
+  findLinkById(linkId: string): Link | undefined;
 
-  findWidgetById(widgetId: WidgetId): Widget | undefined;
+  findWidgetById(widgetId: string): Widget | undefined;
 
-  findWidgetByLinkId(linkId: LinkId): Widget | undefined;
+  findWidgetByLinkId(linkId: string): Widget | undefined;
 
   hasShortcuts(): boolean;
 }

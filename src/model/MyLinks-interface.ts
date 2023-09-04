@@ -1,8 +1,3 @@
-import { KeyCombination } from '../common/shortcut/Shortcut';
-
-export type WidgetId = string;
-export type LinkId = string;
-
 export interface Theme {
   backgroundImage?: string;
   faviconColor: string;
@@ -11,15 +6,15 @@ export interface Theme {
 }
 
 export interface Link {
-  id: LinkId;
+  id: string;
   label: string;
   url: string;
   favicon?: string;
-  shortcut?: KeyCombination;
+  shortcut?: string;
 }
 
 export interface Widget {
-  id: WidgetId;
+  id: string;
   title: string;
   list: Link[];
 }
@@ -28,8 +23,13 @@ export interface Config {
   faviconService?: string;
 }
 
+export interface MultiOpenCombination {
+  shortcut: string;
+  linkIds: string[];
+}
+
 export interface MultiOpen {
-  shortcuts: Record<KeyCombination, LinkId[]>;
+  combinations: MultiOpenCombination[];
 }
 
 export interface MyLinks {

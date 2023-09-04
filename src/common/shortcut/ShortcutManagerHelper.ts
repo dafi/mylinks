@@ -1,7 +1,7 @@
 import { linkFinderDialogId } from '../../components/linkFinderDialog/LinkFinderDialogTypes';
 import { getModal } from '../../components/modal/ModalHandler';
 import { filterMyLinks, openLink, openLinks } from '../../model/MyLinks';
-import { Link, LinkId, MyLinks } from '../../model/MyLinks-interface';
+import { Link, MyLinks } from '../../model/MyLinks-interface';
 import { openWidgetLinksFromPoint } from '../../model/MyLinksDOM';
 import { MyLinksLookup } from '../../model/MyLinksLookup';
 import { CursorPosition } from '../CursorPosition';
@@ -33,25 +33,18 @@ function addLinkShortcuts(myLinks: MyLinks): void {
 }
 
 function addMultiOpenShortcuts(myLinks: MyLinks, myLinksLookup: MyLinksLookup): void {
-  const multiOpen = myLinks.multiOpen;
-  if (!multiOpen) {
-    return;
-  }
-
-  Object
-    .entries(multiOpen.shortcuts)
-    .forEach(([key, idLinks]) => {
-      const links = findLinks(idLinks, myLinksLookup);
-      const shortcut: Shortcut = {
-        shortcut: key,
-        callback: () => openLinks(links),
-      };
-      ShortcutManager.instance().add(shortcut);
-    });
+  myLinks.multiOpen?.combinations.forEach(({ shortcut, linkIds }) => {
+    const links = findLinks(linkIds, myLinksLookup);
+    const newShortcut: Shortcut = {
+      shortcut,
+      callback: () => openLinks(links),
+    };
+    ShortcutManager.instance().add(newShortcut);
+  });
 }
 
-function findLinks(idLinks: LinkId[], myLinksLookup: MyLinksLookup): Link[] {
-  return idLinks.map(id => {
+function findLinks(linksId: string[], myLinksLookup: MyLinksLookup): Link[] {
+  return linksId.map(id => {
     const link = myLinksLookup.findLinkById(id);
     if (link) {
       return link;

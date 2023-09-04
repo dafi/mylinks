@@ -1,5 +1,5 @@
 import { someMyLinks } from '../model/MyLinks';
-import { Link, LinkId, MyLinks, Widget, WidgetId } from '../model/MyLinks-interface';
+import { Link, MyLinks, Widget } from '../model/MyLinks-interface';
 import { MyLinksLookup } from '../model/MyLinksLookup';
 import { LinkCache } from './LinkCache';
 
@@ -16,14 +16,14 @@ export class MyLinksHolder implements MyLinksLookup {
     return this.mLinkCache;
   }
 
-  findLinkById(linkId: LinkId): Link | undefined {
+  findLinkById(linkId: string): Link | undefined {
     return this.linkCache.find(linkId)?.link;
   }
-  findWidgetByLinkId(linkId: LinkId): Widget | undefined {
+  findWidgetByLinkId(linkId: string): Widget | undefined {
     return this.linkCache.find(linkId)?.widget;
   }
 
-  findWidgetById(id: WidgetId): Widget | undefined {
+  findWidgetById(id: string): Widget | undefined {
     return this.myLinks.columns.flat().find(w => w.id === id);
   }
 
