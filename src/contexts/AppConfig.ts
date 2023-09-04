@@ -1,7 +1,6 @@
 import { MyLinksHolder } from '../common/MyLinksHolder';
 import { reloadShortcuts } from '../common/shortcut/ShortcutManagerHelper';
 import { applyTheme, defaultTheme } from '../common/ThemeUtil';
-import { UIInput } from '../common/UIInput';
 import { MyLinks, Theme } from '../model/MyLinks-interface';
 import { MyLinksLookup } from '../model/MyLinksLookup';
 
@@ -20,7 +19,6 @@ export function reloadAll(myLinks: MyLinks | undefined): Readonly<AppConfig> {
     return defaultAppConfig;
   }
   const myLinksHolder = new MyLinksHolder(myLinks);
-  UIInput.instance().setup(myLinksHolder);
   reloadShortcuts(myLinks, myLinksHolder);
 
   const config = buildConfig(myLinksHolder);

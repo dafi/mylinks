@@ -1,6 +1,7 @@
 import { ReactElement, useEffect, useState } from 'react';
 import { loadConfig, saveConfig } from '../../common/Config';
-import { UIInput } from '../../common/UIInput';
+import { CursorPosition } from '../../common/CursorPosition';
+import { shortcutListener } from '../../common/shortcut/ShortcutListener';
 import { AppConfigContextProvider } from '../../contexts/AppConfigContextProvider';
 import { AppUIState } from '../../contexts/AppUIStateContext';
 import { AppUIStateContextProvider } from '../../contexts/AppUIStateContextProvider';
@@ -93,16 +94,13 @@ function Page(): ReactElement {
   const [uiState, setUiState] = useState(defaultUiState);
 
   useEffect(() => {
-    function keyDown(e: KeyboardEvent): boolean {
-      return UIInput.instance().keyDown(e);
-    }
-
-    document.body.addEventListener('keydown', keyDown, false);
+    CursorPosition.instance().install();
+    document.body.addEventListener('keydown', shortcutListener, false);
     loadConfig({
       url: new URL(location.href).searchParams.get('c'),
       callback: setMyLinks
     });
-    return () => document.body.removeEventListener('keydown', keyDown);
+    return () => document.body.removeEventListener('keydown', shortcutListener);
   }, []);
 
   return (
