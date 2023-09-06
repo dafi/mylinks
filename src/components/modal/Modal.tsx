@@ -1,6 +1,6 @@
-import { ReactElement, useEffect, useRef } from 'react';
+import { ReactElement } from 'react';
 import './Modal.css';
-import { useModal } from './useModal';
+import { useModalAutoFocus } from './useModalAutoFocus';
 
 export interface ModalProp {
   readonly id: string;
@@ -13,17 +13,7 @@ export default function Modal(
     children,
   }: ModalProp
 ): ReactElement | null {
-  const { visible } = useModal(id);
-  const ref = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (visible && ref.current) {
-      const el = ref.current.querySelector('[data-auto-focus="true"]');
-      if (el && 'focus' in el) {
-        (el as HTMLElement).focus();
-      }
-    }
-  }, [visible, ref]);
+  const [ visible, ref ] = useModalAutoFocus<HTMLDivElement>(id);
 
   if (!visible) {
     return null;
