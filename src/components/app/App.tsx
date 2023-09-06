@@ -1,7 +1,5 @@
-import { ReactElement, useEffect, useState } from 'react';
+import { ReactElement, useState } from 'react';
 import { loadConfig, saveConfig } from '../../common/Config';
-import { CursorPosition } from '../../common/CursorPosition';
-import { shortcutListener } from '../../common/shortcut/ShortcutListener';
 import { AppConfigContextProvider } from '../../contexts/AppConfigContextProvider';
 import { AppUIState } from '../../contexts/AppUIStateContext';
 import { AppUIStateContextProvider } from '../../contexts/AppUIStateContextProvider';
@@ -19,6 +17,7 @@ import { settingsDialogId } from '../settingsDialog/SettingsDialogTypes';
 import { Grid } from '../widgets/grid/Grid';
 import './App.css';
 import { getHideShortcuts, toggleHideShortcuts } from './App.utils';
+import { useAppStartup } from './useAppStartup';
 
 type EditAction = 'editLink' | 'editSettings';
 
@@ -93,15 +92,7 @@ function Page(): ReactElement {
   const [myLinks, setMyLinks] = useState<MyLinks>();
   const [uiState, setUiState] = useState(defaultUiState);
 
-  useEffect(() => {
-    CursorPosition.instance().install();
-    document.body.addEventListener('keydown', shortcutListener, false);
-    loadConfig({
-      url: new URL(location.href).searchParams.get('c'),
-      callback: setMyLinks
-    });
-    return () => document.body.removeEventListener('keydown', shortcutListener);
-  }, []);
+  useAppStartup(setMyLinks);
 
   return (
     <AppConfigContextProvider
