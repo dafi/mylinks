@@ -1,7 +1,8 @@
 import { KeyboardEvent, ReactElement, useRef } from 'react';
 import { useAppUIStateContext } from '../../../contexts/AppUIStateContext';
 import { Widget } from '../../../model/MyLinks-interface';
-import { InputText, InputTextHandle } from '../../inputText/InputText';
+import { InputText } from '../../inputText/InputText';
+import { InputTextHandle } from '../../inputText/InputTextTypes';
 
 interface WidgetTitleProps {
   readonly editable: boolean;
