@@ -34,6 +34,7 @@ function restoreConfig(form: SettingsDialogState, theme: Theme): void {
   }
 }
 
+// eslint-disable-next-line react/no-multi-comp
 function SettingsForm({ onSave }: SettingsProps): ReactElement {
   const onCloseDialog = (code: CloseResultCode): void => {
     restoreConfig(form, theme);

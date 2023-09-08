@@ -27,9 +27,10 @@ export function Link(
   const [isMouseOver, setIsMouseOver] = useState(false);
 
   return (
-    <div className="ml-link-container"
-         onMouseEnter={(): void => setIsMouseOver(true)}
-         onMouseLeave={(): void => setIsMouseOver(false)}
+    <div
+      className="ml-link-container"
+      onMouseEnter={(): void => setIsMouseOver(true)}
+      onMouseLeave={(): void => setIsMouseOver(false)}
     >
       <div className="ml-link-items-container">
         <div className="left">

@@ -27,6 +27,7 @@ export function EditLinkDialog({ data, onSave }: EditLinkDialogProps): ReactElem
   );
 }
 
+// eslint-disable-next-line react/no-multi-comp
 function EditLinkForm({ data, onSave }: EditLinkDialogProps): ReactElement {
   function onCloseDialog(code: CloseResultCode): void {
     getModal(editLinkDialogId)?.close(code);
