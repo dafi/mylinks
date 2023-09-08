@@ -1,0 +1,10 @@
+{
+  "rules": {
+    "jsdoc/require-jsdoc" : 0,
+    "jsdoc/no-types": "error",
+    "jsdoc/require-param-type": "off",
+    "jsdoc/require-returns-type": "off",
+    "jsdoc/check-alignment": "error",
+    "jsdoc/check-indentation": "error"
+  }
+}

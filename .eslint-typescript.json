@@ -1,8 +1,5 @@
 {
   "rules": {
-    "jsdoc/no-types": "error",
-    "jsdoc/require-param-type": "off",
-    "jsdoc/require-returns-type": "off",
     "brace-style": "off",
     "@typescript-eslint/brace-style": [
       "error",

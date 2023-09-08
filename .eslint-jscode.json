@@ -76,8 +76,6 @@
     ],
     "import/no-cycle": "error",
     "indent": ["error", 2],
-    "jsdoc/check-alignment": "error",
-    "jsdoc/check-indentation": "error",
     "max-classes-per-file": "off",
     "new-parens": "error",
     "no-bitwise": "error",
