@@ -22,6 +22,7 @@ export function useInputChange(
     } else {
       setOnInputChange(() => userOnChange);
     }
+    return undefined;
   }, [onText, debounceTimeout]);
 
   return onInputChange;

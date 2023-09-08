@@ -29,6 +29,8 @@ function prepareLinkForSave(editData: LinkEditData): boolean {
       return deleteLink(editData);
     case 'move':
       return moveLink(editData);
+    default:
+      return false;
   }
 }
 

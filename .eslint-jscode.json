@@ -1,5 +1,6 @@
 {
   "rules": {
+    "consistent-return": "error",
     "prefer-arrow/prefer-arrow-functions": "off",
     "max-len": [
       "error",
