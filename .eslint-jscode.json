@@ -1,6 +1,16 @@
 {
   "rules": {
     "consistent-return": "error",
+    "lines-between-class-members": [
+      "error",
+      {
+        "enforce": [
+          { "blankLine": "never", "prev": "field", "next": "field" },
+          { "blankLine": "always", "prev": "method", "next": "*" },
+          { "blankLine": "always", "prev": "field", "next": "method" }
+        ]
+      }
+    ],
     "prefer-arrow/prefer-arrow-functions": "off",
     "max-len": [
       "error",
@@ -72,10 +82,14 @@
     "import/no-deprecated": "warn",
     "import/order": "error",
     "import/extensions": [
-      "error", "never"
+      "error",
+      "never"
     ],
     "import/no-cycle": "error",
-    "indent": ["error", 2],
+    "indent": [
+      "error",
+      2
+    ],
     "max-classes-per-file": "off",
     "new-parens": "error",
     "no-bitwise": "error",

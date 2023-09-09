@@ -19,6 +19,7 @@ export class MyLinksHolder implements MyLinksLookup {
   findLinkById(linkId: string): Link | undefined {
     return this.linkCache.find(linkId)?.link;
   }
+
   findWidgetByLinkId(linkId: string): Widget | undefined {
     return this.linkCache.find(linkId)?.widget;
   }
