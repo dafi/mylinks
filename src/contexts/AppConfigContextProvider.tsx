@@ -1,5 +1,7 @@
 import { ReactElement, useEffect, useState } from 'react';
 import { SettingsDialog } from '../components/settingsDialog/SettingsDialog';
+import { settingsDialogId, SettingsPanel } from '../components/settingsDialog/SettingsDialogTypes';
+import { ThemeSettingsForm } from '../components/settingsDialog/ThemeSettingsDialog';
 import { EditComplete } from '../hooks/useEditLink/useEditLink';
 import { Config, MyLinks, Theme } from '../model/MyLinks-interface';
 import { defaultAppConfig, reloadAll } from './AppConfig';
@@ -40,12 +42,16 @@ export function AppConfigContextProvider(
     setConfig(reloadAll(myLinks));
   }, [myLinks]);
 
+  const panels: SettingsPanel[] = [
+    { title: 'Theme/FavIcon', content: <ThemeSettingsForm onSave={onSaveSettings} modalId={settingsDialogId} /> },
+  ];
   return (
     <AppConfigContext.Provider value={config}>
       {children}
 
       <SettingsDialog
-        onSave={onSaveSettings}
+        panels={panels}
+        selected={panels[0].title}
       />
     </AppConfigContext.Provider>
   );

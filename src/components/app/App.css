@@ -29,9 +29,10 @@
   --toolbar-icon-background-color: #ddd;
   --toolbar-icon-text-color: #333;
 
-  --dialog-background-color: #fff;
+  --dialog-background-color: #f6f0ed;
   --dialog-border-color: #000;
   --dialog-backdrop-color: rgb(0 0 0 / 30%);
+  --dialog-primary-panel-background-color: #e9e4e0;
 
   --color-white: #fff;
   --color-black: #000;

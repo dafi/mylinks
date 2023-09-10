@@ -7,6 +7,7 @@
   border: 0;
   font-size: var(--font-2xl);
   color: var(--action-color-primary);
+  background-color: var(--dialog-background-color);
 }
 
 .link-selector .input-box:focus {
