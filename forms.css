@@ -5,7 +5,6 @@
 }
 
 .flex-outer {
-  max-width: 800px;
   margin: 0 auto;
 }
 
@@ -34,7 +33,7 @@
 .flex-outer li .label {
   padding: 8px;
   font-weight: 300;
-  letter-spacing: .09em;
+  letter-spacing: 0.09em;
   text-transform: uppercase;
 }
 
@@ -60,7 +59,7 @@
   padding: 15px;
 }
 
-.flex-outer li input[type="color"] {
+.flex-outer li input[type='color'] {
   padding: 0;
   max-width: 100px;
 }
@@ -83,7 +82,7 @@
   padding: 8px 16px;
   border: none;
   text-transform: uppercase;
-  letter-spacing: .09em;
+  letter-spacing: 0.09em;
   margin-left: 4px;
   cursor: pointer;
   border-radius: 4px;
