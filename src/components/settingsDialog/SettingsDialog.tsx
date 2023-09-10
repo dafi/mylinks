@@ -5,7 +5,7 @@ import { settingsDialogId, SettingsPanel } from './SettingsDialogTypes';
 
 interface SettingsDialogProps {
   readonly panels: SettingsPanel[];
-  readonly selected: string;
+  readonly selected: SettingsPanel;
 }
 
 export function SettingsDialog(
@@ -30,8 +30,7 @@ function SettingsForm(
     selected
   }: SettingsDialogProps
 ): ReactElement {
-  const initialSelected = panels.find(p => p.title === selected) ?? panels[0];
-  const [current, setCurrent] = useState(initialSelected);
+  const [current, setCurrent] = useState(selected);
 
   return (
     <div className="settings-modal">

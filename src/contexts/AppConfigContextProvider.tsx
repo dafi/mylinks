@@ -51,7 +51,7 @@ export function AppConfigContextProvider(
 
       <SettingsDialog
         panels={panels}
-        selected={panels[0].title}
+        selected={panels[0]}
       />
     </AppConfigContext.Provider>
   );
