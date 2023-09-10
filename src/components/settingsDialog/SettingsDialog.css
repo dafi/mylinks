@@ -16,6 +16,7 @@
 .settings-primary-panel .title {
   font-size: 16px;
   text-transform: uppercase;
+  letter-spacing: 0.09em;
 }
 
 .settings-primary-panel .group a {
@@ -25,6 +26,7 @@
 .settings-secondary-panel .title {
   font-size: 16px;
   text-transform: uppercase;
+  letter-spacing: 0.09em;
   padding: 5px 20px 20px 15px;
 }
 
