@@ -1,14 +1,13 @@
 import { MyLinksHolder } from '../common/MyLinksHolder';
 import { reloadShortcuts } from '../common/shortcut/ShortcutManagerHelper';
 import { applyTheme, defaultTheme } from '../common/ThemeUtil';
-import { MyLinks, Theme } from '../model/MyLinks-interface';
+import { MyLinks } from '../model/MyLinks-interface';
 import { MyLinksLookup } from '../model/MyLinksLookup';
 
-export interface AppConfig {
-  theme: Theme;
+export type AppConfig = {
   faviconService?: string;
   myLinksLookup?: MyLinksLookup;
-}
+} & Required<Pick<MyLinks, 'theme'>> & Pick<MyLinks, 'multiOpen'>;
 
 export const defaultAppConfig: Readonly<AppConfig> = {
   theme: defaultTheme,
@@ -34,5 +33,6 @@ function buildConfig(holder: MyLinksHolder): AppConfig {
     },
     faviconService: holder.myLinks.config?.faviconService,
     myLinksLookup: holder,
+    multiOpen: holder.myLinks.multiOpen,
   };
 }

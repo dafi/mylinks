@@ -41,9 +41,6 @@ function EditLinkForm({ data, onSave }: EditLinkDialogProps): ReactElement {
       case 'create':
         onSave({ ...data, edited: form });
         break;
-      case 'delete':
-        onSave({ ...data, original: form });
-        break;
       case 'update':
         onSave({ ...data, edited: form, original: originalProperties });
         break;

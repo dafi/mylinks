@@ -1,24 +1,25 @@
-import { Link, Widget } from './MyLinks-interface';
+import { Link, MultiOpen, Widget } from './MyLinks-interface';
 
 export type EditType = 'create' | 'update' | 'delete' | 'move';
 
-export type EditDataCreate<T> = & {
+export type EditDataCreate<T> = {
   editType: 'create';
   edited: T;
 };
 
-export type EditDataDelete<T> = & {
+export type EditDataDelete<T> = {
   editType: 'delete';
   original: T;
+  multiOpen?: MultiOpen;
 };
 
-export type EditDataUpdate<T> = & {
+export type EditDataUpdate<T> = {
   editType: 'update';
   edited: T;
   original: T;
 };
 
-export type EditDataMove<T> = & {
+export type EditDataMove<T> = {
   editType: 'move';
   original: T;
   position: { fromIndex: number; toIndex: number };
@@ -29,11 +30,11 @@ export type EditData<T> = EditDataCreate<T> | EditDataDelete<T> | EditDataUpdate
 export type LinkEditableProperties = Pick<Link, 'label' | 'url' | 'shortcut' | 'favicon'>;
 export type WidgetEditableProperties = Pick<Widget, 'title'>;
 
-export type EditWidgetFields = & {
+export type EditWidgetFields = {
   widget: Widget;
 };
 
-export type EditLinkFields = & {
+export type EditLinkFields = {
   link: Link;
   widget: Widget;
 };

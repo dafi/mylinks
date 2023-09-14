@@ -69,6 +69,7 @@ function updateLink(editData: LinkEditDataUpdate): boolean {
 }
 
 function deleteLink(editData: LinkEditDataDelete): boolean {
+  assertMultiOpenForLinkDelete(editData);
   const response = confirm(`Delete link "${editData.link.label}"?`);
   if (response) {
     const index = editData.widget.list.findIndex(l => l.id === editData.link.id);
@@ -94,4 +95,14 @@ function prepareWidgetForSave(editData: WidgetEditData): boolean {
     return true;
   }
   return false;
+}
+
+function assertMultiOpenForLinkDelete(editData: LinkEditDataDelete): void {
+  const { link: { id, label }, multiOpen } = editData;
+  const inUse = multiOpen?.combinations.filter(v => v.linkIds.includes(id));
+
+  if (inUse && inUse.length > 0) {
+    const combinations = inUse.map(v => v.shortcut).join(', ');
+    throw new Error(`Link '${label}' is used in multi open shortcuts (${combinations}), please delete them before link`);
+  }
 }
