@@ -1,34 +1,20 @@
-.flex-outer,
-.flex-inner {
+.flex-outer {
   list-style-type: none;
   padding: 0;
-}
-
-.flex-outer {
   margin: 0 auto;
 }
 
-.flex-outer li,
-.flex-inner {
+.flex-outer li {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-}
-
-.flex-inner {
-  padding: 0 8px;
-  justify-content: space-between;
-}
-
-.flex-inner li {
-  width: 100px;
 }
 
 .flex-outer > li:not(:last-child) {
   margin-bottom: 20px;
 }
 
-.flex-outer li label,
+.flex-outer li > label,
 .flex-outer li p,
 .flex-outer li .label {
   padding: 8px;
@@ -45,8 +31,7 @@
 }
 
 .flex-outer > li > label + *,
-.flex-outer > li > .label + *,
-.flex-inner {
+.flex-outer > li > .label + * {
   flex: 1 0 120px;
 }
 
@@ -78,7 +63,8 @@
   width: 100%;
 }
 
-.toolbar button {
+.toolbar button,
+.form-button {
   padding: 8px 16px;
   border: none;
   text-transform: uppercase;
@@ -86,9 +72,11 @@
   margin-left: 4px;
   cursor: pointer;
   border-radius: 4px;
+  font-size: var(--font-sm);
 }
 
-.toolbar button:first-child {
+.toolbar button:first-child,
+.form-button:first-child {
   margin-left: 0;
 }
 
