@@ -44,8 +44,12 @@
   --action-color-secondary-60: rgb(160 160 160 / 60%);
 }
 
-body {
+/* Form elements don't inherit font settings https://stackoverflow.com/a/26140154/195893 */
+body, input, textarea, button {
   font-family: 'Open Sans', sans-serif;
+}
+
+body {
   color: var(--app-backgrond-color);
 }
 
@@ -112,3 +116,11 @@ body {
   max-height: 100%;
 }
 
+.input-file {
+  width: 0.1px;
+  height: 0.1px;
+  opacity: 0;
+  overflow: hidden;
+  position: absolute;
+  z-index: -1;
+}
