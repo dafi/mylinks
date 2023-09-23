@@ -27,17 +27,8 @@ export function AppToolbar(
   const [showButtons, setShowButtons] = useState(false);
   const { myLinksLookup } = useAppConfigContext();
 
-  const shortcutStyle: CSSProperties = {
-    visibility: myLinksLookup?.hasShortcuts() ? 'visible' : 'collapse'
-  };
-  const exportConfigStyle: CSSProperties = {
-    visibility: myLinksLookup ? 'visible' : 'collapse'
-  };
   const showButtonStyle: CSSProperties = {
-    display: showButtons ? 'inline' : 'none'
-  };
-  const editSettingsStyle: CSSProperties = {
-    visibility: myLinksLookup ? 'visible' : 'collapse'
+    display: showButtons || !myLinksLookup ? 'inline' : 'none'
   };
   const showButtonIcon = showButtons ? 'fa-chevron-down' : 'fa-bars';
 
@@ -55,41 +46,36 @@ export function AppToolbar(
         className="toolbar-buttons"
         style={showButtonStyle}
       >
-        <AppToolbarButton
-          title="Load configuration from local file"
-          className="toolbar-icon"
-          action="loadConfig"
-          icon="fa fa-file-import"
-          onAction={onAction}
-          type="file"
-        />
+        {!myLinksLookup &&
+          <AppToolbarButton
+            title="Load configuration from local file"
+            className="toolbar-icon"
+            action="loadConfig"
+            icon="fa fa-file-import"
+            onAction={onAction}
+            type="file"
+          />
+        }
 
-        <AppToolbarButton
-          title="Export Configuration"
-          className="toolbar-icon"
-          action="exportConfig"
-          icon="fas fa-file-download"
-          style={exportConfigStyle}
-          onAction={onAction}
-        />
+        {myLinksLookup?.hasShortcuts() &&
+          <AppToolbarButton
+            title="Toggle shortcuts visibility"
+            className="toolbar-icon"
+            action="shortcut"
+            icon="fa fa-keyboard"
+            onAction={onAction}
+          />
+        }
 
-        <AppToolbarButton
-          title="Toggle shortcuts visibility"
-          className="toolbar-icon"
-          action="shortcut"
-          icon="fa fa-keyboard"
-          style={shortcutStyle}
-          onAction={onAction}
-        />
-
-        <AppToolbarButton
-          title="Edit Application Settings"
-          className="toolbar-icon"
-          action="settingsDialog"
-          icon="fa fa-cogs"
-          style={editSettingsStyle}
-          onAction={onAction}
-        />
+        {myLinksLookup &&
+          <AppToolbarButton
+            title="Edit Application Settings"
+            className="toolbar-icon"
+            action="settingsDialog"
+            icon="fa fa-cogs"
+            onAction={onAction}
+          />
+        }
       </div>
     </div>
   );

@@ -34,9 +34,6 @@ function Page(): ReactElement {
       case 'loadConfig':
         onLoadConfig(e.data as File);
         break;
-      case 'exportConfig':
-        onExportConfig();
-        break;
       case 'shortcut':
         onShortcut();
         break;
@@ -98,6 +95,8 @@ function Page(): ReactElement {
     <AppConfigContextProvider
       myLinks={myLinks}
       onEditComplete={(result): void => onEditComplete('editSettings', result )}
+      onLoadConfig={onLoadConfig}
+      onExportConfig={onExportConfig}
     >
       <AppUIStateContextProvider
         uiState={uiState}
