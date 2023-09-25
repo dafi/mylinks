@@ -31,10 +31,10 @@ export function ExportSettingsForm(
     <form>
       <ul className="flex-outer">
         <li className="toolbar">
-          <label htmlFor="load-config">Load</label>
+          <label htmlFor="load-config">Load / Save</label>
           <div className="toolbar-left">
-            <label className="form-button text-white bg-action-primary hover">
-              JSON
+            <label className="form-button text-white bg-action-warn hover">
+              Load JSON
               <input
                 type="file"
                 name="load-config"
@@ -44,19 +44,14 @@ export function ExportSettingsForm(
                 onChange={handleFileSelect}
               />
             </label>
-          </div>
-        </li>
-        <li className="toolbar">
-          <label htmlFor="export-json">Export</label>
-          <div className="toolbar-left">
             <button
               type="button"
               name="export-json"
               id="export-json"
-              className="text-white bg-action-primary hover"
+              className="text-white bg-action-success hover"
               onClick={onExportConfig}
             >
-              JSON
+              Save JSON
             </button>
           </div>
         </li>
