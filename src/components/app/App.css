@@ -42,6 +42,12 @@
 
   --action-color-secondary: #aaa;
   --action-color-secondary-60: rgb(160 160 160 / 60%);
+
+  --action-color-success: #16a34a;
+  --action-color-success-60: rgb(22 163 74 / 60%);
+
+  --action-color-warn: #eab308;
+  --action-color-warn-60: rgb(234 179 8 / 60%);
 }
 
 /* Form elements don't inherit font settings https://stackoverflow.com/a/26140154/195893 */
@@ -78,6 +84,14 @@ body {
   background-color: var(--action-color-secondary);
 }
 
+.bg-action-success {
+  background-color: var(--action-color-success);
+}
+
+.bg-action-warn {
+  background-color: var(--action-color-warn);
+}
+
 .bg-white {
   background-color: var(--color-white);
 }
@@ -88,6 +102,14 @@ body {
 
 .hover.bg-action-secondary:hover {
   background-color: var(--action-color-secondary-60);
+}
+
+.hover.bg-action-success:hover {
+  background-color: var(--action-color-success-60);
+}
+
+.hover.bg-action-warn:hover {
+  background-color: var(--action-color-warn-60);
 }
 
 .ml-rows {
