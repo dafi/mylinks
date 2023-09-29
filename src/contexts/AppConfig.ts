@@ -17,12 +17,17 @@ export function reloadAll(myLinks: MyLinks | undefined): Readonly<AppConfig> {
   if (!myLinks) {
     return defaultAppConfig;
   }
-  const myLinksHolder = new MyLinksHolder(myLinks);
-  reloadShortcuts(myLinks, myLinksHolder);
+  try {
+    const myLinksHolder = new MyLinksHolder(myLinks);
+    reloadShortcuts(myLinks, myLinksHolder);
 
-  const config = buildConfig(myLinksHolder);
-  applyTheme(config.theme);
-  return config;
+    const config = buildConfig(myLinksHolder);
+    applyTheme(config.theme);
+    return config;
+  } catch (e) {
+    window.alert(e);
+  }
+  return defaultAppConfig;
 }
 
 function buildConfig(holder: MyLinksHolder): AppConfig {
