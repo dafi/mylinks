@@ -1,12 +1,12 @@
 # What is this?
 
-MyLinks shows bookmarks organised widgets (all links related to google, e-commerce, development and so on)
+MyLinks shows bookmarks organised in widgets (all links related to google, e-commerce, development and so on)
 
 - You can bind a shortcut combination to quickly open links
 - Use your preferred wallpaper
 - Open all widget links at once
 
-The configuration file (JSON) is stored on your computer, no hosting on unknown server, no privacy issues.
+The configuration file (JSON) is stored on your computer, no hosting on unknown servers, no privacy issues.
 
 If you are not obsessed by privacy, you can use public urls containing the configuration.
 
