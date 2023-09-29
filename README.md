@@ -1,3 +1,21 @@
+# What is this?
+
+MyLinks shows bookmarks organised widgets (all links related to google, e-commerce, development and so on)
+
+- You can bind a shortcut combination to quickly open links
+- Use your preferred wallpaper
+- Open all widget links at once
+
+The configuration file (JSON) is stored on your computer, no hosting on unknown server, no privacy issues.
+
+If you are not obsessed by privacy, you can use public urls containing the configuration.
+
+# Show me how it works
+
+Open [this link](https://dafi.github.io/mylinks/?c=https://gist.githubusercontent.com/dafi/8442bdbe932c22426bb4a383077a6802/raw/55b4d880d2015a96ec87424af48626d075a257a4/mylinks.json) to see MyLinks in action
+
+![](doc/mylinks.png)
+
 # Configuration
 
 ## Load From url
