@@ -1,4 +1,5 @@
 import { KeyboardEvent, ReactElement, useRef } from 'react';
+import { isNotEmptyString } from '../../../common/StringUtil';
 import { useAppUIStateContext } from '../../../contexts/AppUIStateContext';
 import { Widget } from '../../../model/MyLinks-interface';
 import { InputText } from '../../inputText/InputText';
@@ -12,7 +13,7 @@ interface WidgetTitleProps {
 
 export default function WidgetTitle({ editable, widget, onToggleEdit }: WidgetTitleProps): ReactElement {
   function saveTitle(title: string | undefined): void {
-    if (context.onEdit && title && widget.title !== title) {
+    if (context.onEdit && isNotEmptyString(title) && widget.title !== title) {
       context.onEdit({
         widget,
         editType: 'update',

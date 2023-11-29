@@ -1,4 +1,5 @@
 import { CSSProperties } from 'react';
+import { isNotEmptyString } from '../../common/StringUtil';
 
 export type AppToolbarButtonType = 'button' | 'file';
 
@@ -19,6 +20,6 @@ const actions = [
 export type AppToolbarActionType = typeof actions[number];
 
 export function isAction(action: string | undefined): action is AppToolbarActionType {
-  return !!action && actions.includes(action as AppToolbarActionType);
+  return isNotEmptyString(action) && actions.includes(action as AppToolbarActionType);
 }
 

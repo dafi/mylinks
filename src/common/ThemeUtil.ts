@@ -1,5 +1,6 @@
 import { Theme } from '../model/MyLinks-interface';
 import { applyColorToFavicon } from './Favicon';
+import { isNotEmptyString } from './StringUtil';
 
 export const defaultTheme: Readonly<Theme> = {
   faviconColor: 'blue',
@@ -13,7 +14,7 @@ export function applyTheme(theme: Theme): void {
 
 export function applyBackground(backgroundImage?: string): void {
   const body = document.body;
-  if (backgroundImage) {
+  if (isNotEmptyString(backgroundImage)) {
     body.style.backgroundImage = `url(${backgroundImage})`;
   } else {
     body.style.backgroundImage = '';
@@ -26,7 +27,7 @@ export function applyColors(theme: Theme): void {
 }
 
 export function setColor(property: string, color?: string): void {
-  if (color) {
+  if (isNotEmptyString(color)) {
     document.documentElement.style.setProperty(property, color);
   } else {
     document.documentElement.style.removeProperty(property);

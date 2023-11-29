@@ -1,9 +1,7 @@
+import { isNotEmptyString } from './StringUtil';
+
 export function splitShortcut(
   shortcut: string | undefined,
 ): string[] {
-  if (!shortcut) {
-    return [];
-  }
-
-  return shortcut.split('');
+  return isNotEmptyString(shortcut) ? shortcut.split('') : [];
 }

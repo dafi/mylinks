@@ -57,7 +57,7 @@ export function AppToolbar(
           />
         }
 
-        {myLinksLookup?.hasShortcuts() &&
+        {myLinksLookup?.hasShortcuts() === true &&
           <AppToolbarButton
             title="Toggle shortcuts visibility"
             className="toolbar-icon"

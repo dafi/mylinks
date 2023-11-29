@@ -1,4 +1,5 @@
 import { Link } from '../model/MyLinks-interface';
+import { isNotEmptyString } from './StringUtil';
 
 const DEFAULT_FAVICON_WIDTH = 16;
 const DEFAULT_FAVICON_HEIGHT = 16;
@@ -9,24 +10,24 @@ export function faviconUrlByLink(
 ): string | null {
   const faviconUrl = link.favicon;
 
-  if (faviconUrl) {
-    // url contains protocol
-    if (/^.*:\/\//.test(faviconUrl)) {
-      return faviconUrl;
-    }
-    return faviconUrlBuilder?.replace('$1', faviconUrl) ?? null;
+  if (faviconUrl === undefined) {
+    return buildFaviconUrl(link.url, faviconUrlBuilder);
   }
-  if (faviconUrl?.length === 0) {
+  if (faviconUrl.length === 0) {
     return null;
   }
-  return buildFaviconUrl(link.url, faviconUrlBuilder);
+  // url contains protocol
+  if (/^.*:\/\//.test(faviconUrl)) {
+    return faviconUrl;
+  }
+  return faviconUrlBuilder?.replace('$1', faviconUrl) ?? null;
 }
 
 export function buildFaviconUrl(
   url: string,
   faviconUrlBuilder: string | null | undefined
 ): string | null {
-  if (faviconUrlBuilder) {
+  if (isNotEmptyString(faviconUrlBuilder)) {
     try {
       const host = new URL(url).host;
       if (host) {
@@ -56,7 +57,7 @@ export function applyColorToFavicon(
     const width = options?.width ?? DEFAULT_FAVICON_WIDTH;
     const height = options?.height ?? DEFAULT_FAVICON_HEIGHT;
     const favImage = createImage(image, width, height, color);
-    if (favImage) {
+    if (isNotEmptyString(favImage)) {
       favicon.type = 'image/x-icon';
       favicon.href = favImage;
     }

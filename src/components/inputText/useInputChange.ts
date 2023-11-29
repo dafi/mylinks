@@ -10,7 +10,7 @@ export function useInputChange(
 
   useEffect(() => {
     const userOnChange = onText;
-    if (debounceTimeout && userOnChange) {
+    if (typeof debounceTimeout === 'number' && userOnChange) {
       const [debounceCallback, stopDebounceCallback] = debounce(a => {
         userOnChange(a as string);
       }, debounceTimeout);

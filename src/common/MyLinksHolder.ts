@@ -2,6 +2,7 @@ import { someMyLinks } from '../model/MyLinks';
 import { Link, MyLinks, Widget } from '../model/MyLinks-interface';
 import { MyLinksLookup } from '../model/MyLinksLookup';
 import { LinkCache } from './LinkCache';
+import { isNotEmptyString } from './StringUtil';
 
 export class MyLinksHolder implements MyLinksLookup {
   private mLinkCache?: LinkCache;
@@ -29,7 +30,7 @@ export class MyLinksHolder implements MyLinksLookup {
   }
 
   hasShortcuts(): boolean {
-    return someMyLinks(this.myLinks, (_w, l) => !!l.shortcut);
+    return someMyLinks(this.myLinks, (_w, l) => isNotEmptyString(l.shortcut));
   }
 
 }

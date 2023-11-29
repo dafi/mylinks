@@ -1,5 +1,6 @@
 import { CSSProperties, ReactElement } from 'react';
 import { faviconUrlByLink } from '../../../common/Favicon';
+import { isNotEmptyString } from '../../../common/StringUtil';
 import { useAppConfigContext } from '../../../contexts/AppConfigContext';
 import { Link as MLLink } from '../../../model/MyLinks-interface';
 import './LinkIcon.css';
@@ -36,7 +37,7 @@ export function LinkIcon(
   const { faviconService: appFaviconService } = useAppConfigContext();
   const faviconUrl = faviconUrlByLink(link, faviconService ?? appFaviconService);
 
-  if (faviconUrl) {
+  if (isNotEmptyString(faviconUrl)) {
     return <img src={faviconUrl} className="link-icon-favicon" alt="" />;
   }
 

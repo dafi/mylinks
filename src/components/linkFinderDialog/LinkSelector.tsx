@@ -1,5 +1,6 @@
 import { ChangeEvent, KeyboardEvent, MouseEvent, ReactElement, RefObject, useRef, useState } from 'react';
 import { LinkSearch, LinkSearchResult } from '../../common/LinkSearch';
+import { isNotEmptyString } from '../../common/StringUtil';
 import { useAppConfigContext } from '../../contexts/AppConfigContext';
 import { Link, Widget } from '../../model/MyLinks-interface';
 import { LinkIcon } from '../widgets/linkIcon/LinkIcon';
@@ -88,7 +89,7 @@ export function LinkSelector(
 
   function widgetTitle(link: Link): string {
     const title = myLinksLookup?.findWidgetByLinkId(link.id)?.title;
-    return title ? ` - ${title}` : '';
+    return isNotEmptyString(title) ? ` - ${title}` : '';
   }
 
   const { myLinksLookup } = useAppConfigContext();

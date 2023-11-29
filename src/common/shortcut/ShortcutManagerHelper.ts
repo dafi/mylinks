@@ -5,6 +5,7 @@ import { Link, MyLinks } from '../../model/MyLinks-interface';
 import { openWidgetLinksFromPoint } from '../../model/MyLinksDOM';
 import { MyLinksLookup } from '../../model/MyLinksLookup';
 import { CursorPosition } from '../CursorPosition';
+import { isNotEmptyString } from '../StringUtil';
 import { Shortcut } from './Shortcut';
 import { ShortcutManager } from './ShortcutManager';
 
@@ -19,16 +20,15 @@ export function reloadShortcuts(myLinks: MyLinks, myLinksLookup: MyLinksLookup):
 }
 
 function addLinkShortcuts(myLinks: MyLinks): void {
-  filterMyLinks(myLinks, (_w, l) => !!l.shortcut)
+  filterMyLinks(myLinks, (_w, l) => isNotEmptyString(l.shortcut))
     .forEach(link => {
-      if (!link.shortcut) {
-        return;
+      if (isNotEmptyString(link.shortcut)) {
+        const shortcut: Shortcut = {
+          shortcut: link.shortcut,
+          callback: () => openLink(link),
+        };
+        ShortcutManager.instance().add(shortcut);
       }
-      const shortcut: Shortcut = {
-        shortcut: link.shortcut,
-        callback: () => openLink(link),
-      };
-      ShortcutManager.instance().add(shortcut);
     });
 }
 

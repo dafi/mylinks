@@ -21,7 +21,7 @@ export function Shortcut(
     if (!visible) {
       return false;
     }
-    if (!shortcut) {
+    if (shortcut == null || shortcut.length === 0) {
       return false;
     }
     if (!hideShortcuts) {

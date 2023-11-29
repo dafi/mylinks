@@ -1,4 +1,5 @@
 import { MyLinks } from '../model/MyLinks-interface';
+import { isNotEmptyString } from './StringUtil';
 
 const STORAGE_PREF_DATA = 'myLinksData';
 
@@ -23,7 +24,7 @@ export function loadConfig(
     callback
   }: LoadConfig
 ): void {
-  if (url) {
+  if (isNotEmptyString(url)) {
     loadFromUrl(url, callback);
   } else if (file) {
     loadFromFile(file, callback);
@@ -36,7 +37,7 @@ function loadData(onLoadCallback: OnLoadCallback): void {
   let data: MyLinks | undefined;
 
   const jsonText = localStorage.getItem(STORAGE_PREF_DATA);
-  if (jsonText) {
+  if (isNotEmptyString(jsonText)) {
     try {
       data = loadFromObject(JSON.parse(jsonText));
     } catch (e) {

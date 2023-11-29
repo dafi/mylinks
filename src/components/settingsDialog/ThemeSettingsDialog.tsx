@@ -1,5 +1,6 @@
 import { ChangeEvent, MouseEvent, ReactElement, useState } from 'react';
 import { applyColorToFavicon } from '../../common/Favicon';
+import { isNotEmptyString } from '../../common/StringUtil';
 import { applyBackground } from '../../common/ThemeUtil';
 import { useAppConfigContext } from '../../contexts/AppConfigContext';
 import { Config, Theme } from '../../model/MyLinks-interface';
@@ -10,6 +11,7 @@ type DialogState = Theme & Config & Record<string, string | undefined>;
 
 interface SettingsProps {
   readonly modalId: string;
+
   onSave(settings: Theme & Config): void;
 }
 
@@ -46,7 +48,7 @@ export function ThemeSettingsForm({ onSave, modalId }: SettingsProps): ReactElem
 
   function onChange(e: ChangeEvent<HTMLInputElement>): void {
     const action = e.target.dataset.action;
-    if (action) {
+    if (isNotEmptyString(action)) {
       setForm(prevState => {
         prevState[action] = e.target.value;
         return prevState;

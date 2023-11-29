@@ -1,5 +1,6 @@
 import { ChangeEvent, MouseEvent, ReactElement, useState } from 'react';
-import { LinkEditData, LinkEditableProperties } from '../../model/EditData-interface';
+import { isNotEmptyString } from '../../common/StringUtil';
+import { LinkEditableProperties, LinkEditData } from '../../model/EditData-interface';
 import Modal from '../modal/Modal';
 import { getModal } from '../modal/ModalHandler';
 import { CloseResultCode } from '../modal/ModalTypes';
@@ -56,7 +57,7 @@ function EditLinkForm({ data, onSave }: EditLinkDialogProps): ReactElement {
 
   function onChange(e: ChangeEvent<HTMLInputElement>): void {
     const action = e.target.dataset.action;
-    if (action) {
+    if (isNotEmptyString(action)) {
       setForm(prevState => {
         prevState[action] = e.target.value;
         return prevState;

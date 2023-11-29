@@ -1,4 +1,5 @@
 import { Point } from '../common/DOMTypes';
+import { isNotEmptyString } from '../common/StringUtil';
 import { openWidgetLinks } from './MyLinks';
 import { MyLinksLookup } from './MyLinksLookup';
 
@@ -8,7 +9,7 @@ export function openWidgetLinksFromPoint(point: Point, myLinksLookup: MyLinksLoo
     ?.closest(`[${widgetAttributeName}]`)
     ?.getAttribute(widgetAttributeName);
 
-  if (widgetId) {
+  if (isNotEmptyString(widgetId)) {
     const widget = myLinksLookup.findWidgetById(widgetId);
     if (widget) {
       openWidgetLinks(widget);

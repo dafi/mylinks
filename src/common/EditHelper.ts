@@ -42,7 +42,7 @@ function applyLinkProperties(edited: LinkEditableProperties, link: Link): boolea
       const propName = p as keyof Link;
       if (link[propName] !== value) {
         modified = true;
-        if (value) {
+        if (typeof value === 'string') {
           link[propName] = value;
         } else {
           // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
