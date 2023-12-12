@@ -4,7 +4,7 @@ import { filterMyLinks, openLink, openLinks } from '../../model/MyLinks';
 import { Link, MyLinks } from '../../model/MyLinks-interface';
 import { openWidgetLinksFromPoint } from '../../model/MyLinksDOM';
 import { MyLinksLookup } from '../../model/MyLinksLookup';
-import { CursorPosition } from '../CursorPosition';
+import { cursorPosition } from '../CursorPositionTracker';
 import { isNotEmptyString } from '../StringUtil';
 import { Shortcut } from './Shortcut';
 import { ShortcutManager } from './ShortcutManager';
@@ -13,7 +13,7 @@ export function reloadShortcuts(myLinks: MyLinks, myLinksLookup: MyLinksLookup):
   const shortcutManager = ShortcutManager.instance();
   shortcutManager.clear();
   shortcutManager.add({ shortcut: ' ', callback: () => getModal(linkFinderDialogId)?.open() });
-  shortcutManager.add({ shortcut: 'a', callback: () => openWidgetLinksFromPoint(CursorPosition.instance().position(), myLinksLookup) });
+  shortcutManager.add({ shortcut: 'a', callback: () => openWidgetLinksFromPoint(cursorPosition(), myLinksLookup) });
 
   addLinkShortcuts(myLinks);
   addMultiOpenShortcuts(myLinks, myLinksLookup);
