@@ -1,8 +1,8 @@
 import { ReactElement, useState } from 'react';
 import { loadConfig, saveConfig } from '../../common/Config';
 import { AppConfigContextProvider } from '../../contexts/AppConfigContextProvider';
-import { AppUIState } from '../../contexts/AppUIStateContext';
 import { AppUIStateContextProvider } from '../../contexts/AppUIStateContextProvider';
+import { useAppUIState } from '../../contexts/useAppUIState';
 import { EditComplete } from '../../hooks/useEditLink/useEditLink';
 import { MyLinksEvent } from '../../model/Events';
 import { openLink } from '../../model/MyLinks';
@@ -13,10 +13,10 @@ import { LinkFinderDialog } from '../linkFinderDialog/LinkFinderDialog';
 import { linkFinderDialogId } from '../linkFinderDialog/LinkFinderDialogTypes';
 import { getModal } from '../modal/ModalHandler';
 import { CloseResultCode } from '../modal/ModalTypes';
+import { ReminderComponent } from '../reminder/Reminder';
 import { settingsDialogId } from '../settingsDialog/SettingsDialogTypes';
 import { Grid } from '../widgets/grid/Grid';
 import './App.css';
-import { getHideShortcuts, toggleHideShortcuts } from './App.utils';
 import { useAppStartup } from './useAppStartup';
 
 type EditAction = 'editLink' | 'editSettings';
@@ -48,14 +48,12 @@ function Page(): ReactElement {
       const indentSpaces = 2;
       const w = window.open();
       w?.document.write(`<pre>${JSON.stringify(myLinks, null, indentSpaces)}</prev>`);
+      setUIState({ widgetsModified: false });
     }
   }
 
   function onShortcut(): void {
-    toggleHideShortcuts();
-    setUiState({
-      hideShortcuts: getHideShortcuts(),
-    });
+    setUIState({ hideShortcuts: !uiState.hideShortcuts });
   }
 
   function onLoadConfig(file: File): void {
@@ -72,7 +70,10 @@ function Page(): ReactElement {
         if (data) {
           saveConfig({
             data,
-            callback: mmLinks => setMyLinks({ ...mmLinks })
+            callback: mmLinks => {
+              setUIState({ widgetsModified: true });
+              setMyLinks({ ...mmLinks });
+            }
           });
         }
         break;
@@ -83,26 +84,28 @@ function Page(): ReactElement {
     }
   }
 
-  const defaultUiState: AppUIState = {
-    hideShortcuts: getHideShortcuts(),
-  };
   const [myLinks, setMyLinks] = useState<MyLinks>();
-  const [uiState, setUiState] = useState(defaultUiState);
+  const [uiState, setUIState] = useAppUIState();
 
   useAppStartup(setMyLinks);
 
   return (
     <AppConfigContextProvider
       myLinks={myLinks}
-      onEditComplete={(result): void => onEditComplete('editSettings', result )}
+      onEditComplete={(result): void => onEditComplete('editSettings', result)}
       onLoadConfig={onLoadConfig}
       onExportConfig={onExportConfig}
     >
       <AppUIStateContextProvider
         uiState={uiState}
-        onEditComplete={(result): void => onEditComplete('editLink', result )}
+        onEditComplete={(result): void => onEditComplete('editLink', result)}
       >
         <div className="ml-wrapper">
+          <ReminderComponent
+            message="Widgets modified but not yet saved"
+            isVisible={uiState.widgetsModified}
+            onExportConfig={onExportConfig}
+          />
           <div className="ml-grid">
             <Grid columns={myLinks?.columns ?? []} />
           </div>
