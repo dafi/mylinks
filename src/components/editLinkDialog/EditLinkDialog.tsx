@@ -1,4 +1,5 @@
-import { ChangeEvent, MouseEvent, ReactElement, useState } from 'react';
+import { ChangeEvent, FormEvent, ReactElement, useState } from 'react';
+import { ShortcutManager } from '../../common/shortcut/ShortcutManager';
 import { isNotEmptyString } from '../../common/StringUtil';
 import { LinkEditableProperties, LinkEditData } from '../../model/EditData-interface';
 import Modal from '../modal/Modal';
@@ -34,7 +35,7 @@ function EditLinkForm({ data, onSave }: EditLinkDialogProps): ReactElement {
     getModal(editLinkDialogId)?.close(code);
   }
 
-  function onClickSave(e: MouseEvent<HTMLButtonElement>): void {
+  function onClickSave(e: FormEvent<HTMLFormElement>): void {
     e.preventDefault();
 
     const originalProperties = { ...data.link };
@@ -55,6 +56,14 @@ function EditLinkForm({ data, onSave }: EditLinkDialogProps): ReactElement {
     onCloseDialog(CloseResultCode.Cancel);
   }
 
+  function validateShortcut(e: ChangeEvent<HTMLInputElement>): void {
+    if (e.target.value !== data.link.shortcut && ShortcutManager.instance().find(e.target.value).length) {
+      e.target.setCustomValidity('Shortcut already assigned');
+    } else {
+      e.target.setCustomValidity('');
+    }
+  }
+
   function onChange(e: ChangeEvent<HTMLInputElement>): void {
     const action = e.target.dataset.action;
     if (isNotEmptyString(action)) {
@@ -62,6 +71,9 @@ function EditLinkForm({ data, onSave }: EditLinkDialogProps): ReactElement {
         prevState[action] = e.target.value;
         return prevState;
       });
+      if (action === 'shortcut') {
+        validateShortcut(e);
+      }
     }
   }
 
@@ -70,7 +82,7 @@ function EditLinkForm({ data, onSave }: EditLinkDialogProps): ReactElement {
   });
 
   return (
-    <form>
+    <form onSubmit={onClickSave}>
       <ul className="flex-outer">
         <li>
           <label htmlFor="link-label">Label</label>
@@ -81,23 +93,27 @@ function EditLinkForm({ data, onSave }: EditLinkDialogProps): ReactElement {
             defaultValue={form.label}
             onChange={onChange}
             placeholder="Videos"
+            required
+            pattern="^\S|\S.*\S"
           />
         </li>
         <li>
           <label htmlFor="link-url">Url</label>
           <input
             data-action="url"
-            type="text"
+            type="url"
             defaultValue={form.url}
             onChange={onChange}
             placeholder="https://youtube.com"
+            required
+            pattern="^\S|\S.*\S"
           />
         </li>
         <li>
           <label htmlFor="shortcut">Favicon URL</label>
           <input
             data-action="favicon"
-            type="text"
+            type="url"
             defaultValue={form.favicon}
             onChange={onChange}
             placeholder="favicon url"
@@ -118,9 +134,8 @@ function EditLinkForm({ data, onSave }: EditLinkDialogProps): ReactElement {
           <div className="toolbar-left" />
           <div className="toolbar-right">
             <button
-              type="button"
+              type="submit"
               className="text-white bg-action-primary hover"
-              onClick={onClickSave}
             >
               Save
             </button>
