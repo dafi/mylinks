@@ -1,33 +1,18 @@
 import { Shortcut } from './Shortcut';
 
-export class ShortcutManager {
-  private static mInstance?: ShortcutManager;
-  private shortcuts: Shortcut[] = [];
+const shortcuts: Shortcut[] = [];
 
-  static instance(): ShortcutManager {
-    if (!this.mInstance) {
-      this.mInstance = new this();
-    }
-    return this.mInstance;
-  }
+export const findShortcuts = (shortcut: string): Shortcut[] => shortcuts.filter(s => s.shortcut.startsWith(shortcut));
 
-  private constructor() {
+export function addShortcut(shortcut: Shortcut): boolean {
+  if (shortcuts.find(s => s.shortcut === shortcut.shortcut)) {
+    console.error(`Shortcut '${shortcut.shortcut}' already present`);
+    return false;
   }
+  shortcuts.push(shortcut);
+  return true;
+}
 
-  find(shortcut: string): Shortcut[] {
-    return this.shortcuts.filter(s => s.shortcut.startsWith(shortcut));
-  }
-
-  add(shortcut: Shortcut): boolean {
-    if (this.shortcuts.find(s => s.shortcut === shortcut.shortcut)) {
-      console.error(`Shortcut '${shortcut.shortcut}' already present`);
-      return false;
-    }
-    this.shortcuts.push(shortcut);
-    return true;
-  }
-
-  clear(): void {
-    this.shortcuts = [];
-  }
+export function clearShortcuts(): void {
+  shortcuts.splice(0);
 }

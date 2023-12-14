@@ -1,6 +1,6 @@
 import { isKeyboardEventConsumer } from '../HtmlUtil';
 import { Shortcut } from './Shortcut';
-import { ShortcutManager } from './ShortcutManager';
+import { findShortcuts } from './ShortcutManager';
 
 let buffer = '';
 
@@ -16,7 +16,7 @@ export function shortcutListener(e: KeyboardEvent): boolean {
   }
   buffer += e.key;
 
-  if (execShortcut(ShortcutManager.instance().find(buffer))) {
+  if (execShortcut(findShortcuts(buffer))) {
     e.stopPropagation();
     e.preventDefault();
     return true;

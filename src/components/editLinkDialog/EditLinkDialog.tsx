@@ -1,5 +1,5 @@
 import { ChangeEvent, FormEvent, ReactElement, useState } from 'react';
-import { ShortcutManager } from '../../common/shortcut/ShortcutManager';
+import { findShortcuts } from '../../common/shortcut/ShortcutManager';
 import { isNotEmptyString } from '../../common/StringUtil';
 import { LinkEditableProperties, LinkEditData } from '../../model/EditData-interface';
 import Modal from '../modal/Modal';
@@ -57,7 +57,7 @@ function EditLinkForm({ data, onSave }: EditLinkDialogProps): ReactElement {
   }
 
   function validateShortcut(e: ChangeEvent<HTMLInputElement>): void {
-    if (e.target.value !== data.link.shortcut && ShortcutManager.instance().find(e.target.value).length) {
+    if (e.target.value !== data.link.shortcut && findShortcuts(e.target.value).length) {
       e.target.setCustomValidity('Shortcut already assigned');
     } else {
       e.target.setCustomValidity('');
