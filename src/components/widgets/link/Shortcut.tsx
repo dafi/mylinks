@@ -1,6 +1,6 @@
 import { ReactElement } from 'react';
+import { splitShortcut } from '../../../common/shortcut/ShortcutManager';
 
-import { splitShortcut } from '../../../common/ShortcutUtil';
 import { useAppUIStateContext } from '../../../contexts/AppUIStateContext';
 import './Shortcut.css';
 

@@ -16,3 +16,9 @@ export function addShortcut(shortcut: Shortcut): boolean {
 export function clearShortcuts(): void {
   shortcuts.splice(0);
 }
+
+export function splitShortcut(
+  shortcut: string | null | undefined,
+): string[] {
+  return shortcut?.trim().split('') ?? [];
+}
