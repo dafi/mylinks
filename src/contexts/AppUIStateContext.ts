@@ -3,13 +3,13 @@ import { EditDataType } from '../model/EditData-interface';
 
 export interface AppUIState {
   hideShortcuts: boolean;
-  widgetsModified: boolean;
+  settingsChanged: boolean;
   onEdit?: (editData: EditDataType) => void;
 }
 
 const defaultAppUIState: AppUIState = {
   hideShortcuts: false,
-  widgetsModified: false,
+  settingsChanged: false,
 };
 
 export const AppUIStateContext = createContext(defaultAppUIState);

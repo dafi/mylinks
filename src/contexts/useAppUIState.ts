@@ -1,30 +1,38 @@
-import { useState } from 'react';
+import { Dispatch, useReducer } from 'react';
 import { getBoolean, setBoolean } from '../common/localStorageUtil';
 import { AppUIState } from './AppUIStateContext';
 
 const PREF_HIDE_SHORTCUTS = 'hideShortcuts';
-const PREF_WIDGETS_MODIFIED = 'widgetModified';
+const PREF_SETTINGS_CHANGED = 'settingsChanged';
 
-export function useAppUIState(): [AppUIState, (uiState: Partial<AppUIState>) => void] {
+export type AppUIStateAction = {
+  type: 'settingsChanged';
+  value: boolean;
+} | {
+  type: 'hideShortcuts';
+  value: boolean | 'toggle';
+};
+
+function reducer(state: AppUIState, action: AppUIStateAction): AppUIState {
+  switch (action.type) {
+    case 'settingsChanged':
+      setBoolean(PREF_SETTINGS_CHANGED, action.value);
+      return { ...state, settingsChanged: action.value };
+    case 'hideShortcuts': {
+      const newValue = action.value === 'toggle' ? !state.hideShortcuts : action.value;
+      setBoolean(PREF_HIDE_SHORTCUTS, newValue);
+      return { ...state, hideShortcuts: newValue };
+    }
+    default:
+      return state;
+  }
+}
+
+export function useAppUIState(): [AppUIState, Dispatch<AppUIStateAction>] {
   const defaultUIState: AppUIState = {
     hideShortcuts: getBoolean(PREF_HIDE_SHORTCUTS),
-    widgetsModified: getBoolean(PREF_WIDGETS_MODIFIED),
+    settingsChanged: getBoolean(PREF_SETTINGS_CHANGED),
   };
 
-  const [uiState, setUIState] = useState(defaultUIState);
-
-  return [
-    uiState,
-    (state: Partial<AppUIState>): void => {
-      const { hideShortcuts, widgetsModified } = state;
-
-      if (hideShortcuts !== undefined) {
-        setBoolean(PREF_HIDE_SHORTCUTS, hideShortcuts);
-      }
-      if (widgetsModified !== undefined) {
-        setBoolean(PREF_WIDGETS_MODIFIED, widgetsModified);
-      }
-      setUIState(prevState => ({ ...prevState, ...state }));
-    }
-  ];
+  return useReducer(reducer, defaultUIState);
 }

@@ -1,4 +1,4 @@
-import { ReactElement, useEffect, useState } from 'react';
+import { Dispatch, ReactElement, useEffect, useState } from 'react';
 import { ExportSettingsForm } from '../components/settingsDialog/ExportSettingsDialog';
 import { SettingsDialog } from '../components/settingsDialog/SettingsDialog';
 import { settingsDialogId, SettingsPanel } from '../components/settingsDialog/SettingsDialogTypes';
@@ -7,9 +7,11 @@ import { EditComplete } from '../hooks/useEditLink/useEditLink';
 import { Config, MyLinks, Theme } from '../model/MyLinks-interface';
 import { defaultAppConfig, reloadAll } from './AppConfig';
 import { AppConfigContext } from './AppConfigContext';
+import { AppUIStateAction } from './useAppUIState';
 
 interface AppConfigContextProps {
   readonly myLinks: MyLinks | undefined;
+  readonly updateUIState: Dispatch<AppUIStateAction>;
   readonly onEditComplete: (result: EditComplete) => void;
   readonly children: ReactElement;
   readonly onLoadConfig: (file: File) => void;
@@ -19,6 +21,7 @@ interface AppConfigContextProps {
 export function AppConfigContextProvider(
   {
     myLinks,
+    updateUIState,
     onEditComplete,
     children,
     onLoadConfig,
@@ -44,8 +47,8 @@ export function AppConfigContextProvider(
   const [config, setConfig] = useState(defaultAppConfig);
 
   useEffect(() => {
-    setConfig(reloadAll(myLinks));
-  }, [myLinks]);
+    setConfig(reloadAll(myLinks, updateUIState));
+  }, [myLinks, updateUIState]);
 
   const panels: SettingsPanel[] = [
     {

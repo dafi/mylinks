@@ -48,18 +48,21 @@ function Page(): ReactElement {
       const indentSpaces = 2;
       const w = window.open();
       w?.document.write(`<pre>${JSON.stringify(myLinks, null, indentSpaces)}</prev>`);
-      setUIState({ widgetsModified: false });
+      updateUIState({ type: 'settingsChanged', value: false });
     }
   }
 
   function onShortcut(): void {
-    setUIState({ hideShortcuts: !uiState.hideShortcuts });
+    updateUIState({ type: 'hideShortcuts', value: 'toggle' });
   }
 
   function onLoadConfig(file: File): void {
     loadConfig({
       file,
-      callback: mmLinks => setMyLinks(mmLinks ? { ...mmLinks } : undefined)
+      callback: mmLinks => {
+        setMyLinks(mmLinks ? { ...mmLinks } : undefined);
+        updateUIState({ type: 'settingsChanged', value: false });
+      }
     });
   }
 
@@ -71,7 +74,7 @@ function Page(): ReactElement {
           saveConfig({
             data,
             callback: mmLinks => {
-              setUIState({ widgetsModified: true });
+              updateUIState({ type: 'settingsChanged', value: true });
               setMyLinks({ ...mmLinks });
             }
           });
@@ -85,13 +88,14 @@ function Page(): ReactElement {
   }
 
   const [myLinks, setMyLinks] = useState<MyLinks>();
-  const [uiState, setUIState] = useAppUIState();
+  const [uiState, updateUIState] = useAppUIState();
 
   useAppStartup(setMyLinks);
 
   return (
     <AppConfigContextProvider
       myLinks={myLinks}
+      updateUIState={updateUIState}
       onEditComplete={(result): void => onEditComplete('editSettings', result)}
       onLoadConfig={onLoadConfig}
       onExportConfig={onExportConfig}
@@ -103,7 +107,7 @@ function Page(): ReactElement {
         <div className="ml-wrapper">
           <ReminderComponent
             message="Widgets modified but not yet saved"
-            isVisible={uiState.widgetsModified}
+            isVisible={uiState.settingsChanged}
             onExportConfig={onExportConfig}
           />
           <div className="ml-grid">
