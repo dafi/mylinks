@@ -37,6 +37,9 @@ function Page(): ReactElement {
       case 'shortcut':
         onShortcut();
         break;
+      case 'searchLink':
+        getModal(linkFinderDialogId)?.open();
+        break;
       case 'settingsDialog':
         getModal(settingsDialogId)?.open();
         break;

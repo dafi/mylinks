@@ -57,6 +57,16 @@ export function AppToolbar(
           />
         }
 
+        {myLinksLookup &&
+          <AppToolbarButton
+            title="Search link"
+            className="toolbar-icon"
+            action="searchLink"
+            icon="fa fa-search"
+            onAction={onAction}
+          />
+        }
+
         {myLinksLookup?.hasShortcuts() === true &&
           <AppToolbarButton
             title="Toggle shortcuts visibility"
