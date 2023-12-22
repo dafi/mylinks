@@ -14,11 +14,7 @@ export function applyTheme(theme: Theme): void {
 
 export function applyBackground(backgroundImage?: string): void {
   const body = document.body;
-  if (isNotEmptyString(backgroundImage)) {
-    body.style.backgroundImage = `url(${backgroundImage})`;
-  } else {
-    body.style.backgroundImage = '';
-  }
+  body.style.backgroundImage = isNotEmptyString(backgroundImage) ? `url(${backgroundImage})` : '';
 }
 
 export function applyColors(theme: Theme): void {

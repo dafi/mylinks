@@ -42,8 +42,8 @@ export function DraggableListItem(
     if (dragged?.parentNode) {
       const dropped = e.currentTarget.closest(dragged.nodeName);
       if (dropped) {
-        dragged.parentNode.removeChild(dragged);
-        dropped.insertAdjacentElement('beforebegin', dragged);
+        dragged.remove();
+        dropped.before(dragged);
 
         onDrop(dragged.id, dropped.id);
       }

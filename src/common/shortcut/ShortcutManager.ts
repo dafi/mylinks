@@ -5,7 +5,7 @@ const shortcuts: Shortcut[] = [];
 export const findShortcuts = (shortcut: string): Shortcut[] => shortcuts.filter(s => s.shortcut.startsWith(shortcut));
 
 export function addShortcut(shortcut: Shortcut): boolean {
-  if (shortcuts.find(s => s.shortcut === shortcut.shortcut)) {
+  if (shortcuts.some(s => s.shortcut === shortcut.shortcut)) {
     console.error(`Shortcut '${shortcut.shortcut}' already present`);
     return false;
   }

@@ -4,5 +4,5 @@
  * @returns true if a not empty string, false if empty or null or undefined
  */
 export function isNotEmptyString(str: string | null | undefined): str is string {
-  return str != null && str.trim().length !== 0;
+  return str !== undefined && str !== null && str.trim().length > 0;
 }

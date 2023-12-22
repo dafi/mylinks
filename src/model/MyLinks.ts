@@ -5,7 +5,7 @@ export function openWidgetLinks(wd: Widget): void {
 }
 
 export function openLinks(links: Link[]): void {
-  links.forEach(openLink);
+  links.forEach(l => openLink(l));
 }
 
 export function openLink(link: Link): void {

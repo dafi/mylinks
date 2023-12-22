@@ -52,21 +52,13 @@ function loadFromObject(json: unknown): MyLinks {
 }
 
 function loadFromFile(file: File, onLoadCallback: OnLoadCallback): void {
-  const reader = new FileReader();
-
-  reader.onload = (() =>
-    (event: ProgressEvent<FileReader>): void => {
-      const result = event.target?.result;
-      const jsonText = typeof result === 'string' ? result : '';
-      try {
-        onLoadCallback(loadFromObject(JSON.parse(jsonText)));
-        localStorage.setItem(STORAGE_PREF_DATA, jsonText);
-      } catch (e) {
-        window.alert(e);
-      }
-    })();
-
-  reader.readAsText(file);
+  file
+    .text()
+    .then(jsonText => {
+      onLoadCallback(loadFromObject(JSON.parse(jsonText)));
+      localStorage.setItem(STORAGE_PREF_DATA, jsonText);
+    })
+    .catch(e => window.alert(e));
 }
 
 function loadFromUrl(url: string, onLoadCallback: OnLoadCallback): void {

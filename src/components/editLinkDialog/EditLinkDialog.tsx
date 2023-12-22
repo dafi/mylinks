@@ -57,7 +57,7 @@ function EditLinkForm({ data, onSave }: EditLinkDialogProps): ReactElement {
   }
 
   function validateShortcut(e: ChangeEvent<HTMLInputElement>): void {
-    if (e.target.value !== data.link.shortcut && findShortcuts(e.target.value).length) {
+    if (e.target.value !== data.link.shortcut && findShortcuts(e.target.value).length > 0) {
       e.target.setCustomValidity('Shortcut already assigned');
     } else {
       e.target.setCustomValidity('');

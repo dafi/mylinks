@@ -6,27 +6,27 @@ const DEFAULT_FAVICON_HEIGHT = 16;
 
 export function faviconUrlByLink(
   link: Link,
-  faviconUrlBuilder: string | null | undefined
-): string | null {
+  faviconUrlBuilder: string | undefined
+): string | undefined {
   const faviconUrl = link.favicon;
 
   if (faviconUrl === undefined) {
     return buildFaviconUrl(link.url, faviconUrlBuilder);
   }
   if (faviconUrl.length === 0) {
-    return null;
+    return undefined;
   }
   // url contains protocol
   if (/^.*:\/\//.test(faviconUrl)) {
     return faviconUrl;
   }
-  return faviconUrlBuilder?.replace('$1', faviconUrl) ?? null;
+  return faviconUrlBuilder?.replace('$1', faviconUrl);
 }
 
 export function buildFaviconUrl(
   url: string,
-  faviconUrlBuilder: string | null | undefined
-): string | null {
+  faviconUrlBuilder: string | undefined
+): string | undefined {
   if (isNotEmptyString(faviconUrlBuilder)) {
     try {
       const host = new URL(url).host;
@@ -37,7 +37,7 @@ export function buildFaviconUrl(
       // eslint-disable-next-line no-empty
     }
   }
-  return null;
+  return undefined;
 }
 
 export function applyColorToFavicon(
@@ -53,7 +53,7 @@ export function applyColorToFavicon(
   }
   const image = new Image();
   image.src = favicon.href;
-  image.onload = (): void => {
+  image.addEventListener('load', (): void => {
     const width = options?.width ?? DEFAULT_FAVICON_WIDTH;
     const height = options?.height ?? DEFAULT_FAVICON_HEIGHT;
     const favImage = createImage(image, width, height, color);
@@ -61,7 +61,7 @@ export function applyColorToFavicon(
       favicon.type = 'image/x-icon';
       favicon.href = favImage;
     }
-  };
+  });
 }
 
 export function createImage(
@@ -69,7 +69,7 @@ export function createImage(
   width: number,
   height: number,
   color: string
-): string | null {
+): string | undefined {
   const canvas = document.createElement('canvas');
   const context = canvas.getContext('2d');
   if (context) {
@@ -82,5 +82,5 @@ export function createImage(
     context.drawImage(image, 0, 0);
     return canvas.toDataURL();
   }
-  return null;
+  return undefined;
 }

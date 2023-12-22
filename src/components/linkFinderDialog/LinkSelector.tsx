@@ -53,20 +53,24 @@ export function LinkSelector(
     const currIndex = selectedIndex;
     let newIndex = -1;
 
-    if (e.key === 'ArrowUp') {
-      if (currIndex > 0) {
-        newIndex = currIndex - 1;
-      }
-    } else if (e.key === 'ArrowDown') {
-      if (currIndex < (result.length - 1)) {
-        newIndex = currIndex + 1;
-      }
-    } else if (e.key === 'Enter') {
-      if (currIndex >= 0) {
-        onSelected(result[currIndex].link);
-      }
-    } else {
-      return;
+    switch (e.key) {
+      case 'ArrowUp':
+        if (currIndex > 0) {
+          newIndex = currIndex - 1;
+        }
+        break;
+      case 'ArrowDown':
+        if (currIndex < (result.length - 1)) {
+          newIndex = currIndex + 1;
+        }
+        break;
+      case 'Enter':
+        if (currIndex >= 0) {
+          onSelected(result[currIndex].link);
+        }
+        break;
+      default:
+        return;
     }
     if (newIndex !== -1) {
       const item = result[newIndex];
@@ -82,8 +86,10 @@ export function LinkSelector(
   function onChange(e: ChangeEvent<HTMLInputElement>): void {
     listRefs.clear();
     const pattern = e.target.value;
+    // https://github.com/sindresorhus/eslint-plugin-unicorn/issues/1193
+    // eslint-disable-next-line unicorn/no-array-callback-reference
     const r = linkSearch.filter(pattern);
-    setSelectedIndex(r.length ? 0 : -1);
+    setSelectedIndex(r.length > 0 ? 0 : -1);
     setResult(r);
   }
 
@@ -99,7 +105,7 @@ export function LinkSelector(
   const [result, setResult] = useState<LinkSearchResult[]>([]);
   const [selectedIndex, setSelectedIndex] = useState(-1);
 
-  const links = widgets.flat().map(w => w.list).flat();
+  const links = widgets.flat().flatMap(w => w.list);
   linkSearch.setLinks(links);
 
   return (

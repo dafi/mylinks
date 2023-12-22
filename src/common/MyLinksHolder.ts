@@ -7,8 +7,7 @@ import { isNotEmptyString } from './StringUtil';
 export class MyLinksHolder implements MyLinksLookup {
   private mLinkCache?: LinkCache;
 
-  constructor(public readonly myLinks: MyLinks) {
-  }
+  constructor(public readonly myLinks: MyLinks) {}
 
   get linkCache(): LinkCache {
     if (!this.mLinkCache) {
@@ -18,10 +17,14 @@ export class MyLinksHolder implements MyLinksLookup {
   }
 
   findLinkById(linkId: string): Link | undefined {
+    // https://github.com/sindresorhus/eslint-plugin-unicorn/issues/1193
+    // eslint-disable-next-line unicorn/no-array-callback-reference
     return this.linkCache.find(linkId)?.link;
   }
 
   findWidgetByLinkId(linkId: string): Widget | undefined {
+    // https://github.com/sindresorhus/eslint-plugin-unicorn/issues/1193
+    // eslint-disable-next-line unicorn/no-array-callback-reference
     return this.linkCache.find(linkId)?.widget;
   }
 
