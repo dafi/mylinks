@@ -20,5 +20,5 @@ export function clearShortcuts(): void {
 export function splitShortcut(
   shortcut: string | null | undefined,
 ): string[] {
-  return shortcut?.trim().split('') ?? [];
+  return shortcut?.split('').map(s => s === ' ' ? 'Space' : s) ?? [];
 }

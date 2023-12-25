@@ -19,11 +19,14 @@ export type Widget = {
   list: Link[];
 };
 
-export type AppAction = 'openAllLinks' | 'findLinks' | 'toggleShortcuts' | 'editSettings';
+export const AppActionList = ['openAllLinks', 'findLinks', 'toggleShortcuts', 'editSettings'] as const;
+
+export type AppAction = (typeof AppActionList)[number];
 
 export type ShortcutAction = {
   action: AppAction;
   shortcut: string;
+  description?: string;
 };
 
 export type Config = {

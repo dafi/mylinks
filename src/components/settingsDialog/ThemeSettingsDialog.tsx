@@ -9,11 +9,10 @@ import { CloseResultCode } from '../modal/ModalTypes';
 
 type DialogState = Theme & Config & Record<string, string | undefined>;
 
-interface SettingsProps {
+type SettingsProps = {
   readonly modalId: string;
-
   onSave(settings: Theme & Config): void;
-}
+};
 
 function restoreConfig(form: DialogState, theme: Theme): void {
   if (form.backgroundImage !== theme.backgroundImage) {
@@ -123,7 +122,7 @@ export function ThemeSettingsForm({ onSave, modalId }: SettingsProps): ReactElem
               className="text-white bg-action-secondary hover right"
               onClick={onClickCancel}
             >
-              Cancel
+              Close
             </button>
           </div>
         </li>
