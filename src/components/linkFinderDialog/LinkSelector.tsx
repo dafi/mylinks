@@ -1,4 +1,4 @@
-import { ChangeEvent, KeyboardEvent, MouseEvent, ReactElement, RefObject, useRef, useState } from 'react';
+import { ChangeEvent, createRef, KeyboardEvent, MouseEvent, ReactElement, RefObject, useRef, useState } from 'react';
 import { LinkSearch, LinkSearchResult } from '../../common/LinkSearch';
 import { isNotEmptyString } from '../../common/StringUtil';
 import { useAppConfigContext } from '../../contexts/AppConfigContext';
@@ -64,6 +64,12 @@ export function LinkSelector(
           newIndex = currIndex + 1;
         }
         break;
+      case 'Home':
+        newIndex = 0;
+        break;
+      case 'End':
+        newIndex = result.length - 1;
+        break;
       case 'Enter':
         if (currIndex >= 0) {
           onSelected(result[currIndex].link);
@@ -84,13 +90,22 @@ export function LinkSelector(
   }
 
   function onChange(e: ChangeEvent<HTMLInputElement>): void {
-    listRefs.clear();
     const pattern = e.target.value;
     // https://github.com/sindresorhus/eslint-plugin-unicorn/issues/1193
     // eslint-disable-next-line unicorn/no-array-callback-reference
     const r = linkSearch.filter(pattern);
+
+    setListRefs(createRefMap(r));
     setSelectedIndex(r.length > 0 ? 0 : -1);
     setResult(r);
+  }
+
+  function createRefMap(linkSearchResult: LinkSearchResult[]): Map<string, RefObject<HTMLLIElement>> {
+    const map = new Map<string, RefObject<HTMLLIElement>>();
+    for (const i of linkSearchResult) {
+      map.set(i.id, createRef());
+    }
+    return map;
   }
 
   function widgetTitle(link: Link): string {
@@ -99,11 +114,11 @@ export function LinkSelector(
   }
 
   const { myLinksLookup } = useAppConfigContext();
-  const listRefs = new Map<string, RefObject<HTMLLIElement>>();
   const inputRef = useRef<HTMLInputElement>(null);
   const linkSearch = new LinkSearch();
   const [result, setResult] = useState<LinkSearchResult[]>([]);
   const [selectedIndex, setSelectedIndex] = useState(-1);
+  const [listRefs, setListRefs] = useState(createRefMap(result));
 
   const links = widgets.flat().flatMap(w => w.list);
   linkSearch.setLinks(links);
