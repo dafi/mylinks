@@ -57,3 +57,9 @@ Run the following command to deploy on [mylinks](https://dafi.github.io/mylinks/
 
 	npm run deploy
 
+
+# Thank you for supporting MyLinks
+
+We're thankful to these companies for offering their services for free:
+
+<p><a href="https://jb.gg/OpenSourceSupport"><img src="https://images.opencollective.com/jetbrains/eb04ddc/logo.png" alt="JetBrains" height="64"></a>
