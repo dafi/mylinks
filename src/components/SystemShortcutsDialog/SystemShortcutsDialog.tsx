@@ -3,12 +3,12 @@ import { findShortcuts } from '../../common/shortcut/ShortcutManager';
 import { useAppConfigContext } from '../../contexts/AppConfigContext';
 import { AppActionDescription } from '../../model/AppActionDescription';
 import { AppActionList, ShortcutAction } from '../../model/MyLinks-interface';
+import { ListView } from '../listView/ListView';
+import { ListViewItem } from '../listView/ListViewTypes';
 import { getModal } from '../modal/ModalHandler';
 import { CloseResultCode } from '../modal/ModalTypes';
 import { ShortcutDetails } from './ShortcutDetails';
 import './SystemShortcutsDialog.css';
-
-const ClickCount = 2;
 
 type SystemShortcutProps = {
   readonly modalId: string;
@@ -40,30 +40,7 @@ export function SystemShortcutForm({ modalId, onSave }: SystemShortcutProps): Re
     onCloseDialog(CloseResultCode.Cancel);
   }
 
-  function onClick(e: MouseEvent<HTMLElement>): void {
-    // skip if a dblclick is in progress
-    // https://developer.mozilla.org/en-US/docs/Web/API/UIEvent/detail
-    if (e.detail !== 1) {
-      return;
-    }
-    e.preventDefault();
-    e.stopPropagation();
-
-    const strIndex = e.currentTarget.dataset.index;
-    const index = strIndex === undefined ? 0 : +strIndex;
-
-    setSelectedIndex(index);
-  }
-
-  function onDoubleClick(e: MouseEvent<HTMLElement>): void {
-    if (e.detail !== ClickCount) {
-      return;
-    }
-    e.preventDefault();
-    e.stopPropagation();
-
-    const strIndex = e.currentTarget.dataset.index;
-    const index = strIndex === undefined ? 0 : +strIndex;
+  function onSelectedItem(index: number): void {
     const item = form[index];
     const value = prompt(`Edit ${item.description}`, item.shortcut);
     if (value !== null) {
@@ -76,27 +53,19 @@ export function SystemShortcutForm({ modalId, onSave }: SystemShortcutProps): Re
   }
 
   const { systemShortcuts } = useAppConfigContext();
-  const [selectedIndex, setSelectedIndex] = useState(0);
   const [form, setForm] = useState(formSystemShortcut(systemShortcuts));
 
-  const shortcutComponents = form.map((item, i) =>
-    <li
-      onClick={onClick}
-      onMouseDown={onDoubleClick}
-      data-index={i}
-      key={item.action}
-      className={i === selectedIndex ? 'selected' : 'none'}
-    >
-      <div><ShortcutDetails label={item.description ?? ''} combination={item.shortcut} /></div>
-    </li>
+  const shortcutComponents = form.map((item): ListViewItem => (
+    {
+      id: item.action,
+      element: <div><ShortcutDetails label={item.description ?? ''} combination={item.shortcut} /></div>
+    })
   );
 
   return (
     <form>
       <div className="system-shortcuts">
-        <ul>
-          {shortcutComponents}
-        </ul>
+        <ListView items={shortcutComponents} onSelected={onSelectedItem} />
       </div>
       <ul className="flex-outer">
         <li className="toolbar">
