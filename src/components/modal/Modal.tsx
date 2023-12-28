@@ -1,6 +1,10 @@
-import { ReactElement } from 'react';
+import { KeyboardEvent, ReactElement, useEffect } from 'react';
 import './Modal.css';
+import { getModal } from './ModalHandler';
+import { CloseResultCode } from './ModalTypes';
 import { useModalAutoFocus } from './useModalAutoFocus';
+
+const modalStack: HTMLElement[] = [];
 
 export interface ModalProp {
   readonly id: string;
@@ -13,7 +17,26 @@ export default function Modal(
     children,
   }: ModalProp
 ): ReactElement | null {
-  const [ visible, ref ] = useModalAutoFocus<HTMLDivElement>(id);
+  const onKeyDown = (e: KeyboardEvent<HTMLDivElement>): void => {
+    e.stopPropagation();
+    if (e.key === 'Escape') {
+      getModal(id)?.close(CloseResultCode.Cancel);
+    }
+  };
+
+  const [visible, ref] = useModalAutoFocus<HTMLDivElement>(id);
+
+  useEffect(() => {
+    if (ref.current == null) {
+      modalStack.pop();
+      modalStack.at(-1)?.focus();
+    } else {
+      modalStack.push(ref.current);
+    }
+    // this prevents scrolling of the main window on larger screens
+    // e.g. pressing the space bar while a modal is open scrolls the main window
+    document.body.style.overflow = modalStack.length === 0 ? '' : 'hidden';
+  }, [ref]);
 
   if (!visible) {
     return null;
@@ -25,6 +48,9 @@ export default function Modal(
       key={id}
       className="modal-backdrop"
       ref={ref}
+      style={{ zIndex: modalStack.length }}
+      tabIndex={-1}
+      onKeyDown={onKeyDown}
     >
       <div className="modal-container">
         {children}

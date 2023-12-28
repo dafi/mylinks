@@ -15,6 +15,9 @@ export function useModalAutoFocus<T extends HTMLElement>(id: string): [boolean, 
       const el = ref.current.querySelector('[data-auto-focus="true"]');
       if (el && 'focus' in el) {
         (el as HTMLElement).focus();
+      } else {
+        // this makes the element active, so keyboard events arrive to it
+        ref.current.focus();
       }
     }
   }, [visible, ref]);
