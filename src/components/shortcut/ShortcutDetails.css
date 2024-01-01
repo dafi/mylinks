@@ -1,26 +1,21 @@
 .shortcut-details-container {
   display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  justify-content: normal;
+  flex-flow: row nowrap;
+  place-content: normal normal;
   align-items: center;
-  align-content: normal;
   padding-bottom: 5px;
 }
 
 .shortcut-details-item:nth-child(1) {
-  flex-grow: 1;
-  flex-shrink: 1;
-  flex-basis: auto;
+  flex: 1 1 auto;
   align-self: auto;
   order: 0;
 }
 
 .shortcut-details-item:nth-child(2) {
-  flex-grow: 0;
-  flex-shrink: 1;
-  flex-basis: auto;
+  flex: 0 1 auto;
   align-self: auto;
   order: 0;
   margin-right: 5px;
+  text-indent: 0;
 }

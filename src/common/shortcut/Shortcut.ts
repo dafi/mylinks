@@ -1,4 +1,6 @@
+import { KeyCombination } from '../../model/KeyCombination';
+
 export type Shortcut = {
-  readonly shortcut: string;
+  readonly shortcut: KeyCombination[];
   readonly callback: () => void;
 };

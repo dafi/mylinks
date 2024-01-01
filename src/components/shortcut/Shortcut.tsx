@@ -1,11 +1,11 @@
 import { ReactElement } from 'react';
-import { splitShortcut } from '../../../common/shortcut/ShortcutManager';
-
-import { useAppUIStateContext } from '../../../contexts/AppUIStateContext';
+import { useAppUIStateContext } from '../../contexts/AppUIStateContext';
+import { KeyCombination } from '../../model/KeyCombination';
+import { combinationToHtml } from './ShortcutUtil';
 import './Shortcut.css';
 
 interface ShortcutProps {
-  readonly shortcut: string | undefined;
+  readonly shortcut: KeyCombination[] | undefined;
   readonly visible: boolean;
   readonly isMouseOver: boolean;
 }
@@ -36,7 +36,7 @@ export function Shortcut(
     return (
       <>
         {/* eslint-disable-next-line react/no-array-index-key */}
-        {splitShortcut(shortcut).map((s, i) => <kbd key={i} className="shortcut">{s}</kbd>)}
+        {shortcut?.map((s, i) => combinationToHtml(s, i))}
       </>
     );
   }

@@ -1,7 +1,8 @@
 import { ChangeEvent, FormEvent, ReactElement, useState } from 'react';
-import { findShortcuts } from '../../common/shortcut/ShortcutManager';
+import { compareCombinationsArray, findShortcuts } from '../../common/shortcut/ShortcutManager';
 import { isNotEmptyString } from '../../common/StringUtil';
 import { LinkEditableProperties, LinkEditData } from '../../model/EditData-interface';
+import { KeyCombination } from '../../model/KeyCombination';
 import Modal from '../modal/Modal';
 import { getModal } from '../modal/ModalHandler';
 import { CloseResultCode } from '../modal/ModalTypes';
@@ -15,7 +16,7 @@ export interface EditLinkDialogProps {
 
 // https://stackoverflow.com/questions/57773734/how-to-use-partially-the-computed-property-name-on-a-type-definition/57774343#57774343
 // compound properties must be strings so, we allow to index elements by string
-type EditLinkDialogState = LinkEditableProperties & Record<string, string | undefined>;
+type EditLinkDialogState = LinkEditableProperties & Record<string, string | KeyCombination[] | undefined>;
 
 export function EditLinkDialog({ data, onSave }: EditLinkDialogProps): ReactElement {
   return (
@@ -56,24 +57,35 @@ function EditLinkForm({ data, onSave }: EditLinkDialogProps): ReactElement {
     onCloseDialog(CloseResultCode.Cancel);
   }
 
-  function validateShortcut(e: ChangeEvent<HTMLInputElement>): void {
-    if (e.target.value !== data.link.shortcut && findShortcuts(e.target.value).length > 0) {
-      e.target.setCustomValidity('Shortcut already assigned');
-    } else {
-      e.target.setCustomValidity('');
+  function validateShortcut(e: ChangeEvent<HTMLInputElement>): KeyCombination[] | undefined {
+    const keyCombination = e.target.value.split('').map((key): KeyCombination => ({ key }));
+    if (keyCombination.length > 0) {
+      const shortcuts = findShortcuts(keyCombination, { exactMatch: false, compareModifiers: false });
+      const isIdenticalToCurrent = shortcuts.length === 1
+        && (data.link.shortcut ? compareCombinationsArray(data.link.shortcut, shortcuts[0].shortcut) : false);
+      if (!isIdenticalToCurrent && shortcuts.length > 0) {
+        e.target.setCustomValidity('Shortcut already assigned');
+        return undefined;
+      }
     }
+    e.target.setCustomValidity('');
+    return keyCombination;
   }
 
   function onChange(e: ChangeEvent<HTMLInputElement>): void {
     const action = e.target.dataset.action;
     if (isNotEmptyString(action)) {
+      let value: string | KeyCombination[] | undefined = e.target.value;
+      if (action === 'shortcut') {
+        value = validateShortcut(e);
+        if (value === undefined) {
+          return;
+        }
+      }
       setForm(prevState => {
-        prevState[action] = e.target.value;
+        prevState[action] = value;
         return prevState;
       });
-      if (action === 'shortcut') {
-        validateShortcut(e);
-      }
     }
   }
 
@@ -124,7 +136,7 @@ function EditLinkForm({ data, onSave }: EditLinkDialogProps): ReactElement {
           <input
             data-action="shortcut"
             type="text"
-            defaultValue={form.shortcut}
+            defaultValue={form.shortcut?.map(v => v.key).join('')}
             onChange={onChange}
             placeholder="press the key combination to assign"
           />

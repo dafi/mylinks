@@ -2,13 +2,14 @@ import { MouseEvent, ReactElement, useState } from 'react';
 import { findShortcuts } from '../../common/shortcut/ShortcutManager';
 import { useAppConfigContext } from '../../contexts/AppConfigContext';
 import { AppActionDescription } from '../../model/AppActionDescription';
+import { KeyCombination } from '../../model/KeyCombination';
 import { AppActionList, ShortcutAction } from '../../model/MyLinks-interface';
 import { ListView } from '../listView/ListView';
 import { ListViewItem } from '../listView/ListViewTypes';
 import { getModal } from '../modal/ModalHandler';
 import { CloseResultCode } from '../modal/ModalTypes';
-import { ShortcutDetails } from './ShortcutDetails';
 import './SystemShortcutsDialog.css';
+import { ShortcutDetails } from '../shortcut/ShortcutDetails';
 
 type SystemShortcutProps = {
   readonly modalId: string;
@@ -21,7 +22,7 @@ function formSystemShortcut(systemShortcuts: ShortcutAction[] | undefined): Shor
   }
   return AppActionList.map((action): ShortcutAction => ({
     description: AppActionDescription[action],
-    shortcut: systemShortcuts.find(v => action === v.action)?.shortcut ?? '',
+    shortcut: systemShortcuts.find(v => action === v.action)?.shortcut ?? [],
     action
   }));
 }
@@ -42,13 +43,14 @@ export function SystemShortcutForm({ modalId, onSave }: SystemShortcutProps): Re
 
   function onSelectedItem(index: number): void {
     const item = form[index];
-    const value = prompt(`Edit ${item.description}`, item.shortcut);
+    const value = prompt(`Edit ${item.description}`, item.shortcut.map(v => v.key).join(''));
     if (value !== null) {
-      if (findShortcuts(value).length > 0) {
+      const keyCombination = value.split('').map((v): KeyCombination => ({ key: v }));
+      if (findShortcuts(keyCombination).length > 0) {
         alert('Shortcut already assigned');
         return;
       }
-      setForm(form.map(v => v.action === item.action ? { ...v, shortcut: value } : v));
+      setForm(form.map(v => v.action === item.action ? { ...v, shortcut: keyCombination } : v));
     }
   }
 

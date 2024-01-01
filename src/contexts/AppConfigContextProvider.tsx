@@ -3,7 +3,7 @@ import { ExportSettingsForm } from '../components/settingsDialog/ExportSettingsD
 import { SettingsDialog } from '../components/settingsDialog/SettingsDialog';
 import { settingsDialogId, SettingsPanel } from '../components/settingsDialog/SettingsDialogTypes';
 import { ThemeSettingsForm } from '../components/settingsDialog/ThemeSettingsDialog';
-import { SystemShortcutForm } from '../components/SystemShortcutsDialog/SystemShortcutsDialog';
+import { SystemShortcutForm } from '../components/systemShortcutsDialog/SystemShortcutsDialog';
 import { EditComplete } from '../hooks/useEditLink/useEditLink';
 import { Config, MyLinks, ShortcutAction, Theme } from '../model/MyLinks-interface';
 import { defaultAppConfig, reloadAll } from './AppConfig';

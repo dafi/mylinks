@@ -1,9 +1,9 @@
 import { ReactElement, useState } from 'react';
 import { Link as MLLink, Widget } from '../../../model/MyLinks-interface';
+import { Shortcut } from '../../shortcut/Shortcut';
 import { LinkIcon } from '../linkIcon/LinkIcon';
 import './Link.css';
 import { LinkToolbar } from './LinkToolbar';
-import { Shortcut } from './Shortcut';
 
 interface LinkProps {
   readonly link: MLLink;

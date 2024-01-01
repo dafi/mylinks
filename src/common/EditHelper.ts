@@ -8,8 +8,10 @@ import {
   LinkEditDataUpdate,
   WidgetEditData
 } from '../model/EditData-interface';
+import { KeyCombination } from '../model/KeyCombination';
 import { Link } from '../model/MyLinks-interface';
 import { move } from './ArrayUtil';
+import { compareCombinationsArray } from './shortcut/ShortcutManager';
 
 export function isLinkEditData(editData: EditDataType): editData is LinkEditData {
   return 'link' in editData;
@@ -37,21 +39,35 @@ function prepareLinkForSave(editData: LinkEditData): boolean {
 function applyLinkProperties(edited: LinkEditableProperties, link: Link): boolean {
   let modified = false;
   for (const p in edited) {
-    if (Object.hasOwn(edited, p)) {
-      const value = edited[p as keyof LinkEditableProperties];
-      const propName = p as keyof Link;
-      if (link[propName] !== value) {
-        modified = true;
-        if (typeof value === 'string') {
-          link[propName] = value;
-        } else {
-          // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
-          delete link[propName];
-        }
-      }
+    if (Object.hasOwn(edited, p) && updateLinkProperty(link, p as keyof Link, edited[p as keyof LinkEditableProperties])) {
+      modified = true;
     }
   }
   return modified;
+}
+
+function updateLinkProperty(
+  link: Link,
+  propName: keyof Link,
+  value: string | KeyCombination[] | undefined
+): boolean {
+  if (propName === 'shortcut') {
+    if (Array.isArray(value)) {
+      if (value.length === 0) {
+        link[propName] = undefined;
+        return true;
+      }
+      const oldValue = link[propName];
+      if (oldValue === undefined || !compareCombinationsArray(value, oldValue)) {
+        link[propName] = value;
+        return true;
+      }
+    }
+  } else if (typeof value === 'string' && link[propName] !== value) {
+    link[propName] = value;
+    return true;
+  }
+  return false;
 }
 
 function createLink(editData: LinkEditDataCreate): boolean {

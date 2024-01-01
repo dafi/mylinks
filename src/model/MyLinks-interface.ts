@@ -1,3 +1,5 @@
+import { KeyCombination } from './KeyCombination';
+
 export type Theme = {
   backgroundImage?: string;
   faviconColor: string;
@@ -10,7 +12,7 @@ export type Link = {
   label: string;
   url: string;
   favicon?: string;
-  shortcut?: string;
+  shortcut?: KeyCombination[];
 };
 
 export type Widget = {
@@ -25,7 +27,7 @@ export type AppAction = (typeof AppActionList)[number];
 
 export type ShortcutAction = {
   action: AppAction;
-  shortcut: string;
+  shortcut: KeyCombination[];
   description?: string;
 };
 
@@ -35,7 +37,7 @@ export type Config = {
 };
 
 export type MultiOpenCombination = {
-  shortcut: string;
+  shortcut: KeyCombination[];
   linkIds: string[];
 };
 
