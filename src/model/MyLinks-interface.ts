@@ -28,7 +28,6 @@ export type AppAction = (typeof AppActionList)[number];
 export type ShortcutAction = {
   action: AppAction;
   shortcut: KeyCombination[];
-  description?: string;
 };
 
 export type Config = {

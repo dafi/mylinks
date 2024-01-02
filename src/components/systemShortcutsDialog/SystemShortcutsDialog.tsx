@@ -16,14 +16,18 @@ type SystemShortcutProps = {
   onSave(shortcuts: ShortcutAction[]): void;
 };
 
-function formSystemShortcut(systemShortcuts: ShortcutAction[] | undefined): ShortcutAction[] {
-  if (systemShortcuts === undefined) {
-    return [];
-  }
-  return AppActionList.map((action): ShortcutAction => ({
+type FormShortcut = {
+  description: string;
+  shortcutAction: ShortcutAction;
+};
+
+function formSystemShortcut(systemShortcuts: ShortcutAction[] | undefined): FormShortcut[] {
+  return AppActionList.map((action): FormShortcut => ({
     description: AppActionDescription[action],
-    shortcut: systemShortcuts.find(v => action === v.action)?.shortcut ?? [],
-    action
+    shortcutAction: {
+      shortcut: systemShortcuts?.find(v => action === v.action)?.shortcut ?? [],
+      action
+    }
   }));
 }
 
@@ -33,7 +37,7 @@ export function SystemShortcutForm({ modalId, onSave }: SystemShortcutProps): Re
   function onClickSave(e: MouseEvent<HTMLButtonElement>): void {
     e.preventDefault();
 
-    onSave(form);
+    onSave(form.map(v => v.shortcutAction).filter(v => v.shortcut.length > 0));
     onCloseDialog(CloseResultCode.Ok);
   }
 
@@ -42,25 +46,26 @@ export function SystemShortcutForm({ modalId, onSave }: SystemShortcutProps): Re
   }
 
   function onSelectedItem(index: number): void {
-    const item = form[index];
-    const value = prompt(`Edit ${item.description}`, item.shortcut.map(v => v.key).join(''));
+    const { description, shortcutAction } = form[index];
+    const value = prompt(`Edit ${description}`, shortcutAction.shortcut.map(v => v.key).join(''));
     if (value !== null) {
       const keyCombination = value.split('').map((v): KeyCombination => ({ key: v }));
       if (findShortcuts(keyCombination).length > 0) {
         alert('Shortcut already assigned');
         return;
       }
-      setForm(form.map(v => v.action === item.action ? { ...v, shortcut: keyCombination } : v));
+      setForm(form.map(v => v.shortcutAction.action === shortcutAction.action ?
+        { ...v, shortcutAction: { ...v.shortcutAction, shortcut: keyCombination } } : v));
     }
   }
 
   const { systemShortcuts } = useAppConfigContext();
   const [form, setForm] = useState(formSystemShortcut(systemShortcuts));
 
-  const shortcutComponents = form.map((item): ListViewItem => (
+  const shortcutComponents = form.map(({ description, shortcutAction }): ListViewItem => (
     {
-      id: item.action,
-      element: <div><ShortcutDetails label={item.description ?? ''} combination={item.shortcut} /></div>
+      id: shortcutAction.action,
+      element: <div><ShortcutDetails label={description} combination={shortcutAction.shortcut} /></div>
     })
   );
 
