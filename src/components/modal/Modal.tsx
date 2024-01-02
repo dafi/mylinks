@@ -35,8 +35,8 @@ export default function Modal(
     }
     // this prevents scrolling of the main window on larger screens
     // e.g. pressing the space bar while a modal is open scrolls the main window
-    document.body.style.overflow = modalStack.length === 0 ? '' : 'hidden';
-  }, [ref]);
+    document.body.style.overflow = modalStack.length === 0 || !visible ? '' : 'hidden';
+  }, [ref, visible]);
 
   if (!visible) {
     return null;
