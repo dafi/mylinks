@@ -12,7 +12,7 @@ If you are not obsessed by privacy, you can use public urls containing the confi
 
 # Show me how it works
 
-Open [this link](https://dafi.github.io/mylinks/?c=https://gist.githubusercontent.com/dafi/8442bdbe932c22426bb4a383077a6802/raw/55b4d880d2015a96ec87424af48626d075a257a4/mylinks.json) to see MyLinks in action
+Open [this link](https://dafi.github.io/mylinks/?c=https://gist.githubusercontent.com/dafi/8442bdbe932c22426bb4a383077a6802/raw) to see MyLinks in action
 
 ![](doc/mylinks.png)
 
