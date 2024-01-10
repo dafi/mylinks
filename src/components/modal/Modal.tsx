@@ -1,5 +1,6 @@
 import { KeyboardEvent, ReactElement, useEffect } from 'react';
 import './Modal.css';
+import { toKebab } from '../../common/StringUtil';
 import { getModal } from './ModalHandler';
 import { CloseResultCode } from './ModalTypes';
 import { useModalAutoFocus } from './useModalAutoFocus';
@@ -44,7 +45,7 @@ export default function Modal(
 
   return (
     <div
-      id={`modal-${id}`}
+      id={`modal-${toKebab(id)}`}
       key={id}
       className="modal-backdrop"
       ref={ref}
