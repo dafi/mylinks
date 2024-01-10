@@ -1,9 +1,11 @@
-import { ReactElement } from 'react';
 import { KeyCombination } from '../../model/KeyCombination';
 
 const symbols: Record<string, string | undefined> = {
+  Escape: '\u238B',
+  Clear: '\u2327',
   Backspace: '\u232B',
-  Shift: '\u21EA',
+  Shift: '\u21E7',
+  CapsLock: '\u21EA',
   Control: '\u2303',
   Alt: '\u2325',
   Meta: '\u2318',
@@ -19,7 +21,13 @@ const symbols: Record<string, string | undefined> = {
   ' ': 'Space',
 } as const;
 
-export function combinationToHtml(keyCombination: KeyCombination, keyIndex: number): ReactElement {
+const modifiers = new Set(['Control', 'Alt', 'Shift', 'Meta', ]);
+
+export function combinationToSymbols(keyCombination: KeyCombination): string {
+  if (modifiers.has(keyCombination.key)) {
+    return '';
+  }
+
   let str = '';
 
   const { altKey, ctrlKey, metaKey, shiftKey, key } = keyCombination;
@@ -40,11 +48,7 @@ export function combinationToHtml(keyCombination: KeyCombination, keyIndex: numb
     str += symbols['Meta'];
   }
 
-  str += symbols[key] ?? key;
-
-  return (
-    <kbd className="shortcut" key={keyIndex}>{ str }</kbd>
-  );
+  return str + (symbols[key] ?? key);
 }
 
 export function combinationToString(keyCombination: KeyCombination): string {
