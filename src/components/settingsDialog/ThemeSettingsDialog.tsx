@@ -63,43 +63,49 @@ export function ThemeSettingsForm({ onSave, modalId }: SettingsProps): ReactElem
   });
 
   return (
-    <form>
-      <ul className="flex-outer">
-        <li>
-          <label htmlFor="background-image">Background Image</label>
-          <input
-            data-action="backgroundImage"
-            data-auto-focus="true"
-            type="text"
-            id="background-image"
-            defaultValue={form.backgroundImage}
-            onChange={onChange}
-            placeholder="Image url"
-          />
-        </li>
-        <li>
-          <label htmlFor="favicon-service">Favicon Service</label>
-          <input
-            data-action="faviconService"
-            type="text"
-            defaultValue={form.faviconService}
-            id="favicon-service"
-            onChange={onChange}
-            placeholder="Favicon service URL"
-          />
-        </li>
-        <li>
-          <label htmlFor="favicon-color">Favicon color</label>
-          <input
-            data-action="faviconColor"
-            type="color"
-            id="favicon-color"
-            onChange={onChange}
-            defaultValue={form.faviconColor}
-          />
-        </li>
-        <li className="toolbar">
-          <div className="label" />
+    <div className="panel">
+      <section>
+        <form>
+          <ul className="form-list">
+            <li>
+              <label htmlFor="background-image">Background Image</label>
+              <input
+                data-action="backgroundImage"
+                data-auto-focus="true"
+                type="text"
+                id="background-image"
+                defaultValue={form.backgroundImage}
+                onChange={onChange}
+                placeholder="Image url"
+              />
+            </li>
+            <li>
+              <label htmlFor="favicon-service">Favicon Service</label>
+              <input
+                data-action="faviconService"
+                type="text"
+                defaultValue={form.faviconService}
+                id="favicon-service"
+                onChange={onChange}
+                placeholder="Favicon service URL"
+              />
+            </li>
+            <li>
+              <label htmlFor="favicon-color">Favicon color</label>
+              <input
+                data-action="faviconColor"
+                type="color"
+                id="favicon-color"
+                onChange={onChange}
+                defaultValue={form.faviconColor}
+              />
+            </li>
+          </ul>
+        </form>
+      </section>
+
+      <footer className="footer">
+        <div className="toolbar">
           <div className="toolbar-left">
             <button
               type="button"
@@ -125,8 +131,8 @@ export function ThemeSettingsForm({ onSave, modalId }: SettingsProps): ReactElem
               Close
             </button>
           </div>
-        </li>
-      </ul>
-    </form>
+        </div>
+      </footer>
+    </div>
   );
 }
