@@ -6,16 +6,16 @@
   padding-bottom: 5px;
 }
 
-.shortcut-details-item:nth-child(1) {
+.shortcut-details-item-label {
   flex: 1 1 auto;
+  align-self: auto;
+  order: 0;
+  user-select: none;
+}
+
+.shortcut-details-item-key {
+  flex: 0 1 auto;
   align-self: auto;
   order: 0;
 }
 
-.shortcut-details-item:nth-child(2) {
-  flex: 0 1 auto;
-  align-self: auto;
-  order: 0;
-  margin-right: 5px;
-  text-indent: 0;
-}
