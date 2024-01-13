@@ -96,19 +96,19 @@ body {
   background-color: var(--color-white);
 }
 
-.hover.bg-action-primary:hover {
+.hover.bg-action-primary:hover:not(:disabled) {
   background-color: var(--action-color-primary-60);
 }
 
-.hover.bg-action-secondary:hover {
+.hover.bg-action-secondary:hover:not(:disabled) {
   background-color: var(--action-color-secondary-60);
 }
 
-.hover.bg-action-success:hover {
+.hover.bg-action-success:hover:not(:disabled) {
   background-color: var(--action-color-success-60);
 }
 
-.hover.bg-action-warn:hover {
+.hover.bg-action-warn:hover:not(:disabled) {
   background-color: var(--action-color-warn-60);
 }
 
@@ -139,8 +139,8 @@ body {
 }
 
 .input-file {
-  width: 0.1px;
-  height: 0.1px;
+  width: 0;
+  height: 0;
   opacity: 0;
   overflow: hidden;
   position: absolute;
