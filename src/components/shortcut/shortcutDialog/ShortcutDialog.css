@@ -1,0 +1,17 @@
+#modal-shortcut-dialog .modal-container {
+  max-width: 400px;
+  min-height: 200px;
+}
+
+#modal-shortcut-dialog .shortcut-input-container {
+  width: 100%;
+}
+
+#modal-shortcut-dialog .details {
+  margin: 0;
+}
+
+#modal-shortcut-dialog .details-icon-error {
+  color: var(--app-danger-text-color);
+  margin-right: 4px;
+}
