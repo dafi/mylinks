@@ -1,5 +1,4 @@
 import { ChangeEvent, FormEvent, ReactElement, useState } from 'react';
-import { compareCombinationsArray, findShortcuts } from '../../common/shortcut/ShortcutManager';
 import { isNotEmptyString } from '../../common/StringUtil';
 import { LinkEditableProperties, LinkEditData } from '../../model/EditData-interface';
 import { KeyCombination } from '../../model/KeyCombination';
@@ -7,6 +6,9 @@ import Modal from '../modal/Modal';
 import { getModal } from '../modal/ModalHandler';
 import { CloseResultCode } from '../modal/ModalTypes';
 import '../modal/StandardDialog.css';
+import { ShortcutDetails } from '../shortcut/shortcutDetails/ShortcutDetails';
+import { ShortcutDialog } from '../shortcut/shortcutDialog/ShortcutDialog';
+import { shortcutDialogId } from '../shortcut/shortcutDialog/ShortcutDialogTypes';
 import { editLinkDialogId } from './EditLinkDialogTypes';
 
 export interface EditLinkDialogProps {
@@ -57,91 +59,91 @@ function EditLinkForm({ data, onSave }: EditLinkDialogProps): ReactElement {
     onCloseDialog(CloseResultCode.Cancel);
   }
 
-  function validateShortcut(e: ChangeEvent<HTMLInputElement>): KeyCombination[] | undefined {
-    const keyCombination = e.target.value.split('').map((key): KeyCombination => ({ key }));
-    if (keyCombination.length > 0) {
-      const shortcuts = findShortcuts(keyCombination, { exactMatch: false, compareModifiers: false });
-      const isIdenticalToCurrent = shortcuts.length === 1
-        && (data.link.shortcut ? compareCombinationsArray(data.link.shortcut, shortcuts[0].shortcut) : false);
-      if (!isIdenticalToCurrent && shortcuts.length > 0) {
-        e.target.setCustomValidity('Shortcut already assigned');
-        return undefined;
-      }
-    }
-    e.target.setCustomValidity('');
-    return keyCombination;
-  }
-
   function onChange(e: ChangeEvent<HTMLInputElement>): void {
     const action = e.target.dataset.action;
     if (isNotEmptyString(action)) {
-      let value: string | KeyCombination[] | undefined = e.target.value;
-      if (action === 'shortcut') {
-        value = validateShortcut(e);
-        if (value === undefined) {
-          return;
+      setForm(prevState => ({
+        ...prevState, [action]: e.target.value
+      }));
+    }
+  }
+
+  function onDoubleClickShortcut(): void {
+    setCombinationLabel(form.label);
+    const currentShortcut = form.shortcut ?? [];
+    setDefaultCombination(currentShortcut);
+    setSelectedCombination([...currentShortcut]);
+    getModal(shortcutDialogId)?.open({
+      onClose: (code, shortcut) => {
+        if (code === CloseResultCode.Ok && Array.isArray(shortcut)) {
+          setForm(prevState => ({
+            ...prevState, shortcut
+          }));
         }
       }
-      setForm(prevState => {
-        prevState[action] = value;
-        return prevState;
-      });
-    }
+    });
   }
 
   const [form, setForm] = useState<EditLinkDialogState>({
     ...data.link
   });
+  const [combinationLabel, setCombinationLabel] = useState('');
+  const [defaultCombination, setDefaultCombination] = useState<KeyCombination[]>([]);
+
+  const [selectedCombination, setSelectedCombination] = useState<KeyCombination[]>([]);
 
   return (
-    <form onSubmit={onClickSave}>
-      <ul className="flex-outer">
-        <li>
-          <label htmlFor="link-label">Label</label>
-          <input
-            data-action="label"
-            data-auto-focus="true"
-            type="text"
-            defaultValue={form.label}
-            onChange={onChange}
-            placeholder="Videos"
-            required
-            pattern="^\S|\S.*\S"
-          />
-        </li>
-        <li>
-          <label htmlFor="link-url">Url</label>
-          <input
-            data-action="url"
-            type="url"
-            defaultValue={form.url}
-            onChange={onChange}
-            placeholder="https://youtube.com"
-            required
-            pattern="^\S|\S.*\S"
-          />
-        </li>
-        <li>
-          <label htmlFor="shortcut">Favicon URL</label>
-          <input
-            data-action="favicon"
-            type="url"
-            defaultValue={form.favicon}
-            onChange={onChange}
-            placeholder="favicon url"
-          />
-        </li>
-        <li>
-          <label htmlFor="shortcut">Shortcut</label>
-          <input
-            data-action="shortcut"
-            type="text"
-            defaultValue={form.shortcut?.map(v => v.key).join('')}
-            onChange={onChange}
-            placeholder="press the key combination to assign"
-          />
-        </li>
-        <li className="toolbar">
+    <div className="panel">
+      <section>
+        <form onSubmit={onClickSave}>
+          <ul className="form-list">
+            <li>
+              <label htmlFor="link-label">Label</label>
+              <input
+                data-action="label"
+                data-auto-focus="true"
+                type="text"
+                defaultValue={form.label}
+                onChange={onChange}
+                placeholder="Videos"
+                required
+                pattern="^\S|\S.*\S"
+              />
+            </li>
+            <li>
+              <label htmlFor="link-url">Url</label>
+              <input
+                data-action="url"
+                type="url"
+                defaultValue={form.url}
+                onChange={onChange}
+                placeholder="https://youtube.com"
+                required
+                pattern="^\S|\S.*\S"
+              />
+            </li>
+            <li>
+              <label htmlFor="shortcut">Favicon URL</label>
+              <input
+                data-action="favicon"
+                type="url"
+                defaultValue={form.favicon}
+                onChange={onChange}
+                placeholder="favicon url"
+              />
+            </li>
+            <li>
+              <label htmlFor="shortcut">Shortcut</label>
+              <div onDoubleClick={onDoubleClickShortcut}>
+                <ShortcutDetails label="Double click to change the shortcut" combination={form.shortcut} />
+              </div>
+            </li>
+          </ul>
+        </form>
+      </section>
+
+      <footer className="footer">
+        <div className="toolbar">
           <div className="label" />
           <div className="toolbar-left" />
           <div className="toolbar-right">
@@ -159,8 +161,14 @@ function EditLinkForm({ data, onSave }: EditLinkDialogProps): ReactElement {
               Cancel
             </button>
           </div>
-        </li>
-      </ul>
-    </form>
+        </div>
+      </footer>
+      <ShortcutDialog
+        label={combinationLabel}
+        defaultCombination={defaultCombination}
+        keyCombination={selectedCombination}
+        setKeyCombination={setSelectedCombination}
+      />
+    </div>
   );
 }
