@@ -9,6 +9,8 @@
   line-height: 1;
   padding: 0 4px;
   white-space: nowrap;
+  cursor: pointer;
+  user-select: none;
 }
 
 .shortcut:not(:last-child) {
