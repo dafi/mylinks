@@ -1,5 +1,6 @@
 import { combinationToString } from '../../components/shortcut/ShortcutUtil';
 import { KeyCombination, KeyModifierList, KeyModifierType } from '../../model/KeyCombination';
+import { ShortcutList } from '../../model/MyLinks-interface';
 import { Shortcut } from './Shortcut';
 
 const shortcuts: Shortcut[] = [];
@@ -10,6 +11,8 @@ export type FindShortcutOptions = {
 };
 
 type CompareCombinationOptions = Omit<FindShortcutOptions, 'exactMatch'>;
+
+export const getShortcuts = (): Readonly<Shortcut[]> => shortcuts;
 
 export function compareModifiers(
   c1: Readonly<Pick<KeyCombination, KeyModifierType>>,
@@ -54,8 +57,29 @@ export function compareCombinationsArray(
   return true;
 }
 
+/**
+ * Returns all shortcuts matching {@link shortcut}, the search is done on the global {@link shortcuts} list
+ * @param shortcut
+ * @param options
+ * @returns the matching shortcuts
+ */
 export const findShortcuts = (shortcut: KeyCombination[], options?: FindShortcutOptions): Shortcut[] =>
-  shortcuts.filter(s => compareCombinationsArray(shortcut, s.shortcut, options));
+  findKeyCombinations(shortcuts, shortcut, options);
+
+/**
+ * Returns all shortcuts matching {@link shortcut}, the search is done on {@link list}
+ * @param list
+ * @param shortcut
+ * @param options
+ * @returns the matching shortcuts
+ */
+export function findKeyCombinations<T extends ShortcutList>(
+  list: Readonly<T[]>,
+  shortcut: Readonly<KeyCombination[]>,
+  options?: FindShortcutOptions
+): T[] {
+  return list.filter(s => compareCombinationsArray(shortcut, s.shortcut, options));
+}
 
 export function addShortcut(shortcut: Shortcut): boolean {
   if (shortcut.shortcut.length === 0) {

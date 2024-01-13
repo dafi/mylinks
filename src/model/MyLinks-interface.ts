@@ -25,10 +25,13 @@ export const AppActionList = ['openAllLinks', 'findLinks', 'toggleShortcuts', 'e
 
 export type AppAction = (typeof AppActionList)[number];
 
-export type ShortcutAction = {
-  action: AppAction;
+export type ShortcutList = {
   shortcut: KeyCombination[];
 };
+
+export type ShortcutAction = {
+  action: AppAction;
+} & ShortcutList;
 
 export type Config = {
   faviconService?: string;
@@ -36,9 +39,8 @@ export type Config = {
 };
 
 export type MultiOpenCombination = {
-  shortcut: KeyCombination[];
   linkIds: string[];
-};
+} & ShortcutList;
 
 export type MultiOpen = {
   combinations: MultiOpenCombination[];
