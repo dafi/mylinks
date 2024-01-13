@@ -1,65 +1,92 @@
-.flex-outer {
+.panel {
+  margin-left: 10px;
+  margin-right: 10px;
+
+  display: flex;
+
+  justify-content: space-between;
+  align-items: stretch;
+  flex-direction: column;
+
+  /*
+    By default, flex items won’t shrink below their minimum content size.
+    To change this, set the min-width or min-height property
+    https://stackoverflow.com/a/62459589
+  */
+  height: 100%;
+  min-height: 0;
+}
+
+.panel section {
+  flex-grow: 1;
+}
+
+.panel footer {
+  padding-bottom: 10px;
+}
+
+.footer {
+  border-top: 1px solid var(--action-color-secondary);
+  padding-top: 10px;
+  margin-top: 10px;
+}
+
+.form-list {
   list-style-type: none;
   padding: 0;
   margin: 0 auto;
 }
 
-.flex-outer li {
+.form-list li {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
 }
 
-.flex-outer > li:not(:last-child) {
+.form-list > li:not(:last-child) {
   margin-bottom: 20px;
 }
 
-.flex-outer li > label,
-.flex-outer li p,
-.flex-outer li .label {
+.form-list li > label,
+.form-list li p,
+.form-list li .label {
   padding: 8px;
   font-weight: 300;
   letter-spacing: 0.09em;
   text-transform: uppercase;
 }
 
-.flex-outer > li > label,
-.flex-outer li p,
-.flex-outer li .label {
+.form-list > li > label,
+.form-list li p,
+.form-list li .label {
   flex: 1 0 120px;
   max-width: 120px;
 }
 
-.flex-outer > li > label + *,
-.flex-outer > li > .label + * {
+.form-list > li > label + *,
+.form-list > li > .label + * {
   flex: 1 0 120px;
 }
 
-.flex-outer li p {
+.form-list li p {
   margin: 0;
 }
 
-.flex-outer li input:not([type='checkbox']),
-.flex-outer li textarea {
+.form-list li input:not([type="checkbox"]),
+.form-list li textarea {
   padding: 15px;
 }
 
-.flex-outer li input[type='color'] {
+.form-list li input[type="color"] {
   padding: 0;
   max-width: 100px;
 }
 
-.flex-outer li:last-child {
-  border-top: 1px solid var(--action-color-secondary);
-  padding-top: 10px;
-}
-
-.flex-outer li .toolbar {
+.toolbar {
   display: flex;
   flex-flow: row nowrap;
-  justify-content: space-between;
+  place-content: space-between space-between;
   align-items: normal;
-  align-content: space-between;
   width: 100%;
 }
 
@@ -78,6 +105,10 @@
 .toolbar button:first-child,
 .form-button:first-child {
   margin-left: 0;
+}
+
+.toolbar button:disabled {
+  opacity: 0.3;
 }
 
 .toolbar-left {
