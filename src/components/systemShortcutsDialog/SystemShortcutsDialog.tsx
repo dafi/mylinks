@@ -1,15 +1,16 @@
-import { MouseEvent, ReactElement, useState } from 'react';
-import { findShortcuts } from '../../common/shortcut/ShortcutManager';
+import { MouseEvent, ReactElement, useMemo, useRef, useState } from 'react';
 import { useAppConfigContext } from '../../contexts/AppConfigContext';
 import { AppActionDescription } from '../../model/AppActionDescription';
 import { KeyCombination } from '../../model/KeyCombination';
-import { AppActionList, ShortcutAction } from '../../model/MyLinks-interface';
+import { AppActionList, ShortcutAction, ShortcutList } from '../../model/MyLinks-interface';
 import { ListView } from '../listView/ListView';
 import { ListViewItem } from '../listView/ListViewTypes';
 import { getModal } from '../modal/ModalHandler';
 import { CloseResultCode } from '../modal/ModalTypes';
 import './SystemShortcutsDialog.css';
-import { ShortcutDetails } from '../shortcut/ShortcutDetails';
+import { ShortcutDetails } from '../shortcut/shortcutDetails/ShortcutDetails';
+import { ShortcutDialog } from '../shortcut/shortcutDialog/ShortcutDialog';
+import { shortcutDialogId } from '../shortcut/shortcutDialog/ShortcutDialogTypes';
 
 type SystemShortcutProps = {
   readonly modalId: string;
@@ -47,35 +48,47 @@ export function SystemShortcutForm({ modalId, onSave }: SystemShortcutProps): Re
 
   function onSelectedItem(index: number): void {
     const { description, shortcutAction } = form[index];
-    const value = prompt(`Edit ${description}`, shortcutAction.shortcut.map(v => v.key).join(''));
-    if (value !== null) {
-      const keyCombination = value.split('').map((v): KeyCombination => ({ key: v }));
-      if (findShortcuts(keyCombination).length > 0) {
-        alert('Shortcut already assigned');
-        return;
+    extraCombinations.current = form.map(v => v.shortcutAction);
+    setCombinationLabel(description);
+    setDefaultCombination(shortcutAction.shortcut);
+    setSelectedCombination([...shortcutAction.shortcut]);
+    getModal(shortcutDialogId)?.open({
+      onClose: (code, data) => {
+        if (code === CloseResultCode.Ok && Array.isArray(data)) {
+          setForm(form.map(v => v.shortcutAction.action === shortcutAction.action ?
+            { ...v, shortcutAction: { ...v.shortcutAction, shortcut: data } } : v));
+        }
       }
-      setForm(form.map(v => v.shortcutAction.action === shortcutAction.action ?
-        { ...v, shortcutAction: { ...v.shortcutAction, shortcut: keyCombination } } : v));
-    }
+    });
   }
 
   const { systemShortcuts } = useAppConfigContext();
   const [form, setForm] = useState(formSystemShortcut(systemShortcuts));
+  const extraCombinations = useRef<ShortcutList[]>([]);
+  const [combinationLabel, setCombinationLabel] = useState('');
+  const [defaultCombination, setDefaultCombination] = useState<KeyCombination[]>([]);
+  const [selectedCombination, setSelectedCombination] = useState<KeyCombination[]>([]);
 
-  const shortcutComponents = form.map(({ description, shortcutAction }): ListViewItem => (
-    {
-      id: shortcutAction.action,
-      element: <div><ShortcutDetails label={description} combination={shortcutAction.shortcut} /></div>
-    })
-  );
+  const shortcutComponents = useMemo(() =>
+    form.map(({ description, shortcutAction }): ListViewItem => (
+      {
+        id: shortcutAction.action,
+        element: <div><ShortcutDetails label={description} combination={shortcutAction.shortcut} /></div>
+      }))
+  , [form]);
 
   return (
-    <form>
-      <div className="system-shortcuts">
-        <ListView items={shortcutComponents} onSelected={onSelectedItem} />
-      </div>
-      <ul className="flex-outer">
-        <li className="toolbar">
+    <div className="panel">
+      <section>
+        <form>
+          <div className="system-shortcuts">
+            <ListView items={shortcutComponents} onSelected={onSelectedItem} />
+          </div>
+        </form>
+      </section>
+
+      <footer className="footer">
+        <div className="toolbar">
           <div className="toolbar-left" />
           <div className="toolbar-right">
             <button
@@ -93,8 +106,15 @@ export function SystemShortcutForm({ modalId, onSave }: SystemShortcutProps): Re
               Close
             </button>
           </div>
-        </li>
-      </ul>
-    </form>
+        </div>
+      </footer>
+      <ShortcutDialog
+        label={combinationLabel}
+        defaultCombination={defaultCombination}
+        keyCombination={selectedCombination}
+        setKeyCombination={setSelectedCombination}
+        extraCombinations={extraCombinations.current}
+      />
+    </div>
   );
 }

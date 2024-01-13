@@ -12,3 +12,7 @@
   background: var(--action-color-primary);
   color: var(--color-white);
 }
+
+.system-shortcuts .shortcut-details-item-key {
+  margin-right: 5px;
+}
