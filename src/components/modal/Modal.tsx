@@ -1,5 +1,6 @@
 import { KeyboardEvent, ReactElement, useEffect } from 'react';
 import './Modal.css';
+import { createPortal } from 'react-dom';
 import { toKebab } from '../../common/StringUtil';
 import { getModal } from './ModalHandler';
 import { CloseResultCode } from './ModalTypes';
@@ -43,7 +44,11 @@ export default function Modal(
     return null;
   }
 
-  return (
+  // If dialogs are created as direct body children, the document keydown listener is called before the siblings.
+  // We insert dialogs inside a document.body child so the keydown listeners are called in the correct order
+  const rootDialogs = document.querySelector('#root-dialogs');
+
+  return rootDialogs && createPortal(
     <div
       id={`modal-${toKebab(id)}`}
       key={id}
@@ -56,6 +61,7 @@ export default function Modal(
       <div className="modal-container">
         {children}
       </div>
-    </div>
+    </div>,
+    rootDialogs
   );
 }
