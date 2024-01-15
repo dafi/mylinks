@@ -3,10 +3,9 @@ import './Modal.css';
 import { createPortal } from 'react-dom';
 import { toKebab } from '../../common/StringUtil';
 import { getModal } from './ModalHandler';
+import { focusLast, isStackEmpty, stackSize, updateStack } from './ModalStack';
 import { CloseResultCode } from './ModalTypes';
 import { useModalAutoFocus } from './useModalAutoFocus';
-
-const modalStack: HTMLElement[] = [];
 
 export interface ModalProp {
   readonly id: string;
@@ -29,16 +28,13 @@ export default function Modal(
   const [visible, ref] = useModalAutoFocus<HTMLDivElement>(id);
 
   useEffect(() => {
-    if (ref.current == null) {
-      modalStack.pop();
-      modalStack.at(-1)?.focus();
-    } else {
-      modalStack.push(ref.current);
+    if (updateStack(id, visible, ref.current)) {
+      focusLast();
     }
     // this prevents scrolling of the main window on larger screens
     // e.g. pressing the space bar while a modal is open scrolls the main window
-    document.body.style.overflow = modalStack.length === 0 || !visible ? '' : 'hidden';
-  }, [ref, visible]);
+    document.body.style.overflow = isStackEmpty() ? '' : 'hidden';
+  }, [id, ref, visible]);
 
   if (!visible) {
     return null;
@@ -54,7 +50,7 @@ export default function Modal(
       key={id}
       className="modal-backdrop"
       ref={ref}
-      style={{ zIndex: modalStack.length }}
+      style={{ zIndex: stackSize() }}
       tabIndex={-1}
       onKeyDown={onKeyDown}
     >
