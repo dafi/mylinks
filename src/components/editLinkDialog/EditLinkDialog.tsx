@@ -23,8 +23,10 @@ type EditLinkDialogState = LinkEditableProperties & Record<string, string | KeyC
 export function EditLinkDialog({ data, onSave }: EditLinkDialogProps): ReactElement {
   return (
     <Modal id={editLinkDialogId}>
-      <div className="standard-dialog">
-        <h2 className="title">Edit Link</h2>
+      <div className="panel">
+        <header>
+          <h2 className="title">Edit Link</h2>
+        </header>
 
         <EditLinkForm data={data} onSave={onSave} />
       </div>
@@ -93,7 +95,7 @@ function EditLinkForm({ data, onSave }: EditLinkDialogProps): ReactElement {
   const [selectedCombination, setSelectedCombination] = useState<KeyCombination[]>([]);
 
   return (
-    <div className="panel">
+    <>
       <section>
         <form onSubmit={onClickSave}>
           <ul className="form-list">
@@ -139,36 +141,36 @@ function EditLinkForm({ data, onSave }: EditLinkDialogProps): ReactElement {
               </div>
             </li>
           </ul>
+          <footer className="footer">
+            <div className="toolbar">
+              <div className="label" />
+              <div className="toolbar-left" />
+              <div className="toolbar-right">
+                <button
+                  type="submit"
+                  className="text-white bg-action-primary hover"
+                >
+                  Save
+                </button>
+                <button
+                  type="button"
+                  className="text-white bg-action-secondary hover"
+                  onClick={onClickCancel}
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </footer>
         </form>
       </section>
 
-      <footer className="footer">
-        <div className="toolbar">
-          <div className="label" />
-          <div className="toolbar-left" />
-          <div className="toolbar-right">
-            <button
-              type="submit"
-              className="text-white bg-action-primary hover"
-            >
-              Save
-            </button>
-            <button
-              type="button"
-              className="text-white bg-action-secondary hover"
-              onClick={onClickCancel}
-            >
-              Cancel
-            </button>
-          </div>
-        </div>
-      </footer>
       <ShortcutDialog
         label={combinationLabel}
         defaultCombination={defaultCombination}
         keyCombination={selectedCombination}
         setKeyCombination={setSelectedCombination}
       />
-    </div>
+    </>
   );
 }
