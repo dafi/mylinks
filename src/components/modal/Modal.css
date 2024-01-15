@@ -10,6 +10,7 @@
   border-radius: 5px;
   margin: 0 auto;
   max-width: 750px;
-  min-height: 40px;
+  height: fit-content;
+
   border: 1px solid var(--dialog-border-color);
 }

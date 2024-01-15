@@ -1,6 +1,5 @@
 .panel {
-  margin-left: 10px;
-  margin-right: 10px;
+  margin: 5px;
 
   display: flex;
 
@@ -19,6 +18,12 @@
 
 .panel section {
   flex-grow: 1;
+}
+
+.panel header .title {
+  font-size: 18px;
+  margin: 0 0 10px;
+  text-transform: uppercase;
 }
 
 .panel footer {
