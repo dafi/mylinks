@@ -1,4 +1,4 @@
-import { Dispatch, MouseEvent, ReactElement, SetStateAction, useEffect, useState } from 'react';
+import { Dispatch, MouseEvent, ReactElement, SetStateAction } from 'react';
 
 import './ShortcutDialog.css';
 import { compareCombinationsArray, findKeyCombinations, getShortcuts } from '../../../common/shortcut/ShortcutManager';
@@ -43,6 +43,18 @@ function isAlreadyAssigned(
   return shortcuts.length > 0;
 }
 
+function getMessage(
+  extraCombinations: ShortcutList[] | undefined,
+  keyCombination: KeyCombination[],
+  defaultCombination: KeyCombination[] | undefined,
+): Message {
+  if (isAlreadyAssigned(extraCombinations, keyCombination, defaultCombination)
+    || isAlreadyAssigned(getShortcuts(), keyCombination, defaultCombination)) {
+    return { type: 'error', text: 'Already assigned' };
+  }
+  return { type: 'info', text: '' };
+}
+
 export function ShortcutDialog(
   {
     label,
@@ -62,16 +74,7 @@ export function ShortcutDialog(
     getModal(shortcutDialogId)?.close(CloseResultCode.Cancel);
   }
 
-  const [message, setMessage] = useState<Message>({ type: 'info', text: '' });
-
-  useEffect(() => {
-    if (isAlreadyAssigned(extraCombinations, keyCombination, defaultCombination)
-      || isAlreadyAssigned(getShortcuts(), keyCombination, defaultCombination)) {
-      setMessage({ type: 'error', text: 'Already assigned' });
-    } else {
-      setMessage({ type: 'info', text: '' });
-    }
-  }, [extraCombinations, keyCombination, defaultCombination]);
+  const message = getMessage(extraCombinations, keyCombination, defaultCombination);
 
   return (
     <Modal id={shortcutDialogId}>
