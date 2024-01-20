@@ -85,6 +85,7 @@ export function LinkSelector(
           ref={listViewRef}
           items={listComponents}
           onSelectionChange={onSelectionChange}
+          selectedIndex={0}
           onSelected={(i): void => onSelected(result[i].link)}
         />
       </div>

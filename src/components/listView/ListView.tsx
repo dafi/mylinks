@@ -1,13 +1,10 @@
 import {
-  createRef,
   ForwardedRef,
   forwardRef,
   KeyboardEvent,
   MouseEvent,
   ReactElement,
-  RefObject,
-  useCallback,
-  useEffect,
+  useCallback, useEffect,
   useImperativeHandle,
   useRef,
   useState
@@ -17,13 +14,12 @@ import { ListViewHandle, ListViewItem } from './ListViewTypes';
 const ClickCount = 2;
 
 type ListViewProps = {
+  readonly selectedIndex: number;
   readonly items: ListViewItem[];
   readonly onSelectionChange?: (index: number) => void;
   readonly onSelected?: (index: number) => void;
   readonly tabIndex?: number;
 };
-
-type ListViewRefMap = Map<string, RefObject<HTMLLIElement>>;
 
 const defaultProps = {
   onSelectionChange: undefined,
@@ -31,16 +27,10 @@ const defaultProps = {
   tabIndex: -1,
 };
 
-function createRefMap(items: ListViewItem[]): ListViewRefMap {
-  const map = new Map<string, RefObject<HTMLLIElement>>();
-  for (const i of items) {
-    map.set(i.id, createRef());
-  }
-  return map;
-}
+const isBetween = (value: number, lowerBound: number, upperBound: number): boolean => lowerBound <= value && value < upperBound;
 
 export const ListView = forwardRef(function(
-  { items, onSelectionChange, onSelected, tabIndex }: ListViewProps,
+  { selectedIndex: startIndex, items, onSelectionChange, onSelected, tabIndex }: ListViewProps,
   ref: ForwardedRef<ListViewHandle>
 ): ReactElement {
   function onClick(e: MouseEvent<HTMLElement>): void {
@@ -76,18 +66,17 @@ export const ListView = forwardRef(function(
     }
   }
 
-  const [selectedIndex, setSelectedIndex] = useState(-1);
-  const [listRefs, setListRefs] = useState<ListViewRefMap>();
+  // const [listRefs, setListRefs] = useState<ListViewRefMap>();
+  const listRefs = useRef(new Map<string, HTMLLIElement>());
 
+  const [selectedIndex, setSelectedIndex] = useState(startIndex);
   const listViewRef = useRef<HTMLDivElement>(null);
 
   const updateSelectedIndex = useCallback((index: number): void => {
-    setSelectedIndex(_ => {
-      if (onSelectionChange) {
-        onSelectionChange(index);
-      }
-      return index;
-    });
+    setSelectedIndex(index);
+    if (onSelectionChange) {
+      onSelectionChange(index);
+    }
   }, [onSelectionChange]);
 
   const onKeyDown = useCallback((e: KeyboardEvent<HTMLElement>): void => {
@@ -106,7 +95,7 @@ export const ListView = forwardRef(function(
         }
         break;
       case 'Home':
-        newIndex = 0;
+        newIndex = items.length > 0 ? 0 : -1;
         break;
       case 'End':
         newIndex = items.length - 1;
@@ -121,19 +110,26 @@ export const ListView = forwardRef(function(
     }
     if (newIndex >= 0) {
       const item = items[newIndex];
-      const liElement = listRefs?.get(item.id)?.current;
-      if (liElement) {
-        liElement.scrollIntoView({ block: 'nearest', inline: 'nearest' });
-      }
+      listRefs.current.get(item.id)?.scrollIntoView({ block: 'nearest', inline: 'nearest' });
       updateSelectedIndex(newIndex);
     }
     e.preventDefault();
   }, [items, listRefs, onSelected, selectedIndex, updateSelectedIndex]);
 
+  const [prevItems, setPrevItems] = useState(items);
+
+  if (prevItems !== items) {
+    setSelectedIndex(isBetween(startIndex, 0, items.length) ? startIndex : -1);
+    listRefs.current.clear();
+    setPrevItems(items);
+  }
+
   useEffect(() => {
-    setSelectedIndex(items.length > 0 ? 0 : -1);
-    setListRefs(createRefMap(items));
-  }, [items]);
+    if (isBetween(selectedIndex, 0, items.length)) {
+      const item = items[selectedIndex];
+      listRefs.current.get(item.id)?.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+    }
+  }, [selectedIndex, items]);
 
   useImperativeHandle(ref, (): ListViewHandle => ({
     onKeyDown(e: KeyboardEvent<HTMLElement>): void {
@@ -150,7 +146,7 @@ export const ListView = forwardRef(function(
             onMouseDown={onMouseDown}
             data-index={index}
             className={index === selectedIndex ? 'selected' : 'none'}
-            ref={listRefs?.get(item.id)}
+            ref={el => el && listRefs.current.set(item.id, el)}
             key={item.id}
           >
             {item.element}

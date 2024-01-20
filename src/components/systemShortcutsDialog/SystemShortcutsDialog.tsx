@@ -49,6 +49,7 @@ export function SystemShortcutForm({ modalId, onSave }: SystemShortcutProps): Re
   function onSelectedItem(index: number): void {
     const { description, shortcutAction } = form[index];
     extraCombinations.current = form.map(v => v.shortcutAction);
+    setSelectedIndex(index);
     setCombinationLabel(description);
     setDefaultCombination(shortcutAction.shortcut);
     setSelectedCombination([...shortcutAction.shortcut]);
@@ -68,6 +69,7 @@ export function SystemShortcutForm({ modalId, onSave }: SystemShortcutProps): Re
   const [combinationLabel, setCombinationLabel] = useState('');
   const [defaultCombination, setDefaultCombination] = useState<KeyCombination[]>([]);
   const [selectedCombination, setSelectedCombination] = useState<KeyCombination[]>([]);
+  const [selectedIndex, setSelectedIndex] = useState(form.length > 0 ? 0 : -1);
 
   const shortcutComponents = useMemo(() =>
     form.map(({ description, shortcutAction }): ListViewItem => (
@@ -82,7 +84,11 @@ export function SystemShortcutForm({ modalId, onSave }: SystemShortcutProps): Re
       <section>
         <form>
           <div className="system-shortcuts">
-            <ListView items={shortcutComponents} onSelected={onSelectedItem} />
+            <ListView
+              items={shortcutComponents}
+              onSelected={onSelectedItem}
+              selectedIndex={selectedIndex}
+            />
           </div>
         </form>
       </section>
