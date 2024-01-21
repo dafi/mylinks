@@ -66,7 +66,6 @@ export const ListView = forwardRef(function(
     }
   }
 
-  // const [listRefs, setListRefs] = useState<ListViewRefMap>();
   const listRefs = useRef(new Map<string, HTMLLIElement>());
 
   const [selectedIndex, setSelectedIndex] = useState(startIndex);
@@ -120,7 +119,6 @@ export const ListView = forwardRef(function(
 
   if (prevItems !== items) {
     setSelectedIndex(isBetween(startIndex, 0, items.length) ? startIndex : -1);
-    listRefs.current.clear();
     setPrevItems(items);
   }
 
@@ -146,7 +144,7 @@ export const ListView = forwardRef(function(
             onMouseDown={onMouseDown}
             data-index={index}
             className={index === selectedIndex ? 'selected' : 'none'}
-            ref={el => el && listRefs.current.set(item.id, el)}
+            ref={el => el ? listRefs.current.set(item.id, el) : listRefs.current.delete(item.id)}
             key={item.id}
           >
             {item.element}
