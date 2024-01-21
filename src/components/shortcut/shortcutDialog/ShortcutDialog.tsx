@@ -89,6 +89,7 @@ export function ShortcutDialog(
             <ul className="form-list">
               <li>
                 <ShortcutInput
+                  autoFocus
                   keyCombination={keyCombination}
                   setKeyCombination={setKeyCombination}
                 />

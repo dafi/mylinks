@@ -1,16 +1,21 @@
 import { Dispatch, KeyboardEvent, ReactElement, SetStateAction, useRef } from 'react';
 import './ShortcutInput.css';
-import { useAutoFocus } from '../../../hooks/useAutoFocus/useAutoFocus';
 import { KeyCombination } from '../../../model/KeyCombination';
 import { Shortcut } from '../Shortcut';
 
 type ShortcutInputProps = {
+  readonly autoFocus?: boolean;
   readonly keyCombination: KeyCombination[];
   readonly setKeyCombination: Dispatch<SetStateAction<KeyCombination[]>>;
 };
 
+const defaultProps = {
+  autoFocus: false
+};
+
 export const ShortcutInput = function(
   {
+    autoFocus,
     keyCombination,
     setKeyCombination,
   }: ShortcutInputProps,
@@ -37,11 +42,12 @@ export const ShortcutInput = function(
   }
 
   const overwriteInitialValue = useRef(false);
-  const inputRef = useAutoFocus<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLDivElement>(null);
 
   return (
     <div className="shortcut-input-container">
       <div
+        data-auto-focus={autoFocus}
         tabIndex={0}
         className="shortcut-combination"
         onKeyDown={onKeyDown}
@@ -62,3 +68,5 @@ export const ShortcutInput = function(
     </div>
   );
 };
+
+ShortcutInput.defaultProps = defaultProps;
