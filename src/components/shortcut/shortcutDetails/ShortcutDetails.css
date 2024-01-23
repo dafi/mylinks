@@ -1,0 +1,21 @@
+.shortcut-details-container {
+  display: flex;
+  flex-flow: row nowrap;
+  place-content: normal normal;
+  align-items: center;
+  padding-bottom: 5px;
+}
+
+.shortcut-details-item-label {
+  flex: 1 1 auto;
+  align-self: auto;
+  order: 0;
+  user-select: none;
+}
+
+.shortcut-details-item-key {
+  flex: 0 1 auto;
+  align-self: auto;
+  order: 0;
+}
+

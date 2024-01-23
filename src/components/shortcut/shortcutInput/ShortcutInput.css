@@ -1,0 +1,53 @@
+.shortcut-input-container {
+  border: 1px solid darkgray;
+  display: flex;
+  background-color: var(--color-white);
+  align-items: center;
+
+  /*
+    By default, flex items won’t shrink below their minimum content size.
+    To change this, set the min-width or min-height property
+    https://stackoverflow.com/a/62459589
+  */
+  min-width: 0;
+  width: 100%;
+}
+
+.shortcut-combination {
+  background-color: var(--color-white);
+  height: 30px;
+  border-radius: 2px;
+  padding: 4px;
+  overflow-x: auto;
+
+  display: flex;
+  flex-flow: row nowrap;
+  place-content: normal normal;
+  align-items: normal;
+  width:100%;
+}
+
+.shortcut-combination:focus-within {
+  outline: 2px solid #bbd9f3;
+  box-shadow:inset 0 0 0 1px #007aff;
+}
+
+.shortcut-box {
+  display: block;
+  flex: 1 1 auto;
+  align-self: auto;
+  order: 0;
+}
+
+.shortcut-clear {
+  width: 20px;
+  text-align: center;
+  padding-left: 4px;
+  padding-right: 4px;
+  cursor: pointer;
+
+  display: block;
+  flex: 0 1 auto;
+  align-self: auto;
+  order: 0;
+}

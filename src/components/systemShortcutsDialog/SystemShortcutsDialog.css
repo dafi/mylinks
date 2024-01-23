@@ -1,0 +1,18 @@
+.system-shortcuts ul {
+  list-style: none;
+  max-height: 200px;
+  margin: 0;
+  overflow: auto;
+  padding: 0;
+  text-indent: 10px;
+}
+
+.system-shortcuts .selected,
+.system-shortcuts .selected:hover {
+  background: var(--action-color-primary);
+  color: var(--color-white);
+}
+
+.system-shortcuts .shortcut-details-item-key {
+  margin-right: 5px;
+}

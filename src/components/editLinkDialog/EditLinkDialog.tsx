@@ -1,11 +1,14 @@
 import { ChangeEvent, FormEvent, ReactElement, useState } from 'react';
-import { findShortcuts } from '../../common/shortcut/ShortcutManager';
 import { isNotEmptyString } from '../../common/StringUtil';
 import { LinkEditableProperties, LinkEditData } from '../../model/EditData-interface';
+import { KeyCombination } from '../../model/KeyCombination';
 import Modal from '../modal/Modal';
 import { getModal } from '../modal/ModalHandler';
 import { CloseResultCode } from '../modal/ModalTypes';
 import '../modal/StandardDialog.css';
+import { ShortcutDetails } from '../shortcut/shortcutDetails/ShortcutDetails';
+import { ShortcutDialog } from '../shortcut/shortcutDialog/ShortcutDialog';
+import { shortcutDialogId } from '../shortcut/shortcutDialog/ShortcutDialogTypes';
 import { editLinkDialogId } from './EditLinkDialogTypes';
 
 export interface EditLinkDialogProps {
@@ -15,13 +18,15 @@ export interface EditLinkDialogProps {
 
 // https://stackoverflow.com/questions/57773734/how-to-use-partially-the-computed-property-name-on-a-type-definition/57774343#57774343
 // compound properties must be strings so, we allow to index elements by string
-type EditLinkDialogState = LinkEditableProperties & Record<string, string | undefined>;
+type EditLinkDialogState = LinkEditableProperties & Record<string, string | KeyCombination[] | undefined>;
 
 export function EditLinkDialog({ data, onSave }: EditLinkDialogProps): ReactElement {
   return (
     <Modal id={editLinkDialogId}>
-      <div className="standard-dialog">
-        <h2 className="title">Edit Link</h2>
+      <div className="panel">
+        <header>
+          <h2 className="title">Edit Link</h2>
+        </header>
 
         <EditLinkForm data={data} onSave={onSave} />
       </div>
@@ -56,99 +61,116 @@ function EditLinkForm({ data, onSave }: EditLinkDialogProps): ReactElement {
     onCloseDialog(CloseResultCode.Cancel);
   }
 
-  function validateShortcut(e: ChangeEvent<HTMLInputElement>): void {
-    if (e.target.value !== data.link.shortcut && findShortcuts(e.target.value).length > 0) {
-      e.target.setCustomValidity('Shortcut already assigned');
-    } else {
-      e.target.setCustomValidity('');
-    }
-  }
-
   function onChange(e: ChangeEvent<HTMLInputElement>): void {
     const action = e.target.dataset.action;
     if (isNotEmptyString(action)) {
-      setForm(prevState => {
-        prevState[action] = e.target.value;
-        return prevState;
-      });
-      if (action === 'shortcut') {
-        validateShortcut(e);
-      }
+      setForm(prevState => ({
+        ...prevState, [action]: e.target.value
+      }));
     }
+  }
+
+  function onDoubleClickShortcut(): void {
+    setCombinationLabel(form.label);
+    const currentShortcut = form.shortcut ?? [];
+    setDefaultCombination(currentShortcut);
+    setSelectedCombination([...currentShortcut]);
+    getModal(shortcutDialogId)?.open({
+      onClose: (code, shortcut) => {
+        if (code === CloseResultCode.Ok && Array.isArray(shortcut)) {
+          setForm(prevState => ({
+            ...prevState, shortcut
+          }));
+        }
+      }
+    });
   }
 
   const [form, setForm] = useState<EditLinkDialogState>({
     ...data.link
   });
+  const [combinationLabel, setCombinationLabel] = useState('');
+  const [defaultCombination, setDefaultCombination] = useState<KeyCombination[]>([]);
+
+  const [selectedCombination, setSelectedCombination] = useState<KeyCombination[]>([]);
 
   return (
-    <form onSubmit={onClickSave}>
-      <ul className="flex-outer">
-        <li>
-          <label htmlFor="link-label">Label</label>
-          <input
-            data-action="label"
-            data-auto-focus="true"
-            type="text"
-            defaultValue={form.label}
-            onChange={onChange}
-            placeholder="Videos"
-            required
-            pattern="^\S|\S.*\S"
-          />
-        </li>
-        <li>
-          <label htmlFor="link-url">Url</label>
-          <input
-            data-action="url"
-            type="url"
-            defaultValue={form.url}
-            onChange={onChange}
-            placeholder="https://youtube.com"
-            required
-            pattern="^\S|\S.*\S"
-          />
-        </li>
-        <li>
-          <label htmlFor="shortcut">Favicon URL</label>
-          <input
-            data-action="favicon"
-            type="url"
-            defaultValue={form.favicon}
-            onChange={onChange}
-            placeholder="favicon url"
-          />
-        </li>
-        <li>
-          <label htmlFor="shortcut">Shortcut</label>
-          <input
-            data-action="shortcut"
-            type="text"
-            defaultValue={form.shortcut}
-            onChange={onChange}
-            placeholder="press the key combination to assign"
-          />
-        </li>
-        <li className="toolbar">
-          <div className="label" />
-          <div className="toolbar-left" />
-          <div className="toolbar-right">
-            <button
-              type="submit"
-              className="text-white bg-action-primary hover"
-            >
-              Save
-            </button>
-            <button
-              type="button"
-              className="text-white bg-action-secondary hover"
-              onClick={onClickCancel}
-            >
-              Cancel
-            </button>
-          </div>
-        </li>
-      </ul>
-    </form>
+    <>
+      <section>
+        <form onSubmit={onClickSave}>
+          <ul className="form-list">
+            <li>
+              <label htmlFor="link-label">Label</label>
+              <input
+                data-action="label"
+                data-auto-focus="true"
+                type="text"
+                defaultValue={form.label}
+                onChange={onChange}
+                placeholder="Videos"
+                required
+                pattern="^\S|\S.*\S"
+              />
+            </li>
+            <li>
+              <label htmlFor="link-url">Url</label>
+              <input
+                data-action="url"
+                type="url"
+                defaultValue={form.url}
+                onChange={onChange}
+                placeholder="https://youtube.com"
+                required
+                pattern="^\S|\S.*\S"
+              />
+            </li>
+            <li>
+              <label htmlFor="shortcut">Favicon URL</label>
+              <input
+                data-action="favicon"
+                type="url"
+                defaultValue={form.favicon}
+                onChange={onChange}
+                placeholder="favicon url"
+              />
+            </li>
+            <li>
+              <label htmlFor="shortcut">Shortcut</label>
+              <div onDoubleClick={onDoubleClickShortcut}>
+                <ShortcutDetails label="Double click to change the shortcut" combination={form.shortcut} />
+              </div>
+            </li>
+          </ul>
+          <footer className="footer">
+            <div className="toolbar">
+              <div className="label" />
+              <div className="toolbar-left" />
+              <div className="toolbar-right">
+                <button
+                  type="submit"
+                  className="text-white bg-action-primary hover"
+                >
+                  Save
+                </button>
+                <button
+                  type="button"
+                  className="text-white bg-action-secondary hover"
+                  onClick={onClickCancel}
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </footer>
+        </form>
+      </section>
+
+      <ShortcutDialog
+        label={combinationLabel}
+        defaultCombination={defaultCombination}
+        keyCombination={selectedCombination}
+        setKeyCombination={setSelectedCombination}
+      />
+    </>
   );
 }

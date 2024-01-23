@@ -4,11 +4,13 @@
   color: var(--link-key-color, #333);
   border: 1px solid var(--link-key-border-color);
   box-shadow: 0 1px 1px var(--box-shadow-color1), 0 2px 0 0 var(--box-shadow-color2) inset;
-  font-size: var(--font-xm);
-  font-weight: 700;
+  font-family: "Fira Code", sans-serif;
+  font-size: var(--font-sm);
   line-height: 1;
   padding: 0 4px;
   white-space: nowrap;
+  cursor: pointer;
+  user-select: none;
 }
 
 .shortcut:not(:last-child) {

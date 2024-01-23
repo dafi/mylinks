@@ -28,34 +28,42 @@ export function ExportSettingsForm(
   }
 
   return (
-    <form>
-      <ul className="flex-outer">
-        <li className="toolbar">
-          <label htmlFor="load-config">Load / Save</label>
-          <div className="toolbar-left">
-            <label className="form-button text-white bg-action-warn hover">
-              Load JSON
-              <input
-                type="file"
-                name="load-config"
-                id="load-config"
-                className="input-file"
-                accept="application/json"
-                onChange={handleFileSelect}
-              />
-            </label>
-            <button
-              type="button"
-              name="export-json"
-              id="export-json"
-              className="text-white bg-action-success hover"
-              onClick={onExportConfig}
-            >
-              Save JSON
-            </button>
-          </div>
-        </li>
-        <li className="toolbar">
+    <div className="panel">
+      <section>
+        <form>
+          <ul className="form-list">
+            <li>
+              <label htmlFor="load-config">Load / Save</label>
+              <div>
+                <label className="form-button text-white bg-action-warn hover">
+                  Load JSON
+                  {/* eslint-disable-next-line react/jsx-max-depth */}
+                  <input
+                    type="file"
+                    name="load-config"
+                    id="load-config"
+                    className="input-file"
+                    accept="application/json"
+                    onChange={handleFileSelect}
+                  />
+                </label>
+                <button
+                  type="button"
+                  name="export-json"
+                  id="export-json"
+                  className="form-button text-white bg-action-success hover"
+                  onClick={onExportConfig}
+                >
+                  Save JSON
+                </button>
+              </div>
+            </li>
+          </ul>
+        </form>
+      </section>
+
+      <footer className="footer">
+        <div className="toolbar">
           <div className="toolbar-left" />
           <div className="toolbar-right">
             <button
@@ -66,8 +74,8 @@ export function ExportSettingsForm(
               Close
             </button>
           </div>
-        </li>
-      </ul>
-    </form>
+        </div>
+      </footer>
+    </div>
   );
 }

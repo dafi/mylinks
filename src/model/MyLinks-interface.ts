@@ -1,3 +1,5 @@
+import { KeyCombination } from './KeyCombination';
+
 export type Theme = {
   backgroundImage?: string;
   faviconColor: string;
@@ -10,7 +12,7 @@ export type Link = {
   label: string;
   url: string;
   favicon?: string;
-  shortcut?: string;
+  shortcut?: KeyCombination[];
 };
 
 export type Widget = {
@@ -19,12 +21,17 @@ export type Widget = {
   list: Link[];
 };
 
-export type AppAction = 'openAllLinks' | 'findLinks' | 'toggleShortcuts' | 'editSettings';
+export const AppActionList = ['openAllLinks', 'findLinks', 'toggleShortcuts', 'editSettings'] as const;
+
+export type AppAction = (typeof AppActionList)[number];
+
+export type ShortcutList = {
+  shortcut: KeyCombination[];
+};
 
 export type ShortcutAction = {
   action: AppAction;
-  shortcut: string;
-};
+} & ShortcutList;
 
 export type Config = {
   faviconService?: string;
@@ -32,9 +39,8 @@ export type Config = {
 };
 
 export type MultiOpenCombination = {
-  shortcut: string;
   linkIds: string[];
-};
+} & ShortcutList;
 
 export type MultiOpen = {
   combinations: MultiOpenCombination[];

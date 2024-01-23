@@ -3,10 +3,6 @@
   flex-direction: row;
 }
 
-.settings-modal form {
-  margin-right: 10px;
-}
-
 .settings-primary-panel {
   padding: 5px 20px 20px 15px;
   border-radius: 5px 0 0 5px;

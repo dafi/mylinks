@@ -10,6 +10,11 @@
   background-color: var(--dialog-background-color);
 }
 
+.link-selector .input-box::placeholder {
+  color: var(--action-color-primary);
+  opacity: 0.5;
+}
+
 .link-selector .input-box:focus {
   outline: none;
 }

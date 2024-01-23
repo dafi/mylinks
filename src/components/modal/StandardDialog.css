@@ -1,12 +1,3 @@
-.standard-dialog {
-  margin: 5px;
-}
-
-.standard-dialog .title {
-  margin: 0;
-  text-transform: uppercase;
-}
-
 input:invalid {
   box-shadow: 0 0 5px 1px red;
 }
