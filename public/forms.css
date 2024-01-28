@@ -77,6 +77,11 @@
   margin: 0;
 }
 
+.form-list input, .form-list textarea, .form-shortcut {
+  color: black;
+  font-size: 13px;
+}
+
 .form-list li input:not([type="checkbox"]),
 .form-list li textarea {
   padding: 15px;
@@ -85,6 +90,12 @@
 .form-list li input[type="color"] {
   padding: 0;
   max-width: 100px;
+}
+
+.form-shortcut {
+  background-color: white;
+  border: solid 1px var(--action-color-secondary);
+  padding: 15px;
 }
 
 .toolbar {

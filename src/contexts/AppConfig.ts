@@ -8,7 +8,7 @@ import { AppUIStateAction } from './useAppUIState';
 
 export type AppConfig = {
   myLinksLookup?: MyLinksLookup;
-} & Config & Required<Pick<MyLinks, 'theme'>> & Pick<MyLinks, 'multiOpen'>;
+} & Config & Required<Pick<MyLinks, 'theme'>>;
 
 export const defaultAppConfig: Readonly<AppConfig> = {
   theme: defaultTheme,
@@ -40,6 +40,5 @@ function buildConfig(holder: MyLinksHolder): AppConfig {
     faviconService: holder.myLinks.config?.faviconService,
     systemShortcuts: holder.myLinks.config?.systemShortcuts,
     myLinksLookup: holder,
-    multiOpen: holder.myLinks.multiOpen,
   };
 }

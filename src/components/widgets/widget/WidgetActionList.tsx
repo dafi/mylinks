@@ -11,8 +11,8 @@ export default function WidgetActionList({ editable, widget }: WidgetActionListP
   function onAddLink(): void {
     if (onEdit) {
       onEdit({
-        link: { id: `${widget.id}-${Date.now()}`, url: '', shortcut: [], label: '' },
-        edited: { url: '', shortcut: [], label: '' },
+        link: { id: `${widget.id}-${Date.now()}`, urls: [''], shortcut: [], label: '' },
+        edited: { urls: [''], shortcut: [], label: '' },
         widget,
         editType: 'create'
       });

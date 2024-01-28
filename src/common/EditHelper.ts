@@ -8,9 +8,9 @@ import {
   LinkEditDataUpdate,
   WidgetEditData
 } from '../model/EditData-interface';
-import { KeyCombination } from '../model/KeyCombination';
 import { Link } from '../model/MyLinks-interface';
-import { move } from './ArrayUtil';
+import { isStringArray, move } from './ArrayUtil';
+import { isKeyCombinationArray } from './KeyCombinationUtil';
 import { compareCombinationsArray } from './shortcut/ShortcutManager';
 
 export function isLinkEditData(editData: EditDataType): editData is LinkEditData {
@@ -49,23 +49,34 @@ function applyLinkProperties(edited: LinkEditableProperties, link: Link): boolea
 function updateLinkProperty(
   link: Link,
   propName: keyof Link,
-  value: string | KeyCombination[] | undefined
+  value: Link[keyof Link]
 ): boolean {
-  if (propName === 'shortcut') {
-    if (Array.isArray(value)) {
-      if (value.length === 0) {
+  switch (propName) {
+    case 'shortcut':
+      if (Array.isArray(value) && value.length === 0) {
         link[propName] = undefined;
         return true;
       }
-      const oldValue = link[propName];
-      if (oldValue === undefined || !compareCombinationsArray(value, oldValue)) {
+      if (isKeyCombinationArray(value)) {
+        const oldValue = link[propName];
+        if (oldValue === undefined || !compareCombinationsArray(value, oldValue)) {
+          link[propName] = value;
+          return true;
+        }
+      }
+      break;
+    case 'urls':
+      if (isStringArray(value)) {
         link[propName] = value;
         return true;
       }
-    }
-  } else if (typeof value === 'string' && link[propName] !== value) {
-    link[propName] = value;
-    return true;
+      break;
+    default:
+      if (typeof value === 'string') {
+        link[propName] = value;
+        return true;
+      }
+      break;
   }
   return false;
 }
@@ -85,7 +96,6 @@ function updateLink(editData: LinkEditDataUpdate): boolean {
 }
 
 function deleteLink(editData: LinkEditDataDelete): boolean {
-  assertMultiOpenForLinkDelete(editData);
   const response = confirm(`Delete link "${editData.link.label}"?`);
   if (response) {
     const index = editData.widget.list.findIndex(l => l.id === editData.link.id);
@@ -111,14 +121,4 @@ function prepareWidgetForSave(editData: WidgetEditData): boolean {
     return true;
   }
   return false;
-}
-
-function assertMultiOpenForLinkDelete(editData: LinkEditDataDelete): void {
-  const { link: { id, label }, multiOpen } = editData;
-  const inUse = multiOpen?.combinations.filter(v => v.linkIds.includes(id));
-
-  if (inUse && inUse.length > 0) {
-    const combinations = inUse.map(v => v.shortcut).join(', ');
-    throw new Error(`Link '${label}' is used in multi open shortcuts (${combinations}), please delete them before link`);
-  }
 }

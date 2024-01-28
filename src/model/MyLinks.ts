@@ -9,7 +9,9 @@ export function openLinks(links: Link[]): void {
 }
 
 export function openLink(link: Link): void {
-  window.open(link.url);
+  for (const url of link.urls) {
+    window.open(url);
+  }
 }
 
 export function filterMyLinks(

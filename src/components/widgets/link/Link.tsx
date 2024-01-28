@@ -1,4 +1,5 @@
-import { ReactElement, useState } from 'react';
+import { MouseEvent, ReactElement, useState } from 'react';
+import { openLink } from '../../../model/MyLinks';
 import { Link as MLLink, Widget } from '../../../model/MyLinks-interface';
 import { Shortcut } from '../../shortcut/Shortcut';
 import { LinkIcon } from '../linkIcon/LinkIcon';
@@ -26,6 +27,16 @@ export function Link(
 ): ReactElement {
   const [isMouseOver, setIsMouseOver] = useState(false);
 
+  function onClickMultipleUrl(e: MouseEvent<HTMLElement>): void {
+    e.preventDefault();
+    e.stopPropagation();
+    openLink(link);
+  }
+
+  const attrs = link.urls.length === 1
+    ? { href: link.urls[0] }
+    : { href: '#', onClick: onClickMultipleUrl };
+
   return (
     <div
       className="ml-link-container"
@@ -35,7 +46,7 @@ export function Link(
       <div className="ml-link-items-container">
         <div className="left">
           <a
-            href={link.url}
+            {...attrs}
             target="_blank"
             rel="noopener noreferrer"
             draggable={draggable}

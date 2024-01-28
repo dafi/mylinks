@@ -3,8 +3,8 @@ import { linkFinderDialogId } from '../../components/linkFinderDialog/LinkFinder
 import { getModal } from '../../components/modal/ModalHandler';
 import { settingsDialogId } from '../../components/settingsDialog/SettingsDialogTypes';
 import { AppUIStateAction } from '../../contexts/useAppUIState';
-import { filterMyLinks, openLink, openLinks } from '../../model/MyLinks';
-import { Link, MyLinks } from '../../model/MyLinks-interface';
+import { filterMyLinks, openLink } from '../../model/MyLinks';
+import { MyLinks } from '../../model/MyLinks-interface';
 import { openWidgetLinksFromPoint } from '../../model/MyLinksDOM';
 import { MyLinksLookup } from '../../model/MyLinksLookup';
 import { cursorPosition } from '../CursorPositionTracker';
@@ -16,7 +16,6 @@ export function reloadShortcuts(myLinks: MyLinks, myLinksLookup: MyLinksLookup, 
 
   addSystemShortcuts(myLinks, myLinksLookup, updateUIState);
   addLinkShortcuts(myLinks);
-  addMultiOpenShortcuts(myLinks, myLinksLookup);
 }
 
 function addLinkShortcuts(myLinks: MyLinks): void {
@@ -30,27 +29,6 @@ function addLinkShortcuts(myLinks: MyLinks): void {
     }
     // we don't care about filtered elements, so ignore all
     return false;
-  });
-}
-
-function addMultiOpenShortcuts(myLinks: MyLinks, myLinksLookup: MyLinksLookup): void {
-  myLinks.multiOpen?.combinations.forEach(({ shortcut, linkIds }) => {
-    const links = findLinks(linkIds, myLinksLookup);
-    const newShortcut: Shortcut = {
-      shortcut,
-      callback: () => openLinks(links),
-    };
-    addShortcut(newShortcut);
-  });
-}
-
-function findLinks(linksId: string[], myLinksLookup: MyLinksLookup): Link[] {
-  return linksId.map(id => {
-    const link = myLinksLookup.findLinkById(id);
-    if (link) {
-      return link;
-    }
-    throw new Error(`Unable to find link by id ${id}`);
   });
 }
 

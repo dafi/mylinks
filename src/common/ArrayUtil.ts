@@ -19,3 +19,7 @@ export function move<T>(arr: T[], from: number, to: number): T[] {
   clone.splice(to, 0, el);
   return clone;
 }
+
+export function isStringArray(v: unknown): v is string[] {
+  return Array.isArray(v) && v.length > 0 && typeof v[0] === 'string';
+}

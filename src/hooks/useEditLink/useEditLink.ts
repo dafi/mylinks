@@ -36,8 +36,8 @@ interface UseEditLink {
 export function useEditLink(onEditComplete: (result: EditComplete) => void): UseEditLink {
   const [linkEditData, setLinkEditData] = useState<LinkEditData>({
     editType: 'create',
-    edited: { label: '', url: '' },
-    link: { id: '', label: '', url: '' },
+    edited: { label: '', urls: [] },
+    link: { id: '', label: '', urls: [] },
     widget: { id: '', title: '', list: [] }
   });
 

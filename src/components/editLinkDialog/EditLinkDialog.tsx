@@ -18,7 +18,7 @@ export interface EditLinkDialogProps {
 
 // https://stackoverflow.com/questions/57773734/how-to-use-partially-the-computed-property-name-on-a-type-definition/57774343#57774343
 // compound properties must be strings so, we allow to index elements by string
-type EditLinkDialogState = LinkEditableProperties & Record<string, string | KeyCombination[] | undefined>;
+type EditLinkDialogState = LinkEditableProperties & Record<string, LinkEditableProperties[keyof LinkEditableProperties]>;
 
 export function EditLinkDialog({ data, onSave }: EditLinkDialogProps): ReactElement {
   return (
@@ -32,6 +32,20 @@ export function EditLinkDialog({ data, onSave }: EditLinkDialogProps): ReactElem
       </div>
     </Modal>
   );
+}
+
+function validateUrls(urls: string[], el: HTMLInputElement | HTMLTextAreaElement): boolean {
+  if (urls.length === 0) {
+    el.setCustomValidity('Url is mandatory');
+    return false;
+  }
+  const invalidUrlIndex = urls.findIndex(url => !/^[a-z]*:\/\/.*/.test(url));
+  if (invalidUrlIndex < 0) {
+    el.setCustomValidity('');
+    return true;
+  }
+  el.setCustomValidity(`Invalid url at line ${invalidUrlIndex + 1}`);
+  return false;
 }
 
 // eslint-disable-next-line react/no-multi-comp
@@ -61,9 +75,19 @@ function EditLinkForm({ data, onSave }: EditLinkDialogProps): ReactElement {
     onCloseDialog(CloseResultCode.Cancel);
   }
 
-  function onChange(e: ChangeEvent<HTMLInputElement>): void {
-    const action = e.target.dataset.action;
+  function onChange(e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>): void {
+    const { action } = e.target.dataset;
     if (isNotEmptyString(action)) {
+      if (action === 'urls') {
+        const trimmed = e.target.value.trim();
+        const urls = trimmed.length === 0 ? [] : trimmed.split(/\n+/);
+        if (validateUrls(urls, e.target)) {
+          setForm(prevState => ({
+            ...prevState, urls
+          }));
+        }
+        return;
+      }
       setForm(prevState => ({
         ...prevState, [action]: e.target.value
       }));
@@ -113,15 +137,12 @@ function EditLinkForm({ data, onSave }: EditLinkDialogProps): ReactElement {
               />
             </li>
             <li>
-              <label htmlFor="link-url">Url</label>
-              <input
-                data-action="url"
-                type="url"
-                defaultValue={form.url}
+              <label htmlFor="link-url">Urls</label>
+              <textarea
+                data-action="urls"
+                defaultValue={form.urls.join('\n')}
                 onChange={onChange}
                 placeholder="https://youtube.com"
-                required
-                pattern="^\S|\S.*\S"
               />
             </li>
             <li>
@@ -131,12 +152,12 @@ function EditLinkForm({ data, onSave }: EditLinkDialogProps): ReactElement {
                 type="url"
                 defaultValue={form.favicon}
                 onChange={onChange}
-                placeholder="favicon url"
+                placeholder="Favicon Url"
               />
             </li>
             <li>
               <label htmlFor="shortcut">Shortcut</label>
-              <div onDoubleClick={onDoubleClickShortcut}>
+              <div onDoubleClick={onDoubleClickShortcut} className="form-shortcut">
                 <ShortcutDetails label="Double click to change the shortcut" combination={form.shortcut} />
               </div>
             </li>

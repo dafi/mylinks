@@ -1,5 +1,4 @@
 import { MouseEvent, ReactElement } from 'react';
-import { useAppConfigContext } from '../../../contexts/AppConfigContext';
 import { useAppUIStateContext } from '../../../contexts/AppUIStateContext';
 import { EditType } from '../../../model/EditData-interface';
 import { Link as MLLink, Widget } from '../../../model/MyLinks-interface';
@@ -24,7 +23,6 @@ export function LinkToolbar({ visible, link, widget }: LinkToolbarProps): ReactE
           widget,
           editType,
           original: link,
-          multiOpen
         });
       } else if (editType === 'update') {
         context.onEdit({
@@ -39,7 +37,6 @@ export function LinkToolbar({ visible, link, widget }: LinkToolbarProps): ReactE
   }
 
   const context = useAppUIStateContext();
-  const { multiOpen } = useAppConfigContext();
 
   if (!visible) {
     return null;

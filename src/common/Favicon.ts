@@ -11,7 +11,7 @@ export function faviconUrlByLink(
   const faviconUrl = link.favicon;
 
   if (faviconUrl === undefined) {
-    return buildFaviconUrl(link.url, faviconUrlBuilder);
+    return buildFaviconUrl(link.urls[0], faviconUrlBuilder);
   }
   if (faviconUrl.length === 0) {
     return undefined;

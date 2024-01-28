@@ -10,7 +10,7 @@ export type Theme = {
 export type Link = {
   id: string;
   label: string;
-  url: string;
+  urls: string[];
   favicon?: string;
   shortcut?: KeyCombination[];
 };
@@ -38,17 +38,8 @@ export type Config = {
   systemShortcuts?: ShortcutAction[];
 };
 
-export type MultiOpenCombination = {
-  linkIds: string[];
-} & ShortcutList;
-
-export type MultiOpen = {
-  combinations: MultiOpenCombination[];
-};
-
 export type MyLinks = {
   theme?: Theme;
   columns: Widget[][];
   config?: Config;
-  multiOpen?: MultiOpen;
 };
