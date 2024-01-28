@@ -143,6 +143,7 @@ function EditLinkForm({ data, onSave }: EditLinkDialogProps): ReactElement {
                 defaultValue={form.urls.join('\n')}
                 onChange={onChange}
                 placeholder="https://youtube.com"
+                required
               />
             </li>
             <li>
