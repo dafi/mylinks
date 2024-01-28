@@ -46,6 +46,9 @@ export function compareCombinationsArray(
 ): boolean {
   const userOptions: Required<FindShortcutOptions> = { exactMatch: true, compareModifiers: true, ...options };
 
+  if (c1.length === 0 || c2.length === 0) {
+    return false;
+  }
   if (userOptions.exactMatch && c1.length !== c2.length) {
     return false;
   }
