@@ -9,8 +9,7 @@ import {
   WidgetEditData
 } from '../model/EditData-interface';
 import { Link } from '../model/MyLinks-interface';
-import { isStringArray, move } from './ArrayUtil';
-import { isKeyCombinationArray } from './KeyCombinationUtil';
+import { move } from './ArrayUtil';
 import { compareCombinationsArray } from './shortcut/ShortcutManager';
 
 export function isLinkEditData(editData: EditDataType): editData is LinkEditData {
@@ -39,7 +38,7 @@ function prepareLinkForSave(editData: LinkEditData): boolean {
 function applyLinkProperties(edited: LinkEditableProperties, link: Link): boolean {
   let modified = false;
   for (const p in edited) {
-    if (Object.hasOwn(edited, p) && updateLinkProperty(link, p as keyof Link, edited[p as keyof LinkEditableProperties])) {
+    if (Object.hasOwn(edited, p) && updateLinkProperty(link, p as keyof LinkEditableProperties, edited)) {
       modified = true;
     }
   }
@@ -48,35 +47,32 @@ function applyLinkProperties(edited: LinkEditableProperties, link: Link): boolea
 
 function updateLinkProperty(
   link: Link,
-  propName: keyof Link,
-  value: Link[keyof Link]
+  propName: keyof LinkEditableProperties,
+  value: LinkEditableProperties
 ): boolean {
   switch (propName) {
-    case 'shortcut':
-      if (Array.isArray(value) && value.length === 0) {
+    case 'shortcut': {
+      const v = value[propName];
+      if (v === undefined || v.length === 0) {
         link[propName] = undefined;
         return true;
       }
-      if (isKeyCombinationArray(value)) {
-        const oldValue = link[propName];
-        if (oldValue === undefined || !compareCombinationsArray(value, oldValue)) {
-          link[propName] = value;
-          return true;
-        }
+      const oldValue = link[propName];
+      if (oldValue === undefined || !compareCombinationsArray(v, oldValue)) {
+        link[propName] = v;
+        return true;
       }
+    }
       break;
     case 'urls':
-      if (isStringArray(value)) {
-        link[propName] = value;
-        return true;
-      }
-      break;
-    default:
-      if (typeof value === 'string') {
-        link[propName] = value;
-        return true;
-      }
-      break;
+      link[propName] = value[propName];
+      return true;
+    case 'favicon':
+      link[propName] = value[propName];
+      return true;
+    case 'label':
+      link[propName] = value[propName];
+      return true;
   }
   return false;
 }
