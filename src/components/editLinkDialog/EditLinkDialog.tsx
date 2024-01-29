@@ -34,7 +34,7 @@ export function EditLinkDialog({ data, onSave }: EditLinkDialogProps): ReactElem
   );
 }
 
-function validateUrls(urls: string[], el: HTMLInputElement | HTMLTextAreaElement): boolean {
+function validateUrls(urls: string[], el: HTMLTextAreaElement): boolean {
   if (urls.length === 0) {
     el.setCustomValidity('Url is mandatory');
     return false;
@@ -75,21 +75,21 @@ function EditLinkForm({ data, onSave }: EditLinkDialogProps): ReactElement {
     onCloseDialog(CloseResultCode.Cancel);
   }
 
-  function onChange(e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>): void {
+  function onChange(e: ChangeEvent<HTMLInputElement>): void {
     const { action } = e.target.dataset;
     if (isNotEmptyString(action)) {
-      if (action === 'urls') {
-        const trimmed = e.target.value.trim();
-        const urls = trimmed.length === 0 ? [] : trimmed.split(/\n+/);
-        if (validateUrls(urls, e.target)) {
-          setForm(prevState => ({
-            ...prevState, urls
-          }));
-        }
-        return;
-      }
       setForm(prevState => ({
         ...prevState, [action]: e.target.value
+      }));
+    }
+  }
+
+  function onChangeUrls(e: ChangeEvent<HTMLTextAreaElement>): void {
+    const trimmed = e.target.value.trim();
+    const urls = trimmed.length === 0 ? [] : trimmed.split(/\n+/);
+    if (validateUrls(urls, e.target)) {
+      setForm(prevState => ({
+        ...prevState, urls
       }));
     }
   }
@@ -141,7 +141,7 @@ function EditLinkForm({ data, onSave }: EditLinkDialogProps): ReactElement {
               <textarea
                 data-action="urls"
                 defaultValue={form.urls.join('\n')}
-                onChange={onChange}
+                onChange={onChangeUrls}
                 placeholder="https://youtube.com"
                 required
               />
