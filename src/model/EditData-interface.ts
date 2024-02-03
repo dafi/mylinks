@@ -26,7 +26,7 @@ export type EditDataMove<T> = {
 
 export type EditData<T> = EditDataCreate<T> | EditDataDelete<T> | EditDataUpdate<T> | EditDataMove<T>;
 
-export type LinkEditableProperties = Pick<Link, 'label' | 'urls' | 'shortcut' | 'favicon'>;
+export type LinkEditableProperties = Pick<Link, 'label' | 'urls' | 'hotKey' | 'favicon'>;
 export type WidgetEditableProperties = Pick<Widget, 'title'>;
 
 export type EditWidgetFields = {

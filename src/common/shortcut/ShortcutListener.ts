@@ -36,7 +36,7 @@ function execShortcut(shortcuts: Shortcut[]): boolean {
   if (shortcuts.length === 0) {
     // not found
     buffer.splice(0, buffer.length);
-  } else if (shortcuts.length === 1 && compareCombinationsArray(buffer, shortcuts[0].shortcut)) {
+  } else if (shortcuts.length === 1 && compareCombinationsArray(buffer, shortcuts[0].hotKey)) {
     buffer.splice(0, buffer.length);
     shortcuts[0].callback();
     return true;

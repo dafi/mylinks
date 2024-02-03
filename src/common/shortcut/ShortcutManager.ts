@@ -1,6 +1,5 @@
-import { combinationToString } from '../../components/shortcut/ShortcutUtil';
+import { formatShortcuts } from '../../components/shortcut/ShortcutUtil';
 import { KeyCombination, KeyModifierList, KeyModifierType } from '../../model/KeyCombination';
-import { ShortcutList } from '../../model/MyLinks-interface';
 import { Shortcut } from './Shortcut';
 
 const shortcuts: Shortcut[] = [];
@@ -76,21 +75,21 @@ export const findShortcuts = (shortcut: KeyCombination[], options?: FindShortcut
  * @param options
  * @returns the matching shortcuts
  */
-export function findKeyCombinations<T extends ShortcutList>(
+export function findKeyCombinations<T extends Shortcut>(
   list: Readonly<T[]>,
   shortcut: Readonly<KeyCombination[]>,
   options?: FindShortcutOptions
 ): T[] {
-  return list.filter(s => compareCombinationsArray(shortcut, s.shortcut, options));
+  return list.filter(s => compareCombinationsArray(shortcut, s.hotKey, options));
 }
 
 export function addShortcut(shortcut: Shortcut): boolean {
-  if (shortcut.shortcut.length === 0) {
-    console.error(`Shortcut array is empty`, shortcut);
+  if (shortcut.hotKey.length === 0) {
+    console.error(`Shortcut hotkey is empty`, shortcut);
     return false;
   }
-  if (findShortcuts(shortcut.shortcut).length > 0) {
-    console.error(`Shortcut '${shortcut.shortcut.map(s => combinationToString(s)).join(',')}' already present`);
+  if (findShortcuts(shortcut.hotKey).length > 0) {
+    console.error(`Shortcut '${formatShortcuts(shortcut)}' already present`);
     return false;
   }
   shortcuts.push(shortcut);

@@ -1,4 +1,5 @@
-import { KeyCombination } from './KeyCombination';
+import { AppAction } from './AppAction';
+import { HotKey } from './KeyCombination';
 
 export type Theme = {
   backgroundImage?: string;
@@ -12,8 +13,7 @@ export type Link = {
   label: string;
   urls: string[];
   favicon?: string;
-  shortcut?: KeyCombination[];
-};
+} & Partial<HotKey>;
 
 export type Widget = {
   id: string;
@@ -21,21 +21,9 @@ export type Widget = {
   list: Link[];
 };
 
-export const AppActionList = ['openAllLinks', 'findLinks', 'toggleShortcuts', 'editSettings'] as const;
-
-export type AppAction = (typeof AppActionList)[number];
-
-export type ShortcutList = {
-  shortcut: KeyCombination[];
-};
-
-export type ShortcutAction = {
-  action: AppAction;
-} & ShortcutList;
-
 export type Config = {
   faviconService?: string;
-  systemShortcuts?: ShortcutAction[];
+  systemShortcuts?: AppAction[];
 };
 
 export type MyLinks = {

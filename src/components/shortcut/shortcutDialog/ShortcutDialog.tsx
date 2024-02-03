@@ -1,14 +1,15 @@
 import { Dispatch, MouseEvent, ReactElement, SetStateAction } from 'react';
 
 import './ShortcutDialog.css';
+import { Shortcut } from '../../../common/shortcut/Shortcut';
 import { compareCombinationsArray, findKeyCombinations, getShortcuts } from '../../../common/shortcut/ShortcutManager';
 import { KeyCombination } from '../../../model/KeyCombination';
-import { ShortcutList } from '../../../model/MyLinks-interface';
 import Modal from '../../modal/Modal';
 import { getModal } from '../../modal/ModalHandler';
 import { CloseResultCode } from '../../modal/ModalTypes';
 import { ShortcutDetails } from '../shortcutDetails/ShortcutDetails';
 import { ShortcutInput } from '../shortcutInput/ShortcutInput';
+import { formatShortcuts } from '../ShortcutUtil';
 import { shortcutDialogId } from './ShortcutDialogTypes';
 
 type ShortcutDialogProps = {
@@ -16,7 +17,7 @@ type ShortcutDialogProps = {
   readonly defaultCombination: KeyCombination[];
   readonly keyCombination: KeyCombination[];
   readonly setKeyCombination: Dispatch<SetStateAction<KeyCombination[]>>;
-  readonly extraCombinations?: ShortcutList[];
+  readonly extraCombinations?: Shortcut[];
 };
 
 type Message = {
@@ -28,29 +29,30 @@ const defaultProps = {
   extraCombinations: undefined
 };
 
-function isAlreadyAssigned(
-  list: Readonly<ShortcutList[]> | undefined,
+function findAlreadyAssigned(
+  list: Readonly<Shortcut[]> | undefined,
   combination: KeyCombination[],
   ignore: KeyCombination[] | undefined
-): boolean {
+): Shortcut[] | undefined {
   if (list == null || combination.length === 0) {
-    return false;
+    return undefined;
   }
   const shortcuts = findKeyCombinations(list, combination, { exactMatch: false, compareModifiers: false });
-  if (shortcuts.length === 1) {
-    return ignore ? !compareCombinationsArray(ignore, shortcuts[0].shortcut) : true;
+  if (shortcuts.length === 1 && ignore && compareCombinationsArray(ignore, shortcuts[0].hotKey)) {
+    return undefined;
   }
-  return shortcuts.length > 0;
+  return shortcuts.length > 0 ? shortcuts : undefined;
 }
 
 function getMessage(
-  extraCombinations: ShortcutList[] | undefined,
+  extraCombinations: Shortcut[] | undefined,
   keyCombination: KeyCombination[],
   defaultCombination: KeyCombination[] | undefined,
 ): Message {
-  if (isAlreadyAssigned(extraCombinations, keyCombination, defaultCombination)
-    || isAlreadyAssigned(getShortcuts(), keyCombination, defaultCombination)) {
-    return { type: 'error', text: 'Already assigned' };
+  const assignedList = findAlreadyAssigned(extraCombinations, keyCombination, defaultCombination)
+    ?? findAlreadyAssigned(getShortcuts(), keyCombination, defaultCombination);
+  if (assignedList) {
+    return { type: 'error', text: `Already assigned: ${formatShortcuts(assignedList)}` };
   }
   return { type: 'info', text: '' };
 }

@@ -59,7 +59,7 @@ export function Link(
         </div>
         <div className="right">
           <LinkToolbar visible={editable} link={link} widget={widget} />
-          <Shortcut shortcut={link.shortcut} visible={!editable} isMouseOver={isMouseOver} />
+          <Shortcut shortcut={link.hotKey} visible={!editable} isMouseOver={isMouseOver} />
         </div>
       </div>
     </div>

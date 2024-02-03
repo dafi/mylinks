@@ -3,6 +3,7 @@ import { linkFinderDialogId } from '../../components/linkFinderDialog/LinkFinder
 import { getModal } from '../../components/modal/ModalHandler';
 import { settingsDialogId } from '../../components/settingsDialog/SettingsDialogTypes';
 import { AppUIStateAction } from '../../contexts/useAppUIState';
+import { AppActionDescription } from '../../model/AppActionDescription';
 import { filterMyLinks, openLink } from '../../model/MyLinks';
 import { MyLinks } from '../../model/MyLinks-interface';
 import { openWidgetLinksFromPoint } from '../../model/MyLinksDOM';
@@ -20,9 +21,11 @@ export function reloadShortcuts(myLinks: MyLinks, myLinksLookup: MyLinksLookup, 
 
 function addLinkShortcuts(myLinks: MyLinks): void {
   filterMyLinks(myLinks, (_w, link) => {
-    if (link.shortcut) {
+    const { label, hotKey } = link;
+    if (hotKey) {
       const shortcut: Shortcut = {
-        shortcut: link.shortcut,
+        label,
+        hotKey,
         callback: () => openLink(link),
       };
       addShortcut(shortcut);
@@ -37,19 +40,20 @@ function addSystemShortcuts(
   myLinksLookup: MyLinksLookup,
   updateUIState: Dispatch<AppUIStateAction>
 ): void {
-  myLinks?.config?.systemShortcuts?.forEach(({ action, shortcut }) => {
+  myLinks?.config?.systemShortcuts?.forEach(({ action, hotKey }) => {
+    const label = AppActionDescription[action];
     switch (action) {
       case 'openAllLinks':
-        addShortcut({ shortcut, callback: () => openWidgetLinksFromPoint(cursorPosition(), myLinksLookup) });
+        addShortcut({ label, hotKey, callback: () => openWidgetLinksFromPoint(cursorPosition(), myLinksLookup) });
         break;
       case 'findLinks':
-        addShortcut({ shortcut, callback: () => getModal(linkFinderDialogId)?.open() });
+        addShortcut({ label, hotKey, callback: () => getModal(linkFinderDialogId)?.open() });
         break;
       case 'editSettings':
-        addShortcut({ shortcut, callback: () => getModal(settingsDialogId)?.open() });
+        addShortcut({ label, hotKey, callback: () => getModal(settingsDialogId)?.open() });
         break;
       case 'toggleShortcuts':
-        addShortcut({ shortcut, callback: () => updateUIState({ type: 'hideShortcuts', value: 'toggle' }) });
+        addShortcut({ label, hotKey, callback: () => updateUIState({ type: 'hideShortcuts', value: 'toggle' }) });
         break;
     }
   });

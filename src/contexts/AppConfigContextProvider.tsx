@@ -5,7 +5,8 @@ import { settingsDialogId, SettingsPanel } from '../components/settingsDialog/Se
 import { ThemeSettingsForm } from '../components/settingsDialog/ThemeSettingsDialog';
 import { SystemShortcutForm } from '../components/systemShortcutsDialog/SystemShortcutsDialog';
 import { EditComplete } from '../hooks/useEditLink/useEditLink';
-import { Config, MyLinks, ShortcutAction, Theme } from '../model/MyLinks-interface';
+import { AppAction } from '../model/AppAction';
+import { Config, MyLinks, Theme } from '../model/MyLinks-interface';
 import { defaultAppConfig, reloadAll } from './AppConfig';
 import { AppConfigContext } from './AppConfigContext';
 import { AppUIStateAction } from './useAppUIState';
@@ -45,7 +46,7 @@ export function AppConfigContextProvider(
     onEditComplete({ type: 'success', data: myLinks });
   }
 
-  function onSaveSystemShortcuts(shortcuts: ShortcutAction[]): void {
+  function onSaveSystemShortcuts(shortcuts: AppAction[]): void {
     if (!myLinks) {
       return;
     }

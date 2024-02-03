@@ -1,5 +1,6 @@
-import { ShortcutList } from '../../model/MyLinks-interface';
+import { HotKey } from '../../model/KeyCombination';
 
 export type Shortcut = {
+  readonly label: string;
   readonly callback: () => void;
-} & Readonly<ShortcutList>;
+} & Readonly<HotKey>;

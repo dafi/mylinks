@@ -32,7 +32,7 @@ export class MyLinksHolder implements MyLinksLookup {
   }
 
   hasShortcuts(): boolean {
-    return someMyLinks(this.myLinks, (_w, l) => l.shortcut !== undefined && l.shortcut.length > 0);
+    return someMyLinks(this.myLinks, (_w, l) => l.hotKey !== undefined && l.hotKey.length > 0);
   }
 
 }

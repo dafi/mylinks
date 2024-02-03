@@ -1,3 +1,4 @@
+import { Shortcut } from '../../common/shortcut/Shortcut';
 import { KeyCombination } from '../../model/KeyCombination';
 
 const symbols: Record<string, string | undefined> = {
@@ -51,7 +52,7 @@ export function combinationToSymbols(keyCombination: KeyCombination): string {
   return str + (symbols[key] ?? key);
 }
 
-export function combinationToString(keyCombination: KeyCombination): string {
+export function formatCombination(keyCombination: KeyCombination): string {
   const arr = [];
 
   const { altKey, ctrlKey, metaKey, shiftKey, key } = keyCombination;
@@ -75,4 +76,21 @@ export function combinationToString(keyCombination: KeyCombination): string {
   arr.push(key);
 
   return arr.join('-');
+}
+
+function formatShortcut(shortcut: Shortcut, appendHotKey: boolean): string {
+  const { label, hotKey } = shortcut;
+  return appendHotKey ? `${label} [${hotKey.map(k => formatCombination(k)).join(' ')}]` : label;
+}
+
+export function formatShortcuts(shortcuts: Shortcut[] | Shortcut): string {
+  const isArray = Array.isArray(shortcuts);
+  const hasMultipleKeys = (isArray ? shortcuts[0] : shortcuts).hotKey.length > 1;
+
+  if (isArray) {
+    return shortcuts
+      .map(v => formatShortcut(v, hasMultipleKeys))
+      .join(', ');
+  }
+  return formatShortcut(shortcuts, hasMultipleKeys);
 }

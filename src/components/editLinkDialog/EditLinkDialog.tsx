@@ -96,7 +96,7 @@ function EditLinkForm({ data, onSave }: EditLinkDialogProps): ReactElement {
 
   function onDoubleClickShortcut(): void {
     setCombinationLabel(form.label);
-    const currentShortcut = form.shortcut ?? [];
+    const currentShortcut = form.hotKey ?? [];
     setDefaultCombination(currentShortcut);
     setSelectedCombination([...currentShortcut]);
     getModal(shortcutDialogId)?.open({
@@ -159,7 +159,7 @@ function EditLinkForm({ data, onSave }: EditLinkDialogProps): ReactElement {
             <li>
               <label htmlFor="shortcut">Shortcut</label>
               <div onDoubleClick={onDoubleClickShortcut} className="form-shortcut">
-                <ShortcutDetails label="Double click to change the shortcut" combination={form.shortcut} />
+                <ShortcutDetails label="Double click to change the shortcut" combination={form.hotKey} />
               </div>
             </li>
           </ul>

@@ -51,7 +51,7 @@ function updateLinkProperty(
   value: LinkEditableProperties
 ): boolean {
   switch (propName) {
-    case 'shortcut': {
+    case 'hotKey': {
       const v = value[propName];
       if (v === undefined || v.length === 0) {
         link[propName] = undefined;
