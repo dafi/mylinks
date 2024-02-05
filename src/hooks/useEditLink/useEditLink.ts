@@ -3,6 +3,7 @@ import { isLinkEditData, prepareForSave } from '../../common/EditHelper';
 
 import { editLinkDialogId } from '../../components/editLinkDialog/EditLinkDialogTypes';
 import { getModal } from '../../components/modal/ModalHandler';
+import { useAppConfigContext } from '../../contexts/AppConfigContext';
 import { EditDataType, LinkEditData } from '../../model/EditData-interface';
 
 export interface EditCompleteSuccess {
@@ -41,15 +42,16 @@ export function useEditLink(onEditComplete: (result: EditComplete) => void): Use
     widget: { id: '', title: '', list: [] }
   });
 
+  const { myLinksLookup } = useAppConfigContext();
   const onSave = useCallback((editData: EditDataType): void => {
     try {
-      if (prepareForSave(editData)) {
+      if (prepareForSave(editData, myLinksLookup)) {
         onEditComplete({ type: 'success', data: editData });
       }
     } catch (e) {
       onEditComplete({ type: 'error', error: e as Error });
     }
-  }, [onEditComplete]);
+  }, [myLinksLookup, onEditComplete]);
 
   const onBeginEdit = useCallback((editData: EditDataType): void => {
     if (isLinkEditData(editData)) {

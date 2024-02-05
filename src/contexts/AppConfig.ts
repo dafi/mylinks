@@ -2,6 +2,7 @@ import { Dispatch } from 'react';
 import { MyLinksHolder } from '../common/MyLinksHolder';
 import { reloadShortcuts } from '../common/shortcut/ShortcutManagerHelper';
 import { applyTheme, defaultTheme } from '../common/ThemeUtil';
+import { WidgetGridImpl } from '../common/WidgetGridImpl';
 import { Config, MyLinks } from '../model/MyLinks-interface';
 import { MyLinksLookup } from '../model/MyLinksLookup';
 import { AppUIStateAction } from './useAppUIState';
@@ -19,7 +20,7 @@ export function reloadAll(myLinks: MyLinks | undefined, updateUIState: Dispatch<
     return defaultAppConfig;
   }
   try {
-    const myLinksHolder = new MyLinksHolder(myLinks);
+    const myLinksHolder = new MyLinksHolder(myLinks, new WidgetGridImpl(myLinks.columns));
     reloadShortcuts(myLinks, myLinksHolder, updateUIState);
 
     const config = buildConfig(myLinksHolder);

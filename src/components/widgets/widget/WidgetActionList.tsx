@@ -19,12 +19,24 @@ export default function WidgetActionList({ editable, widget }: WidgetActionListP
     }
   }
 
+  function onDelete(): void {
+    const response = confirm(`Delete widget "${widget.title}"?`);
+    if (response && onEdit) {
+      onEdit({
+        widget,
+        original: widget,
+        editType: 'delete',
+      });
+    }
+  }
+
   const { onEdit } = useAppUIStateContext();
 
   if (editable) {
     return (
       <div className="ml-widget-button-container">
         <button type="button" className="button" onClick={onAddLink}>Add New Link</button>
+        <button type="button" className="button danger" onClick={onDelete}>Delete Widget</button>
       </div>
     );
   }

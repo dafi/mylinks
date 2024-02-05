@@ -9,6 +9,7 @@ import {
   WidgetEditData
 } from '../model/EditData-interface';
 import { Link } from '../model/MyLinks-interface';
+import { MyLinksLookup } from '../model/MyLinksLookup';
 import { move } from './ArrayUtil';
 import { compareCombinationsArray } from './shortcut/ShortcutManager';
 
@@ -16,8 +17,8 @@ export function isLinkEditData(editData: EditDataType): editData is LinkEditData
   return 'link' in editData;
 }
 
-export function prepareForSave(editData: EditDataType): boolean {
-  return isLinkEditData(editData) ? prepareLinkForSave(editData) : prepareWidgetForSave(editData);
+export function prepareForSave(editData: EditDataType, myLinksLookup: MyLinksLookup | undefined): boolean {
+  return isLinkEditData(editData) ? prepareLinkForSave(editData) : prepareWidgetForSave(editData, myLinksLookup);
 }
 
 function prepareLinkForSave(editData: LinkEditData): boolean {
@@ -111,10 +112,16 @@ function moveLink(editData: LinkEditDataMove): boolean {
   return false;
 }
 
-function prepareWidgetForSave(editData: WidgetEditData): boolean {
-  if (editData.editType === 'update') {
-    editData.widget.title = editData.edited.title;
-    return true;
+function prepareWidgetForSave(editData: WidgetEditData, myLinksLookup: MyLinksLookup | undefined): boolean {
+  switch (editData.editType) {
+    case 'update':
+      editData.widget.title = editData.edited.title;
+      return true;
+    case 'delete':
+      return myLinksLookup?.getWidgetGrid().deleteWidgetById(editData.widget.id) ?? false;
+    case 'create':
+    case 'move':
+      break;
   }
   return false;
 }

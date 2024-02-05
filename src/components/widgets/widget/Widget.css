@@ -84,6 +84,16 @@ li.over {
   background-color: var(--action-color-primary-60);
 }
 
+.ml-widget-button-container .button.danger {
+  color: var(--color-white);
+  background-color: var(--action-color-danger);
+}
+
+.ml-widget-button-container .button.danger:hover {
+  color: var(--color-white);
+  background-color: var(--action-color-danger-60);
+}
+
 .ml-widget-list {
   padding: 0 10px 10px;
 }

@@ -1,12 +1,16 @@
 import { someMyLinks } from '../model/MyLinks';
 import { Link, MyLinks, Widget } from '../model/MyLinks-interface';
 import { MyLinksLookup } from '../model/MyLinksLookup';
+import { WidgetGrid } from '../model/WidgetGrid';
 import { LinkCache } from './LinkCache';
 
 export class MyLinksHolder implements MyLinksLookup {
   private mLinkCache?: LinkCache;
 
-  constructor(public readonly myLinks: MyLinks) {}
+  constructor(
+    public readonly myLinks: MyLinks,
+    private widgetGrid: WidgetGrid,
+  ) {}
 
   get linkCache(): LinkCache {
     if (!this.mLinkCache) {
@@ -28,11 +32,14 @@ export class MyLinksHolder implements MyLinksLookup {
   }
 
   findWidgetById(id: string): Widget | undefined {
-    return this.myLinks.columns.flat().find(w => w.id === id);
+    return this.widgetGrid.findWidgetById(id);
   }
 
   hasShortcuts(): boolean {
     return someMyLinks(this.myLinks, (_w, l) => l.hotKey !== undefined && l.hotKey.length > 0);
   }
 
+  getWidgetGrid(): WidgetGrid {
+    return this.widgetGrid;
+  }
 }
