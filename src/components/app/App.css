@@ -48,6 +48,9 @@
 
   --action-color-warn: #eab308;
   --action-color-warn-60: rgb(234 179 8 / 60%);
+
+  --action-color-danger: #f00;
+  --action-color-danger-60: rgb(255 0 0 / 60%);
 }
 
 /* Form elements don't inherit font settings https://stackoverflow.com/a/26140154/195893 */
