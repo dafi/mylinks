@@ -8,6 +8,8 @@ export interface MyLinksLookup {
 
   findWidgetByLinkId(linkId: string): Widget | undefined;
 
+  moveLink(fromId: string, toId: string): boolean;
+
   hasShortcuts(): boolean;
 
   getWidgetGrid(): WidgetGrid;

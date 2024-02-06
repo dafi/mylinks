@@ -16,7 +16,8 @@ export default function WidgetTitle({ editable, widget, onToggleEdit }: WidgetTi
     if (context.onEdit && isNotEmptyString(title) && widget.title !== title) {
       context.onEdit({
         widget,
-        editType: 'update',
+        action: 'update',
+        entity: 'widget',
         edited: { title },
         original: { title: widget.title },
       });

@@ -36,7 +36,8 @@ interface UseEditLink {
  */
 export function useEditLink(onEditComplete: (result: EditComplete) => void): UseEditLink {
   const [linkEditData, setLinkEditData] = useState<LinkEditData>({
-    editType: 'create',
+    action: 'create',
+    entity: 'link',
     edited: { label: '', urls: [] },
     link: { id: '', label: '', urls: [] },
     widget: { id: '', title: '', list: [] }
@@ -55,7 +56,7 @@ export function useEditLink(onEditComplete: (result: EditComplete) => void): Use
 
   const onBeginEdit = useCallback((editData: EditDataType): void => {
     if (isLinkEditData(editData)) {
-      if (editData.editType === 'update' || editData.editType === 'create') {
+      if (editData.action === 'update' || editData.action === 'create') {
         setLinkEditData(editData);
         getModal(editLinkDialogId)?.open();
       } else {

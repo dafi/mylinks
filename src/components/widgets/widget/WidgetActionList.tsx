@@ -14,7 +14,8 @@ export default function WidgetActionList({ editable, widget }: WidgetActionListP
         link: { id: `${widget.id}-${Date.now()}`, urls: [''], hotKey: [], label: '' },
         edited: { urls: [''], hotKey: [], label: '' },
         widget,
-        editType: 'create'
+        action: 'create',
+        entity: 'link',
       });
     }
   }
@@ -25,7 +26,8 @@ export default function WidgetActionList({ editable, widget }: WidgetActionListP
       onEdit({
         widget,
         original: widget,
-        editType: 'delete',
+        action: 'delete',
+        entity: 'widget',
       });
     }
   }

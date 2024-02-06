@@ -2,6 +2,7 @@ import { someMyLinks } from '../model/MyLinks';
 import { Link, MyLinks, Widget } from '../model/MyLinks-interface';
 import { MyLinksLookup } from '../model/MyLinksLookup';
 import { WidgetGrid } from '../model/WidgetGrid';
+import { move } from './ArrayUtil';
 import { LinkCache } from './LinkCache';
 
 export class MyLinksHolder implements MyLinksLookup {
@@ -37,6 +38,23 @@ export class MyLinksHolder implements MyLinksLookup {
 
   hasShortcuts(): boolean {
     return someMyLinks(this.myLinks, (_w, l) => l.hotKey !== undefined && l.hotKey.length > 0);
+  }
+
+  moveLink(fromId: string, toId: string): boolean {
+    const fromWidget = this.findWidgetByLinkId(fromId);
+    const toWidget = this.findWidgetByLinkId(toId);
+
+    if (fromWidget && fromWidget === toWidget) {
+      const links = fromWidget.list;
+      const fromIndex = links.findIndex(l => l.id === fromId);
+      const toIndex = links.findIndex(l => l.id === toId);
+
+      if (fromIndex >= 0 && toIndex >= 0) {
+        fromWidget.list = move(links, fromIndex, toIndex);
+        return true;
+      }
+    }
+    return false;
   }
 
   getWidgetGrid(): WidgetGrid {

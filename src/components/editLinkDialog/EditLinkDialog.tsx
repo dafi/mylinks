@@ -57,16 +57,15 @@ function EditLinkForm({ data, onSave }: EditLinkDialogProps): ReactElement {
   function onClickSave(e: FormEvent<HTMLFormElement>): void {
     e.preventDefault();
 
-    const originalProperties = { ...data.link };
-    switch (data.editType) {
+    switch (data.action) {
       case 'create':
         onSave({ ...data, edited: form });
         break;
       case 'update':
-        onSave({ ...data, edited: form, original: originalProperties });
+        onSave({ ...data, edited: form, original: { ...data.link } });
         break;
       default:
-        throw new Error(`Not implemented yet: ${data.editType} case`);
+        throw new Error(`Not implemented yet: ${data.action} case`);
     }
     onCloseDialog(CloseResultCode.Ok);
   }

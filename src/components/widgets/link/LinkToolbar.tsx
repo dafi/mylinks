@@ -1,6 +1,6 @@
 import { MouseEvent, ReactElement } from 'react';
 import { useAppUIStateContext } from '../../../contexts/AppUIStateContext';
-import { EditType } from '../../../model/EditData-interface';
+import { EditAction } from '../../../model/EditData-interface';
 import { Link as MLLink, Widget } from '../../../model/MyLinks-interface';
 import './Edit.css';
 
@@ -14,21 +14,23 @@ export function LinkToolbar({ visible, link, widget }: LinkToolbarProps): ReactE
   function onEdit(e: MouseEvent<HTMLElement>): void {
     e.stopPropagation();
     e.preventDefault();
-    const editType = e.currentTarget.dataset.action as EditType;
+    const action = e.currentTarget.dataset.action as EditAction;
 
     if (context.onEdit) {
-      if (editType === 'delete') {
+      if (action === 'delete') {
         context.onEdit({
           link,
           widget,
-          editType,
+          action,
+          entity: 'link',
           original: link,
         });
-      } else if (editType === 'update') {
+      } else if (action === 'update') {
         context.onEdit({
           link,
           widget,
-          editType,
+          action,
+          entity: 'link',
           edited: link,
           original: { ...link },
         });

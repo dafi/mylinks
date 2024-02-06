@@ -10,19 +10,18 @@ import {
 } from '../model/EditData-interface';
 import { Link } from '../model/MyLinks-interface';
 import { MyLinksLookup } from '../model/MyLinksLookup';
-import { move } from './ArrayUtil';
 import { compareCombinationsArray } from './shortcut/ShortcutManager';
 
 export function isLinkEditData(editData: EditDataType): editData is LinkEditData {
-  return 'link' in editData;
+  return editData.entity === 'link';
 }
 
 export function prepareForSave(editData: EditDataType, myLinksLookup: MyLinksLookup | undefined): boolean {
-  return isLinkEditData(editData) ? prepareLinkForSave(editData) : prepareWidgetForSave(editData, myLinksLookup);
+  return isLinkEditData(editData) ? prepareLinkForSave(editData, myLinksLookup) : prepareWidgetForSave(editData, myLinksLookup);
 }
 
-function prepareLinkForSave(editData: LinkEditData): boolean {
-  switch (editData.editType) {
+function prepareLinkForSave(editData: LinkEditData, myLinksLookup: MyLinksLookup | undefined): boolean {
+  switch (editData.action) {
     case 'create':
       return createLink(editData);
     case 'update':
@@ -30,7 +29,7 @@ function prepareLinkForSave(editData: LinkEditData): boolean {
     case 'delete':
       return deleteLink(editData);
     case 'move':
-      return moveLink(editData);
+      return moveLink(editData, myLinksLookup);
     default:
       return false;
   }
@@ -103,17 +102,12 @@ function deleteLink(editData: LinkEditDataDelete): boolean {
   return response;
 }
 
-function moveLink(editData: LinkEditDataMove): boolean {
-  const { fromIndex, toIndex } = editData.position;
-  if (fromIndex >= 0 && toIndex >= 0) {
-    editData.widget.list = move(editData.widget.list, fromIndex, toIndex);
-    return true;
-  }
-  return false;
+function moveLink(editData: LinkEditDataMove, myLinksLookup: MyLinksLookup | undefined): boolean {
+  return myLinksLookup?.moveLink(editData.position.fromId, editData.position.toId) ?? false;
 }
 
 function prepareWidgetForSave(editData: WidgetEditData, myLinksLookup: MyLinksLookup | undefined): boolean {
-  switch (editData.editType) {
+  switch (editData.action) {
     case 'update':
       editData.widget.title = editData.edited.title;
       return true;

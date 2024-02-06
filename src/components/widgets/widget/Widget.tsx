@@ -31,14 +31,13 @@ export function Widget({ value: widget }: WidgetProps): ReactElement {
   function onDrop(sourceId: string, destId: string): void {
     const links = widget.list;
     const fromIndex = links.findIndex(l => l.id === sourceId);
-    const toIndex = links.findIndex(l => l.id === destId);
-    if (appOnEdit && fromIndex >= 0 && toIndex >= 0) {
+    if (appOnEdit && fromIndex >= 0) {
       appOnEdit({
+        action: 'move',
+        entity: 'link',
         link: links[fromIndex],
-        editType: 'move',
-        original: links[fromIndex],
         widget,
-        position: { fromIndex, toIndex }
+        position: { fromId: sourceId, toId: destId }
       });
     }
   }
