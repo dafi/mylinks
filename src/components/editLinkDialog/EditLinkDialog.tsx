@@ -39,13 +39,13 @@ function validateUrls(urls: string[], el: HTMLTextAreaElement): boolean {
     el.setCustomValidity('Url is mandatory');
     return false;
   }
-  const invalidUrlIndex = urls.findIndex(url => !/^[a-z]*:\/\/.*/.test(url));
-  if (invalidUrlIndex < 0) {
-    el.setCustomValidity('');
-    return true;
+  const invalidUrl = urls.find(url => !/^[a-z]*:\/\/.*/.test(url));
+  if (invalidUrl !== undefined) {
+    el.setCustomValidity(`Invalid url '${invalidUrl}'`);
+    return false;
   }
-  el.setCustomValidity(`Invalid url at line ${invalidUrlIndex + 1}`);
-  return false;
+  el.setCustomValidity('');
+  return true;
 }
 
 // eslint-disable-next-line react/no-multi-comp
