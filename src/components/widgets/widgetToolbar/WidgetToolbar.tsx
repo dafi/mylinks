@@ -1,14 +1,11 @@
 import { ReactElement } from 'react';
 import { MyLinkActionCallback } from '../../../model/Events';
-import { openWidgetLinks } from '../../../model/MyLinks';
-import { Widget as MLWidget } from '../../../model/MyLinks-interface';
 import './widgetToolbar.css';
 
-export type WidgetToolbarActionType = 'collapse' | 'edit';
+export type WidgetToolbarActionType = 'collapse' | 'edit' | 'openLinks';
 
 interface WidgetToolbarProps {
   readonly collapsed: boolean;
-  readonly widget: MLWidget;
   readonly classNames?: string;
   readonly action: MyLinkActionCallback<WidgetToolbarActionType>;
   readonly editable: boolean;
@@ -21,7 +18,6 @@ const defaultProps = {
 export function WidgetToolbar(
   {
     collapsed,
-    widget,
     classNames,
     action,
     editable,
@@ -40,7 +36,7 @@ export function WidgetToolbar(
         />
         <i
           className="fa fa-external-link-alt icon"
-          onClick={(): void => openWidgetLinks(widget)}
+          onClick={(): void => action({ target: 'openLinks' })}
           title="Open all links"
         />
         <i
