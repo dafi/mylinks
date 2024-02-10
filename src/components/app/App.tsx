@@ -113,16 +113,20 @@ function Page(): ReactElement {
             isVisible={uiState.settingsChanged}
             onExportConfig={onExportConfig}
           />
-          <div className="ml-grid">
-            <Grid columns={myLinks?.columns ?? []} />
-          </div>
+          { myLinks &&
+            <div className="ml-grid">
+              <Grid columns={myLinks.columns} />
+            </div>
+          }
 
           <AppToolbar action={onClickToolbar} />
 
-          <LinkFinderDialog
-            onLinkSelected={onLinkSelected}
-            widgets={myLinks?.columns}
-          />
+          { myLinks &&
+            <LinkFinderDialog
+              onLinkSelected={onLinkSelected}
+              links={myLinks.columns.flat().flatMap(w => w.list)}
+            />
+          }
 
         </div>
       </AppUIStateContextProvider>

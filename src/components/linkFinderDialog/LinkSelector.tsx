@@ -2,20 +2,20 @@ import { ChangeEvent, KeyboardEvent, ReactElement, useRef, useState } from 'reac
 import { LinkSearch, LinkSearchResult } from '../../common/LinkSearch';
 import { isNotEmptyString } from '../../common/StringUtil';
 import { useAppConfigContext } from '../../contexts/AppConfigContext';
-import { Link, Widget } from '../../model/MyLinks-interface';
+import { Link } from '../../model/MyLinks-interface';
 import { ListView } from '../listView/ListView';
 import { ListViewHandle, ListViewItem } from '../listView/ListViewTypes';
 import { LinkIcon } from '../widgets/linkIcon/LinkIcon';
 import './LinkSelector.css';
 
 interface LinkSelectorProps {
-  readonly widgets: Widget[][];
+  readonly links: Link[];
   readonly onSelected: (link: Link) => void;
 }
 
 export function LinkSelector(
   {
-    widgets,
+    links,
     onSelected,
   }: LinkSelectorProps
 ): ReactElement {
@@ -45,7 +45,6 @@ export function LinkSelector(
   const linkSearch = new LinkSearch();
   const [result, setResult] = useState<LinkSearchResult[]>([]);
 
-  const links = widgets.flat().flatMap(w => w.list);
   linkSearch.setLinks(links);
 
   const listComponents = result.map((item): ListViewItem => (

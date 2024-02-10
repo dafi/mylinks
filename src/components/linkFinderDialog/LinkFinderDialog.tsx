@@ -1,25 +1,25 @@
 import { ReactElement } from 'react';
-import { Link, Widget } from '../../model/MyLinks-interface';
+import { Link } from '../../model/MyLinks-interface';
 import Modal from '../modal/Modal';
 import { linkFinderDialogId } from './LinkFinderDialogTypes';
 import { LinkSelector } from './LinkSelector';
 
 interface LinkFinderDialogProps {
   readonly onLinkSelected: (link: Link) => void;
-  readonly widgets: Widget[][] | undefined;
+  readonly links: Link[] | undefined;
 }
 
 export function LinkFinderDialog(
   {
     onLinkSelected,
-    widgets,
+    links,
   }: LinkFinderDialogProps
 ): ReactElement | null {
   function onSelected(link: Link): void {
     onLinkSelected(link);
   }
 
-  if (!widgets) {
+  if (!links) {
     return null;
   }
 
@@ -27,7 +27,7 @@ export function LinkFinderDialog(
     <Modal id={linkFinderDialogId}>
       <LinkSelector
         onSelected={onSelected}
-        widgets={widgets}
+        links={links}
       />
     </Modal>
   );
