@@ -2,6 +2,7 @@ import { ReactElement, useState } from 'react';
 import { useAppUIStateContext } from '../../../contexts/AppUIStateContext';
 import useCollapsed from '../../../hooks/useCollapsed/useCollapsed';
 import { MyLinksEvent } from '../../../model/Events';
+import { openWidgetLinks } from '../../../model/MyLinks';
 import { Widget as MLWidget } from '../../../model/MyLinks-interface';
 import { Link } from '../link/Link';
 import { WidgetToolbar, WidgetToolbarActionType } from '../widgetToolbar/WidgetToolbar';
@@ -17,10 +18,16 @@ export interface WidgetProps {
 
 export function Widget({ value: widget }: WidgetProps): ReactElement {
   function onClickToolbar(e: MyLinksEvent<WidgetToolbarActionType>): void {
-    if (e.target === 'collapse') {
-      toggleStartCollapsed();
-    } else {
-      onToggleEdit();
+    switch (e.target) {
+      case 'collapse':
+        toggleStartCollapsed();
+        break;
+      case 'edit':
+        onToggleEdit();
+        break;
+      case 'openLinks':
+        openWidgetLinks(widget);
+        break;
     }
   }
 
@@ -77,7 +84,6 @@ export function Widget({ value: widget }: WidgetProps): ReactElement {
         </h2>
         <WidgetToolbar
           collapsed={startCollapsed}
-          widget={widget}
           editable={editable}
           action={onClickToolbar}
           classNames="hover-toolbar"
