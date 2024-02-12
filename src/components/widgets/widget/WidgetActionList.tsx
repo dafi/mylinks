@@ -1,4 +1,5 @@
 import { ReactElement } from 'react';
+import { useAppConfigContext } from '../../../contexts/AppConfigContext';
 import { useAppUIStateContext } from '../../../contexts/AppUIStateContext';
 import { Widget } from '../../../model/MyLinks-interface';
 
@@ -22,17 +23,19 @@ export default function WidgetActionList({ editable, widget }: WidgetActionListP
 
   function onDelete(): void {
     const response = confirm(`Delete widget "${widget.title}"?`);
-    if (response && onEdit) {
+    if (response && onEdit && myLinksLookup) {
       onEdit({
         widget,
         original: widget,
         action: 'delete',
         entity: 'widget',
+        myLinksLookup,
       });
     }
   }
 
   const { onEdit } = useAppUIStateContext();
+  const { myLinksLookup } = useAppConfigContext();
 
   if (editable) {
     return (

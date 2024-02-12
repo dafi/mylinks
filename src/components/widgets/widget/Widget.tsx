@@ -1,13 +1,11 @@
 import { ReactElement, useState } from 'react';
-import { useAppUIStateContext } from '../../../contexts/AppUIStateContext';
 import useCollapsed from '../../../hooks/useCollapsed/useCollapsed';
 import { MyLinksEvent } from '../../../model/Events';
 import { openWidgetLinks } from '../../../model/MyLinks';
 import { Widget as MLWidget } from '../../../model/MyLinks-interface';
-import { Link } from '../link/Link';
 import { WidgetToolbar, WidgetToolbarActionType } from '../widgetToolbar/WidgetToolbar';
-import { DraggableListItem } from './DraggableListItem';
 import './Widget.css';
+import { LinkListView } from './LinkListView';
 import { cssExtraClasses } from './Widget.utils';
 import WidgetActionList from './WidgetActionList';
 import WidgetTitle from './WidgetTitle';
@@ -35,39 +33,8 @@ export function Widget({ value: widget }: WidgetProps): ReactElement {
     setEditable(prevState => !prevState);
   }
 
-  function onDrop(sourceId: string, destId: string): void {
-    const links = widget.list;
-    const fromIndex = links.findIndex(l => l.id === sourceId);
-    if (appOnEdit && fromIndex >= 0) {
-      appOnEdit({
-        action: 'move',
-        entity: 'link',
-        link: links[fromIndex],
-        widget,
-        position: { fromId: sourceId, toId: destId }
-      });
-    }
-  }
-
-  const { onEdit: appOnEdit } = useAppUIStateContext();
-
   const [editable, setEditable] = useState(false);
   const { startCollapsed, collapsed, setCollapsed, toggleStartCollapsed } = useCollapsed(widget.id);
-
-  const items = widget.list.map(v =>
-    <DraggableListItem
-      key={v.id}
-      id={v.id}
-      draggable={editable}
-      onDrop={onDrop}
-    >
-      <Link
-        link={v}
-        draggable={!editable}
-        widget={widget}
-        editable={editable}
-      />
-    </DraggableListItem>);
 
   const cls = cssExtraClasses(startCollapsed, collapsed);
 
@@ -91,7 +58,7 @@ export function Widget({ value: widget }: WidgetProps): ReactElement {
       </div>
       <div className="ml-widget-container">
         <div className="ml-widget-control-box">
-          <ul className="ml-widget-list">{items}</ul>
+          <LinkListView widget={widget} editable={editable} />
           <WidgetActionList editable={editable} widget={widget} />
         </div>
       </div>

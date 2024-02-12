@@ -1,5 +1,7 @@
 import {
+  EditDataMove,
   EditDataType,
+  EditEntity, isLinkEditData,
   LinkEditableProperties,
   LinkEditData,
   LinkEditDataCreate,
@@ -9,18 +11,13 @@ import {
   WidgetEditData
 } from '../model/EditData-interface';
 import { Link } from '../model/MyLinks-interface';
-import { MyLinksLookup } from '../model/MyLinksLookup';
 import { compareCombinationsArray } from './shortcut/ShortcutManager';
 
-export function isLinkEditData(editData: EditDataType): editData is LinkEditData {
-  return editData.entity === 'link';
+export function prepareForSave(editData: EditDataType): boolean {
+  return isLinkEditData(editData) ? prepareLinkForSave(editData) : prepareWidgetForSave(editData);
 }
 
-export function prepareForSave(editData: EditDataType, myLinksLookup: MyLinksLookup | undefined): boolean {
-  return isLinkEditData(editData) ? prepareLinkForSave(editData, myLinksLookup) : prepareWidgetForSave(editData, myLinksLookup);
-}
-
-function prepareLinkForSave(editData: LinkEditData, myLinksLookup: MyLinksLookup | undefined): boolean {
+function prepareLinkForSave(editData: LinkEditData | LinkEditDataMove): boolean {
   switch (editData.action) {
     case 'create':
       return createLink(editData);
@@ -29,7 +26,7 @@ function prepareLinkForSave(editData: LinkEditData, myLinksLookup: MyLinksLookup
     case 'delete':
       return deleteLink(editData);
     case 'move':
-      return moveLink(editData, myLinksLookup);
+      return moveLink(editData);
     default:
       return false;
   }
@@ -102,17 +99,17 @@ function deleteLink(editData: LinkEditDataDelete): boolean {
   return response;
 }
 
-function moveLink(editData: LinkEditDataMove, myLinksLookup: MyLinksLookup | undefined): boolean {
-  return myLinksLookup?.moveLink(editData.position.fromId, editData.position.toId) ?? false;
+function moveLink(editData: LinkEditDataMove): boolean {
+  return editData.myLinksLookup.moveLink(editData.source, editData.destination);
 }
 
-function prepareWidgetForSave(editData: WidgetEditData, myLinksLookup: MyLinksLookup | undefined): boolean {
+function prepareWidgetForSave(editData: WidgetEditData | EditDataMove<EditEntity>): boolean {
   switch (editData.action) {
     case 'update':
       editData.widget.title = editData.edited.title;
       return true;
     case 'delete':
-      return myLinksLookup?.getWidgetGrid().deleteWidgetById(editData.widget.id) ?? false;
+      return editData.myLinksLookup.getWidgetGrid().deleteWidgetById(editData.widget.id);
     case 'create':
     case 'move':
       break;

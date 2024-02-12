@@ -31,3 +31,8 @@ export type MyLinks = {
   columns: Widget[][];
   config?: Config;
 };
+
+export type ItemLocation = {
+  id: string;
+  index: number;
+};

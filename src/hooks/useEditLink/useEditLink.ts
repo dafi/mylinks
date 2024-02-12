@@ -1,10 +1,9 @@
 import { useCallback, useState } from 'react';
-import { isLinkEditData, prepareForSave } from '../../common/EditHelper';
+import { prepareForSave } from '../../common/EditHelper';
 
 import { editLinkDialogId } from '../../components/editLinkDialog/EditLinkDialogTypes';
 import { getModal } from '../../components/modal/ModalHandler';
-import { useAppConfigContext } from '../../contexts/AppConfigContext';
-import { EditDataType, LinkEditData } from '../../model/EditData-interface';
+import { EditDataType, isLinkEditData, LinkEditData } from '../../model/EditData-interface';
 
 export interface EditCompleteSuccess {
   type: 'success';
@@ -43,16 +42,15 @@ export function useEditLink(onEditComplete: (result: EditComplete) => void): Use
     widget: { id: '', title: '', list: [] }
   });
 
-  const { myLinksLookup } = useAppConfigContext();
   const onSave = useCallback((editData: EditDataType): void => {
     try {
-      if (prepareForSave(editData, myLinksLookup)) {
+      if (prepareForSave(editData)) {
         onEditComplete({ type: 'success', data: editData });
       }
     } catch (e) {
       onEditComplete({ type: 'error', error: e as Error });
     }
-  }, [myLinksLookup, onEditComplete]);
+  }, [onEditComplete]);
 
   const onBeginEdit = useCallback((editData: EditDataType): void => {
     if (isLinkEditData(editData)) {

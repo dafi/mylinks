@@ -1,5 +1,5 @@
 import { someMyLinks } from '../model/MyLinks';
-import { Link, MyLinks, Widget } from '../model/MyLinks-interface';
+import { ItemLocation, Link, MyLinks, Widget } from '../model/MyLinks-interface';
 import { MyLinksLookup } from '../model/MyLinksLookup';
 import { WidgetGrid } from '../model/WidgetGrid';
 import { move } from './ArrayUtil';
@@ -40,17 +40,24 @@ export class MyLinksHolder implements MyLinksLookup {
     return someMyLinks(this.myLinks, (_w, l) => l.hotKey !== undefined && l.hotKey.length > 0);
   }
 
-  moveLink(fromId: string, toId: string): boolean {
-    const fromWidget = this.findWidgetByLinkId(fromId);
-    const toWidget = this.findWidgetByLinkId(toId);
+  moveLink(source: ItemLocation, destination: ItemLocation): boolean {
+    if (source.id === destination.id) {
+      const widget = this.findWidgetById(source.id);
 
-    if (fromWidget && fromWidget === toWidget) {
-      const links = fromWidget.list;
-      const fromIndex = links.findIndex(l => l.id === fromId);
-      const toIndex = links.findIndex(l => l.id === toId);
+      if (widget) {
+        const links = widget.list;
+        const fromIndex = source.index;
+        const toIndex = destination.index;
+        widget.list = move(links, fromIndex, toIndex);
+        return true;
+      }
+    } else {
+      const sourceWidget = this.findWidgetById(source.id);
+      const destinationWidget = this.findWidgetById(destination.id);
 
-      if (fromIndex >= 0 && toIndex >= 0) {
-        fromWidget.list = move(links, fromIndex, toIndex);
+      if (sourceWidget && destinationWidget) {
+        const link = sourceWidget.list.splice(source.index, 1)[0];
+        destinationWidget.list.splice(destination.index, 0, link);
         return true;
       }
     }

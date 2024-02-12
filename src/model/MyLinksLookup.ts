@@ -1,4 +1,4 @@
-import { Link, Widget } from './MyLinks-interface';
+import { Link, Widget, ItemLocation } from './MyLinks-interface';
 import { WidgetGrid } from './WidgetGrid';
 
 export interface MyLinksLookup {
@@ -8,7 +8,7 @@ export interface MyLinksLookup {
 
   findWidgetByLinkId(linkId: string): Widget | undefined;
 
-  moveLink(fromId: string, toId: string): boolean;
+  moveLink(source: ItemLocation, destination: ItemLocation): boolean;
 
   hasShortcuts(): boolean;
 
