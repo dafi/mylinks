@@ -111,8 +111,9 @@ function prepareWidgetForSave(editData: WidgetEditData | EditDataMove<EditEntity
     case 'delete':
       return editData.myLinksLookup.getWidgetGrid().deleteWidgetById(editData.widget.id);
     case 'create':
-    case 'move':
       break;
+    case 'move':
+      return editData.myLinksLookup.getWidgetGrid().move(editData.source, editData.destination);
   }
   return false;
 }

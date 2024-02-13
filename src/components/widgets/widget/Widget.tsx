@@ -1,3 +1,4 @@
+import { Draggable } from '@hello-pangea/dnd';
 import { ReactElement, useState } from 'react';
 import useCollapsed from '../../../hooks/useCollapsed/useCollapsed';
 import { MyLinksEvent } from '../../../model/Events';
@@ -12,9 +13,15 @@ import WidgetTitle from './WidgetTitle';
 
 export interface WidgetProps {
   readonly value: MLWidget;
+  readonly index: number;
 }
 
-export function Widget({ value: widget }: WidgetProps): ReactElement {
+export function Widget(
+  {
+    value: widget,
+    index,
+  }: WidgetProps
+): ReactElement {
   function onClickToolbar(e: MyLinksEvent<WidgetToolbarActionType>): void {
     switch (e.target) {
       case 'collapse':
@@ -39,28 +46,40 @@ export function Widget({ value: widget }: WidgetProps): ReactElement {
   const cls = cssExtraClasses(startCollapsed, collapsed);
 
   return (
-    <div
-      className={`ml-widget ${cls.widget}`}
-      data-list-id={widget.id}
-      onMouseEnter={(): void => setCollapsed(false)}
-      onMouseLeave={(): void => setCollapsed(true)}
+    <Draggable
+      draggableId={widget.id}
+      isDragDisabled={!editable}
+      index={index}
     >
-      <div>
-        <h2 className="ml-widget-title">
-          <WidgetTitle editable={editable} widget={widget} onToggleEdit={onToggleEdit} />
-        </h2>
-        <WidgetToolbar
-          collapsed={startCollapsed}
-          editable={editable}
-          action={onClickToolbar}
-          classNames="hover-toolbar"
-        />
-      </div>
-      <div className="ml-widget-container">
-        <div className="ml-widget-control-box">
-          <LinkListView widget={widget} editable={editable} />
-          <WidgetActionList editable={editable} widget={widget} />
-        </div>
-      </div>
-    </div>);
+      {dragProvided =>
+        <div
+          className={`ml-widget ${cls.widget}`}
+          data-list-id={widget.id}
+          onMouseEnter={(): void => setCollapsed(false)}
+          onMouseLeave={(): void => setCollapsed(true)}
+          ref={dragProvided.innerRef}
+          {...dragProvided.draggableProps}
+          {...dragProvided.dragHandleProps}
+        >
+          <div>
+            <h2 className="ml-widget-title">
+              <WidgetTitle editable={editable} widget={widget} onToggleEdit={onToggleEdit} />
+            </h2>
+            <WidgetToolbar
+              collapsed={startCollapsed}
+              editable={editable}
+              action={onClickToolbar}
+              classNames="hover-toolbar"
+            />
+          </div>
+          <div className="ml-widget-container">
+            <div className="ml-widget-control-box">
+              <LinkListView widget={widget} editable={editable} />
+              <WidgetActionList editable={editable} widget={widget} />
+            </div>
+          </div>
+        </div>}
+    </Draggable>
+
+  );
 }
