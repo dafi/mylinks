@@ -56,7 +56,7 @@ export class MyLinksHolder implements MyLinksLookup {
       const destinationWidget = this.findWidgetById(destination.id);
 
       if (sourceWidget && destinationWidget) {
-        const link = sourceWidget.list.splice(source.index, 1)[0];
+        const [link] = sourceWidget.list.splice(source.index, 1);
         destinationWidget.list.splice(destination.index, 0, link);
         return true;
       }
