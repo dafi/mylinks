@@ -1,5 +1,12 @@
-import { Widget } from '../model/MyLinks-interface';
+import { ItemLocation, Widget } from '../model/MyLinks-interface';
 import { WidgetGrid } from '../model/WidgetGrid';
+import { move } from './ArrayUtil';
+
+function extractColumnIndex(id: string): number | undefined {
+  const index = id.match(/col-(\d+)/)?.at(1);
+
+  return index === undefined ? undefined : Number.parseInt(index, 10);
+}
 
 export class WidgetGridImpl implements WidgetGrid {
   constructor(
@@ -17,6 +24,27 @@ export class WidgetGridImpl implements WidgetGrid {
         return true;
       }
       ++columnIndex;
+    }
+    return false;
+  }
+
+  move(source: ItemLocation, destination: ItemLocation): boolean {
+    if (source.id === destination.id) {
+      const columnIndex = extractColumnIndex(source.id);
+
+      if (columnIndex !== undefined) {
+        this.widgets[columnIndex] = move(this.widgets[columnIndex], source.index, destination.index);
+        return true;
+      }
+    } else {
+      const sourceColumnIndex = extractColumnIndex(source.id);
+      const destinationColumnIndex = extractColumnIndex(destination.id);
+
+      if (sourceColumnIndex !== undefined && destinationColumnIndex !== undefined) {
+        const [widget] = this.widgets[sourceColumnIndex].splice(source.index, 1);
+        this.widgets[destinationColumnIndex].splice(destination.index, 0, widget);
+        return true;
+      }
     }
     return false;
   }
