@@ -13,9 +13,6 @@ export function move<T>(arr: T[], from: number, to: number): T[] {
     return clone;
   }
   const [el] = clone.splice(from, 1);
-  if (to > from) {
-    --to;
-  }
   clone.splice(to, 0, el);
   return clone;
 }
