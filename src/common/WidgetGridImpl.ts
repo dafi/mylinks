@@ -41,8 +41,16 @@ export class WidgetGridImpl implements WidgetGrid {
       const destinationColumnIndex = extractColumnIndex(destination.id);
 
       if (sourceColumnIndex !== undefined && destinationColumnIndex !== undefined) {
-        const [widget] = this.widgets[sourceColumnIndex].splice(source.index, 1);
-        this.widgets[destinationColumnIndex].splice(destination.index, 0, widget);
+        const sourceWidget = this.widgets[sourceColumnIndex];
+        const destinationWidget = this.widgets[destinationColumnIndex];
+
+        const [widget] = sourceWidget.splice(source.index, 1);
+        destinationWidget.splice(destination.index, 0, widget);
+
+        // last element in column
+        if (sourceWidget.length === 0) {
+          this.widgets.splice(sourceColumnIndex, 1);
+        }
         return true;
       }
     }
