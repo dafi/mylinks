@@ -1,7 +1,6 @@
 import {
-  EditDataMove,
   EditDataType,
-  EditEntity, isLinkEditData,
+  isLinkEditData,
   LinkEditableProperties,
   LinkEditData,
   LinkEditDataCreate,
@@ -17,7 +16,7 @@ export function prepareForSave(editData: EditDataType): boolean {
   return isLinkEditData(editData) ? prepareLinkForSave(editData) : prepareWidgetForSave(editData);
 }
 
-function prepareLinkForSave(editData: LinkEditData | LinkEditDataMove): boolean {
+function prepareLinkForSave(editData: LinkEditData): boolean {
   switch (editData.action) {
     case 'create':
       return createLink(editData);
@@ -103,7 +102,7 @@ function moveLink(editData: LinkEditDataMove): boolean {
   return editData.myLinksLookup.moveLink(editData.source, editData.destination);
 }
 
-function prepareWidgetForSave(editData: WidgetEditData | EditDataMove<EditEntity>): boolean {
+function prepareWidgetForSave(editData: WidgetEditData): boolean {
   switch (editData.action) {
     case 'update':
       editData.widget.title = editData.edited.title;
