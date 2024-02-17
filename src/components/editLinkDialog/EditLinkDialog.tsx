@@ -1,6 +1,6 @@
 import { ChangeEvent, FormEvent, ReactElement, useState } from 'react';
 import { isNotEmptyString } from '../../common/StringUtil';
-import { LinkEditableProperties, LinkEditData } from '../../model/EditData-interface';
+import { LinkEditableProperties, LinkEditData, LinkEditDataCreate, LinkEditDataUpdate } from '../../model/EditData-interface';
 import { KeyCombination } from '../../model/KeyCombination';
 import Modal from '../modal/Modal';
 import { getModal } from '../modal/ModalHandler';
@@ -12,7 +12,7 @@ import { shortcutDialogId } from '../shortcut/shortcutDialog/ShortcutDialogTypes
 import { editLinkDialogId } from './EditLinkDialogTypes';
 
 export interface EditLinkDialogProps {
-  readonly data: Readonly<LinkEditData>;
+  readonly data: LinkEditDataCreate | LinkEditDataUpdate;
   readonly onSave: (linkEditData: LinkEditData) => void;
 }
 
@@ -64,8 +64,6 @@ function EditLinkForm({ data, onSave }: EditLinkDialogProps): ReactElement {
       case 'update':
         onSave({ ...data, edited: form, original: { ...data.link } });
         break;
-      default:
-        throw new Error(`Not implemented yet: ${data.action} case`);
     }
     onCloseDialog(CloseResultCode.Ok);
   }
