@@ -1,5 +1,6 @@
 import { CSSProperties, ReactElement, useState } from 'react';
 import { useAppConfigContext } from '../../contexts/AppConfigContext';
+import { useAppUIStateContext } from '../../contexts/AppUIStateContext';
 import { MyLinkActionCallback } from '../../model/Events';
 import { AppToolbarButton } from './AppToolbarButton';
 import { AppToolbarActionType, isAction } from './AppToolbarButtonTypes';
@@ -26,6 +27,7 @@ export function AppToolbar(
 
   const [showButtons, setShowButtons] = useState(false);
   const { myLinksLookup } = useAppConfigContext();
+  const { onEdit } = useAppUIStateContext();
 
   const showButtonStyle: CSSProperties = {
     display: showButtons || !myLinksLookup ? 'inline' : 'none'
@@ -46,6 +48,15 @@ export function AppToolbar(
         className="toolbar-buttons"
         style={showButtonStyle}
       >
+        <AppToolbarButton
+          title="Add Widget"
+          className="toolbar-icon"
+          action="addWidget"
+          icon="far fa-window-restore"
+          onAction={onAction}
+          data={{ onEdit, myLinksLookup }}
+        />
+
         {!myLinksLookup &&
           <AppToolbarButton
             title="Load configuration from local file"

@@ -16,6 +16,7 @@ export function AppToolbarButton(
     icon,
     onAction,
     style,
+    data,
   }: AppToolbarButtonProps
 ): ReactElement {
   if (type === 'file') {
@@ -34,7 +35,7 @@ export function AppToolbarButton(
       className={className}
       title={title}
       style={style}
-      onClick={(): void => onAction(action)}
+      onClick={(): void => onAction(action, data)}
     >
       <i className={icon} />
     </label>

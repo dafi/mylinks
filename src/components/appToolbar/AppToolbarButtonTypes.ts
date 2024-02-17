@@ -11,10 +11,11 @@ export interface AppToolbarButtonProps {
   readonly onAction: (action: string | undefined, data?: unknown) => void;
   readonly type?: AppToolbarButtonType;
   readonly style?: CSSProperties | undefined;
+  readonly data?: unknown;
 }
 
 const actions = [
-  'loadConfig', 'shortcut', 'settingsDialog', 'searchLink'
+  'loadConfig', 'shortcut', 'settingsDialog', 'searchLink', 'addWidget',
 ] as const;
 
 export type AppToolbarActionType = typeof actions[number];
