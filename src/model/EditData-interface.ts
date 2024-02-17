@@ -16,14 +16,14 @@ export type EditDataCreate<T, E extends EditEntity> = {
   edited: T;
 } & EditData<E>;
 
-export type EditDataDelete<T, E extends EditEntity> = {
-  action: 'delete';
-  original: T;
-} & EditData<E>;
-
 export type EditDataUpdate<T, E extends EditEntity> = {
   action: 'update';
   edited: T;
+  original: T;
+} & EditData<E>;
+
+export type EditDataDelete<T, E extends EditEntity> = {
+  action: 'delete';
   original: T;
 } & EditData<E>;
 
@@ -33,18 +33,6 @@ export type EditDataMove<E extends EditEntity> = {
   destination: ItemLocation;
   myLinksLookup: MyLinksLookup;
 } & EditData<E>;
-
-type EditDataActions<T, E extends EditEntity> =
-  EditDataCreate<T, E> |
-  EditDataUpdate<T, E> |
-  EditDataMove<E>;
-
-export type WidgetEditDataDelete = {
-  action: 'delete';
-  original: WidgetEditableProperties;
-  myLinksLookup: MyLinksLookup;
-} & EditData<'widget'>;
-
 
 export type LinkEditableProperties = Pick<Link, 'label' | 'urls' | 'hotKey' | 'favicon'>;
 export type WidgetEditableProperties = Pick<Widget, 'title'>;
@@ -58,22 +46,40 @@ export type EditLinkFields = {
   widget: Widget;
 };
 
-export type WidgetEditData = (EditDataActions<WidgetEditableProperties, 'widget'> | WidgetEditDataDelete) & EditWidgetFields;
+export type WidgetEditDataCreate = {
+  myLinksLookup: MyLinksLookup;
+} & EditDataCreate<Widget, 'widget'>;
 
-export type LinkEditData = (EditDataActions<LinkEditableProperties, 'link'> | LinkEditDataDelete) & EditLinkFields;
+export type WidgetEditDataDelete = {
+  myLinksLookup: MyLinksLookup;
+} & EditDataDelete<WidgetEditableProperties, 'widget'> & EditWidgetFields;
 
-export type LinkEditDataDelete = EditDataDelete<LinkEditableProperties, 'link'> & EditLinkFields;
+export type WidgetEditData =
+  WidgetEditDataCreate |
+  (EditDataUpdate<WidgetEditableProperties, 'widget'> & EditWidgetFields) |
+  WidgetEditDataDelete |
+  EditDataMove<'widget'>
+  ;
+
 export type LinkEditDataCreate = EditDataCreate<LinkEditableProperties, 'link'> & EditLinkFields;
 export type LinkEditDataUpdate = EditDataUpdate<LinkEditableProperties, 'link'> & EditLinkFields;
+export type LinkEditDataDelete = EditDataDelete<LinkEditableProperties, 'link'> & EditLinkFields;
 export type LinkEditDataMove = EditDataMove<'link'>;
 
-export type EditDataType = LinkEditData | WidgetEditData | EditDataMove<EditEntity>;
+export type LinkEditData =
+  LinkEditDataCreate |
+  LinkEditDataUpdate |
+  LinkEditDataDelete |
+  LinkEditDataMove
+  ;
+
+export type EditDataType = LinkEditData | WidgetEditData;
 
 export function isEditEntity(v: string): v is EditEntity {
   return editEntities.includes(v as EditEntity);
 }
 
-export function isLinkEditData(editData: EditDataType): editData is LinkEditData | LinkEditDataMove {
+export function isLinkEditData(editData: EditDataType): editData is LinkEditData {
   return editData.entity === 'link';
 }
 
