@@ -15,10 +15,10 @@ export function LinkListView(
   }: LinkListViewProps
 ): ReactElement {
   return (
-    <ul className="ml-widget-list">
       <Droppable droppableId={widget.id} type="link">
         {provided =>
-          <div
+          <ul
+            className="ml-widget-list"
             {...provided.droppableProps}
             ref={provided.innerRef}
           >
@@ -32,9 +32,8 @@ export function LinkListView(
               />
             )}
             {provided.placeholder}
-          </div>
+          </ul>
         }
       </Droppable>
-    </ul>
   );
 }
