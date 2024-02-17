@@ -1,5 +1,7 @@
-import { ReactElement } from 'react';
+import { ReactElement, useEffect } from 'react';
 import { EditLinkDialog } from '../components/editLinkDialog/EditLinkDialog';
+import { editLinkDialogId } from '../components/editLinkDialog/EditLinkDialogTypes';
+import { getModal } from '../components/modal/ModalHandler';
 import { EditComplete, useEditLink } from '../hooks/useEditLink/useEditLink';
 import { AppUIState, AppUIStateContext } from './AppUIStateContext';
 
@@ -19,15 +21,21 @@ export function AppUIStateContextProvider(
   const { onBeginEdit, onSave, linkEditData } = useEditLink(onEditComplete);
   uiState.onEdit = onBeginEdit;
 
+  useEffect(() => {
+    if (linkEditData) {
+      getModal(editLinkDialogId)?.open();
+    }
+  }, [linkEditData]);
+
   return (
     <AppUIStateContext.Provider value={uiState}>
       {children}
-
-      <EditLinkDialog
-        onSave={onSave}
-        data={linkEditData}
-      />
-
+      { linkEditData && (linkEditData.action === 'create' || linkEditData.action === 'update') &&
+        <EditLinkDialog
+          onSave={onSave}
+          data={linkEditData}
+        />
+      }
     </AppUIStateContext.Provider>
   );
 }

@@ -1,8 +1,6 @@
 import { useCallback, useState } from 'react';
 import { prepareForSave } from '../../common/EditHelper';
 
-import { editLinkDialogId } from '../../components/editLinkDialog/EditLinkDialogTypes';
-import { getModal } from '../../components/modal/ModalHandler';
 import { EditDataType, isLinkEditData, LinkEditData } from '../../model/EditData-interface';
 
 export interface EditCompleteSuccess {
@@ -18,7 +16,10 @@ export interface EditCompleteError {
 export type EditComplete = EditCompleteSuccess | EditCompleteError;
 
 interface UseEditLink {
-  linkEditData: LinkEditData;
+  /**
+   * The data to edit from some UI. Generally you open some dialog to create or updated the data
+   */
+  linkEditData?: LinkEditData;
   /**
    * Begin the edit operation then save edited data, this can require to show a dialog or immediately call save
    * @param editData the data to edit/save
@@ -34,13 +35,7 @@ interface UseEditLink {
  * @returns the UseEditLink object
  */
 export function useEditLink(onEditComplete: (result: EditComplete) => void): UseEditLink {
-  const [linkEditData, setLinkEditData] = useState<LinkEditData>({
-    action: 'create',
-    entity: 'link',
-    edited: { label: '', urls: [] },
-    link: { id: '', label: '', urls: [] },
-    widget: { id: '', title: '', list: [] }
-  });
+  const [linkEditData, setLinkEditData] = useState<LinkEditData>();
 
   const onSave = useCallback((editData: EditDataType): void => {
     try {
@@ -56,7 +51,6 @@ export function useEditLink(onEditComplete: (result: EditComplete) => void): Use
     if (isLinkEditData(editData)) {
       if (editData.action === 'update' || editData.action === 'create') {
         setLinkEditData(editData);
-        getModal(editLinkDialogId)?.open();
       } else {
         onSave(editData);
       }
