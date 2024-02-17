@@ -13,6 +13,14 @@ export class WidgetGridImpl implements WidgetGrid {
     private widgets: Widget[][],
   ) {}
 
+  createWidget(widget: Widget): boolean {
+    const column: Widget[] = [];
+    column.push(widget);
+    this.widgets.splice(0, 0, column);
+
+    return true;
+  }
+
   findWidgetById(id: string): Widget | undefined {
     return this.widgets.flat().find(w => w.id === id);
   }

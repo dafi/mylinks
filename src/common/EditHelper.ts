@@ -110,9 +110,10 @@ function prepareWidgetForSave(editData: WidgetEditData): boolean {
     case 'delete':
       return editData.myLinksLookup.getWidgetGrid().deleteWidgetById(editData.widget.id);
     case 'create':
-      break;
+      return editData.myLinksLookup.getWidgetGrid().createWidget(editData.edited);
     case 'move':
       return editData.myLinksLookup.getWidgetGrid().move(editData.source, editData.destination);
+    default:
+      return false;
   }
-  return false;
 }

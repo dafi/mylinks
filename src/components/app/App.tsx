@@ -4,9 +4,11 @@ import { AppConfigContextProvider } from '../../contexts/AppConfigContextProvide
 import { AppUIStateContextProvider } from '../../contexts/AppUIStateContextProvider';
 import { useAppUIState } from '../../contexts/useAppUIState';
 import { EditComplete } from '../../hooks/useEditLink/useEditLink';
+import { EditDataType } from '../../model/EditData-interface';
 import { MyLinksEvent } from '../../model/Events';
 import { openLink } from '../../model/MyLinks';
 import { Link, MyLinks } from '../../model/MyLinks-interface';
+import { MyLinksLookup } from '../../model/MyLinksLookup';
 import { AppToolbar } from '../appToolbar/AppToolbar';
 import { AppToolbarActionType } from '../appToolbar/AppToolbarButtonTypes';
 import { LinkFinderDialog } from '../linkFinderDialog/LinkFinderDialog';
@@ -20,6 +22,11 @@ import './App.css';
 import { useAppStartup } from './useAppStartup';
 
 type EditAction = 'editLink' | 'editSettings';
+
+type WidgetToolbarData = {
+  onEdit?: (editData: EditDataType) => void;
+  myLinksLookup?: MyLinksLookup;
+};
 
 function Page(): ReactElement {
   const onLinkSelected = (link: Link): void => {
@@ -43,6 +50,20 @@ function Page(): ReactElement {
       case 'settingsDialog':
         getModal(settingsDialogId)?.open();
         break;
+      case 'addWidget':
+        onAddWidget(e.data as WidgetToolbarData);
+    }
+  }
+
+  function onAddWidget(data: WidgetToolbarData): void {
+    const { onEdit, myLinksLookup } = data;
+    if (myLinks && onEdit && myLinksLookup) {
+      onEdit({
+        action: 'create',
+        entity: 'widget',
+        edited: { id: `wid-${Date.now()}`, title: 'No Name', list: [] },
+        myLinksLookup
+      });
     }
   }
 
@@ -113,7 +134,7 @@ function Page(): ReactElement {
             isVisible={uiState.settingsChanged}
             onExportConfig={onExportConfig}
           />
-          { myLinks &&
+          {myLinks &&
             <div className="ml-grid">
               <Grid columns={myLinks.columns} />
             </div>
@@ -121,7 +142,7 @@ function Page(): ReactElement {
 
           <AppToolbar action={onClickToolbar} />
 
-          { myLinks &&
+          {myLinks &&
             <LinkFinderDialog
               onLinkSelected={onLinkSelected}
               links={myLinks.columns.flat().flatMap(w => w.list)}
