@@ -1,5 +1,6 @@
-import { ReactElement, useState } from 'react';
+import { ReactElement, useCallback, useState } from 'react';
 import { loadConfig, saveConfig } from '../../common/Config';
+import { defaultTheme } from '../../common/ThemeUtil';
 import { AppConfigContextProvider } from '../../contexts/AppConfigContextProvider';
 import { AppUIStateContextProvider } from '../../contexts/AppUIStateContextProvider';
 import { useAppUIState } from '../../contexts/useAppUIState';
@@ -26,6 +27,11 @@ type EditAction = 'editLink' | 'editSettings';
 type WidgetToolbarData = {
   onEdit?: (editData: EditDataType) => void;
   myLinksLookup?: MyLinksLookup;
+};
+
+const defaultMyLinks: MyLinks = {
+  theme: defaultTheme,
+  columns: []
 };
 
 function Page(): ReactElement {
@@ -57,7 +63,7 @@ function Page(): ReactElement {
 
   function onAddWidget(data: WidgetToolbarData): void {
     const { onEdit, myLinksLookup } = data;
-    if (myLinks && onEdit && myLinksLookup) {
+    if (onEdit && myLinksLookup) {
       onEdit({
         action: 'create',
         entity: 'widget',
@@ -68,12 +74,10 @@ function Page(): ReactElement {
   }
 
   function onExportConfig(): void {
-    if (myLinks) {
-      const indentSpaces = 2;
-      const w = window.open();
-      w?.document.write(`<pre>${JSON.stringify(myLinks, null, indentSpaces)}</prev>`);
-      updateUIState({ type: 'settingsChanged', value: false });
-    }
+    const indentSpaces = 2;
+    const w = window.open();
+    w?.document.write(`<pre>${JSON.stringify(myLinks, null, indentSpaces)}</prev>`);
+    updateUIState({ type: 'settingsChanged', value: false });
   }
 
   function onShortcut(): void {
@@ -84,8 +88,10 @@ function Page(): ReactElement {
     loadConfig({
       file,
       callback: mmLinks => {
-        setMyLinks(mmLinks ? { ...mmLinks } : undefined);
-        updateUIState({ type: 'settingsChanged', value: false });
+        if (mmLinks) {
+          setMyLinks({ ...mmLinks });
+          updateUIState({ type: 'settingsChanged', value: false });
+        }
       }
     });
   }
@@ -94,15 +100,13 @@ function Page(): ReactElement {
     switch (result.type) {
       case 'success': {
         const data = editAction === 'editLink' ? myLinks : result.data as MyLinks;
-        if (data) {
-          saveConfig({
-            data,
-            callback: mmLinks => {
-              updateUIState({ type: 'settingsChanged', value: true });
-              setMyLinks({ ...mmLinks });
-            }
-          });
-        }
+        saveConfig({
+          data,
+          callback: mmLinks => {
+            updateUIState({ type: 'settingsChanged', value: true });
+            setMyLinks({ ...mmLinks });
+          }
+        });
         break;
       }
       case 'error':
@@ -111,11 +115,17 @@ function Page(): ReactElement {
     }
   }
 
-  const [myLinks, setMyLinks] = useState<MyLinks>();
+  const [myLinks, setMyLinks] = useState<MyLinks>(defaultMyLinks);
   const [uiState, updateUIState] = useAppUIState();
 
-  useAppStartup(setMyLinks);
+  const onConfigurationLoaded = useCallback((m: MyLinks | undefined) => {
+    if (m) {
+      setMyLinks(m);
+    }
+  }, [setMyLinks]);
+  useAppStartup(onConfigurationLoaded);
 
+  const links = myLinks.columns.flat().flatMap(w => w.list);
   return (
     <AppConfigContextProvider
       myLinks={myLinks}
@@ -134,18 +144,16 @@ function Page(): ReactElement {
             isVisible={uiState.settingsChanged}
             onExportConfig={onExportConfig}
           />
-          {myLinks &&
-            <div className="ml-grid">
-              <Grid columns={myLinks.columns} />
-            </div>
-          }
+          <div className="ml-grid">
+            <Grid columns={myLinks.columns} />
+          </div>
 
           <AppToolbar action={onClickToolbar} />
 
-          {myLinks &&
+          {links.length > 0 &&
             <LinkFinderDialog
               onLinkSelected={onLinkSelected}
-              links={myLinks.columns.flat().flatMap(w => w.list)}
+              links={links}
             />
           }
 
