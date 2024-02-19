@@ -68,7 +68,7 @@ export function AppToolbar(
           />
         }
 
-        {myLinksLookup &&
+        {myLinksLookup?.hasLinks() === true &&
           <AppToolbarButton
             title="Search link"
             className="toolbar-icon"
