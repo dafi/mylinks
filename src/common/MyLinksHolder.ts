@@ -40,6 +40,10 @@ export class MyLinksHolder implements MyLinksLookup {
     return someMyLinks(this.myLinks, (_w, l) => l.hotKey !== undefined && l.hotKey.length > 0);
   }
 
+  hasLinks(): boolean {
+    return someMyLinks(this.myLinks, (w, _l) => w.list.length > 0);
+  }
+
   moveLink(source: ItemLocation, destination: ItemLocation): boolean {
     if (source.id === destination.id) {
       const widget = this.findWidgetById(source.id);

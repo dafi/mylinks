@@ -12,5 +12,7 @@ export interface MyLinksLookup {
 
   hasShortcuts(): boolean;
 
+  hasLinks(): boolean;
+
   getWidgetGrid(): WidgetGrid;
 }
