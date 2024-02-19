@@ -34,26 +34,20 @@ export function AppConfigContextProvider(
     if (!myLinks) {
       return;
     }
+    const { backgroundImage, faviconColor, faviconService } = settings;
 
-    if (myLinks.theme) {
-      myLinks.theme.backgroundImage = settings.backgroundImage;
-      myLinks.theme.faviconColor = settings.faviconColor;
-    }
-    if (myLinks.config) {
-      myLinks.config.faviconService = settings.faviconService;
-    }
+    myLinks.theme = { ...myLinks.theme, backgroundImage, faviconColor };
+    myLinks.config = { ...myLinks.config, faviconService };
 
     onEditComplete({ type: 'success', data: myLinks });
   }
 
-  function onSaveSystemShortcuts(shortcuts: AppAction[]): void {
+  function onSaveSystemShortcuts(systemShortcuts: AppAction[]): void {
     if (!myLinks) {
       return;
     }
 
-    if (myLinks.config) {
-      myLinks.config.systemShortcuts = shortcuts;
-    }
+    myLinks.config = { ...myLinks.config, systemShortcuts };
 
     onEditComplete({ type: 'success', data: myLinks });
   }
