@@ -3,7 +3,7 @@ import { applyColorToFavicon } from './Favicon';
 import { isNotEmptyString } from './StringUtil';
 
 export const defaultTheme: Readonly<Theme> = {
-  faviconColor: 'blue',
+  faviconColor: '#0000FF',
 };
 
 export function applyTheme(theme: Theme): void {
