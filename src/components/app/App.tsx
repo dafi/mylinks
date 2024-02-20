@@ -1,5 +1,6 @@
 import { ReactElement, useCallback, useState } from 'react';
 import { loadConfig, saveConfig } from '../../common/Config';
+import { createWidget } from '../../common/MyLinksUtil';
 import { defaultTheme } from '../../common/ThemeUtil';
 import { AppConfigContextProvider } from '../../contexts/AppConfigContextProvider';
 import { AppUIStateContextProvider } from '../../contexts/AppUIStateContextProvider';
@@ -67,7 +68,7 @@ function Page(): ReactElement {
       onEdit({
         action: 'create',
         entity: 'widget',
-        edited: { id: `wid-${Date.now()}`, title: 'No Name', list: [] },
+        edited: createWidget(),
         myLinksLookup
       });
     }
