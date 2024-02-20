@@ -1,7 +1,6 @@
 import { ReactElement, useCallback, useState } from 'react';
 import { loadConfig, saveConfig } from '../../common/Config';
 import { createWidget } from '../../common/MyLinksUtil';
-import { defaultTheme } from '../../common/ThemeUtil';
 import { AppConfigContextProvider } from '../../contexts/AppConfigContextProvider';
 import { AppUIStateContextProvider } from '../../contexts/AppUIStateContextProvider';
 import { useAppUIState } from '../../contexts/useAppUIState';
@@ -25,7 +24,6 @@ import { useAppStartup } from './useAppStartup';
 type EditAction = 'editLink' | 'editSettings';
 
 const defaultMyLinks: MyLinks = {
-  theme: defaultTheme,
   columns: []
 };
 

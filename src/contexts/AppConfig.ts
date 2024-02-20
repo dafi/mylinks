@@ -1,7 +1,7 @@
 import { Dispatch } from 'react';
 import { MyLinksHolder } from '../common/MyLinksHolder';
 import { reloadShortcuts } from '../common/shortcut/ShortcutManagerHelper';
-import { applyTheme, defaultTheme } from '../common/ThemeUtil';
+import { applyTheme } from '../common/ThemeUtil';
 import { WidgetGridImpl } from '../common/WidgetGridImpl';
 import { Config, MyLinks } from '../model/MyLinks-interface';
 import { MyLinksLookup } from '../model/MyLinksLookup';
@@ -9,11 +9,9 @@ import { AppUIStateAction } from './useAppUIState';
 
 export type AppConfig = {
   myLinksLookup?: MyLinksLookup;
-} & Config & Required<Pick<MyLinks, 'theme'>>;
+} & Config & Pick<MyLinks, 'theme'>;
 
-export const defaultAppConfig: Readonly<AppConfig> = {
-  theme: defaultTheme,
-};
+export const defaultAppConfig: Readonly<AppConfig> = {};
 
 export function reloadAll(myLinks: MyLinks | undefined, updateUIState: Dispatch<AppUIStateAction>): Readonly<AppConfig> {
   if (!myLinks) {
@@ -24,7 +22,9 @@ export function reloadAll(myLinks: MyLinks | undefined, updateUIState: Dispatch<
     reloadShortcuts(myLinks, myLinksHolder, updateUIState);
 
     const config = buildConfig(myLinksHolder);
-    applyTheme(config.theme);
+    if (config.theme) {
+      applyTheme(config.theme);
+    }
     return config;
   } catch (e) {
     window.alert(e);
@@ -34,10 +34,7 @@ export function reloadAll(myLinks: MyLinks | undefined, updateUIState: Dispatch<
 
 function buildConfig(holder: MyLinksHolder): AppConfig {
   return {
-    theme: {
-      ...holder.myLinks.theme,
-      faviconColor: holder.myLinks.theme?.faviconColor ?? defaultTheme.faviconColor,
-    },
+    theme: holder.myLinks.theme,
     faviconService: holder.myLinks.config?.faviconService,
     systemShortcuts: holder.myLinks.config?.systemShortcuts,
     myLinksLookup: holder,

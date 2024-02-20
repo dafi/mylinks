@@ -41,10 +41,10 @@ export function buildFaviconUrl(
 }
 
 export function applyColorToFavicon(
-  color: string,
+  color: string | undefined,
   options?: Readonly<{ favicon?: HTMLLinkElement; width?: number; height?: number }>
 ): void {
-  if (!color) {
+  if (color === undefined) {
     return;
   }
   const favicon: HTMLLinkElement | null = options?.favicon ?? document.querySelector('link[rel~="icon"]');

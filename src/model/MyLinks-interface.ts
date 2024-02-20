@@ -3,7 +3,7 @@ import { HotKey } from './KeyCombination';
 
 export type Theme = {
   backgroundImage?: string;
-  faviconColor: string;
+  faviconColor?: string;
   linkKeyBackground?: string;
   linkKeyColor?: string;
 };

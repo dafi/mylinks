@@ -14,7 +14,10 @@ type SettingsProps = {
   onSave(settings: Theme & Config): void;
 };
 
-function restoreConfig(form: DialogState, theme: Theme): void {
+function restoreConfig(form: DialogState, theme: Theme | undefined): void {
+  if (!theme) {
+    return;
+  }
   if (form.backgroundImage !== theme.backgroundImage) {
     applyBackground(theme.backgroundImage);
   }
@@ -57,8 +60,8 @@ export function ThemeSettingsForm({ onSave, modalId }: SettingsProps): ReactElem
 
   const { theme, faviconService } = useAppConfigContext();
   const [form, setForm] = useState<DialogState>({
-    backgroundImage: theme.backgroundImage,
-    faviconColor: theme.faviconColor,
+    backgroundImage: theme?.backgroundImage,
+    faviconColor: theme?.faviconColor,
     faviconService,
   });
 
