@@ -6,12 +6,11 @@ import { AppConfigContextProvider } from '../../contexts/AppConfigContextProvide
 import { AppUIStateContextProvider } from '../../contexts/AppUIStateContextProvider';
 import { useAppUIState } from '../../contexts/useAppUIState';
 import { EditComplete } from '../../hooks/useEditLink/useEditLink';
-import { EditDataType } from '../../model/EditData-interface';
 import { MyLinksEvent } from '../../model/Events';
 import { openLink } from '../../model/MyLinks';
 import { Link, MyLinks } from '../../model/MyLinks-interface';
-import { MyLinksLookup } from '../../model/MyLinksLookup';
 import { AppToolbar } from '../appToolbar/AppToolbar';
+import { AppToolbarAddWidgetData } from '../appToolbar/AppToolbarDataTypes';
 import { AppToolbarActionType } from '../appToolbar/AppToolbarButtonTypes';
 import { LinkFinderDialog } from '../linkFinderDialog/LinkFinderDialog';
 import { linkFinderDialogId } from '../linkFinderDialog/LinkFinderDialogTypes';
@@ -24,11 +23,6 @@ import './App.css';
 import { useAppStartup } from './useAppStartup';
 
 type EditAction = 'editLink' | 'editSettings';
-
-type WidgetToolbarData = {
-  onEdit?: (editData: EditDataType) => void;
-  myLinksLookup?: MyLinksLookup;
-};
 
 const defaultMyLinks: MyLinks = {
   theme: defaultTheme,
@@ -58,11 +52,11 @@ function Page(): ReactElement {
         getModal(settingsDialogId)?.open();
         break;
       case 'addWidget':
-        onAddWidget(e.data as WidgetToolbarData);
+        onAddWidget(e.data as AppToolbarAddWidgetData);
     }
   }
 
-  function onAddWidget(data: WidgetToolbarData): void {
+  function onAddWidget(data: AppToolbarAddWidgetData): void {
     const { onEdit, myLinksLookup } = data;
     if (onEdit && myLinksLookup) {
       onEdit({
