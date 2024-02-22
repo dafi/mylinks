@@ -14,6 +14,10 @@ export function Grid({ columns }: GridProps): ReactElement {
   function onDragEnd(result: DropResult, _provided: ResponderProvided): void {
     const { source, destination } = result;
 
+    if (source.droppableId === destination?.droppableId && source.index === destination.index) {
+      return;
+    }
+
     if (destination && onEdit && myLinksLookup && isEditEntity(result.type)) {
       onEdit({
         action: 'move',

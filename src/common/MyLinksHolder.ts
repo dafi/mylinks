@@ -45,6 +45,10 @@ export class MyLinksHolder implements MyLinksLookup {
   }
 
   moveLink(source: ItemLocation, destination: ItemLocation): boolean {
+    if (source.id === destination.id && source.index === destination.index) {
+      return false;
+    }
+
     if (source.id === destination.id) {
       const widget = this.findWidgetById(source.id);
 

@@ -37,6 +37,9 @@ export class WidgetGridImpl implements WidgetGrid {
   }
 
   move(source: ItemLocation, destination: ItemLocation): boolean {
+    if (source.id === destination.id && source.index === destination.index) {
+      return false;
+    }
     if (source.id === destination.id) {
       const columnIndex = extractColumnIndex(source.id);
 
