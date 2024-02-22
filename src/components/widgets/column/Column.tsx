@@ -2,10 +2,15 @@ import { Droppable } from '@hello-pangea/dnd';
 import { ReactElement } from 'react';
 import { Widget as MLWidget } from '../../../model/MyLinks-interface';
 import { Widget } from '../widget/Widget';
+import './Column.css';
 
 interface ColumnProps {
   readonly value: MLWidget[];
   readonly index: number;
+}
+
+function getDroppableClassName(isDraggingOver: boolean): string | undefined {
+  return isDraggingOver ? 'column droppable' : undefined;
 }
 
 export function Column(
@@ -18,10 +23,11 @@ export function Column(
   return (
     <section className="ml-rows">
       <Droppable droppableId={`col-${index}`} type="widget">
-        {provided =>
+        {(provided, snapshot) =>
           <div
             {...provided.droppableProps}
             ref={provided.innerRef}
+            className={getDroppableClassName(snapshot.isDraggingOver)}
           >
             {widgets}
             {provided.placeholder}
