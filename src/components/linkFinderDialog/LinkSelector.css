@@ -68,3 +68,8 @@
   width: 16px;
   height: 16px;
 }
+
+.link-selector .matches {
+  padding-left: 4px;
+  color: var(--app-backgrond-color);
+}

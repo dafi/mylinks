@@ -8,6 +8,13 @@ import { ListViewHandle, ListViewItem } from '../listView/ListViewTypes';
 import { LinkIcon } from '../widgets/linkIcon/LinkIcon';
 import './LinkSelector.css';
 
+function formatMatches<R, T>(result: R[], total: T[]): string {
+  // one day I will migrate to a localization library using plurals, for now this is enough
+  const matchesText = result.length === 1 ? 'match' : 'matches';
+  const totalText = total.length === 1 ? 'link' : 'links';
+  return `${result.length} ${matchesText} in ${total.length} ${totalText}`;
+}
+
 interface LinkSelectorProps {
   readonly links: Link[];
   readonly onSelected: (link: Link) => void;
@@ -78,6 +85,9 @@ export function LinkSelector(
           spellCheck="false"
           className="input-box"
         />
+      </div>
+      <div className="matches">
+        {formatMatches(result, links)}
       </div>
       <div className="list">
         <ListView
