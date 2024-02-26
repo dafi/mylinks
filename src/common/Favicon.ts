@@ -40,6 +40,9 @@ export function buildFaviconUrl(
   return undefined;
 }
 
+// protect against concurrent 'load' listeners, only the last call can change the color
+let cancelFaviconLoading: (() => void) | undefined;
+
 export function applyColorToFavicon(
   color: string | undefined,
   options?: Readonly<{ favicon?: HTMLLinkElement; width?: number; height?: number }>
@@ -51,9 +54,12 @@ export function applyColorToFavicon(
   if (!favicon) {
     return;
   }
+  if (cancelFaviconLoading) {
+    cancelFaviconLoading();
+  }
   const image = new Image();
-  image.src = favicon.href;
-  image.addEventListener('load', (): void => {
+
+  const onLoad = (): void => {
     const width = options?.width ?? DEFAULT_FAVICON_WIDTH;
     const height = options?.height ?? DEFAULT_FAVICON_HEIGHT;
     const favImage = createImage(image, width, height, color);
@@ -61,7 +67,12 @@ export function applyColorToFavicon(
       favicon.type = 'image/x-icon';
       favicon.href = favImage;
     }
-  });
+  };
+
+  cancelFaviconLoading = (): void => image.removeEventListener('load', onLoad);
+
+  image.addEventListener('load', onLoad);
+  image.src = favicon.href;
 }
 
 export function createImage(
