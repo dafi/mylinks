@@ -4,17 +4,20 @@ export interface UseCollapsedData {
   readonly startCollapsed: boolean;
   readonly collapsed: boolean;
   setCollapsed: (isCollapsed: boolean) => void;
-  toggleStartCollapsed: () => void;
+  /**
+   * toggle the start collapsed state
+   * @returns the new state
+   */
+  toggleStartCollapsed: () => boolean;
 }
 
 /**
- * Custom hook to manage the collapsed state
- * @param collapsedId the id used to persist the status on localStorage
+ * Manage the collapsed state
+ * @param isCollapsedOnStart the initial value for collapsed state
  * @returns the collapsed status and toggle methods
  */
-export default function useCollapsed(collapsedId: string): UseCollapsedData {
-  const itemId = `${collapsedId}-collapsed`;
-  const [startCollapsed, setStartCollapsed] = useState(localStorage.getItem(itemId) === 't');
+export default function useCollapsed(isCollapsedOnStart: boolean): UseCollapsedData {
+  const [startCollapsed, setStartCollapsed] = useState(isCollapsedOnStart);
   const [collapsed, setCollapsed] = useState(startCollapsed);
 
   return {
@@ -25,13 +28,14 @@ export default function useCollapsed(collapsedId: string): UseCollapsedData {
         setCollapsed(isCollapsed);
       }
     },
-    toggleStartCollapsed: (): void => {
+    toggleStartCollapsed: (): boolean => {
+      const state = !startCollapsed;
       setStartCollapsed(prevState => {
         const newState = !prevState;
-        localStorage.setItem(itemId, newState ? 't' : 'f');
         setCollapsed(newState);
         return newState;
       });
+      return state;
     }
   };
 }

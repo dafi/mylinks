@@ -7,7 +7,8 @@ import {
   LinkEditDataDelete,
   LinkEditDataMove,
   LinkEditDataUpdate,
-  WidgetEditData
+  WidgetEditData,
+  WidgetEditDataUpdate
 } from '../model/EditData-interface';
 import { Link } from '../model/MyLinks-interface';
 import { compareCombinationsArray } from './shortcut/ShortcutManager';
@@ -105,8 +106,7 @@ function moveLink(editData: LinkEditDataMove): boolean {
 function prepareWidgetForSave(editData: WidgetEditData): boolean {
   switch (editData.action) {
     case 'update':
-      editData.widget.title = editData.edited.title;
-      return true;
+      return updateWidget(editData);
     case 'delete':
       return editData.myLinksLookup.getWidgetGrid().deleteWidgetById(editData.widget.id);
     case 'create':
@@ -116,4 +116,14 @@ function prepareWidgetForSave(editData: WidgetEditData): boolean {
     default:
       return false;
   }
+}
+
+function updateWidget(editData: WidgetEditDataUpdate): boolean {
+  if (editData.edited.title !== undefined) {
+    editData.widget.title = editData.edited.title;
+  }
+  if (editData.edited.collapsed !== undefined) {
+    editData.widget.collapsed = editData.edited.collapsed;
+  }
+  return true;
 }

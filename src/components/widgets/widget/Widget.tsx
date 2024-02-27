@@ -1,5 +1,6 @@
 import { Draggable } from '@hello-pangea/dnd';
 import { ReactElement, useState } from 'react';
+import { useAppUIStateContext } from '../../../contexts/AppUIStateContext';
 import useCollapsed from '../../../hooks/useCollapsed/useCollapsed';
 import { MyLinksEvent } from '../../../model/Events';
 import { openWidgetLinks } from '../../../model/MyLinks';
@@ -25,7 +26,7 @@ export function Widget(
   function onClickToolbar(e: MyLinksEvent<WidgetToolbarActionType>): void {
     switch (e.target) {
       case 'collapse':
-        toggleStartCollapsed();
+        saveCollapsed(toggleStartCollapsed());
         break;
       case 'edit':
         onToggleEdit();
@@ -36,12 +37,24 @@ export function Widget(
     }
   }
 
+  function saveCollapsed(state: boolean): void {
+    if (onEdit) {
+      onEdit({
+        widget,
+        action: 'update',
+        entity: 'widget',
+        edited: { collapsed: state },
+      });
+    }
+  }
+
   function onToggleEdit(): void {
     setEditable(prevState => !prevState);
   }
 
+  const { onEdit } = useAppUIStateContext();
   const [editable, setEditable] = useState(false);
-  const { startCollapsed, collapsed, setCollapsed, toggleStartCollapsed } = useCollapsed(widget.id);
+  const { startCollapsed, collapsed, setCollapsed, toggleStartCollapsed } = useCollapsed(widget.collapsed === true);
 
   const cls = cssExtraClasses(startCollapsed, collapsed);
 

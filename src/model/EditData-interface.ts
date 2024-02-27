@@ -19,7 +19,7 @@ export type EditDataCreate<T, E extends EditEntity> = {
 export type EditDataUpdate<T, E extends EditEntity> = {
   action: 'update';
   edited: T;
-  original: T;
+  original?: T;
 } & EditData<E>;
 
 export type EditDataDelete<T, E extends EditEntity> = {
@@ -35,7 +35,7 @@ export type EditDataMove<E extends EditEntity> = {
 } & EditData<E>;
 
 export type LinkEditableProperties = Pick<Link, 'label' | 'urls' | 'hotKey' | 'favicon'>;
-export type WidgetEditableProperties = Pick<Widget, 'title'>;
+export type WidgetEditableProperties = Pick<Partial<Widget>, 'title' | 'collapsed'>;
 
 export type EditWidgetFields = {
   widget: Widget;
@@ -54,11 +54,14 @@ export type WidgetEditDataDelete = {
   myLinksLookup: MyLinksLookup;
 } & EditDataDelete<WidgetEditableProperties, 'widget'> & EditWidgetFields;
 
+export type WidgetEditDataUpdate = EditDataUpdate<WidgetEditableProperties, 'widget'> & EditWidgetFields;
+export type WidgetEditDataMove = EditDataMove<'widget'>;
+
 export type WidgetEditData =
   WidgetEditDataCreate |
-  (EditDataUpdate<WidgetEditableProperties, 'widget'> & EditWidgetFields) |
+  WidgetEditDataUpdate |
   WidgetEditDataDelete |
-  EditDataMove<'widget'>
+  WidgetEditDataMove
   ;
 
 export type LinkEditDataCreate = EditDataCreate<LinkEditableProperties, 'link'> & EditLinkFields;

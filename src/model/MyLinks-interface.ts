@@ -19,6 +19,7 @@ export type Widget = {
   id: string;
   title: string;
   list: Link[];
+  collapsed?: boolean;
 };
 
 export type Config = {
