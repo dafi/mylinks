@@ -84,6 +84,7 @@ function Page(): ReactElement {
         if (mmLinks) {
           setMyLinks({ ...mmLinks });
           updateUIState({ type: 'settingsChanged', value: false });
+          updateUIState({ type: 'configurationLoaded' });
         }
       }
     });
@@ -138,7 +139,7 @@ function Page(): ReactElement {
             onExportConfig={onExportConfig}
           />
           <div className="ml-grid">
-            <Grid columns={myLinks.columns} />
+            <Grid key={uiState.reloadCounter} columns={myLinks.columns} />
           </div>
 
           <AppToolbar action={onClickToolbar} />
