@@ -11,6 +11,8 @@ export type AppUIStateAction = {
 } | {
   type: 'hideShortcuts';
   value: boolean | 'toggle';
+} | {
+  type: 'configurationLoaded';
 };
 
 function reducer(state: AppUIState, action: AppUIStateAction): AppUIState {
@@ -23,6 +25,8 @@ function reducer(state: AppUIState, action: AppUIStateAction): AppUIState {
       setBoolean(PREF_HIDE_SHORTCUTS, newValue);
       return { ...state, hideShortcuts: newValue };
     }
+    case 'configurationLoaded':
+      return { ...state, reloadCounter: state.reloadCounter + 1 };
     default:
       return state;
   }
@@ -32,6 +36,7 @@ export function useAppUIState(): [AppUIState, Dispatch<AppUIStateAction>] {
   const defaultUIState: AppUIState = {
     hideShortcuts: getBoolean(PREF_HIDE_SHORTCUTS),
     settingsChanged: getBoolean(PREF_SETTINGS_CHANGED),
+    reloadCounter: 0,
   };
 
   return useReducer(reducer, defaultUIState);
