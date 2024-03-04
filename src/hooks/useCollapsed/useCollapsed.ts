@@ -1,6 +1,11 @@
-import { useState } from 'react';
+import { MouseEventHandler, useState } from 'react';
 
-export interface UseCollapsedData {
+export type OnCollapseEventHandler = {
+  onMouseEnter: MouseEventHandler<HTMLElement>;
+  onMouseLeave: MouseEventHandler<HTMLElement>;
+};
+
+export type UseCollapsedData = {
   readonly startCollapsed: boolean;
   readonly collapsed: boolean;
   setCollapsed: (isCollapsed: boolean) => void;
@@ -9,7 +14,8 @@ export interface UseCollapsedData {
    * @returns the new state
    */
   toggleStartCollapsed: () => boolean;
-}
+  onCollapse: OnCollapseEventHandler | undefined;
+};
 
 /**
  * Manage the collapsed state
@@ -23,20 +29,16 @@ export default function useCollapsed(isCollapsedOnStart: boolean): UseCollapsedD
   return {
     startCollapsed,
     collapsed,
-    setCollapsed: (isCollapsed: boolean): void => {
-      if (startCollapsed) {
-        setCollapsed(isCollapsed);
-      }
-    },
+    setCollapsed,
     toggleStartCollapsed: (): boolean => {
-      const state = !startCollapsed;
-      setStartCollapsed(prevState => {
-        const newState = !prevState;
-        setCollapsed(newState);
-        return newState;
-      });
-      return state;
-    }
+      const toggled = !startCollapsed;
+      setStartCollapsed(toggled);
+      setCollapsed(toggled);
+      return toggled;
+    },
+    onCollapse: startCollapsed ? {
+      onMouseEnter: (): void => setCollapsed(false),
+      onMouseLeave: (): void => setCollapsed(true),
+    } : undefined
   };
 }
-

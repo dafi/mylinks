@@ -54,7 +54,7 @@ export function Widget(
 
   const { onEdit } = useAppUIStateContext();
   const [editable, setEditable] = useState(false);
-  const { startCollapsed, collapsed, setCollapsed, toggleStartCollapsed } = useCollapsed(widget.collapsed === true);
+  const { startCollapsed, collapsed, toggleStartCollapsed, onCollapse } = useCollapsed(widget.collapsed === true);
 
   const cls = cssExtraClasses(startCollapsed, collapsed);
 
@@ -68,9 +68,8 @@ export function Widget(
         <div
           className={`ml-widget ${cls.widget}`}
           data-list-id={widget.id}
-          onMouseEnter={(): void => setCollapsed(false)}
-          onMouseLeave={(): void => setCollapsed(true)}
           ref={dragProvided.innerRef}
+          {...onCollapse}
           {...dragProvided.draggableProps}
           {...dragProvided.dragHandleProps}
         >
