@@ -5,6 +5,10 @@ export function highlight(
   let result = '';
   let pos = 0;
   for (const [start, end] of indices) {
+    // https://github.com/krisk/Fuse/issues/761
+    if (start < pos) {
+      continue;
+    }
     result = result.concat(
       text.substring(pos, start),
       '<mark>',
