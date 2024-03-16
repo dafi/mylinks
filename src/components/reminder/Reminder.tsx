@@ -19,8 +19,8 @@ export function ReminderComponent(
   }
   return (
     <div className="reminder">
-        <span className="message">{message}</span>
-        <button className="button" onClick={onExportConfig}>Save JSON</button>
+      <span className="message">{message}</span>
+      <button className="button" onClick={onExportConfig}>Save JSON</button>
     </div>
   );
 }

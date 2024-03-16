@@ -29,21 +29,21 @@ export function WidgetToolbar(
 
   return (
     <span className={`ml-toolbar ${classNames}`}>
-        <i
-          className={editClassNames}
-          onClick={(): void => action({ target: 'edit' })}
-          title="Toggle Edit Mode"
-        />
-        <i
-          className="fa fa-external-link-alt icon"
-          onClick={(): void => action({ target: 'openLinks' })}
-          title="Open all links"
-        />
-        <i
-          className={collapseClassNames}
-          onClick={(): void => action({ target: 'collapse' })}
-          title={collapseTitle}
-        />
+      <i
+        className={editClassNames}
+        onClick={(): void => action({ target: 'edit' })}
+        title="Toggle Edit Mode"
+      />
+      <i
+        className="fa fa-external-link-alt icon"
+        onClick={(): void => action({ target: 'openLinks' })}
+        title="Open all links"
+      />
+      <i
+        className={collapseClassNames}
+        onClick={(): void => action({ target: 'collapse' })}
+        title={collapseTitle}
+      />
     </span>
   );
 }
