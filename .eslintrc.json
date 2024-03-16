@@ -5,10 +5,10 @@
   },
   "extends" : [
     "eslint:recommended",
-    "dafi/javascript",
-    "dafi/stylistic",
-    "dafi/typescript",
-    "dafi/reactjs"
+    "dafi/legacy/javascript",
+    "dafi/legacy/stylistic",
+    "dafi/legacy/typescript",
+    "dafi/legacy/reactjs"
   ],
   "parserOptions" : {
     "project" : [
