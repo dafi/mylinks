@@ -3,6 +3,8 @@ import { isNotEmptyString } from './StringUtil';
 
 const STORAGE_PREF_DATA = 'myLinksData';
 
+let isLocalConfig = false;
+
 export type OnLoadCallback = (myLinks: MyLinks | undefined) => void;
 export type OnSaveCallback = (myLinks: MyLinks) => void;
 
@@ -24,8 +26,10 @@ export function loadConfig(
     callback
   }: LoadConfig
 ): void {
+  isLocalConfig = true;
   if (isNotEmptyString(url)) {
     loadFromUrl(url, callback);
+    isLocalConfig = false;
   } else if (file) {
     loadFromFile(file, callback);
   } else {
@@ -74,7 +78,9 @@ export function saveConfig(
     callback
   }: SaveConfig
 ): void {
-  localStorage.setItem(STORAGE_PREF_DATA, JSON.stringify(data));
+  if (isLocalConfig) {
+    localStorage.setItem(STORAGE_PREF_DATA, JSON.stringify(data));
+  }
   callback(data);
 }
 
