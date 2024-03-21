@@ -1,12 +1,10 @@
 import { ChangeEvent, KeyboardEvent, ReactElement, useRef, useState } from 'react';
 import { LinkSearch, LinkSearchResult } from '../../common/LinkSearch';
-import { isNotEmptyString } from '../../common/StringUtil';
-import { useAppConfigContext } from '../../contexts/AppConfigContext';
 import { Link } from '../../model/MyLinks-interface';
 import { ListView } from '../listView/ListView';
 import { ListViewHandle, ListViewItem } from '../listView/ListViewTypes';
-import { LinkIcon } from '../widgets/linkIcon/LinkIcon';
 import './LinkSelector.css';
+import { LinkSearchResultViewItem } from './LinkSearchResultViewItem';
 
 function formatMatches<R, T>(result: R[], total: T[]): string {
   // one day I will migrate to a localization library using plurals, for now this is enough
@@ -41,12 +39,6 @@ export function LinkSelector(
     setResult(linkSearch.filter(pattern));
   }
 
-  function widgetTitle(link: Link): string {
-    const title = myLinksLookup?.findWidgetByLinkId(link.id)?.title;
-    return isNotEmptyString(title) ? ` - ${title}` : '';
-  }
-
-  const { myLinksLookup } = useAppConfigContext();
   const inputRef = useRef<HTMLInputElement>(null);
   const listViewRef = useRef<ListViewHandle>(null);
   const linkSearch = new LinkSearch();
@@ -57,17 +49,7 @@ export function LinkSelector(
   const listComponents = result.map((item): ListViewItem => (
     {
       id: item.id,
-      element:
-        <>
-          <i className="list-image">
-            <LinkIcon link={item.link} />
-          </i>
-          <div>
-            {/* eslint-disable-next-line react/no-danger */}
-            <span dangerouslySetInnerHTML={{ __html: item.highlighted }} />
-            {widgetTitle(item.link)}
-          </div>
-        </>
+      element: <LinkSearchResultViewItem item={item} />
     })
   );
 
