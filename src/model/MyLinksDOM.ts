@@ -10,7 +10,7 @@ export function openWidgetLinksFromPoint(point: Point, myLinksLookup: MyLinksLoo
     ?.getAttribute(widgetAttributeName);
 
   if (isNotEmptyString(widgetId)) {
-    const widget = myLinksLookup.findWidgetById(widgetId);
+    const widget = myLinksLookup.widgetManager.findWidgetById(widgetId);
     if (widget) {
       openWidgetLinks(widget);
     }

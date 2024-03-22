@@ -1,6 +1,6 @@
 import { ItemLocation, Widget } from './MyLinks-interface';
 
-export interface WidgetGrid {
+export interface WidgetManager {
   createWidget(widget: Widget): boolean;
   findWidgetById(id: string): Widget | undefined;
   deleteWidgetById(id: string): boolean;

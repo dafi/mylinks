@@ -1,5 +1,5 @@
 import { ItemLocation, Widget } from '../model/MyLinks-interface';
-import { WidgetGrid } from '../model/WidgetGrid';
+import { WidgetManager } from '../model/WidgetManager';
 import { move } from './ArrayUtil';
 
 function extractColumnIndex(id: string): number | undefined {
@@ -8,7 +8,7 @@ function extractColumnIndex(id: string): number | undefined {
   return index === undefined ? undefined : Number.parseInt(index, 10);
 }
 
-export class WidgetGridImpl implements WidgetGrid {
+export class WidgetManagerImpl implements WidgetManager {
   constructor(
     private widgets: Widget[][],
   ) {}

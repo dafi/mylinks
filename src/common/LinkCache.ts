@@ -6,22 +6,26 @@ export interface LinkCacheItem {
 }
 
 export class LinkCache {
-  private itemByLinkId = new Map<string, LinkCacheItem>();
+  private itemByLinkId: Map<string, LinkCacheItem> | undefined;
 
-  constructor(widgets: Widget[][]) {
-    this.fillMap(widgets);
-  }
+  constructor(
+    private widgets: Widget[][],
+  ) {}
 
   find(linkId: string): LinkCacheItem | undefined {
+    if (this.itemByLinkId === undefined) {
+      this.itemByLinkId = this.fillMap(this.widgets);
+    }
     return this.itemByLinkId.get(linkId);
   }
 
-  private fillMap(widgets: Widget[][]): void {
-    this.itemByLinkId.clear();
+  private fillMap(widgets: Widget[][]): Map<string, LinkCacheItem> {
+    const map = new Map<string, LinkCacheItem>();
     widgets.flat().forEach(widget => {
       widget.list.forEach(link => {
-        this.itemByLinkId.set(link.id, { link, widget });
+        map.set(link.id, { link, widget });
       });
     });
+    return map;
   }
 }

@@ -68,7 +68,7 @@ export function AppToolbar(
           />
         }
 
-        {myLinksLookup?.hasLinks() === true &&
+        {myLinksLookup?.linkManager.hasLinks() === true &&
           <AppToolbarButton
             title="Search link"
             className="toolbar-icon"
@@ -78,7 +78,7 @@ export function AppToolbar(
           />
         }
 
-        {myLinksLookup?.hasShortcuts() === true &&
+        {myLinksLookup?.linkManager.hasShortcuts() === true &&
           <AppToolbarButton
             title="Toggle shortcuts visibility"
             className="toolbar-icon"

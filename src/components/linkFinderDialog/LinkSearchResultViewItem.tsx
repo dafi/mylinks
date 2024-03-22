@@ -8,7 +8,7 @@ import { LinkIcon } from '../widgets/linkIcon/LinkIcon';
 import { Highlight } from './Highlight';
 
 function widgetTitle(link: Link, myLinksLookup: MyLinksLookup | undefined): string {
-  const title = myLinksLookup?.findWidgetByLinkId(link.id)?.title;
+  const title = myLinksLookup?.linkManager.findWidgetByLinkId(link.id)?.title;
   return isNotEmptyString(title) ? ` - ${title}` : '';
 }
 

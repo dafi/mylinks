@@ -100,7 +100,7 @@ function deleteLink(editData: LinkEditDataDelete): boolean {
 }
 
 function moveLink(editData: LinkEditDataMove): boolean {
-  return editData.myLinksLookup.moveLink(editData.source, editData.destination);
+  return editData.myLinksLookup.linkManager.moveLink(editData.source, editData.destination);
 }
 
 function prepareWidgetForSave(editData: WidgetEditData): boolean {
@@ -108,11 +108,11 @@ function prepareWidgetForSave(editData: WidgetEditData): boolean {
     case 'update':
       return updateWidget(editData);
     case 'delete':
-      return editData.myLinksLookup.getWidgetGrid().deleteWidgetById(editData.widget.id);
+      return editData.myLinksLookup.widgetManager.deleteWidgetById(editData.widget.id);
     case 'create':
-      return editData.myLinksLookup.getWidgetGrid().createWidget(editData.edited);
+      return editData.myLinksLookup.widgetManager.createWidget(editData.edited);
     case 'move':
-      return editData.myLinksLookup.getWidgetGrid().move(editData.source, editData.destination);
+      return editData.myLinksLookup.widgetManager.move(editData.source, editData.destination);
     default:
       return false;
   }
