@@ -10,6 +10,7 @@ import { ShortcutDetails } from '../shortcut/shortcutDetails/ShortcutDetails';
 import { ShortcutDialog } from '../shortcut/shortcutDialog/ShortcutDialog';
 import { shortcutDialogId } from '../shortcut/shortcutDialog/ShortcutDialogTypes';
 import { editLinkDialogId } from './EditLinkDialogTypes';
+import './EditLinkDialog.css';
 
 export interface EditLinkDialogProps {
   readonly data: LinkEditDataCreate | LinkEditDataUpdate;

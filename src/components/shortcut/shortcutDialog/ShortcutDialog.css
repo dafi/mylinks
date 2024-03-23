@@ -14,3 +14,7 @@
   color: var(--app-danger-text-color);
   margin-right: 4px;
 }
+
+#modal-shortcut-dialog .details .shortcut-details-container {
+  padding-bottom: 5px;
+}

@@ -16,3 +16,7 @@
 .system-shortcuts .shortcut-details-item-key {
   margin-right: 5px;
 }
+
+.system-shortcuts .shortcut-details-container {
+  padding-bottom: 5px;
+}
