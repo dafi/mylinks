@@ -10,6 +10,7 @@ type ShortcutDetailsProps = {
 
 const defaultProps = {
   label: undefined,
+  className: '',
 };
 
 export function ShortcutDetails(
