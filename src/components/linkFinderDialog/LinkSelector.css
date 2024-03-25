@@ -32,7 +32,6 @@
   line-height: 25px;
   user-select: none;
   cursor: pointer;
-  display: flex;
   align-items: center;
   padding: 4px;
 }
@@ -72,4 +71,8 @@
 .link-selector .matches {
   padding-left: 4px;
   color: var(--app-backgrond-color);
+}
+
+.link-search-result .shortcut-details-item-label {
+  display: flex;
 }
