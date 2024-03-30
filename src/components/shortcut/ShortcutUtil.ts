@@ -1,7 +1,14 @@
 import { Shortcut } from '../../common/shortcut/Shortcut';
 import { KeyCombination } from '../../model/KeyCombination';
 
-const symbols: Record<string, string | undefined> = {
+type SymbolType =
+  'Escape' | 'Clear' | 'Backspace' |
+  'Shift' | 'CapsLock' | 'Control' | 'Alt' | 'Meta' |
+  'ArrowLeft' | 'ArrowRight' | 'ArrowUp' | 'ArrowDown' |
+  'Delete' | 'Home' | 'End' | 'PageUp' | 'PageDown' |
+  ' ';
+
+const symbols: Record<SymbolType, string> = {
   Escape: '\u238B',
   Clear: '\u2327',
   Backspace: '\u232B',
@@ -49,7 +56,7 @@ export function combinationToSymbols(keyCombination: KeyCombination): string {
     str += symbols['Meta'];
   }
 
-  return str + (symbols[key] ?? key);
+  return str + (key in symbols ? symbols[key as SymbolType] : key);
 }
 
 export function formatCombination(keyCombination: KeyCombination): string {
