@@ -12,6 +12,7 @@ import {
 } from '../model/EditData-interface';
 import { Link } from '../model/MyLinks-interface';
 import { compareCombinationsArray } from './shortcut/ShortcutManager';
+import { isNotEmptyString } from './StringUtil';
 
 export function prepareForSave(editData: EditDataType): boolean {
   return isLinkEditData(editData) ? prepareLinkForSave(editData) : prepareWidgetForSave(editData);
@@ -65,7 +66,7 @@ function updateLinkProperty(
       link[propName] = value[propName];
       return true;
     case 'favicon':
-      link[propName] = value[propName];
+      link[propName] = isNotEmptyString(value[propName]) ? value[propName] : undefined;
       return true;
     case 'label':
       link[propName] = value[propName];
