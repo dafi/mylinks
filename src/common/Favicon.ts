@@ -1,5 +1,6 @@
 import { Link } from '../model/MyLinks-interface';
 import { isNotEmptyString } from './StringUtil';
+import { formatUrl } from './UrlUtil';
 
 const DEFAULT_FAVICON_WIDTH = 16;
 const DEFAULT_FAVICON_HEIGHT = 16;
@@ -13,14 +14,11 @@ export function faviconUrlByLink(
   if (faviconUrl === undefined) {
     return buildFaviconUrl(link.urls[0], faviconUrlBuilder);
   }
-  if (faviconUrl.length === 0) {
-    return undefined;
-  }
   // url contains protocol
   if (/^.*:\/\//.test(faviconUrl)) {
     return faviconUrl;
   }
-  return faviconUrlBuilder?.replace('$1', faviconUrl);
+  return undefined;
 }
 
 export function buildFaviconUrl(
@@ -29,9 +27,9 @@ export function buildFaviconUrl(
 ): string | undefined {
   if (isNotEmptyString(faviconUrlBuilder)) {
     try {
-      const host = new URL(url).host;
-      if (host) {
-        return faviconUrlBuilder.replace('$1', host);
+      const u = new URL(url);
+      if (u.protocol.startsWith('http')) {
+        return formatUrl(u, faviconUrlBuilder);
       }
     } catch {
       // eslint-disable-next-line no-empty
