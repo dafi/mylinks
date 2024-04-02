@@ -18,6 +18,12 @@ Open [this link](https://dafi.github.io/mylinks/?c=https://gist.githubuserconten
 
 # Configuration
 
+## Link icons
+
+You can specify the icon associated to every link but this is a tedious task, so you can use a global favicon service.
+
+See [Favicon service](favicon_service.md) for more details
+
 ## Load From url
 
 Configuration can be read from remote urls passing the parameter `c`
