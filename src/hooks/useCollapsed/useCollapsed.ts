@@ -5,9 +5,11 @@ export type OnCollapseEventHandler = {
   onMouseLeave: MouseEventHandler<HTMLElement>;
 };
 
-export type UseCollapsedData = {
-  readonly startCollapsed: boolean;
-  readonly collapsed: boolean;
+export type UseCollapsedData = Readonly<{
+  isCollapsedOnStart: boolean;
+  startCollapsed: boolean;
+  setStartCollapsed: (isCollapsed: boolean) => void;
+  collapsed: boolean;
   setCollapsed: (isCollapsed: boolean) => void;
   /**
    * toggle the start collapsed state
@@ -15,7 +17,7 @@ export type UseCollapsedData = {
    */
   toggleStartCollapsed: () => boolean;
   onCollapse: OnCollapseEventHandler | undefined;
-};
+}>;
 
 /**
  * Manage the collapsed state
@@ -27,7 +29,9 @@ export default function useCollapsed(isCollapsedOnStart: boolean): UseCollapsedD
   const [collapsed, setCollapsed] = useState(startCollapsed);
 
   return {
+    isCollapsedOnStart,
     startCollapsed,
+    setStartCollapsed,
     collapsed,
     setCollapsed,
     toggleStartCollapsed: (): boolean => {
