@@ -77,12 +77,26 @@
   margin: 0;
 }
 
-.form-list input, .form-list textarea, .form-shortcut {
-  color: black;
+.form-list input, .form-list textarea, .form-list select, .form-shortcut {
+  color: var(--form-input-color);
+  background-color: var(--form-input-background);
+  border: 1px solid #666;
+  border-radius: 4px;
   font-size: 13px;
 }
 
+.form-shortcut {
+  padding: 15px;
+}
+
+.form-list input:focus-visible, .form-list textarea:focus-visible, .form-shortcut:focus-visible {
+  outline: solid 2px var(--action-color-primary-60);
+  outline-offset: 1px;
+  border: 1px solid var(--action-color-primary);
+}
+
 .form-list li input:not([type="checkbox"]),
+.form-list li select,
 .form-list li textarea {
   padding: 15px;
 }
@@ -90,12 +104,6 @@
 .form-list li input[type="color"] {
   padding: 0;
   max-width: 100px;
-}
-
-.form-shortcut {
-  background-color: white;
-  border: solid 1px var(--action-color-secondary);
-  padding: 15px;
 }
 
 .toolbar {
