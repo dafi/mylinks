@@ -6,7 +6,8 @@
 .settings-primary-panel {
   padding: 5px 20px 20px 15px;
   border-radius: 5px 0 0 5px;
-  background: var(--dialog-primary-panel-background-color);
+  background-color: var(--dialog-menu-panel-background-color);
+  color: var(--dialog-menu-panel-color);
 }
 
 .settings-primary-panel .title {
@@ -24,6 +25,7 @@
   text-transform: uppercase;
   letter-spacing: 0.09em;
   padding: 5px 20px 20px 15px;
+  color: var(--dialog-text-color)
 }
 
 .settings-primary-panel .group .title {
@@ -33,16 +35,17 @@
   line-height: 1.4545;
   margin-bottom: 4px;
   text-transform: uppercase;
-  color: var(--app-backgrond-color);
+  color: var(--dialog-menu-panel-item-color);
+
   display: inline;
 }
 
 .settings-primary-panel .group a.selected .title {
-  color: var(--action-color-primary);
+  color: var(--dialog-menu-panel-item-color-selected);
 }
 
 .settings-primary-panel .group a.selected::before {
-  background-color: var(--action-color-primary);
+  background-color: var(--dialog-menu-panel-item-color-selected);
 }
 
 .settings-primary-panel .group a::before {

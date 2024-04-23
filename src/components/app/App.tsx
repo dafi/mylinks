@@ -4,13 +4,14 @@ import { createWidget } from '../../common/MyLinksUtil';
 import { AppConfigContextProvider } from '../../contexts/AppConfigContextProvider';
 import { AppUIStateContextProvider } from '../../contexts/AppUIStateContextProvider';
 import { useAppUIState } from '../../contexts/useAppUIState';
+import { useColorScheme } from '../../hooks/useColorScheme/useColorScheme';
 import { EditComplete } from '../../hooks/useEditLink/useEditLink';
 import { MyLinksEvent } from '../../model/Events';
 import { openLink } from '../../model/MyLinks';
 import { Link, MyLinks } from '../../model/MyLinks-interface';
 import { AppToolbar } from '../appToolbar/AppToolbar';
-import { AppToolbarAddWidgetData } from '../appToolbar/AppToolbarDataTypes';
 import { AppToolbarActionType } from '../appToolbar/AppToolbarButtonTypes';
+import { AppToolbarAddWidgetData } from '../appToolbar/AppToolbarDataTypes';
 import { LinkFinderDialog } from '../linkFinderDialog/LinkFinderDialog';
 import { linkFinderDialogId } from '../linkFinderDialog/LinkFinderDialogTypes';
 import { getModal } from '../modal/ModalHandler';
@@ -118,6 +119,10 @@ function Page(): ReactElement {
     }
   }, [setMyLinks]);
   useAppStartup(onConfigurationLoaded);
+  useColorScheme({
+    element: document.body,
+    cssClass: 'theme-dark'
+  });
 
   const links = myLinks.columns.flat().flatMap(w => w.list);
   return (

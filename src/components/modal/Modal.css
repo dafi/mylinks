@@ -6,6 +6,7 @@
 }
 
 .modal-container {
+  color: var(--dialog-text-color);
   background-color: var(--dialog-background-color);
   border-radius: 5px;
   margin: 0 auto;

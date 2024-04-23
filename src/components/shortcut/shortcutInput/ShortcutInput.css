@@ -50,4 +50,5 @@
   flex: 0 1 auto;
   align-self: auto;
   order: 0;
+  color: var(--action-color-danger);
 }

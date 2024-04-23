@@ -10,8 +10,15 @@
   margin: 0;
 }
 
-#modal-shortcut-dialog .details-icon-error {
-  color: var(--app-danger-text-color);
+#modal-shortcut-dialog .details.error {
+  color: var(--detail-error-color);
+  background-color: var(--detail-error-background-color);
+  padding: 5px;
+  border: 1px solid;
+  margin-top: 2px;
+}
+
+#modal-shortcut-dialog .details.error .icon {
   margin-right: 4px;
 }
 

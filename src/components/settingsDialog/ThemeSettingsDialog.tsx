@@ -4,6 +4,7 @@ import { isNotEmptyString } from '../../common/StringUtil';
 import { applyBackground } from '../../common/ThemeUtil';
 import { useAppConfigContext } from '../../contexts/AppConfigContext';
 import { Config, Theme } from '../../model/MyLinks-interface';
+import { SelectColorScheme } from '../colorScheme/SelectColorScheme';
 import { getModal } from '../modal/ModalHandler';
 import { CloseResultCode } from '../modal/ModalTypes';
 
@@ -70,6 +71,10 @@ export function ThemeSettingsForm({ onSave, modalId }: SettingsProps): ReactElem
       <section>
         <form>
           <ul className="form-list">
+            <li>
+              <label htmlFor="color-scheme">Color Scheme</label>
+              <SelectColorScheme />
+            </li>
             <li>
               <label htmlFor="background-image">Background Image</label>
               <input

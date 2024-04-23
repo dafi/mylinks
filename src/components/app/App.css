@@ -6,31 +6,42 @@
   --font-xl: 1.25rem;
   --font-2xl: 2rem;
 
-  --app-backgrond-color: #666;
+  --app-color: #666;
+  --app-backgrond-color: #fff;
   --box-shadow-color1: rgb(0 0 0 / 20%);
   --box-shadow-color2: rgb(255 255 255 / 70%);
-
-  --app-danger-text-color: #f00;
 
   --link-label-color: #444;
   --link-key-background: #eee;
   --link-key-color: #333;
   --link-underline-color: #999;
   --link-key-border-color: #b4b4b4;
+  --link-selector-placeholder-color: var(--action-color-primary);
 
-  --widget-title-color: #000;
   --widget-background-color: #fff;
   --widget-border-color: #808080;
   --widget-border-radius: 6px;
+  --widget-title-color: #000;
+  --widget-title-edit-background-color: var(--color-white);
+  --widget-title-edit-color: var(--action-color-primary);
+  --widget-title-edit-outline-color: var(--action-color-primary);
   --widget-toolbar-icon-color: #000;
 
   --toolbar-icon-background-color: #ddd;
   --toolbar-icon-text-color: #333;
 
+  --dialog-menu-panel-background-color: #e9e4e0;
+  --dialog-menu-panel-color: #666;
+  --dialog-menu-panel-item-color: var(--dialog-menu-panel-color);
+  --dialog-menu-panel-item-color-selected: #577be7;
+
+  --dialog-text-color: var(--app-color);
   --dialog-background-color: #f6f0ed;
   --dialog-border-color: #000;
   --dialog-backdrop-color: rgb(0 0 0 / 30%);
-  --dialog-primary-panel-background-color: #e9e4e0;
+
+  --detail-error-color: var(--action-color-danger-60);
+  --detail-error-background-color: #ffd0ce;
 
   --color-white: #fff;
   --color-black: #000;
@@ -49,6 +60,37 @@
 
   --action-color-danger: #f00;
   --action-color-danger-60: rgb(255 0 0 / 60%);
+
+  --form-input-color: #131417;
+  --form-input-background: #fff;
+
+  .theme-dark {
+    --app-color: #fff;
+    --app-backgrond-color: #2b2b2b;
+
+    --link-label-color: #d8d8d8;
+    --link-key-background: #5A5F73;
+    --link-key-color: #fff;
+    --link-selector-placeholder-color: #ddd;
+
+    --widget-background-color: #374151;
+    --widget-title-color: #e6e6e6;
+    --widget-title-edit-background-color: #E3E4E8;
+    --widget-title-edit-color: #131417;
+    --widget-title-edit-outline-color: #E3E4E8;
+    --widget-toolbar-icon-color: #e6e6e6;
+
+    --dialog-text-color: #ddd;
+    --dialog-background-color: #888;
+
+    --dialog-menu-panel-background-color: #aaa;
+    --dialog-menu-panel-color: #666;
+    --dialog-menu-panel-item-color: var(--dialog-menu-panel-color);
+    --dialog-menu-panel-item-color-selected: #fff;
+
+    --form-input-color: #131417;
+    --form-input-background: #E3E4E8;
+  }
 }
 
 /* Form elements don't inherit font settings https://stackoverflow.com/a/26140154/195893 */
@@ -57,7 +99,8 @@ body, input, textarea, button {
 }
 
 body {
-  color: var(--app-backgrond-color);
+  background-color: var(--app-backgrond-color);
+  color: var(--app-color);
 }
 
 .ml-wrapper {

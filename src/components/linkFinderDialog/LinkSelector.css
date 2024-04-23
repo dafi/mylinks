@@ -6,12 +6,12 @@
   width: 100%;
   border: 0;
   font-size: var(--font-2xl);
-  color: var(--action-color-primary);
+  color: var(--link-selector-placeholder-color);
   background-color: var(--dialog-background-color);
 }
 
 .link-selector .input-box::placeholder {
-  color: var(--action-color-primary);
+  color: var(--link-selector-placeholder-color);
   opacity: 0.5;
 }
 
@@ -56,7 +56,7 @@
   min-width: 50px;
   text-align: center;
   font-size: var(--font-2xl);
-  color: var(--action-color-primary);
+  color: var(--link-selector-placeholder-color);
 }
 
 .link-selector .list-image {
@@ -70,7 +70,7 @@
 
 .link-selector .matches {
   padding-left: 4px;
-  color: var(--app-backgrond-color);
+  color: var(--app-color);
 }
 
 .link-search-result .shortcut-details-item-label {

@@ -9,11 +9,11 @@
 
 .ml-link-container:hover .edit-actions:hover {
   color: var(--action-color-primary);
-  background-color: var(--color-white);
+  background-color: transparent;
 }
 
 .ml-link-container:hover .edit-actions.danger:hover {
-  color: var(--app-danger-text-color);
-  background-color: var(--color-white);
+  color: var(--action-color-danger);
+  background-color: transparent;
 }
 

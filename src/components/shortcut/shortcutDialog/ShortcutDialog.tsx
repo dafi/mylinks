@@ -98,8 +98,8 @@ export function ShortcutDialog(
               </li>
             </ul>
           </form>
-          <p className="details">
-            {message.type === 'error' && <i className="fas fa-exclamation-circle details-icon-error" />}
+          <p className={`details ${message.type}`}>
+            {message.type === 'error' && <i className="fas fa-exclamation-circle icon" />}
             {message.text}
           </p>
         </section>
