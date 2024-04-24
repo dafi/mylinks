@@ -1,14 +1,57 @@
 # What is this?
 
-MyLinks shows bookmarks organised in widgets (all links related to google, e-commerce, development and so on)
+MyLinks is a dashboard of web links, a bit like browser bookmarks but shown on a single page
 
-- You can bind a shortcut combination to quickly open links
-- Use your preferred wallpaper
-- Open all widget links at once
+## The elephant in the room
 
-The configuration file (JSON) is stored on your computer, no hosting on unknown servers, no privacy issues.
+Before continuing, we must say MyLinks **doesn't handle** embedded elements like emails, service status, smart home access panels and so on.
 
-If you are not obsessed by privacy, you can use public urls containing the configuration.
+As the name implies, MyLinks, it's a dashboard to organize links.
+
+*From now on, the term `widget` is used to define a box containing links.*
+
+### Configuration is local, no cloud, no external servers
+
+- Configuration does not leave the user's computer, it's saved on the browser storage (localStorage for tech people)
+- Configuration can be exported as JSON and saved on local disk, it's just a simple file!
+- Of course, if you can export, you can also import...
+
+# What MyLinks does
+
+### Organize links
+
+- Arrange links in a grid that can hold as many widgets as the user desires
+- The columns and rows in the grid are defined by the user
+- It is possible for users to organize links into widgets. One example is to make a widget called 'Social' and include links to Facebook, Instagram, and X
+- Drag and drop can be used to reposition widgets
+- Drag and drop can also be used to move links between different widgets
+
+### Dark mode, layout and look and feel
+
+- Dark mode is supported. By default, it uses the system color scheme, but it's possible to override it.
+- All links are visible, but widgets (such as those that are less frequently used or too long) can be collapsed to save screen space.
+- The collapsed widgets appear when the mouse hovers on them, so it's always possible to click them.
+- The background can be modified by selecting a wallpaper URL.
+
+### Opening links
+
+- It's normal to open links by clicking on them, but it's annoying. Therefore, the user can simply press a keyboard shortcut to open any link.
+- It's possible to open multiple links simultaneously.
+- By clicking the widget toolbar icon or pressing the assigned key while the mouse is over the widget, all links contained inside it can be opened.
+
+
+### Link icons
+
+- The icons shown for links can be customized per single link or using a favicon retriever service (the most used is the google favicon service)
+- We strongly recommend to use a favicon service because it's so useful identify link by its logo, see the [Favicon service](favicon_service.md) for more details
+
+
+### Search
+
+- Links can be picked using fuzzy search, just open the search dialog and go!
+- The search dialog can be open using a shortcut key (defined by the user)
+
+
 
 # Show me how it works
 
@@ -17,12 +60,6 @@ Open [this link](https://dafi.github.io/mylinks/?c=https://gist.githubuserconten
 ![](doc/mylinks.png)
 
 # Configuration
-
-## Link icons
-
-You can specify the icon associated to every link but this is a tedious task, so you can use a global favicon service.
-
-See [Favicon service](favicon_service.md) for more details
 
 ## Load From url
 
