@@ -8,7 +8,7 @@ export function useColorScheme(options: Omit<SchemeOptions, 'scheme'>): void {
     const changeListener = (): void => applyColorScheme({ ...options, scheme: getColorScheme() });
     query.addEventListener('change', changeListener);
 
-    return () => query.removeEventListener('change', changeListener);
+    return (): void => query.removeEventListener('change', changeListener);
     // run only at first render, no matters if options change
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

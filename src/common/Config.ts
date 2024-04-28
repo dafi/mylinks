@@ -62,14 +62,14 @@ function loadFromFile(file: File, onLoadCallback: OnLoadCallback): void {
       onLoadCallback(loadFromObject(JSON.parse(jsonText)));
       localStorage.setItem(STORAGE_PREF_DATA, jsonText);
     })
-    .catch(e => window.alert(e));
+    .catch((e: unknown) => window.alert(e));
 }
 
 function loadFromUrl(url: string, onLoadCallback: OnLoadCallback): void {
   fetch(url)
     .then(async response => response.json())
     .then(data => onLoadCallback(data as MyLinks))
-    .catch(e => window.alert(e));
+    .catch((e: unknown) => window.alert(e));
 }
 
 export function saveConfig(

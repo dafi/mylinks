@@ -11,7 +11,7 @@ export function useAppStartup(onLoadCallback: OnLoadCallback): void {
       url: new URL(location.href).searchParams.get('c'),
       callback: onLoadCallback
     });
-    return () => {
+    return (): void => {
       uninstallCursorPositionTracker();
       document.body.removeEventListener('keydown', shortcutListener);
     };

@@ -16,7 +16,7 @@ export function useInputChange(
       }, debounceTimeout);
       setOnInputChange(() => debounceCallback);
 
-      return () => {
+      return (): void => {
         stopDebounceCallback();
       };
     } else {
