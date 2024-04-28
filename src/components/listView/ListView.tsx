@@ -21,16 +21,10 @@ type ListViewProps = {
   readonly tabIndex?: number;
 };
 
-const defaultProps = {
-  onSelectionChange: undefined,
-  onSelected: undefined,
-  tabIndex: -1,
-};
-
 const isBetween = (value: number, lowerBound: number, upperBound: number): boolean => lowerBound <= value && value < upperBound;
 
 export const ListView = forwardRef(function(
-  { selectedIndex: startIndex, items, onSelectionChange, onSelected, tabIndex }: ListViewProps,
+  { selectedIndex: startIndex, items, onSelectionChange, onSelected, tabIndex = -1 }: ListViewProps,
   ref: ForwardedRef<ListViewHandle>
 ): ReactElement {
   function onClick(e: MouseEvent<HTMLElement>): void {
@@ -154,5 +148,3 @@ export const ListView = forwardRef(function(
     </div>
   );
 });
-
-ListView.defaultProps = defaultProps;

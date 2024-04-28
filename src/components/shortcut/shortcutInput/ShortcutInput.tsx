@@ -9,13 +9,9 @@ type ShortcutInputProps = {
   readonly setKeyCombination: Dispatch<SetStateAction<KeyCombination[]>>;
 };
 
-const defaultProps = {
-  autoFocus: false
-};
-
 export const ShortcutInput = function(
   {
-    autoFocus,
+    autoFocus = false,
     keyCombination,
     setKeyCombination,
   }: ShortcutInputProps,
@@ -68,5 +64,3 @@ export const ShortcutInput = function(
     </div>
   );
 };
-
-ShortcutInput.defaultProps = defaultProps;

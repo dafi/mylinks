@@ -2,17 +2,12 @@ import { ReactElement } from 'react';
 import { AppToolbarButtonProps } from './AppToolbarButtonTypes';
 import { AppToolbarFileButton } from './AppToolbarFileButton';
 
-const defaultProps: Pick<AppToolbarButtonProps, 'type' | 'style'> = {
-  type: 'button',
-  style: undefined
-};
-
 export function AppToolbarButton(
   {
     title,
     className,
     action,
-    type,
+    type = 'button',
     icon,
     onAction,
     style,
@@ -41,5 +36,3 @@ export function AppToolbarButton(
     </label>
   );
 }
-
-AppToolbarButton.defaultProps = defaultProps;

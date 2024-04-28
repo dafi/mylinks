@@ -11,14 +11,10 @@ interface LinkIconProps {
   readonly faviconService?: string | null;
 }
 
-const defaultProps = {
-  faviconService: null
-};
-
 export function LinkIcon(
   {
     link,
-    faviconService,
+    faviconService = null,
   }: LinkIconProps
 ): ReactElement {
   const { faviconService: appFaviconService } = useAppConfigContext();
@@ -42,5 +38,3 @@ export function LinkIcon(
   const { label, style } = missingStyle ?? getStyleForMissingFavicon(link);
   return <div style={style} className="link-icon-favicon-missing">{label}</div>;
 }
-
-LinkIcon.defaultProps = defaultProps;

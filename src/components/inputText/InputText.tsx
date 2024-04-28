@@ -12,17 +12,12 @@ export interface InputTextProps {
   readonly debounceTimeout?: number;
 }
 
-const defaultProps = {
-  onText: undefined,
-  debounceTimeout: defaultDebounceTimeout
-};
-
 export const InputText = forwardRef(function(
   {
     autoFocus,
     defaultValue,
     className,
-    debounceTimeout,
+    debounceTimeout = defaultDebounceTimeout,
     onText,
     onKeyDown
   }: InputTextProps & InputHTMLAttributes<HTMLInputElement>,
@@ -49,5 +44,3 @@ export const InputText = forwardRef(function(
     />
   );
 });
-
-InputText.defaultProps = defaultProps;

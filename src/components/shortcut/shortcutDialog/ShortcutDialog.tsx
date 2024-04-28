@@ -25,10 +25,6 @@ type Message = {
   text: string;
 };
 
-const defaultProps = {
-  extraCombinations: undefined
-};
-
 function findAlreadyAssigned(
   list: Readonly<Shortcut[]> | undefined,
   combination: KeyCombination[],
@@ -130,5 +126,3 @@ export function ShortcutDialog(
     </Modal>
   );
 }
-
-ShortcutDialog.defaultProps = defaultProps;

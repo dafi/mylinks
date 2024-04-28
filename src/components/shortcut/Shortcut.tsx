@@ -11,16 +11,12 @@ interface ShortcutProps {
   readonly scrollToLast?: boolean;
 }
 
-const defaultProps = {
-  scrollToLast: false
-};
-
 export function Shortcut(
   {
     shortcut,
     visible,
     isMouseOver,
-    scrollToLast,
+    scrollToLast = false,
   }: ShortcutProps
 ): ReactElement | null {
   function isShortcutVisible(): boolean {
@@ -39,7 +35,7 @@ export function Shortcut(
   const { hideShortcuts } = useAppUIStateContext();
 
   function makeVisibleElement(el: HTMLElement | null, index: number): void {
-    if (el !== null && visible && scrollToLast === true && shortcut && shortcut.length - 1 === index ) {
+    if (el !== null && visible && scrollToLast && shortcut && shortcut.length - 1 === index ) {
       el.scrollIntoView({ inline: 'end' });
     }
   }
@@ -58,5 +54,3 @@ export function Shortcut(
   }
   return null;
 }
-
-Shortcut.defaultProps = defaultProps;

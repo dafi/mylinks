@@ -13,10 +13,6 @@ interface LinkProps {
   readonly draggable?: boolean;
 }
 
-const defaultProps = {
-  draggable: true
-};
-
 export function Link(
   {
     link,
@@ -65,5 +61,3 @@ export function Link(
     </div>
   );
 }
-
-Link.defaultProps = defaultProps;

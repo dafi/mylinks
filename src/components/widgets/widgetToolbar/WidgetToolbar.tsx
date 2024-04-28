@@ -11,14 +11,10 @@ interface WidgetToolbarProps {
   readonly editable: boolean;
 }
 
-const defaultProps = {
-  classNames: ''
-};
-
 export function WidgetToolbar(
   {
     collapsed,
-    classNames,
+    classNames = '',
     action,
     editable,
   }: WidgetToolbarProps
@@ -47,5 +43,3 @@ export function WidgetToolbar(
     </span>
   );
 }
-
-WidgetToolbar.defaultProps = defaultProps;

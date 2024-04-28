@@ -8,18 +8,13 @@ type ShortcutDetailsProps = {
   readonly combination: KeyCombination[] | undefined;
 } & ComponentPropsWithoutRef<'div'>;
 
-const defaultProps = {
-  label: undefined,
-  className: '',
-};
-
 export function ShortcutDetails(
   {
     label,
     combination,
     children,
     style,
-    className
+    className = ''
   }: ShortcutDetailsProps
 ): ReactElement {
   let labelChild;
@@ -39,5 +34,3 @@ export function ShortcutDetails(
     </div>
   );
 }
-
-ShortcutDetails.defaultProps = defaultProps;
