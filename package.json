@@ -11,7 +11,8 @@
     "deploy": "gh-pages -d dist",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "test": "vitest",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "preinstall": "npx only-allow pnpm"
   },
   "dependencies": {
     "@hello-pangea/dnd": "^16.6.0",
@@ -37,7 +38,7 @@
     "gh-pages": "^6.1.1",
     "stylelint": "^16.4.0",
     "stylelint-config-standard": "^36.0.0",
-    "typescript": "^5.4.3",
+    "typescript": "^5.4.5",
     "vite": "^5.2.10",
     "vitest": "^1.5.2"
   }
