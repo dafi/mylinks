@@ -2,10 +2,12 @@ import { ChangeEvent, ReactElement } from 'react';
 import { getModal } from '../modal/ModalHandler';
 import { CloseResultCode } from '../modal/ModalTypes';
 
+export type ExportConfigType = 'clipboard' | 'view';
+
 interface ExportSettingsProps {
   readonly modalId: string;
   readonly onLoadConfig: (file: File) => void;
-  readonly onExportConfig: () => void;
+  readonly onExportConfig: (type: ExportConfigType) => void;
 }
 
 export function ExportSettingsForm(
@@ -33,7 +35,7 @@ export function ExportSettingsForm(
         <form>
           <ul className="form-list">
             <li>
-              <label htmlFor="load-config">Load / Save</label>
+              <label htmlFor="load-config">Load</label>
               <div>
                 <label className="form-button text-white bg-action-warn hover">
                   Load JSON
@@ -47,14 +49,28 @@ export function ExportSettingsForm(
                     onChange={handleFileSelect}
                   />
                 </label>
+              </div>
+            </li>
+            <li>
+              <label htmlFor="load-config">Save</label>
+              <div>
                 <button
                   type="button"
                   name="export-json"
                   id="export-json"
                   className="form-button text-white bg-action-success hover"
-                  onClick={onExportConfig}
+                  onClick={() => onExportConfig('clipboard')}
                 >
-                  Save JSON
+                  Copy to Clipboard
+                </button>
+                <button
+                  type="button"
+                  name="export-json"
+                  id="export-json"
+                  className="form-button text-white bg-action-success hover"
+                  onClick={() => onExportConfig('view')}
+                >
+                  View JSON
                 </button>
               </div>
             </li>

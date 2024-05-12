@@ -1,5 +1,5 @@
 import { Dispatch, ReactElement, useEffect, useState } from 'react';
-import { ExportSettingsForm } from '../components/settingsDialog/ExportSettingsDialog';
+import { ExportConfigType, ExportSettingsForm } from '../components/settingsDialog/ExportSettingsDialog';
 import { SettingsDialog } from '../components/settingsDialog/SettingsDialog';
 import { settingsDialogId, SettingsPanel } from '../components/settingsDialog/SettingsDialogTypes';
 import { ThemeSettingsForm } from '../components/settingsDialog/ThemeSettingsDialog';
@@ -16,7 +16,7 @@ type AppConfigContextProps = {
   readonly updateUIState: Dispatch<AppUIStateAction>;
   readonly onEditComplete: (result: EditComplete) => void;
   readonly onLoadConfig: (file: File) => void;
-  readonly onExportConfig: () => void;
+  readonly onExportConfig: (type: ExportConfigType) => void;
   readonly children: ReactElement;
 };
 

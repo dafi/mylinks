@@ -17,6 +17,7 @@ import { linkFinderDialogId } from '../linkFinderDialog/LinkFinderDialogTypes';
 import { getModal } from '../modal/ModalHandler';
 import { CloseResultCode } from '../modal/ModalTypes';
 import { ReminderComponent } from '../reminder/Reminder';
+import { ExportConfigType } from '../settingsDialog/ExportSettingsDialog';
 import { settingsDialogId } from '../settingsDialog/SettingsDialogTypes';
 import { Grid } from '../widgets/grid/Grid';
 import './App.css';
@@ -67,11 +68,22 @@ function Page(): ReactElement {
     }
   }
 
-  function onExportConfig(): void {
+  function onExportConfig(type: ExportConfigType = 'view'): void {
     const indentSpaces = 2;
-    const w = window.open();
-    w?.document.write(`<pre>${JSON.stringify(myLinks, null, indentSpaces)}</prev>`);
-    updateUIState({ type: 'settingsChanged', value: false });
+    if (type === 'clipboard') {
+      navigator.clipboard
+        .writeText(JSON.stringify(myLinks, null, indentSpaces))
+        .then(() => {
+          updateUIState({ type: 'settingsChanged', value: false });
+        })
+        .catch((e: unknown) => {
+          window.alert(e);
+        });
+    } else {
+      const w = window.open();
+      w?.document.write(`<pre>${JSON.stringify(myLinks, null, indentSpaces)}</prev>`);
+      updateUIState({ type: 'settingsChanged', value: false });
+    }
   }
 
   function onShortcut(): void {
