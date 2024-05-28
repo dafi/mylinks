@@ -6,7 +6,7 @@ import { ThemeSettingsForm } from '../components/settingsDialog/ThemeSettingsDia
 import { SystemShortcutForm } from '../components/systemShortcutsDialog/SystemShortcutsDialog';
 import { EditComplete } from '../hooks/useEditLink/useEditLink';
 import { AppAction } from '../model/AppAction';
-import { Config, MyLinks, Theme } from '../model/MyLinks-interface';
+import { MyLinks } from '../model/MyLinks-interface';
 import { defaultAppConfig, reloadAll } from './AppConfig';
 import { AppConfigContext } from './AppConfigContext';
 import { AppUIStateAction } from './useAppUIState';
@@ -30,16 +30,18 @@ export function AppConfigContextProvider(
     onExportConfig,
   }: AppConfigContextProps
 ): ReactElement {
-  function onSaveSettings(settings: Theme & Config): void {
+  function onSaveSettings(settings: Pick<MyLinks, 'theme' | 'config'>): void {
     if (!myLinks) {
       return;
     }
-    const { backgroundImage, faviconColor, faviconService } = settings;
 
-    myLinks.theme = { ...myLinks.theme, backgroundImage, faviconColor };
-    myLinks.config = { ...myLinks.config, faviconService };
+    const data: MyLinks = {
+      ...myLinks,
+      theme: { ...myLinks.theme, ...settings.theme },
+      config: { ...myLinks.config, ...settings.config },
+    };
 
-    onEditComplete({ type: 'success', data: myLinks });
+    onEditComplete({ type: 'success', data });
   }
 
   function onSaveSystemShortcuts(systemShortcuts: AppAction[]): void {
@@ -47,9 +49,12 @@ export function AppConfigContextProvider(
       return;
     }
 
-    myLinks.config = { ...myLinks.config, systemShortcuts };
+    const data: MyLinks = {
+      ...myLinks,
+      config: { ...myLinks.config, systemShortcuts },
+    };
 
-    onEditComplete({ type: 'success', data: myLinks });
+    onEditComplete({ type: 'success', data });
   }
 
   const [config, setConfig] = useState(defaultAppConfig);

@@ -6,6 +6,7 @@ export function useAutoFocus<T extends HTMLElement>(
 ): RefObject<T> {
   const ref = useRef<T>(initValue);
 
+  // eslint-disable-next-line react-compiler/react-compiler
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => ref.current?.focus(), deps);
 

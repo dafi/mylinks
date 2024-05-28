@@ -19,7 +19,7 @@ export function AppUIStateContextProvider(
   }: AppUIStateProps
 ): ReactElement {
   const { onBeginEdit, onSave, linkEditData } = useEditLink(onEditComplete);
-  uiState.onEdit = onBeginEdit;
+  const localUIState = { ... uiState, onEdit: onBeginEdit };
 
   useEffect(() => {
     if (linkEditData) {
@@ -28,7 +28,7 @@ export function AppUIStateContextProvider(
   }, [linkEditData]);
 
   return (
-    <AppUIStateContext.Provider value={uiState}>
+    <AppUIStateContext.Provider value={localUIState}>
       {children}
       { linkEditData && (linkEditData.action === 'create' || linkEditData.action === 'update') &&
         <EditLinkDialog

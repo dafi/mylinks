@@ -3,16 +3,18 @@ import { applyColorToFavicon } from '../../common/Favicon';
 import { isNotEmptyString } from '../../common/StringUtil';
 import { applyBackground } from '../../common/ThemeUtil';
 import { useAppConfigContext } from '../../contexts/AppConfigContext';
-import { Config, Theme } from '../../model/MyLinks-interface';
+import { Config, MyLinks, Theme } from '../../model/MyLinks-interface';
 import { SelectColorScheme } from '../colorScheme/SelectColorScheme';
 import { getModal } from '../modal/ModalHandler';
 import { CloseResultCode } from '../modal/ModalTypes';
 
-type DialogState = Theme & Config & Record<string, string | undefined>;
+type ThemeKeys = Extract<keyof Theme, 'backgroundImage' | 'faviconColor'>;
+type ConfigKeys = Extract<keyof Config, 'faviconService'>;
+type DialogState = Record<ThemeKeys | ConfigKeys, string | undefined>;
 
 type SettingsProps = {
   readonly modalId: string;
-  onSave(settings: Theme & Config): void;
+  onSave(settings: Pick<MyLinks, 'theme' | 'config'>): void;
 };
 
 function restoreConfig(form: DialogState, theme: Theme | undefined): void {
@@ -36,7 +38,17 @@ export function ThemeSettingsForm({ onSave, modalId }: SettingsProps): ReactElem
   function onClickSave(e: MouseEvent<HTMLButtonElement>): void {
     e.preventDefault();
 
-    onSave(form);
+    const { backgroundImage, faviconColor } = form;
+
+    onSave({
+      theme: {
+        backgroundImage,
+        faviconColor
+      },
+      config: {
+        faviconService: form.faviconService
+      }
+    });
     onCloseDialog(CloseResultCode.Ok);
   }
 
@@ -50,7 +62,7 @@ export function ThemeSettingsForm({ onSave, modalId }: SettingsProps): ReactElem
   }
 
   function onChange(e: ChangeEvent<HTMLInputElement>): void {
-    const action = e.target.dataset.action;
+    const action = e.target.dataset.action as keyof DialogState;
     if (isNotEmptyString(action)) {
       setForm(prevState => {
         prevState[action] = e.target.value;

@@ -10,6 +10,7 @@ export function useColorScheme(options: Omit<SchemeOptions, 'scheme'>): void {
 
     return (): void => query.removeEventListener('change', changeListener);
     // run only at first render, no matters if options change
+    // eslint-disable-next-line react-compiler/react-compiler
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 }
