@@ -42,12 +42,9 @@ export function buildFaviconUrl(
 let cancelFaviconLoading: (() => void) | undefined;
 
 export function applyColorToFavicon(
-  color: string | undefined,
+  color: string = '#008000',
   options?: Readonly<{ favicon?: HTMLLinkElement; width?: number; height?: number }>
 ): void {
-  if (color === undefined) {
-    return;
-  }
   const favicon: HTMLLinkElement | null = options?.favicon ?? document.querySelector('link[rel~="icon"]');
   if (!favicon) {
     return;
