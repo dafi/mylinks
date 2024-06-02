@@ -1,4 +1,5 @@
 import { ReactElement, useCallback, useState } from 'react';
+import { buildColorSchemeOptions } from '../../common/ColorScheme';
 import { loadConfig, saveConfig } from '../../common/Config';
 import { createWidget } from '../../common/MyLinksUtil';
 import { AppConfigContextProvider } from '../../contexts/AppConfigContextProvider';
@@ -131,10 +132,9 @@ function Page(): ReactElement {
     }
   }, [setMyLinks]);
   useAppStartup(onConfigurationLoaded);
-  useColorScheme({
-    element: document.body,
-    cssClass: 'theme-dark'
-  });
+  useColorScheme(buildColorSchemeOptions({
+    colorScheme: myLinks.theme?.colorScheme,
+  }));
 
   const links = myLinks.columns.flat().flatMap(w => w.list);
   return (

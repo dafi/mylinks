@@ -1,3 +1,4 @@
+import { ColorScheme } from '../common/ColorScheme';
 import { AppAction } from './AppAction';
 import { HotKey } from './KeyCombination';
 
@@ -6,6 +7,7 @@ export type Theme = {
   faviconColor?: string;
   linkKeyBackground?: string;
   linkKeyColor?: string;
+  colorScheme?: ColorScheme;
 };
 
 export type Link = {

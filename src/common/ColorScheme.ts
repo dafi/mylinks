@@ -1,21 +1,28 @@
-const PREF_COLOR_SCHEME = 'colorScheme';
 export type ColorScheme = 'system' | 'light' | 'dark';
 
 export type SchemeOptions = {
-  scheme: ColorScheme;
+  colorScheme: ColorScheme;
+  /** The element where the {@link SchemeOptions.cssClass} will be added/removed */
   element: HTMLElement;
+  /** The CSS class to use when dark mode is set, be careful it's used **only** for dark mode */
   cssClass: 'theme-dark';
 };
 
-export const getColorScheme = (): ColorScheme => localStorage.getItem(PREF_COLOR_SCHEME) as ColorScheme | null ?? 'system';
-export const setColorScheme = (scheme: ColorScheme): void => localStorage.setItem(PREF_COLOR_SCHEME, scheme);
+export function buildColorSchemeOptions(options: Partial<SchemeOptions>): SchemeOptions {
+  return {
+    colorScheme: 'system',
+    element: document.body,
+    cssClass: 'theme-dark',
+    ...options,
+  };
+}
 
-export function applyColorScheme({ scheme, element, cssClass }: SchemeOptions): void {
-  if (scheme === 'system') {
-    scheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+export function applyColorScheme({ colorScheme, element, cssClass }: SchemeOptions): void {
+  if (colorScheme === 'system') {
+    colorScheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
   }
 
-  switch (scheme) {
+  switch (colorScheme) {
     case 'light':
       element.classList.remove(cssClass);
       break;
