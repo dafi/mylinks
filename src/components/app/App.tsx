@@ -1,9 +1,11 @@
-import { ReactElement, useCallback, useState } from 'react';
+import { ReactElement } from 'react';
 import { buildColorSchemeOptions } from '../../common/ColorScheme';
 import { loadConfig, saveConfig } from '../../common/Config';
 import { createWidget } from '../../common/MyLinksUtil';
+import { reloadAll } from '../../contexts/AppConfig';
 import { AppConfigContextProvider } from '../../contexts/AppConfigContextProvider';
 import { AppUIStateContextProvider } from '../../contexts/AppUIStateContextProvider';
+import { useAppConfig } from '../../contexts/useAppConfig';
 import { useAppUIState } from '../../contexts/useAppUIState';
 import { useColorScheme } from '../../hooks/useColorScheme/useColorScheme';
 import { EditComplete } from '../../hooks/useEditLink/useEditLink';
@@ -25,10 +27,6 @@ import './App.css';
 import { useAppStartup } from './useAppStartup';
 
 type EditAction = 'editLink' | 'editSettings';
-
-const defaultMyLinks: MyLinks = {
-  columns: []
-};
 
 function Page(): ReactElement {
   const onLinkSelected = (link: Link): void => {
@@ -96,7 +94,7 @@ function Page(): ReactElement {
       file,
       callback: mmLinks => {
         if (mmLinks) {
-          setMyLinks({ ...mmLinks });
+          setConfig(reloadAll(mmLinks, updateUIState));
           updateUIState({ type: 'settingsChanged', value: false });
           updateUIState({ type: 'configurationLoaded' });
         }
@@ -111,8 +109,9 @@ function Page(): ReactElement {
         saveConfig({
           data,
           callback: mmLinks => {
+            setConfig(reloadAll(mmLinks, updateUIState));
             updateUIState({ type: 'settingsChanged', value: true });
-            setMyLinks({ ...mmLinks });
+            updateUIState({ type: 'configurationLoaded' });
           }
         });
         break;
@@ -123,24 +122,19 @@ function Page(): ReactElement {
     }
   }
 
-  const [myLinks, setMyLinks] = useState<MyLinks>(defaultMyLinks);
   const [uiState, updateUIState] = useAppUIState();
+  const [config, setConfig, onLoadedConfig] = useAppConfig(updateUIState);
 
-  const onConfigurationLoaded = useCallback((m: MyLinks | undefined) => {
-    if (m) {
-      setMyLinks(m);
-    }
-  }, [setMyLinks]);
-  useAppStartup(onConfigurationLoaded);
+  useAppStartup(onLoadedConfig);
   useColorScheme(buildColorSchemeOptions({
-    colorScheme: myLinks.theme?.colorScheme,
+    colorScheme: config.theme?.colorScheme,
   }));
 
+  const myLinks = config.myLinksLookup.myLinks;
   const links = myLinks.columns.flat().flatMap(w => w.list);
   return (
     <AppConfigContextProvider
-      myLinks={myLinks}
-      updateUIState={updateUIState}
+      config={config}
       onEditComplete={(result): void => onEditComplete('editSettings', result)}
       onLoadConfig={onLoadConfig}
       onExportConfig={onExportConfig}

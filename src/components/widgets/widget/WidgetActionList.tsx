@@ -23,7 +23,7 @@ export default function WidgetActionList({ editable, widget }: WidgetActionListP
 
   function onDelete(): void {
     const response = confirm(`Delete widget "${widget.title}"?`);
-    if (response && onEdit && myLinksLookup) {
+    if (response && onEdit) {
       onEdit({
         widget,
         original: widget,

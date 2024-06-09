@@ -18,7 +18,7 @@ export function Grid({ columns }: GridProps): ReactElement {
       return;
     }
 
-    if (destination && onEdit && myLinksLookup && isEditEntity(result.type)) {
+    if (destination && onEdit && isEditEntity(result.type)) {
       onEdit({
         action: 'move',
         entity: result.type,

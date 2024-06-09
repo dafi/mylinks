@@ -39,7 +39,6 @@ function previewColorScheme(colorScheme: ColorScheme): void {
 
 export function ThemeSettingsForm({ onSave, modalId }: SettingsProps): ReactElement {
   const onCloseDialog = (code: CloseResultCode): void => {
-    restoreConfig(form, theme);
     getModal(modalId)?.close(code);
   };
 
@@ -51,6 +50,7 @@ export function ThemeSettingsForm({ onSave, modalId }: SettingsProps): ReactElem
   }
 
   function onClickCancel(): void {
+    restoreConfig(form, theme);
     onCloseDialog(CloseResultCode.Cancel);
   }
 

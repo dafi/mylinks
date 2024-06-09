@@ -12,11 +12,11 @@ import { cursorPosition } from '../CursorPositionTracker';
 import { Shortcut } from './Shortcut';
 import { addShortcut, clearShortcuts } from './ShortcutManager';
 
-export function reloadShortcuts(myLinks: MyLinks, myLinksLookup: MyLinksLookup, updateUIState: Dispatch<AppUIStateAction>): void {
+export function reloadShortcuts(myLinksLookup: MyLinksLookup, updateUIState: Dispatch<AppUIStateAction>): void {
   clearShortcuts();
 
-  addSystemShortcuts(myLinks, myLinksLookup, updateUIState);
-  addLinkShortcuts(myLinks);
+  addSystemShortcuts(myLinksLookup, updateUIState);
+  addLinkShortcuts(myLinksLookup.myLinks);
 }
 
 function addLinkShortcuts(myLinks: MyLinks): void {
@@ -36,11 +36,10 @@ function addLinkShortcuts(myLinks: MyLinks): void {
 }
 
 function addSystemShortcuts(
-  myLinks: MyLinks | undefined,
   myLinksLookup: MyLinksLookup,
   updateUIState: Dispatch<AppUIStateAction>
 ): void {
-  myLinks?.config?.systemShortcuts?.forEach(({ action, hotKey }) => {
+  myLinksLookup.myLinks.config?.systemShortcuts?.forEach(({ action, hotKey }) => {
     const label = AppActionDescription[action];
     switch (action) {
       case 'openAllLinks':

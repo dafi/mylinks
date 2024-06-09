@@ -9,23 +9,26 @@ import { Config, MyLinks } from '../model/MyLinks-interface';
 import { MyLinksLookup } from '../model/MyLinksLookup';
 import { AppUIStateAction } from './useAppUIState';
 
+const defaultMyLinks: MyLinks = {
+  columns: []
+};
+
 export type AppConfig = {
-  myLinksLookup?: MyLinksLookup;
+  myLinksLookup: MyLinksLookup;
 } & Config & Pick<MyLinks, 'theme'>;
 
-export const defaultAppConfig: Readonly<AppConfig> = {};
+export const defaultAppConfig: Readonly<AppConfig> = { myLinksLookup: createMyLinkHolder(defaultMyLinks) };
 
-export function reloadAll(myLinks: MyLinks | undefined, updateUIState: Dispatch<AppUIStateAction>): Readonly<AppConfig> {
+export function reloadAll(
+  myLinks: MyLinks | undefined,
+  updateUIState: Dispatch<AppUIStateAction>
+): Readonly<AppConfig> {
   if (!myLinks) {
-    return defaultAppConfig;
+    myLinks = defaultMyLinks;
   }
   try {
-    const widgetManager = new WidgetManagerImpl(myLinks.columns);
-    const myLinksHolder = new MyLinksHolder(
-      myLinks,
-      new LinkManagerImpl(myLinks, new LinkCache(myLinks.columns), widgetManager),
-      widgetManager);
-    reloadShortcuts(myLinks, myLinksHolder, updateUIState);
+    const myLinksHolder = createMyLinkHolder(myLinks);
+    reloadShortcuts(myLinksHolder, updateUIState);
 
     const config = buildConfig(myLinksHolder);
     if (config.theme) {
@@ -36,6 +39,14 @@ export function reloadAll(myLinks: MyLinks | undefined, updateUIState: Dispatch<
     window.alert(e);
   }
   return defaultAppConfig;
+}
+
+function createMyLinkHolder(myLinks: MyLinks): MyLinksHolder {
+  const widgetManager = new WidgetManagerImpl(myLinks.columns);
+  return new MyLinksHolder(
+    myLinks,
+    new LinkManagerImpl(myLinks, new LinkCache(myLinks.columns), widgetManager),
+    widgetManager);
 }
 
 function buildConfig(holder: MyLinksHolder): AppConfig {

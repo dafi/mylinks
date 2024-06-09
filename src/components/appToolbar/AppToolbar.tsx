@@ -30,7 +30,7 @@ export function AppToolbar(
   const { onEdit } = useAppUIStateContext();
 
   const showButtonStyle: CSSProperties = {
-    display: showButtons || !myLinksLookup ? 'inline' : 'none'
+    display: showButtons ? 'inline' : 'none'
   };
   const showButtonIcon = showButtons ? 'fa-chevron-down' : 'fa-bars';
 
@@ -57,18 +57,16 @@ export function AppToolbar(
           data={{ onEdit, myLinksLookup }}
         />
 
-        {!myLinksLookup &&
-          <AppToolbarButton
-            title="Load configuration from local file"
-            className="toolbar-icon"
-            action="loadConfig"
-            icon="fa fa-file-import"
-            onAction={onAction}
-            type="file"
-          />
-        }
+        <AppToolbarButton
+          title="Load configuration from local file"
+          className="toolbar-icon"
+          action="loadConfig"
+          icon="fa fa-file-import"
+          onAction={onAction}
+          type="file"
+        />
 
-        {myLinksLookup?.linkManager.hasLinks() === true &&
+        {myLinksLookup.linkManager.hasLinks() &&
           <AppToolbarButton
             title="Search link"
             className="toolbar-icon"
@@ -78,7 +76,7 @@ export function AppToolbar(
           />
         }
 
-        {myLinksLookup?.linkManager.hasShortcuts() === true &&
+        {myLinksLookup.linkManager.hasShortcuts() &&
           <AppToolbarButton
             title="Toggle shortcuts visibility"
             className="toolbar-icon"
@@ -88,15 +86,13 @@ export function AppToolbar(
           />
         }
 
-        {myLinksLookup &&
-          <AppToolbarButton
-            title="Edit Application Settings"
-            className="toolbar-icon"
-            action="settingsDialog"
-            icon="fa fa-cogs"
-            onAction={onAction}
-          />
-        }
+        <AppToolbarButton
+          title="Edit Application Settings"
+          className="toolbar-icon"
+          action="settingsDialog"
+          icon="fa fa-cogs"
+          onAction={onAction}
+        />
       </div>
     </div>
   );
