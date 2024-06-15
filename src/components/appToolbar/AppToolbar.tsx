@@ -68,9 +68,9 @@ export function AppToolbar(
 
         {myLinksLookup.linkManager.hasLinks() &&
           <AppToolbarButton
-            title="Search link"
+            title="Find links"
             className="toolbar-icon"
-            action="searchLink"
+            action="findLinks"
             icon="fa fa-search"
             onAction={onAction}
           />
@@ -80,7 +80,7 @@ export function AppToolbar(
           <AppToolbarButton
             title="Toggle shortcuts visibility"
             className="toolbar-icon"
-            action="shortcut"
+            action="toggleShortcuts"
             icon="fa fa-keyboard"
             onAction={onAction}
           />
@@ -89,7 +89,7 @@ export function AppToolbar(
         <AppToolbarButton
           title="Edit Application Settings"
           className="toolbar-icon"
-          action="settingsDialog"
+          action="openSettings"
           icon="fa fa-cogs"
           onAction={onAction}
         />

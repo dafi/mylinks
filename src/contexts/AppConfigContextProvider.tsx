@@ -1,14 +1,14 @@
 import { ReactElement } from 'react';
+import { ActionShortcut } from '../action/ActionType';
 import { ExportConfigType, ExportSettingsForm } from '../components/settingsDialog/ExportSettingsDialog';
 import { SettingsDialog } from '../components/settingsDialog/SettingsDialog';
 import { settingsDialogId, SettingsPanel } from '../components/settingsDialog/SettingsDialogTypes';
 import { ThemeSettingsForm } from '../components/settingsDialog/ThemeSettingsDialog';
 import { SystemShortcutForm } from '../components/systemShortcutsDialog/SystemShortcutsDialog';
 import { EditComplete } from '../hooks/useEditLink/useEditLink';
-import { AppAction } from '../model/AppAction';
 import { MyLinks } from '../model/MyLinks-interface';
-import { AppConfig } from './AppConfig';
 import { AppConfigContext } from './AppConfigContext';
+import { AppConfig } from './AppConfigType';
 
 type AppConfigContextProps = {
   readonly config: AppConfig;
@@ -37,7 +37,7 @@ export function AppConfigContextProvider(
     onEditComplete({ type: 'success', data });
   }
 
-  function onSaveSystemShortcuts(systemShortcuts: AppAction[]): void {
+  function onSaveSystemShortcuts(systemShortcuts: ActionShortcut[]): void {
     const data: MyLinks = {
       ...myLinks,
       config: { ...myLinks.config, systemShortcuts },

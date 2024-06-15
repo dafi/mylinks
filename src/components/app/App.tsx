@@ -1,8 +1,8 @@
 import { ReactElement } from 'react';
+import { executeAction } from '../../action/Action';
 import { buildColorSchemeOptions } from '../../common/ColorScheme';
 import { loadConfig, saveConfig } from '../../common/Config';
-import { createWidget } from '../../common/MyLinksUtil';
-import { reloadAll } from '../../contexts/AppConfig';
+import { createAppConfig } from '../../contexts/AppConfig';
 import { AppConfigContextProvider } from '../../contexts/AppConfigContextProvider';
 import { AppUIStateContextProvider } from '../../contexts/AppUIStateContextProvider';
 import { useAppConfig } from '../../contexts/useAppConfig';
@@ -14,14 +14,12 @@ import { openLink } from '../../model/MyLinks';
 import { Link, MyLinks } from '../../model/MyLinks-interface';
 import { AppToolbar } from '../appToolbar/AppToolbar';
 import { AppToolbarActionType } from '../appToolbar/AppToolbarButtonTypes';
-import { AppToolbarAddWidgetData } from '../appToolbar/AppToolbarDataTypes';
 import { LinkFinderDialog } from '../linkFinderDialog/LinkFinderDialog';
 import { linkFinderDialogId } from '../linkFinderDialog/LinkFinderDialogTypes';
 import { getModal } from '../modal/ModalHandler';
 import { CloseResultCode } from '../modal/ModalTypes';
 import { ReminderComponent } from '../reminder/Reminder';
 import { ExportConfigType } from '../settingsDialog/ExportSettingsDialog';
-import { settingsDialogId } from '../settingsDialog/SettingsDialogTypes';
 import { Grid } from '../widgets/grid/Grid';
 import './App.css';
 import { useAppStartup } from './useAppStartup';
@@ -41,52 +39,23 @@ function Page(): ReactElement {
       case 'loadConfig':
         onLoadConfig(e.data as File);
         break;
-      case 'shortcut':
-        onShortcut();
+      case 'toggleShortcuts':
+        executeAction('toggleShortcuts');
         break;
-      case 'searchLink':
-        getModal(linkFinderDialogId)?.open();
+      case 'findLinks':
+        executeAction('findLinks');
         break;
-      case 'settingsDialog':
-        getModal(settingsDialogId)?.open();
+      case 'openSettings':
+        executeAction('openSettings');
         break;
       case 'addWidget':
-        onAddWidget(e.data as AppToolbarAddWidgetData);
-    }
-  }
-
-  function onAddWidget(data: AppToolbarAddWidgetData): void {
-    const { onEdit, myLinksLookup } = data;
-    if (onEdit && myLinksLookup) {
-      onEdit({
-        action: 'create',
-        entity: 'widget',
-        edited: createWidget(),
-        myLinksLookup
-      });
+        executeAction('addWidget');
+        break;
     }
   }
 
   function onExportConfig(type: ExportConfigType = 'view'): void {
-    const indentSpaces = 2;
-    if (type === 'clipboard') {
-      navigator.clipboard
-        .writeText(JSON.stringify(myLinks, null, indentSpaces))
-        .then(() => {
-          updateUIState({ type: 'settingsChanged', value: false });
-        })
-        .catch((e: unknown) => {
-          window.alert(e);
-        });
-    } else {
-      const w = window.open();
-      w?.document.write(`<pre>${JSON.stringify(myLinks, null, indentSpaces)}</prev>`);
-      updateUIState({ type: 'settingsChanged', value: false });
-    }
-  }
-
-  function onShortcut(): void {
-    updateUIState({ type: 'hideShortcuts', value: 'toggle' });
+    executeAction('exportConfig', type);
   }
 
   function onLoadConfig(file: File): void {
@@ -94,7 +63,7 @@ function Page(): ReactElement {
       file,
       callback: mmLinks => {
         if (mmLinks) {
-          setConfig(reloadAll(mmLinks, updateUIState));
+          setConfig(createAppConfig(mmLinks, updateUIState));
           updateUIState({ type: 'settingsChanged', value: false });
           updateUIState({ type: 'configurationLoaded' });
         }
@@ -109,7 +78,7 @@ function Page(): ReactElement {
         saveConfig({
           data,
           callback: mmLinks => {
-            setConfig(reloadAll(mmLinks, updateUIState));
+            setConfig(createAppConfig(mmLinks, updateUIState));
             updateUIState({ type: 'settingsChanged', value: true });
             updateUIState({ type: 'configurationLoaded' });
           }
@@ -123,9 +92,9 @@ function Page(): ReactElement {
   }
 
   const [uiState, updateUIState] = useAppUIState();
-  const [config, setConfig, onLoadedConfig] = useAppConfig(updateUIState);
+  const [config, setConfig, onConfigLoaded] = useAppConfig(updateUIState);
 
-  useAppStartup(onLoadedConfig);
+  useAppStartup(onConfigLoaded);
   useColorScheme(buildColorSchemeOptions({
     colorScheme: config.theme?.colorScheme,
   }));

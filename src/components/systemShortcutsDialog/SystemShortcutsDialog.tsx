@@ -1,8 +1,7 @@
 import { MouseEvent, ReactElement, useMemo, useRef, useState } from 'react';
+import { ActionList, ActionShortcut } from '../../action/ActionType';
 import { Shortcut } from '../../common/shortcut/Shortcut';
 import { useAppConfigContext } from '../../contexts/AppConfigContext';
-import { AppAction, AppActionList } from '../../model/AppAction';
-import { AppActionDescription } from '../../model/AppActionDescription';
 import { KeyCombination } from '../../model/KeyCombination';
 import { ListView } from '../listView/ListView';
 import { ListViewItem } from '../listView/ListViewTypes';
@@ -15,24 +14,26 @@ import { shortcutDialogId } from '../shortcut/shortcutDialog/ShortcutDialogTypes
 
 type SystemShortcutProps = {
   readonly modalId: string;
-  onSave(shortcuts: AppAction[]): void;
+  onSave(shortcuts: ActionShortcut[]): void;
 };
 
 type FormShortcut = {
   edited: boolean;
   shortcut: Shortcut;
-  shortcutAction: AppAction;
+  shortcutAction: ActionShortcut;
 };
 
-function formSystemShortcut(systemShortcuts: AppAction[] | undefined): FormShortcut[] {
-  return AppActionList.map((action): FormShortcut => ({
-    edited: false,
-    shortcut: { label: AppActionDescription[action], callback: (): void => {}, hotKey: [] },
-    shortcutAction: {
-      hotKey: systemShortcuts?.find(v => action === v.action)?.hotKey ?? [],
-      action
-    }
-  }));
+function formSystemShortcut(systemShortcuts: ActionShortcut[] | undefined): FormShortcut[] {
+  return ActionList
+    .filter(v => v.canAssignShortcut)
+    .map(({ action, label }): FormShortcut => ({
+      edited: false,
+      shortcut: { label, callback: (): void => {}, hotKey: [] },
+      shortcutAction: {
+        hotKey: systemShortcuts?.find(v => action === v.action)?.hotKey ?? [],
+        action
+      }
+    }));
 }
 
 export function SystemShortcutForm({ modalId, onSave }: SystemShortcutProps): ReactElement {

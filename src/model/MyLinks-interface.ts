@@ -1,5 +1,5 @@
+import { ActionShortcut } from '../action/ActionType';
 import { ColorScheme } from '../common/ColorScheme';
-import { AppAction } from './AppAction';
 import { HotKey } from './KeyCombination';
 
 export type Theme = {
@@ -26,7 +26,7 @@ export type Widget = {
 
 export type Config = {
   faviconService?: string;
-  systemShortcuts?: AppAction[];
+  systemShortcuts?: ActionShortcut[];
 };
 
 export type MyLinks = {

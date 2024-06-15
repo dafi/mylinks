@@ -1,25 +1,22 @@
 import { Dispatch } from 'react';
+import { registerActions } from '../action/Action';
 import { LinkCache } from '../common/LinkCache';
 import { LinkManagerImpl } from '../common/LinkManagerImpl';
 import { MyLinksHolder } from '../common/MyLinksHolder';
 import { reloadShortcuts } from '../common/shortcut/ShortcutManagerHelper';
 import { applyTheme } from '../common/ThemeUtil';
 import { WidgetManagerImpl } from '../common/WidgetManagerImpl';
-import { Config, MyLinks } from '../model/MyLinks-interface';
-import { MyLinksLookup } from '../model/MyLinksLookup';
+import { MyLinks } from '../model/MyLinks-interface';
+import { AppConfig } from './AppConfigType';
 import { AppUIStateAction } from './useAppUIState';
 
 const defaultMyLinks: MyLinks = {
   columns: []
 };
 
-export type AppConfig = {
-  myLinksLookup: MyLinksLookup;
-} & Config & Pick<MyLinks, 'theme'>;
-
 export const defaultAppConfig: Readonly<AppConfig> = { myLinksLookup: createMyLinkHolder(defaultMyLinks) };
 
-export function reloadAll(
+export function createAppConfig(
   myLinks: MyLinks | undefined,
   updateUIState: Dispatch<AppUIStateAction>
 ): Readonly<AppConfig> {
@@ -28,9 +25,10 @@ export function reloadAll(
   }
   try {
     const myLinksHolder = createMyLinkHolder(myLinks);
-    reloadShortcuts(myLinksHolder, updateUIState);
 
     const config = buildConfig(myLinksHolder);
+    registerActions({ config, updateUIState });
+    reloadShortcuts(config.myLinksLookup);
     if (config.theme) {
       applyTheme(config.theme);
     }

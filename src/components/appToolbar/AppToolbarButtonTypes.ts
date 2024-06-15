@@ -15,7 +15,11 @@ export interface AppToolbarButtonProps {
 }
 
 const actions = [
-  'loadConfig', 'shortcut', 'settingsDialog', 'searchLink', 'addWidget',
+  'loadConfig',
+  'toggleShortcuts',
+  'openSettings',
+  'findLinks',
+  'addWidget',
 ] as const;
 
 export type AppToolbarActionType = typeof actions[number];

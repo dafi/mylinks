@@ -1,21 +1,15 @@
-import { Dispatch } from 'react';
-import { linkFinderDialogId } from '../../components/linkFinderDialog/LinkFinderDialogTypes';
-import { getModal } from '../../components/modal/ModalHandler';
-import { settingsDialogId } from '../../components/settingsDialog/SettingsDialogTypes';
-import { AppUIStateAction } from '../../contexts/useAppUIState';
-import { AppActionDescription } from '../../model/AppActionDescription';
+import { executeAction } from '../../action/Action';
+import { ActionList } from '../../action/ActionType';
 import { filterMyLinks, openLink } from '../../model/MyLinks';
 import { MyLinks } from '../../model/MyLinks-interface';
-import { openWidgetLinksFromPoint } from '../../model/MyLinksDOM';
 import { MyLinksLookup } from '../../model/MyLinksLookup';
-import { cursorPosition } from '../CursorPositionTracker';
 import { Shortcut } from './Shortcut';
 import { addShortcut, clearShortcuts } from './ShortcutManager';
 
-export function reloadShortcuts(myLinksLookup: MyLinksLookup, updateUIState: Dispatch<AppUIStateAction>): void {
+export function reloadShortcuts(myLinksLookup: MyLinksLookup): void {
   clearShortcuts();
 
-  addSystemShortcuts(myLinksLookup, updateUIState);
+  addSystemShortcuts(myLinksLookup);
   addLinkShortcuts(myLinksLookup.myLinks);
 }
 
@@ -37,23 +31,19 @@ function addLinkShortcuts(myLinks: MyLinks): void {
 
 function addSystemShortcuts(
   myLinksLookup: MyLinksLookup,
-  updateUIState: Dispatch<AppUIStateAction>
 ): void {
-  myLinksLookup.myLinks.config?.systemShortcuts?.forEach(({ action, hotKey }) => {
-    const label = AppActionDescription[action];
-    switch (action) {
-      case 'openAllLinks':
-        addShortcut({ label, hotKey, callback: () => openWidgetLinksFromPoint(cursorPosition(), myLinksLookup) });
-        break;
-      case 'findLinks':
-        addShortcut({ label, hotKey, callback: () => getModal(linkFinderDialogId)?.open() });
-        break;
-      case 'editSettings':
-        addShortcut({ label, hotKey, callback: () => getModal(settingsDialogId)?.open() });
-        break;
-      case 'toggleShortcuts':
-        addShortcut({ label, hotKey, callback: () => updateUIState({ type: 'hideShortcuts', value: 'toggle' }) });
-        break;
+  const systemShortcuts = myLinksLookup.myLinks.config?.systemShortcuts;
+
+  if (!systemShortcuts) {
+    return;
+  }
+  for (const { action, label, canAssignShortcut } of ActionList) {
+    if (canAssignShortcut) {
+      const shortcut = systemShortcuts.find(v => v.action === action);
+      if (shortcut) {
+        const { hotKey } = shortcut;
+        addShortcut({ label, hotKey, callback: () => executeAction(action) });
+      }
     }
-  });
+  }
 }
