@@ -6,7 +6,10 @@ export type Action =
   'toggleShortcuts' |
   'openSettings' |
   'exportConfig' |
-  'addWidget';
+  'addWidget' |
+  'expandAllWidgets' |
+  'collapseAllWidgets'
+  ;
 
 export type ActionInfo = {
   action: Action;
@@ -25,4 +28,6 @@ export const ActionList: ActionInfo[] = [
   { action: 'openSettings', label: 'Open the Settings dialog', canAssignShortcut: true },
   { action: 'exportConfig', label: 'Export Settings', canAssignShortcut: true },
   { action: 'addWidget', label: 'Add Widget', canAssignShortcut: true },
+  { action: 'expandAllWidgets', label: 'Expand All Widgets', canAssignShortcut: true },
+  { action: 'collapseAllWidgets', label: 'Collapse All Widgets', canAssignShortcut: true },
 ] as const;
