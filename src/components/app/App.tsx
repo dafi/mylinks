@@ -51,6 +51,12 @@ function Page(): ReactElement {
       case 'addWidget':
         executeAction('addWidget');
         break;
+      case 'expandAllWidgets':
+        executeAction('expandAllWidgets');
+        break;
+      case 'collapseAllWidgets':
+        executeAction('collapseAllWidgets');
+        break;
     }
   }
 

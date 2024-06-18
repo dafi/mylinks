@@ -20,6 +20,8 @@ const actions = [
   'openSettings',
   'findLinks',
   'addWidget',
+  'expandAllWidgets',
+  'collapseAllWidgets',
 ] as const;
 
 export type AppToolbarActionType = typeof actions[number];

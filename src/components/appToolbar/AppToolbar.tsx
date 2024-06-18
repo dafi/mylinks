@@ -33,6 +33,7 @@ export function AppToolbar(
     display: showButtons ? 'inline' : 'none'
   };
   const showButtonIcon = showButtons ? 'fa-chevron-down' : 'fa-bars';
+  const hasWidgets = myLinksLookup.myLinks.columns.length > 0;
 
   return (
     <div className="toolbar-container">
@@ -49,12 +50,11 @@ export function AppToolbar(
         style={showButtonStyle}
       >
         <AppToolbarButton
-          title="Add Widget"
+          title="Edit Application Settings"
           className="toolbar-icon"
-          action="addWidget"
-          icon="far fa-window-restore"
+          action="openSettings"
+          icon="fa fa-cogs"
           onAction={onAction}
-          data={{ onEdit, myLinksLookup }}
         />
 
         <AppToolbarButton
@@ -87,12 +87,36 @@ export function AppToolbar(
         }
 
         <AppToolbarButton
-          title="Edit Application Settings"
+          title="Add Widget"
           className="toolbar-icon"
-          action="openSettings"
-          icon="fa fa-cogs"
+          action="addWidget"
+          icon="far fa-window-restore"
           onAction={onAction}
+          data={{ onEdit, myLinksLookup }}
         />
+
+        {hasWidgets &&
+          <AppToolbarButton
+            title="Expand All Widgets"
+            className="toolbar-icon"
+            action="expandAllWidgets"
+            icon="fas fa-expand-alt"
+            onAction={onAction}
+            data={{ onEdit, myLinksLookup }}
+          />
+        }
+
+        {hasWidgets &&
+          <AppToolbarButton
+            title="Collapse All Widgets"
+            className="toolbar-icon"
+            action="collapseAllWidgets"
+            icon="fas fa-compress-alt"
+            onAction={onAction}
+            data={{ onEdit, myLinksLookup }}
+          />
+        }
+
       </div>
     </div>
   );
