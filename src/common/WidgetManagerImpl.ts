@@ -81,4 +81,20 @@ export class WidgetManagerImpl implements WidgetManager {
     }
     return true;
   }
+
+  expandAllWidgets(): boolean {
+    return this.changeAllCollapsedStatus(false);
+  }
+
+  collapseAllWidgets(): boolean {
+    return this.changeAllCollapsedStatus(true);
+  }
+
+  private changeAllCollapsedStatus(collapsed: boolean): boolean {
+    if (this.widgets.length === 0) {
+      return false;
+    }
+    this.widgets.flat().forEach((widget) => { widget.collapsed = collapsed; });
+    return true;
+  }
 }
