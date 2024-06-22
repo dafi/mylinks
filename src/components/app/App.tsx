@@ -14,12 +14,14 @@ import { openLink } from '../../model/MyLinks';
 import { Link, MyLinks } from '../../model/MyLinks-interface';
 import { AppToolbar } from '../appToolbar/AppToolbar';
 import { AppToolbarActionType } from '../appToolbar/AppToolbarButtonTypes';
+import { ErrorBox } from '../errorBox/ErrorBox';
 import { LinkFinderDialog } from '../linkFinderDialog/LinkFinderDialog';
 import { linkFinderDialogId } from '../linkFinderDialog/LinkFinderDialogTypes';
 import { getModal } from '../modal/ModalHandler';
 import { CloseResultCode } from '../modal/ModalTypes';
 import { ReminderComponent } from '../reminder/Reminder';
 import { ExportConfigType } from '../settingsDialog/ExportSettingsDialog';
+import { StickyBox } from '../stickyBox/StickyBox';
 import { Grid } from '../widgets/grid/Grid';
 import './App.css';
 import { useAppStartup } from './useAppStartup';
@@ -66,13 +68,14 @@ function Page(): ReactElement {
 
   function onLoadConfig(file: File): void {
     loadConfig({
-      file,
-      callback: mmLinks => {
-        if (mmLinks) {
+      source: file,
+      callback: {
+        onLoad: mmLinks => {
           setConfig(createAppConfig(mmLinks, updateUIState));
           updateUIState({ type: 'settingsChanged', value: false });
           updateUIState({ type: 'configurationLoaded' });
-        }
+        },
+        onError: error => updateUIState({ type: 'error', error })
       }
     });
   }
@@ -92,7 +95,7 @@ function Page(): ReactElement {
         break;
       }
       case 'error':
-        alert(result.error.message);
+        updateUIState({ type: 'error', error: result.error });
         break;
     }
   }
@@ -118,26 +121,34 @@ function Page(): ReactElement {
         uiState={uiState}
         onEditComplete={(result): void => onEditComplete('editLink', result)}
       >
-        <div className="ml-wrapper">
-          <ReminderComponent
-            message="Widgets modified but not yet saved"
-            isVisible={uiState.settingsChanged}
-            onExportConfig={onExportConfig}
-          />
-          <div className="ml-grid">
-            <Grid key={uiState.reloadCounter} columns={myLinks.columns} />
-          </div>
-
-          <AppToolbar action={onClickToolbar} />
-
-          {links.length > 0 &&
-            <LinkFinderDialog
-              onLinkSelected={onLinkSelected}
-              links={links}
+        <>
+          <StickyBox>
+            {uiState.error !== undefined &&
+              <ErrorBox error={uiState.error} />
+            }
+            <ReminderComponent
+              message="Widgets modified but not yet saved"
+              isVisible={uiState.settingsChanged}
+              onExportConfig={onExportConfig}
             />
-          }
+          </StickyBox>
 
-        </div>
+          <div className="ml-wrapper">
+            <div className="ml-grid">
+              <Grid key={uiState.reloadCounter} columns={myLinks.columns} />
+            </div>
+
+            <AppToolbar action={onClickToolbar} />
+
+            {links.length > 0 &&
+              <LinkFinderDialog
+                onLinkSelected={onLinkSelected}
+                links={links}
+              />
+            }
+
+          </div>
+        </>
       </AppUIStateContextProvider>
     </AppConfigContextProvider>
   );

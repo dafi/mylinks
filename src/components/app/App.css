@@ -101,6 +101,7 @@ body, input, textarea, button {
 body {
   background-color: var(--app-backgrond-color);
   color: var(--app-color);
+  margin: 0;
 }
 
 .ml-wrapper {
@@ -138,6 +139,14 @@ body {
 
 .bg-white {
   background-color: var(--color-white);
+}
+
+.bg-action-danger {
+  background-color: var(--action-color-danger);
+}
+
+.bg-action-danger-60 {
+  background-color: var(--action-color-danger-60);
 }
 
 .hover.bg-action-primary:hover:not(:disabled) {

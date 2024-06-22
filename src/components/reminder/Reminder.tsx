@@ -1,5 +1,4 @@
 import { ReactElement } from 'react';
-import './Reminder.css';
 
 type ReminderProps = {
   readonly message: string;
@@ -18,9 +17,9 @@ export function ReminderComponent(
     return null;
   }
   return (
-    <div className="reminder">
+    <div className="reminder bg-action-warn">
       <span className="message">{message}</span>
-      <button className="button" onClick={onExportConfig}>Save JSON</button>
+      <button className="button bg-action-primary" onClick={onExportConfig}>View JSON</button>
     </div>
   );
 }
