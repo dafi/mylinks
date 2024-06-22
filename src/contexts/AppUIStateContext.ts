@@ -9,6 +9,7 @@ export interface AppUIState {
   // To prevent this from happening we force the rendering of the entire subtree
   reloadCounter: number;
   onEdit?: (editData: EditDataType) => void;
+  error?: unknown;
 }
 
 const defaultAppUIState: AppUIState = {

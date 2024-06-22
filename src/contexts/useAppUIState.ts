@@ -13,6 +13,9 @@ export type AppUIStateAction = {
   value: boolean | 'toggle';
 } | {
   type: 'configurationLoaded';
+} | {
+  type: 'error';
+  error: unknown;
 };
 
 function reducer(state: AppUIState, action: AppUIStateAction): AppUIState {
@@ -27,6 +30,8 @@ function reducer(state: AppUIState, action: AppUIStateAction): AppUIState {
     }
     case 'configurationLoaded':
       return { ...state, reloadCounter: state.reloadCounter + 1 };
+    case 'error':
+      return { ...state, error: action.error };
     default:
       return state;
   }

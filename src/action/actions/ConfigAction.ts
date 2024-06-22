@@ -25,12 +25,8 @@ function exportConfig(
   if (type === 'clipboard') {
     navigator.clipboard
       .writeText(JSON.stringify(myLinks, undefined, indentSpaces))
-      .then(() => {
-        updateUIState({ type: 'settingsChanged', value: false });
-      })
-      .catch((e: unknown) => {
-        window.alert(e);
-      });
+      .then(() => updateUIState({ type: 'settingsChanged', value: false }))
+      .catch((error: unknown) => updateUIState({ type: 'error', error }));
   } else {
     const w = window.open();
     w?.document.write(`<pre>${JSON.stringify(myLinks, undefined, indentSpaces)}</prev>`);

@@ -5,12 +5,15 @@ const STORAGE_PREF_DATA = 'myLinksData';
 
 let isLocalConfig = false;
 
-export type OnLoadCallback = (myLinks: MyLinks | undefined) => void;
+export type OnLoadCallback = {
+  onLoad: (myLinks: MyLinks) => void;
+  onError: (error: unknown) => void;
+};
+
 export type OnSaveCallback = (myLinks: MyLinks) => void;
 
 export interface LoadConfig {
-  url?: string | null;
-  file?: File | null;
+  source: URL | File | undefined;
   callback: OnLoadCallback;
 }
 
@@ -21,55 +24,54 @@ export interface SaveConfig {
 
 export function loadConfig(
   {
-    url,
-    file,
+    source,
     callback
   }: LoadConfig
 ): void {
   isLocalConfig = true;
-  if (isNotEmptyString(url)) {
-    loadFromUrl(url, callback);
-    isLocalConfig = false;
-  } else if (file) {
-    loadFromFile(file, callback);
-  } else {
+  if (!source) {
     loadData(callback);
+  } else if (source instanceof URL) {
+    loadFromUrl(source, callback);
+    isLocalConfig = false;
+  } else {
+    loadFromFile(source, callback);
   }
 }
 
-function loadData(onLoadCallback: OnLoadCallback): void {
-  let data: MyLinks | undefined;
-
+function loadData({ onLoad, onError }: OnLoadCallback): void {
   const jsonText = localStorage.getItem(STORAGE_PREF_DATA);
-  if (isNotEmptyString(jsonText)) {
-    try {
-      data = loadFromObject(JSON.parse(jsonText));
-    } catch (e) {
-      window.alert(e);
+  try {
+    if (isNotEmptyString(jsonText)) {
+      onLoad(loadFromObject(JSON.parse(jsonText)));
     }
+  } catch (e) {
+    onError(e);
   }
-  onLoadCallback(data);
 }
 
 function loadFromObject(json: unknown): MyLinks {
   return json as MyLinks;
 }
 
-function loadFromFile(file: File, onLoadCallback: OnLoadCallback): void {
+function loadFromFile(
+  file: File,
+  { onLoad, onError }: OnLoadCallback
+): void {
   file
     .text()
     .then(jsonText => {
-      onLoadCallback(loadFromObject(JSON.parse(jsonText)));
+      onLoad(loadFromObject(JSON.parse(jsonText)));
       localStorage.setItem(STORAGE_PREF_DATA, jsonText);
     })
-    .catch((e: unknown) => window.alert(e));
+    .catch(onError);
 }
 
-function loadFromUrl(url: string, onLoadCallback: OnLoadCallback): void {
+function loadFromUrl(url: URL, { onLoad, onError }: OnLoadCallback): void {
   fetch(url)
     .then(async response => response.json())
-    .then(data => onLoadCallback(data as MyLinks))
-    .catch((e: unknown) => window.alert(e));
+    .then(onLoad)
+    .catch(onError);
 }
 
 export function saveConfig(

@@ -33,8 +33,8 @@ export function createAppConfig(
       applyTheme(config.theme);
     }
     return config;
-  } catch (e) {
-    window.alert(e);
+  } catch (error) {
+    updateUIState({ type: 'error', error });
   }
   return defaultAppConfig;
 }

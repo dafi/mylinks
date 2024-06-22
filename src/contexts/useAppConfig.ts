@@ -1,4 +1,5 @@
-import { Dispatch, useCallback, useState } from 'react';
+import { Dispatch, useMemo, useState } from 'react';
+import { OnLoadCallback } from '../common/Config';
 import { MyLinks } from '../model/MyLinks-interface';
 import { createAppConfig, defaultAppConfig } from './AppConfig';
 import { AppConfig } from './AppConfigType';
@@ -7,12 +8,13 @@ import { AppUIStateAction } from './useAppUIState';
 export function useAppConfig(
   updateUIState: Dispatch<AppUIStateAction>
 ):
-  [AppConfig, Dispatch<AppConfig>, (m: MyLinks | undefined) => void] {
+  [AppConfig, Dispatch<AppConfig>, OnLoadCallback] {
   const [config, setConfig] = useState(defaultAppConfig);
 
-  const onConfigLoaded = useCallback((m: MyLinks | undefined) => {
-    setConfig(createAppConfig(m, updateUIState));
-  }, [updateUIState]);
+  const onConfigLoaded = useMemo(() => ({
+    onLoad: (m: MyLinks): void => setConfig(createAppConfig(m, updateUIState)),
+    onError: (error: unknown): void => updateUIState({ type: 'error', error }),
+  }), [updateUIState]);
 
   return [config, setConfig, onConfigLoaded];
 }
