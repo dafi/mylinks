@@ -8,12 +8,20 @@ export type SchemeOptions = {
   cssClass: 'theme-dark';
 };
 
-export function buildColorSchemeOptions(options: Partial<SchemeOptions>): SchemeOptions {
+export function buildColorSchemeOptions(
+  {
+    colorScheme,
+    element,
+    cssClass,
+  }: Partial<SchemeOptions>
+): SchemeOptions {
+  // merging using the spread operator is not possible because the argument
+  // can contain the field defined but set to undefined (e.g. colorScheme: undefined)
+  // if so the value would be undefined
   return {
-    colorScheme: 'system',
-    element: document.body,
-    cssClass: 'theme-dark',
-    ...options,
+    colorScheme: colorScheme ?? 'system',
+    element: element ?? document.body,
+    cssClass: cssClass ?? 'theme-dark',
   };
 }
 
