@@ -20,19 +20,8 @@ export function createAppConfig(
   myLinks: MyLinks | undefined,
   updateUIState: Dispatch<AppUIStateAction>
 ): Readonly<AppConfig> {
-  if (!myLinks) {
-    myLinks = defaultMyLinks;
-  }
   try {
-    const myLinksHolder = createMyLinkHolder(myLinks);
-
-    const config = buildConfig(myLinksHolder);
-    registerActions({ config, updateUIState });
-    reloadShortcuts(config.myLinksLookup);
-    if (config.theme) {
-      applyTheme(config.theme);
-    }
-    return config;
+    return buildConfig(createMyLinkHolder(myLinks ?? defaultMyLinks));
   } catch (error) {
     updateUIState({ type: 'error', error });
   }
@@ -54,4 +43,15 @@ function buildConfig(holder: MyLinksHolder): AppConfig {
     systemShortcuts: holder.myLinks.config?.systemShortcuts,
     myLinksLookup: holder,
   };
+}
+
+export function applyAppConfig(
+  config: AppConfig,
+  updateUIState: Dispatch<AppUIStateAction>
+): void {
+  registerActions({ config, updateUIState });
+  reloadShortcuts(config.myLinksLookup);
+  if (config.theme) {
+    applyTheme(config.theme);
+  }
 }
