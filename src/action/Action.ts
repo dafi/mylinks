@@ -28,5 +28,5 @@ export function executeAction(
   if (!command) {
     throw new Error(`Action command ${action} not found`);
   }
-  command.execute(args);
+  command.execute(...args);
 }
