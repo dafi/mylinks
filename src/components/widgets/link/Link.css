@@ -1,11 +1,15 @@
 .ml-link-container {
-  display: inline-block;
-  margin: 0;
-  width: 100%;
+  display: flex;
+  flex-flow: row nowrap;
+  place-content: normal space-between;
+  align-items: normal;
+  font-size: var(--font-sm);
+  color: var(--link-label-color);
+  cursor: pointer;
 }
 
-.ml-link-container a[draggable="true"]::after {
-  content: "";
+.ml-link-container .left:has([draggable="true"])::after {
+  content: '';
   display: block;
   width: 0;
   height: 2px;
@@ -13,46 +17,26 @@
   background-color: var(--link-underline-color);
 }
 
-.ml-link-container a[draggable="true"]:hover::after {
+.ml-link-container:hover .left:has([draggable="true"])::after {
   width: 100%;
 }
 
-.ml-link-items-container {
-  display: flex;
-  flex-flow: row nowrap;
-  justify-content: space-between;
-  align-items: normal;
-  align-content: normal;
-  font-size: var(--font-sm);
-}
-
-.ml-link-items-container .left {
+.ml-link-container .left {
   display: block;
   flex: 1 1 auto;
   align-self: auto;
   order: 0;
 }
 
-.ml-link-items-container .right {
+.ml-link-container .right {
   display: block;
   flex: 0 1 auto;
   align-self: auto;
   order: 0;
 }
 
-.ml-link-container a {
-  color: var(--link-label-color);
-  display: block;
-  text-decoration: none;
-}
-
-.ml-link-container a .content {
+.ml-link-container .link-box {
   flex: 1;
   display: flex;
   align-items: center;
 }
-
-.ml-link-container:focus, .ml-link-container a:focus {
-  text-decoration: none;
-}
-

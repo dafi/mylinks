@@ -6,12 +6,12 @@ import { LinkIcon } from '../linkIcon/LinkIcon';
 import './Link.css';
 import { LinkToolbar } from './LinkToolbar';
 
-interface LinkProps {
-  readonly link: MLLink;
-  readonly widget: Widget;
-  readonly editable: boolean;
-  readonly draggable?: boolean;
-}
+type LinkProps = Readonly<{
+  link: MLLink;
+  widget: Widget;
+  editable: boolean;
+  draggable?: boolean;
+}>;
 
 export function Link(
   {
@@ -23,15 +23,11 @@ export function Link(
 ): ReactElement {
   const [isMouseOver, setIsMouseOver] = useState(false);
 
-  function onClickMultipleUrl(e: MouseEvent<HTMLElement>): void {
+  function onClick(e: MouseEvent<HTMLElement>): void {
     e.preventDefault();
     e.stopPropagation();
     openLink(link);
   }
-
-  const attrs = link.urls.length === 1
-    ? { href: link.urls[0] }
-    : { href: '#', onClick: onClickMultipleUrl };
 
   return (
     <div
@@ -39,24 +35,19 @@ export function Link(
       onMouseEnter={(): void => setIsMouseOver(true)}
       onMouseLeave={(): void => setIsMouseOver(false)}
     >
-      <div className="ml-link-items-container">
-        <div className="left">
-          <a
-            {...attrs}
-            target="_blank"
-            rel="noopener noreferrer"
-            draggable={draggable}
-          >
-            <div className="content">
-              <LinkIcon link={link} />
-              <div className="label">{link.label}</div>
-            </div>
-          </a>
-        </div>
-        <div className="right">
-          <LinkToolbar visible={editable} link={link} widget={widget} />
-          <Shortcut shortcut={link.hotKey} visible={!editable} isMouseOver={isMouseOver} />
-        </div>
+      <div className="left">
+        <a
+          onClick={onClick}
+          className="link-box"
+          draggable={draggable}
+        >
+          <LinkIcon link={link} />
+          <div className="label">{link.label}</div>
+        </a>
+      </div>
+      <div className="right">
+        <LinkToolbar visible={editable} link={link} widget={widget} />
+        <Shortcut shortcut={link.hotKey} visible={!editable} isMouseOver={isMouseOver} />
       </div>
     </div>
   );

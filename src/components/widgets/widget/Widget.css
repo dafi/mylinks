@@ -30,6 +30,7 @@
 
 .ml-widget li {
   margin-bottom: 2px;
+  min-height: 23px;
 }
 
 li.over {
