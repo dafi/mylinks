@@ -83,6 +83,10 @@ Ignore the `build` directory and use only `src`
 
     npx stylelint "src/**/*.css"
 
+## Local run
+
+    pnpm dev
+    
 ## Local deploy
 
 Inside the `package.json` file changed `homepage` to `./` to work locally from `file://`
@@ -98,7 +102,7 @@ There are two new scripts defined inside `package.json`
 
 Run the following command to deploy on [mylinks](https://dafi.github.io/mylinks/)
 
-	npm run deploy
+	pnpm run deploy
 
 
 # Thank you for supporting MyLinks
