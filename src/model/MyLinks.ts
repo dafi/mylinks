@@ -10,7 +10,7 @@ export function openLinks(links: Link[]): void {
 
 export function openLink(link: Link): void {
   for (const url of link.urls) {
-    window.open(url);
+    window.open(url, '_blank', 'noreferrer');
   }
 }
 
