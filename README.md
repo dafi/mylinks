@@ -86,7 +86,21 @@ Ignore the `build` directory and use only `src`
 ## Local run
 
     pnpm dev
-    
+
+## Local build
+
+Dev build
+
+    pnpm dev build
+
+Production build
+
+    pnpm run build
+
+or
+
+    pnpm build
+
 ## Local deploy
 
 Inside the `package.json` file changed `homepage` to `./` to work locally from `file://`
