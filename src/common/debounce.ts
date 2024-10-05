@@ -8,7 +8,7 @@
  * the second could be called to stop programmatically the waiting bound
  */
 export const debounce = (func: (...args: unknown[]) => void, wait: number): [(...args: unknown[]) => void, () => void] => {
-  let timeout: number;
+  let timeout: ReturnType<typeof globalThis.setTimeout>;
 
   return [
     (...args: unknown[]): void => {
@@ -16,10 +16,10 @@ export const debounce = (func: (...args: unknown[]) => void, wait: number): [(..
         func(...args);
       };
       clearTimeout(timeout);
-      timeout = window.setTimeout(later, wait);
+      timeout = globalThis.setTimeout(later, wait);
     },
     (): void => {
-      window.clearTimeout(timeout);
+      globalThis.clearTimeout(timeout);
     }
   ];
 };

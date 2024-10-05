@@ -70,7 +70,7 @@ export class WidgetManagerImpl implements WidgetManager {
 
   private deleteWidgetInColumn(column: Widget[], columnIndex: number, id: string): boolean {
     const index = column.findIndex(v => v.id === id);
-    if (index < 0) {
+    if (index === -1) {
       return false;
     }
     column.splice(index, 1);

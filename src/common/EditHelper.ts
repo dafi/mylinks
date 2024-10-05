@@ -93,7 +93,7 @@ function deleteLink(editData: LinkEditDataDelete): boolean {
   const response = confirm(`Delete link "${editData.link.label}"?`);
   if (response) {
     const index = editData.widget.list.findIndex(l => l.id === editData.link.id);
-    if (index >= 0) {
+    if (index !== -1) {
       editData.widget.list.splice(index, 1);
     }
   }

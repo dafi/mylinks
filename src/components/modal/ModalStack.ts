@@ -24,7 +24,7 @@ export function updateStack(
     }
   } else {
     const index = modalStack.findIndex(v => v.id === id);
-    if (index >= 0) {
+    if (index !== -1) {
       modalStack.splice(index, 1);
       return true;
     }

@@ -27,7 +27,7 @@ export function buildColorSchemeOptions(
 
 export function applyColorScheme({ colorScheme, element, cssClass }: SchemeOptions): void {
   if (colorScheme === 'system') {
-    colorScheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    colorScheme = globalThis.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
   }
 
   switch (colorScheme) {
