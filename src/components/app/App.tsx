@@ -89,7 +89,6 @@ function Page(): ReactElement {
           callback: mmLinks => {
             setConfig(createAppConfig(mmLinks, updateUIState));
             updateUIState({ type: 'settingsChanged', value: true });
-            updateUIState({ type: 'configurationLoaded' });
           }
         });
         break;
