@@ -11,7 +11,7 @@ export type FindShortcutOptions = {
 
 type CompareCombinationOptions = Omit<FindShortcutOptions, 'exactMatch'>;
 
-export const getShortcuts = (): Readonly<Shortcut[]> => shortcuts;
+export const getShortcuts = (): readonly Shortcut[] => shortcuts;
 
 export function compareModifiers(
   c1: Readonly<Pick<KeyCombination, KeyModifierType>>,
@@ -39,8 +39,8 @@ export function compareCombinations(
 }
 
 export function compareCombinationsArray(
-  c1: Readonly<KeyCombination[]>,
-  c2: Readonly<KeyCombination[]>,
+  c1: readonly KeyCombination[],
+  c2: readonly KeyCombination[],
   options?: FindShortcutOptions
 ): boolean {
   const userOptions: Required<FindShortcutOptions> = { exactMatch: true, compareModifiers: true, ...options };
@@ -76,8 +76,8 @@ export const findShortcuts = (shortcut: KeyCombination[], options?: FindShortcut
  * @returns the matching shortcuts
  */
 export function findKeyCombinations<T extends Shortcut>(
-  list: Readonly<T[]>,
-  shortcut: Readonly<KeyCombination[]>,
+  list: readonly T[],
+  shortcut: readonly KeyCombination[],
   options?: FindShortcutOptions
 ): T[] {
   return list.filter(s => compareCombinationsArray(shortcut, s.hotKey, options));

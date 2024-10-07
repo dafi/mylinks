@@ -12,10 +12,10 @@ import { ShortcutDetails } from '../shortcut/shortcutDetails/ShortcutDetails';
 import { ShortcutDialog } from '../shortcut/shortcutDialog/ShortcutDialog';
 import { shortcutDialogId } from '../shortcut/shortcutDialog/ShortcutDialogTypes';
 
-type SystemShortcutProps = {
-  readonly modalId: string;
-  onSave(shortcuts: ActionShortcut[]): void;
-};
+type SystemShortcutProps = Readonly<{
+  modalId: string;
+  onSave: (shortcuts: ActionShortcut[]) => void;
+}>;
 
 type FormShortcut = {
   edited: boolean;

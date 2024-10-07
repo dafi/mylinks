@@ -26,7 +26,7 @@ type Message = {
 };
 
 function findAlreadyAssigned(
-  list: Readonly<Shortcut[]> | undefined,
+  list: readonly Shortcut[] | undefined,
   combination: KeyCombination[],
   ignore: KeyCombination[] | undefined
 ): Shortcut[] | undefined {

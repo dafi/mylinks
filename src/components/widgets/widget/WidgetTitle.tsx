@@ -48,7 +48,5 @@ export default function WidgetTitle({ editable, widget, onToggleEdit }: WidgetTi
       />
     );
   }
-  // it's necessary to compile, ReactElement can't be a literal
-  // eslint-disable-next-line react/jsx-no-useless-fragment
   return <>{widget.title}</>;
 }

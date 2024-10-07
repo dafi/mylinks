@@ -44,7 +44,6 @@ export function Shortcut(
     return (
       <>
         {shortcut?.map((s, i) =>
-          /* eslint-disable-next-line react/no-array-index-key */
           <kbd className="shortcut" key={s.key + i.toString()} ref={node => makeVisibleElement(node, i)}>
             {combinationToSymbols(s)}
           </kbd>

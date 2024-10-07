@@ -69,7 +69,7 @@ function loadFromFile(
 
 function loadFromUrl(url: URL, { onLoad, onError }: OnLoadCallback): void {
   fetch(url)
-    .then(async response => response.json())
+    .then(async response => response.json() as Promise<MyLinks>)
     .then(onLoad)
     .catch(onError);
 }

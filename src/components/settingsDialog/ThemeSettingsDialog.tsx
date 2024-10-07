@@ -14,10 +14,10 @@ type DialogState = {
   config: Pick<Config, 'faviconService'>;
 };
 
-type SettingsProps = {
-  readonly modalId: string;
-  onSave(settings: Pick<MyLinks, 'theme' | 'config'>): void;
-};
+type SettingsProps = Readonly<{
+  modalId: string;
+  onSave: (settings: Pick<MyLinks, 'theme' | 'config'>) => void;
+}>;
 
 function restoreConfig(form: DialogState, theme: Theme | undefined): void {
   if (form.theme.backgroundImage !== theme?.backgroundImage) {

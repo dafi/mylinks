@@ -34,8 +34,6 @@ export function LinkSelector(
 
   function onChange(e: ChangeEvent<HTMLInputElement>): void {
     const pattern = e.target.value;
-    // https://github.com/sindresorhus/eslint-plugin-unicorn/issues/1193
-    // eslint-disable-next-line unicorn/no-array-callback-reference
     setResult(linkSearch.filter(pattern));
   }
 

@@ -31,9 +31,7 @@ export function buildFaviconUrl(
       if (u.protocol.startsWith('http')) {
         return formatUrl(u, faviconUrlBuilder);
       }
-    } catch {
-      // eslint-disable-next-line no-empty
-    }
+    } catch {}
   }
   return undefined;
 }
