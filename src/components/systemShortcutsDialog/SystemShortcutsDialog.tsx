@@ -1,4 +1,4 @@
-import { MouseEvent, ReactElement, useMemo, useRef, useState } from 'react';
+import { MouseEvent, ReactElement, useMemo, useState } from 'react';
 import { ActionList, ActionShortcut } from '../../action/ActionType';
 import { Shortcut } from '../../common/shortcut/Shortcut';
 import { useAppConfigContext } from '../../contexts/AppConfigContext';
@@ -52,10 +52,11 @@ export function SystemShortcutForm({ modalId, onSave }: SystemShortcutProps): Re
 
   function onSelectedItem(index: number): void {
     const { shortcut, shortcutAction } = form[index];
-    extraCombinations.current = form
+    const editedCombinations = form
       .filter(v => v.edited)
       .map(v => ({ ...v.shortcut, hotKey: v.shortcutAction.hotKey }));
 
+    setExtraCombinations(editedCombinations);
     setSelectedIndex(index);
     setCombinationLabel(shortcut.label);
     setDefaultCombination(shortcutAction.hotKey);
@@ -72,7 +73,7 @@ export function SystemShortcutForm({ modalId, onSave }: SystemShortcutProps): Re
 
   const { systemShortcuts } = useAppConfigContext();
   const [form, setForm] = useState(formSystemShortcut(systemShortcuts));
-  const extraCombinations = useRef<Shortcut[]>([]);
+  const [extraCombinations, setExtraCombinations] = useState<Shortcut[]>([]);
   const [combinationLabel, setCombinationLabel] = useState('');
   const [defaultCombination, setDefaultCombination] = useState<KeyCombination[]>([]);
   const [selectedCombination, setSelectedCombination] = useState<KeyCombination[]>([]);
@@ -126,7 +127,7 @@ export function SystemShortcutForm({ modalId, onSave }: SystemShortcutProps): Re
         defaultCombination={defaultCombination}
         keyCombination={selectedCombination}
         setKeyCombination={setSelectedCombination}
-        extraCombinations={extraCombinations.current}
+        extraCombinations={extraCombinations}
       />
     </div>
   );
