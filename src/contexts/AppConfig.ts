@@ -51,7 +51,5 @@ export function applyAppConfig(
 ): void {
   registerActions({ config, updateUIState });
   reloadShortcuts(config.myLinksLookup);
-  if (config.theme) {
-    applyTheme(config.theme);
-  }
+  applyTheme(config.theme ?? {});
 }

@@ -1,16 +1,18 @@
 import { ChangeEvent, MouseEvent, ReactElement, useState } from 'react';
 import { applyColorScheme, buildColorSchemeOptions, ColorScheme } from '../../common/ColorScheme';
+import { setPropertyFromDotNotation } from '../../common/DotNotation';
 import { applyColorToFavicon } from '../../common/Favicon';
 import { isNotEmptyString } from '../../common/StringUtil';
-import { applyBackground } from '../../common/ThemeUtil';
+import { applyBackground, defaultBackgroundColor } from '../../common/ThemeUtil';
 import { useAppConfigContext } from '../../contexts/AppConfigContext';
-import { Config, MyLinks, Theme } from '../../model/MyLinks-interface';
+import { Config, MyLinks } from '../../model/MyLinks-interface';
+import { Theme } from '../../model/Theme';
 import { SelectColorScheme } from '../colorScheme/SelectColorScheme';
 import { getModal } from '../modal/ModalHandler';
 import { CloseResultCode } from '../modal/ModalTypes';
 
 type DialogState = {
-  theme: Pick<Theme, 'backgroundImage' | 'faviconColor' | 'colorScheme'>;
+  theme: Pick<Theme, 'background' | 'faviconColor' | 'colorScheme'>;
   config: Pick<Config, 'faviconService'>;
 };
 
@@ -20,8 +22,10 @@ type SettingsProps = Readonly<{
 }>;
 
 function restoreConfig(form: DialogState, theme: Theme | undefined): void {
-  if (form.theme.backgroundImage !== theme?.backgroundImage) {
-    applyBackground(theme?.backgroundImage);
+  if (theme?.background &&
+    (form.theme.background?.image !== theme.background.image ||
+      form.theme.background?.color !== theme.background.color)) {
+    applyBackground(theme.background);
   }
   if (form.theme.faviconColor !== theme?.faviconColor) {
     applyColorToFavicon(theme?.faviconColor);
@@ -55,18 +59,18 @@ export function ThemeSettingsForm({ onSave, modalId }: SettingsProps): ReactElem
   }
 
   function onClickPreview(): void {
-    const { backgroundImage, faviconColor } = form.theme;
-    applyBackground(backgroundImage);
+    const { background, faviconColor } = form.theme;
+    if (background) {
+      applyBackground(background);
+    }
     applyColorToFavicon(faviconColor);
   }
 
   function onChange(e: ChangeEvent<HTMLInputElement>): void {
-    const action = e.target.dataset.action as keyof DialogState;
     const propertyName = e.target.dataset.propertyName;
 
-    if (isNotEmptyString(action) && isNotEmptyString(propertyName)) {
-      const value = { [propertyName]: { [action]: e.target.value } };
-      const newValue = { ...form, ...value };
+    if (isNotEmptyString(propertyName)) {
+      const newValue = setPropertyFromDotNotation(propertyName, e.target.value, structuredClone(form));
       setForm(newValue);
     }
   }
@@ -79,7 +83,7 @@ export function ThemeSettingsForm({ onSave, modalId }: SettingsProps): ReactElem
   const { theme, faviconService } = useAppConfigContext();
   const [form, setForm] = useState<DialogState>({
     theme: {
-      backgroundImage: theme?.backgroundImage,
+      background: theme?.background,
       faviconColor: theme?.faviconColor,
       colorScheme: theme?.colorScheme,
     },
@@ -103,21 +107,29 @@ export function ThemeSettingsForm({ onSave, modalId }: SettingsProps): ReactElem
             <li>
               <label htmlFor="background-image">Background Image</label>
               <input
-                data-action="backgroundImage"
-                data-property-name="theme"
+                data-property-name="theme.background.image"
                 data-auto-focus="true"
                 type="text"
                 id="background-image"
-                defaultValue={form.theme.backgroundImage}
+                defaultValue={form.theme.background?.image}
                 onChange={onChange}
                 placeholder="Image url"
               />
             </li>
             <li>
+              <label htmlFor="background-color">Background color</label>
+              <input
+                data-property-name="theme.background.color"
+                type="color"
+                id="background-color"
+                onChange={onChange}
+                defaultValue={form.theme.background?.color ?? defaultBackgroundColor}
+              />
+            </li>
+            <li>
               <label htmlFor="favicon-service">Favicon Service</label>
               <input
-                data-action="faviconService"
-                data-property-name="config"
+                data-property-name="config.faviconService"
                 type="text"
                 defaultValue={form.config.faviconService}
                 id="favicon-service"
@@ -128,8 +140,7 @@ export function ThemeSettingsForm({ onSave, modalId }: SettingsProps): ReactElem
             <li>
               <label htmlFor="favicon-color">Favicon color</label>
               <input
-                data-action="faviconColor"
-                data-property-name="theme"
+                data-property-name="theme.faviconColor"
                 type="color"
                 id="favicon-color"
                 onChange={onChange}

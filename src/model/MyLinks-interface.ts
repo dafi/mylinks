@@ -1,14 +1,6 @@
 import { ActionShortcut } from '../action/ActionType';
-import { ColorScheme } from '../common/ColorScheme';
 import { HotKey } from './KeyCombination';
-
-export type Theme = {
-  backgroundImage?: string;
-  faviconColor?: string;
-  linkKeyBackground?: string;
-  linkKeyColor?: string;
-  colorScheme?: ColorScheme;
-};
+import { Theme } from './Theme';
 
 export type Link = {
   id: string;
