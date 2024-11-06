@@ -4,7 +4,8 @@ import {
   KeyboardEvent,
   MouseEvent,
   ReactElement,
-  useCallback, useEffect,
+  useCallback,
+  useEffect,
   useImperativeHandle,
   useRef,
   useState
@@ -13,15 +14,27 @@ import { ListViewHandle, ListViewItem } from './ListViewTypes';
 
 const ClickCount = 2;
 
-type ListViewProps = {
-  readonly selectedIndex: number;
-  readonly items: ListViewItem[];
-  readonly onSelectionChange?: (index: number) => void;
-  readonly onSelected?: (index: number) => void;
-  readonly tabIndex?: number;
-};
+type ListViewProps = Readonly<{
+  selectedIndex: number;
+  items: ListViewItem[];
+  onSelectionChange?: (index: number) => void;
+  onSelected?: (index: number) => void;
+  tabIndex?: number;
+}>;
 
 const isBetween = (value: number, lowerBound: number, upperBound: number): boolean => lowerBound <= value && value < upperBound;
+
+function setOrDelete<K, V>(
+  map: Map<K, V>,
+  key: K,
+  value: V | null,
+): void {
+  if (value === null) {
+    map.delete(key);
+  } else {
+    map.set(key, value);
+  }
+}
 
 export const ListView = forwardRef(function(
   { selectedIndex: startIndex, items, onSelectionChange, onSelected, tabIndex = -1 }: ListViewProps,
@@ -63,7 +76,7 @@ export const ListView = forwardRef(function(
   const listRefs = useRef(new Map<string, HTMLLIElement>());
 
   const [selectedIndex, setSelectedIndex] = useState(startIndex);
-  const listViewRef = useRef<HTMLDivElement>(null);
+  const listViewRef = useRef<HTMLDivElement | null>(null);
 
   const updateSelectedIndex = useCallback((index: number): void => {
     setSelectedIndex(index);
@@ -138,7 +151,7 @@ export const ListView = forwardRef(function(
             onMouseDown={onMouseDown}
             data-index={index}
             className={index === selectedIndex ? 'selected' : 'none'}
-            ref={el => el ? listRefs.current.set(item.id, el) : listRefs.current.delete(item.id)}
+            ref={el => setOrDelete(listRefs.current, item.id, el)}
             key={item.id}
           >
             {item.element}
