@@ -66,7 +66,6 @@ export function AppConfigContextProvider(
 
       <SettingsDialog
         panels={panels}
-        selected={panels[0]}
       />
     </AppConfigContext.Provider>
   );
