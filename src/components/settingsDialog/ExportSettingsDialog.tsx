@@ -1,6 +1,5 @@
 import { ChangeEvent, ReactElement } from 'react';
 import { getModal } from '../modal/ModalHandler';
-import { CloseResultCode } from '../modal/ModalTypes';
 
 export type ExportConfigType = 'clipboard' | 'view';
 
@@ -17,7 +16,7 @@ export function ExportSettingsForm(
     onExportConfig
   }: ExportSettingsProps): ReactElement {
   const onCloseDialog = (): void => {
-    getModal(modalId)?.close(CloseResultCode.Cancel);
+    getModal(modalId)?.close('Cancel');
   };
 
   function handleFileSelect(evt: ChangeEvent<HTMLInputElement>): void {

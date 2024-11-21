@@ -1,7 +1,4 @@
-export enum CloseResultCode {
-  Cancel,
-  Ok,
-}
+export type CloseResultCode = 'Cancel' | 'Ok';
 
 export interface ModalAction {
   open: (cb?: ModalCallback) => void;

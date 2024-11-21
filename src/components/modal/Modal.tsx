@@ -4,7 +4,6 @@ import { createPortal } from 'react-dom';
 import { toKebab } from '../../common/StringUtil';
 import { getModal } from './ModalHandler';
 import { focusLast, isStackEmpty, stackSize, updateStack } from './ModalStack';
-import { CloseResultCode } from './ModalTypes';
 import { useModalAutoFocus } from './useModalAutoFocus';
 
 export interface ModalProp {
@@ -21,7 +20,7 @@ export default function Modal(
   const onKeyDown = (e: KeyboardEvent<HTMLDivElement>): void => {
     e.stopPropagation();
     if (e.key === 'Escape') {
-      getModal(id)?.close(CloseResultCode.Cancel);
+      getModal(id)?.close('Cancel');
     }
   };
 

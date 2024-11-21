@@ -6,7 +6,6 @@ import { compareCombinationsArray, findKeyCombinations, getShortcuts } from '../
 import { KeyCombination } from '../../../model/KeyCombination';
 import Modal from '../../modal/Modal';
 import { getModal } from '../../modal/ModalHandler';
-import { CloseResultCode } from '../../modal/ModalTypes';
 import { ShortcutDetails } from '../shortcutDetails/ShortcutDetails';
 import { ShortcutInput } from '../shortcutInput/ShortcutInput';
 import { formatShortcuts } from '../ShortcutUtil';
@@ -65,11 +64,11 @@ export function ShortcutDialog(
   function onClickSave(e: MouseEvent<HTMLButtonElement>): void {
     e.preventDefault();
 
-    getModal(shortcutDialogId)?.close(CloseResultCode.Ok, keyCombination);
+    getModal(shortcutDialogId)?.close('Ok', keyCombination);
   }
 
   function onClickCancel(): void {
-    getModal(shortcutDialogId)?.close(CloseResultCode.Cancel);
+    getModal(shortcutDialogId)?.close('Cancel');
   }
 
   const message = getMessage(extraCombinations, keyCombination, defaultCombination);

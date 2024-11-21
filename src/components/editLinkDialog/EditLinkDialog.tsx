@@ -66,11 +66,11 @@ function EditLinkForm({ data, onSave }: EditLinkDialogProps): ReactElement {
         onSave({ ...data, edited: form, original: { ...data.link } });
         break;
     }
-    onCloseDialog(CloseResultCode.Ok);
+    onCloseDialog('Ok');
   }
 
   function onClickCancel(): void {
-    onCloseDialog(CloseResultCode.Cancel);
+    onCloseDialog('Cancel');
   }
 
   function onChange(e: ChangeEvent<HTMLInputElement>): void {
@@ -99,7 +99,7 @@ function EditLinkForm({ data, onSave }: EditLinkDialogProps): ReactElement {
     setSelectedCombination([...currentHotKey]);
     getModal(shortcutDialogId)?.open({
       onClose: (code, hotKey) => {
-        if (code === CloseResultCode.Ok && Array.isArray(hotKey)) {
+        if (code === 'Ok' && Array.isArray(hotKey)) {
           setForm(prevState => ({
             ...prevState, hotKey
           }));

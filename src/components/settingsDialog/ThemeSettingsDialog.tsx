@@ -50,12 +50,12 @@ export function ThemeSettingsForm({ onSave, modalId }: SettingsProps): ReactElem
     e.preventDefault();
 
     onSave(form);
-    onCloseDialog(CloseResultCode.Ok);
+    onCloseDialog('Ok');
   }
 
   function onClickCancel(): void {
     restoreConfig(form, theme);
-    onCloseDialog(CloseResultCode.Cancel);
+    onCloseDialog('Cancel');
   }
 
   function onClickPreview(): void {

@@ -43,11 +43,11 @@ export function SystemShortcutForm({ modalId, onSave }: SystemShortcutProps): Re
     e.preventDefault();
 
     onSave(form.map(v => v.shortcutAction).filter(v => v.hotKey.length > 0));
-    onCloseDialog(CloseResultCode.Ok);
+    onCloseDialog('Ok');
   }
 
   function onClickClose(): void {
-    onCloseDialog(CloseResultCode.Cancel);
+    onCloseDialog('Cancel');
   }
 
   function onSelectedItem(index: number): void {
@@ -63,7 +63,7 @@ export function SystemShortcutForm({ modalId, onSave }: SystemShortcutProps): Re
     setSelectedCombination([...shortcutAction.hotKey]);
     getModal(shortcutDialogId)?.open({
       onClose: (code, data) => {
-        if (code === CloseResultCode.Ok && Array.isArray(data)) {
+        if (code === 'Ok' && Array.isArray(data)) {
           setForm(form.map(v => v.shortcutAction.action === shortcutAction.action ?
             { ...v, edited: true, shortcutAction: { ...v.shortcutAction, hotKey: data } } : v));
         }

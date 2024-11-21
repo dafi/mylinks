@@ -18,7 +18,6 @@ import { ErrorBox } from '../errorBox/ErrorBox';
 import { LinkFinderDialog } from '../linkFinderDialog/LinkFinderDialog';
 import { linkFinderDialogId } from '../linkFinderDialog/LinkFinderDialogTypes';
 import { getModal } from '../modal/ModalHandler';
-import { CloseResultCode } from '../modal/ModalTypes';
 import { ReminderComponent } from '../reminder/Reminder';
 import { ExportConfigType } from '../settingsDialog/ExportSettingsDialog';
 import { StickyBox } from '../stickyBox/StickyBox';
@@ -30,7 +29,7 @@ type EditAction = 'editLink' | 'editSettings';
 
 function Page(): ReactElement {
   const onLinkSelected = (link: Link): void => {
-    getModal(linkFinderDialogId)?.close(CloseResultCode.Ok);
+    getModal(linkFinderDialogId)?.close('Ok');
     // Ensure the DOM is updated and the dialog is hidden when the link is open
     // This is necessary because when returning to myLinks window/tab, the dialog can be yet visible
     window.requestIdleCallback(() => openLink(link));
