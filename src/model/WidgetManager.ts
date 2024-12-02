@@ -7,4 +7,5 @@ export interface WidgetManager {
   move(source: ItemLocation, destination: ItemLocation): boolean;
   collapseAllWidgets(): boolean;
   expandAllWidgets(): boolean;
+  closestWidget(element: Element): Widget | undefined;
 }

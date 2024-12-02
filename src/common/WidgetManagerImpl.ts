@@ -1,6 +1,7 @@
 import { ItemLocation, Widget } from '../model/MyLinks-interface';
 import { WidgetManager } from '../model/WidgetManager';
 import { move } from './ArrayUtil';
+import { isNotEmptyString } from './StringUtil';
 
 function extractColumnIndex(id: string): number | undefined {
   const index = id.match(/col-(\d+)/)?.at(1);
@@ -96,5 +97,14 @@ export class WidgetManagerImpl implements WidgetManager {
     }
     this.widgets.flat().forEach((widget) => { widget.collapsed = collapsed; });
     return true;
+  }
+
+  closestWidget(element: Element): Widget | undefined {
+    const widgetAttributeName = 'data-list-id';
+    const widgetId = element
+      .closest(`[${widgetAttributeName}]`)
+      ?.getAttribute(widgetAttributeName);
+
+    return isNotEmptyString(widgetId) ? this.findWidgetById(widgetId) : undefined;
   }
 }
