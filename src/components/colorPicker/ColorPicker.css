@@ -1,0 +1,26 @@
+.color-picker {
+  display: flex;
+  flex-flow: row nowrap;
+  place-content: normal flex-start;
+  align-items: normal;
+}
+
+.color-picker .column {
+  display: block;
+  flex: 0 1 auto;
+  align-self: auto;
+  order: 0;
+  margin-right: 5px;
+  width: 100px;
+}
+
+.color-picker .column input {
+  width: 100%;
+}
+
+.color-picker .column .title {
+  font-size: var(--font-sm);
+  font-weight: normal;
+  text-align: center;
+  margin-bottom: 5px;
+}
