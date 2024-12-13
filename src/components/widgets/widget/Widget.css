@@ -70,7 +70,8 @@ li.over {
 }
 
 .ml-widget-button-container {
-  margin: 5px;
+  padding: 5px;
+  background-color: var(--app-backgrond-color);
 }
 
 .ml-widget-button-container .button {
@@ -98,6 +99,16 @@ li.over {
 .ml-widget-button-container .button.danger:hover {
   color: var(--color-white);
   background-color: var(--action-color-danger-60);
+}
+
+.ml-widget-button-container .button.success {
+  color: var(--color-white);
+  background-color: var(--action-color-success);
+}
+
+.ml-widget-button-container .button.success:hover {
+  color: var(--color-white);
+  background-color: var(--action-color-success-60);
 }
 
 .ml-widget-list {

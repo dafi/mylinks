@@ -14,6 +14,8 @@ export type Widget = {
   title: string;
   list: Link[];
   collapsed?: boolean;
+  backgroundColor?: string;
+  textColor?: string;
 };
 
 export type Config = {

@@ -1,5 +1,5 @@
 import { Draggable } from '@hello-pangea/dnd';
-import { ReactElement, useState } from 'react';
+import { CSSProperties, ReactElement, useState } from 'react';
 import { useAppUIStateContext } from '../../../contexts/AppUIStateContext';
 import useCollapsed from '../../../hooks/useCollapsed/useCollapsed';
 import { MyLinksEvent } from '../../../model/Events';
@@ -8,14 +8,16 @@ import { Widget as MLWidget } from '../../../model/MyLinks-interface';
 import { WidgetToolbar, WidgetToolbarActionType } from '../widgetToolbar/WidgetToolbar';
 import './Widget.css';
 import { LinkListView } from './LinkListView';
-import { cssExtraClasses } from './Widget.utils';
+import { cssExtraClasses, CssVar, WidgetCssVar } from './Widget.utils';
 import WidgetActionList from './WidgetActionList';
 import WidgetTitle from './WidgetTitle';
 
-export interface WidgetProps {
-  readonly value: MLWidget;
-  readonly index: number;
-}
+export type WidgetProps = Readonly<{
+  value: MLWidget;
+  index: number;
+}>;
+
+type VarCSSProperties = Record<CssVar, string | number | undefined> & CSSProperties;
 
 export function Widget(
   {
@@ -66,6 +68,13 @@ export function Widget(
 
   const cls = cssExtraClasses(startCollapsed, collapsed);
 
+  const style: VarCSSProperties = {
+    [WidgetCssVar.titleColor] : widget.textColor,
+    [WidgetCssVar.toolbarIconColor]: widget.textColor,
+    [WidgetCssVar.backgroundColor]: widget.backgroundColor,
+    [WidgetCssVar.textColor]: widget.textColor,
+  };
+
   return (
     <Draggable
       draggableId={widget.id}
@@ -80,6 +89,7 @@ export function Widget(
           {...onCollapse}
           {...dragProvided.draggableProps}
           {...dragProvided.dragHandleProps}
+          style={style}
         >
           <div>
             <h2 className="ml-widget-title">
@@ -98,8 +108,8 @@ export function Widget(
               <WidgetActionList editable={editable} widget={widget} />
             </div>
           </div>
-        </div>}
+        </div>
+      }
     </Draggable>
-
   );
 }

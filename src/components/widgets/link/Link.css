@@ -35,6 +35,12 @@
   order: 0;
 }
 
+.ml-link-container .right:has(i) {
+  background-color: #fffc;
+  padding: 0 2px;
+  border-radius: 2px;
+}
+
 .ml-link-container .link-box {
   flex: 1;
   display: flex;

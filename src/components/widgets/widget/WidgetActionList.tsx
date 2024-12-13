@@ -2,11 +2,13 @@ import { ReactElement } from 'react';
 import { useAppConfigContext } from '../../../contexts/AppConfigContext';
 import { useAppUIStateContext } from '../../../contexts/AppUIStateContext';
 import { Widget } from '../../../model/MyLinks-interface';
+import { useOpenDialog } from '../../modal/useShowDialog';
+import { WidgetDialog, widgetDialogId } from './WidgetDialog';
 
-interface WidgetActionListProps {
-  readonly editable: boolean;
-  readonly widget: Widget;
-}
+type WidgetActionListProps = Readonly<{
+  editable: boolean;
+  widget: Widget;
+}>;
 
 export default function WidgetActionList({ editable, widget }: WidgetActionListProps): ReactElement | null {
   function onAddLink(): void {
@@ -34,14 +36,33 @@ export default function WidgetActionList({ editable, widget }: WidgetActionListP
     }
   }
 
+  function onOpenSettings(): void {
+    setIsDialogOpen(true);
+  }
+
+  function onSave(edited: Widget): void {
+    if (onEdit) {
+      onEdit({
+        widget,
+        action: 'update',
+        entity: 'widget',
+        edited,
+        original: widget,
+      });
+    }
+  }
+
   const { onEdit } = useAppUIStateContext();
   const { myLinksLookup } = useAppConfigContext();
+  const [isDialogOpen, setIsDialogOpen] = useOpenDialog(widgetDialogId);
 
   if (editable) {
     return (
       <div className="ml-widget-button-container">
         <button type="button" className="button" onClick={onAddLink}>Add New Link</button>
         <button type="button" className="button danger" onClick={onDelete}>Delete Widget</button>
+        <button type="button" className="button success" onClick={onOpenSettings}>Edit Widget</button>
+        {isDialogOpen && <WidgetDialog widget={widget} onSave={onSave} />}
       </div>
     );
   }

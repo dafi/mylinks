@@ -104,6 +104,7 @@
 .form-list li input[type="color"] {
   padding: 0;
   max-width: 100px;
+  height: 40px;
 }
 
 .toolbar {

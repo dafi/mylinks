@@ -35,7 +35,7 @@ export type EditDataMove<E extends EditEntity> = {
 } & EditData<E>;
 
 export type LinkEditableProperties = Pick<Link, 'label' | 'urls' | 'hotKey' | 'favicon'>;
-export type WidgetEditableProperties = Pick<Partial<Widget>, 'title' | 'collapsed'>;
+export type WidgetEditableProperties = Pick<Partial<Widget>, 'title' | 'collapsed' | 'backgroundColor' | 'textColor'>;
 
 export type EditWidgetFields = {
   widget: Widget;

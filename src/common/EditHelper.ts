@@ -119,12 +119,18 @@ function prepareWidgetForSave(editData: WidgetEditData): boolean {
   }
 }
 
-function updateWidget(editData: WidgetEditDataUpdate): boolean {
-  if (editData.edited.title !== undefined) {
-    editData.widget.title = editData.edited.title;
+function updateWidget({ edited, widget }: WidgetEditDataUpdate): boolean {
+  if (edited.title !== undefined) {
+    widget.title = edited.title;
   }
-  if (editData.edited.collapsed !== undefined) {
-    editData.widget.collapsed = editData.edited.collapsed;
+  if (edited.collapsed !== undefined) {
+    widget.collapsed = edited.collapsed;
+  }
+  if (edited.backgroundColor !== undefined) {
+    widget.backgroundColor = edited.backgroundColor;
+  }
+  if (edited.textColor !== undefined) {
+    widget.textColor = edited.textColor;
   }
   return true;
 }

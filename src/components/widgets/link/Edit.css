@@ -1,6 +1,9 @@
 .ml-link-container .edit-actions {
-  margin-right: 5px;
   cursor: pointer;
+}
+
+.ml-link-container .edit-actions:not(:last-child) {
+  margin-right: 5px;
 }
 
 .ml-link-container:hover .edit-actions {
