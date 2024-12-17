@@ -1,0 +1,18 @@
+.ml-button {
+  padding: 8px 16px;
+  border: none;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  margin-left: 4px;
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: var(--font-sm);
+}
+
+.ml-button:first-child {
+  margin-left: 0;
+}
+
+.ml-button:disabled {
+  opacity: 0.3;
+}
