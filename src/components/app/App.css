@@ -165,6 +165,10 @@ body {
   background-color: var(--action-color-warn-60);
 }
 
+.hover.bg-action-danger:hover:not(:disabled) {
+  background-color: var(--action-color-danger-60);
+}
+
 .ml-rows {
   display: flex;
   flex-direction: column;
