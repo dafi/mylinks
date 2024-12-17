@@ -6,9 +6,7 @@
 }
 
 .sticky-box * {
-  padding-left: 5px;
-  padding-top: 5px;
-  padding-bottom: 5px;
+  padding: 5px;
   display: flex;
   align-items: center;
 }
@@ -17,12 +15,3 @@
   margin-right: 5px;
   color: var(--color-white);
 }
-
-.sticky-box .button {
-  color: var(--color-white);
-  cursor: pointer;
-  border-style: none;
-  padding: 5px;
-  border-radius: 4px;
-}
-

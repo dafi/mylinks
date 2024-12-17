@@ -2,6 +2,7 @@ import { ReactElement } from 'react';
 import { useAppConfigContext } from '../../../contexts/AppConfigContext';
 import { useAppUIStateContext } from '../../../contexts/AppUIStateContext';
 import { Widget } from '../../../model/MyLinks-interface';
+import { Button } from '../../button/Button';
 import { useOpenDialog } from '../../modal/useShowDialog';
 import { WidgetDialog, widgetDialogId } from './WidgetDialog';
 
@@ -59,9 +60,23 @@ export default function WidgetActionList({ editable, widget }: WidgetActionListP
   if (editable) {
     return (
       <div className="ml-widget-button-container">
-        <button type="button" className="button" onClick={onAddLink}>Add New Link</button>
-        <button type="button" className="button danger" onClick={onDelete}>Delete Widget</button>
-        <button type="button" className="button success" onClick={onOpenSettings}>Edit Widget</button>
+        <Button
+          label="Add New Link"
+          className="button"
+          onClick={onAddLink}
+        />
+        <Button
+          label="Delete Widget"
+          className="button"
+          scope="danger"
+          onClick={onDelete}
+        />
+        <Button
+          label="Edit Widget"
+          className="button"
+          scope="success"
+          onClick={onOpenSettings}
+        />
         {isDialogOpen && <WidgetDialog widget={widget} onSave={onSave} />}
       </div>
     );

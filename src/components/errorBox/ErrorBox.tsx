@@ -1,4 +1,5 @@
 import { ReactNode, useState } from 'react';
+import { Button } from '../button/Button';
 
 export type ErrorBoxProps = Readonly<{
   error: unknown;
@@ -24,7 +25,7 @@ export function ErrorBox(
   return (
     <div className="error-box bg-action-danger-60">
       <span className="message">{errorToString(error)}</span>
-      <button className="button bg-action-danger" onClick={onClose}>Close</button>
+      <Button label="Close" scope="danger" onClick={onClose} />
     </div>
   );
 }
