@@ -1,7 +1,8 @@
-import { ChangeEvent, FormEvent, ReactElement, useState } from 'react';
+import { ChangeEvent, ReactElement, useState } from 'react';
 import { isNotEmptyString } from '../../common/StringUtil';
 import { LinkEditableProperties, LinkEditData, LinkEditDataCreate, LinkEditDataUpdate } from '../../model/EditData-interface';
 import { KeyCombination } from '../../model/KeyCombination';
+import { Footer, FooterButton } from '../footer/Footer';
 import Modal from '../modal/Modal';
 import { getModal } from '../modal/ModalHandler';
 import { CloseResultCode } from '../modal/ModalTypes';
@@ -12,10 +13,10 @@ import { shortcutDialogId } from '../shortcut/shortcutDialog/ShortcutDialogTypes
 import { editLinkDialogId } from './EditLinkDialogTypes';
 import './EditLinkDialog.css';
 
-export interface EditLinkDialogProps {
-  readonly data: LinkEditDataCreate | LinkEditDataUpdate;
-  readonly onSave: (linkEditData: LinkEditData) => void;
-}
+export type EditLinkDialogProps = Readonly<{
+  data: LinkEditDataCreate | LinkEditDataUpdate;
+  onSave: (linkEditData: LinkEditData) => void;
+}>;
 
 // https://stackoverflow.com/questions/57773734/how-to-use-partially-the-computed-property-name-on-a-type-definition/57774343#57774343
 // compound properties must be strings so, we allow to index elements by string
@@ -55,9 +56,7 @@ function EditLinkForm({ data, onSave }: EditLinkDialogProps): ReactElement {
     getModal(editLinkDialogId)?.close(code);
   }
 
-  function onClickSave(e: FormEvent<HTMLFormElement>): void {
-    e.preventDefault();
-
+  function onClickSave(): void {
     switch (data.action) {
       case 'create':
         onSave({ ...data, edited: form });
@@ -116,6 +115,11 @@ function EditLinkForm({ data, onSave }: EditLinkDialogProps): ReactElement {
 
   const [selectedCombination, setSelectedCombination] = useState<KeyCombination[]>([]);
 
+  const rightButtons: FooterButton[] = [
+    { id: 'save', label: 'Save', type: 'submit' },
+    { id: 'cancel', label: 'Cancel', onClick: onClickCancel },
+  ];
+
   return (
     <>
       <section>
@@ -161,27 +165,7 @@ function EditLinkForm({ data, onSave }: EditLinkDialogProps): ReactElement {
               </div>
             </li>
           </ul>
-          <footer className="footer">
-            <div className="toolbar">
-              <div className="label" />
-              <div className="toolbar-left" />
-              <div className="toolbar-right">
-                <button
-                  type="submit"
-                  className="text-white bg-action-primary hover"
-                >
-                  Save
-                </button>
-                <button
-                  type="button"
-                  className="text-white bg-action-secondary hover"
-                  onClick={onClickCancel}
-                >
-                  Cancel
-                </button>
-              </div>
-            </div>
-          </footer>
+          <Footer rightButtons={rightButtons} />
         </form>
       </section>
 

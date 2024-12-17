@@ -75,40 +75,9 @@ li.over {
 }
 
 .ml-widget-button-container .button {
-  color: var(--color-white);
-  background-color: var(--action-color-primary);
-  cursor: pointer;
   display: block;
   margin: 5px auto;
   width: 100%;
-  border-style: none;
-  padding: 5px;
-  border-radius: 4px;
-}
-
-.ml-widget-button-container .button:hover {
-  color: var(--color-white);
-  background-color: var(--action-color-primary-60);
-}
-
-.ml-widget-button-container .button.danger {
-  color: var(--color-white);
-  background-color: var(--action-color-danger);
-}
-
-.ml-widget-button-container .button.danger:hover {
-  color: var(--color-white);
-  background-color: var(--action-color-danger-60);
-}
-
-.ml-widget-button-container .button.success {
-  color: var(--color-white);
-  background-color: var(--action-color-success);
-}
-
-.ml-widget-button-container .button.success:hover {
-  color: var(--color-white);
-  background-color: var(--action-color-success-60);
 }
 
 .ml-widget-list {

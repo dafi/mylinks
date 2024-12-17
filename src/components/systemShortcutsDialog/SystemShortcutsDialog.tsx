@@ -1,8 +1,9 @@
-import { MouseEvent, ReactElement, useMemo, useState } from 'react';
+import { ReactElement, useMemo, useState } from 'react';
 import { ActionList, ActionShortcut } from '../../action/ActionType';
 import { Shortcut } from '../../common/shortcut/Shortcut';
 import { useAppConfigContext } from '../../contexts/AppConfigContext';
 import { KeyCombination } from '../../model/KeyCombination';
+import { Footer, FooterButton } from '../footer/Footer';
 import { ListView } from '../listView/ListView';
 import { ListViewItem } from '../listView/ListViewTypes';
 import { getModal } from '../modal/ModalHandler';
@@ -39,9 +40,7 @@ function formSystemShortcut(systemShortcuts: ActionShortcut[] | undefined): Form
 export function SystemShortcutForm({ modalId, onSave }: SystemShortcutProps): ReactElement {
   const onCloseDialog = (code: CloseResultCode): void => getModal(modalId)?.close(code);
 
-  function onClickSave(e: MouseEvent<HTMLButtonElement>): void {
-    e.preventDefault();
-
+  function onClickSave(): void {
     onSave(form.map(v => v.shortcutAction).filter(v => v.hotKey.length > 0));
     onCloseDialog('Ok');
   }
@@ -87,6 +86,11 @@ export function SystemShortcutForm({ modalId, onSave }: SystemShortcutProps): Re
       }))
   , [form]);
 
+  const rightButtons: FooterButton[] = [
+    { id: 'save', label: 'Save', onClick: onClickSave },
+    { id: 'close', label: 'Close', onClick: onClickClose },
+  ];
+
   return (
     <div className="panel">
       <section>
@@ -101,27 +105,7 @@ export function SystemShortcutForm({ modalId, onSave }: SystemShortcutProps): Re
         </form>
       </section>
 
-      <footer className="footer">
-        <div className="toolbar">
-          <div className="toolbar-left" />
-          <div className="toolbar-right">
-            <button
-              type="button"
-              className="text-white bg-action-primary hover"
-              onClick={onClickSave}
-            >
-              Save
-            </button>
-            <button
-              type="button"
-              className="text-white bg-action-secondary hover right"
-              onClick={onClickClose}
-            >
-              Close
-            </button>
-          </div>
-        </div>
-      </footer>
+      <Footer rightButtons={rightButtons} />
       <ShortcutDialog
         label={combinationLabel}
         defaultCombination={defaultCombination}

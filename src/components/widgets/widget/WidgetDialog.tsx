@@ -2,6 +2,7 @@ import { FormEvent, ReactElement, useState } from 'react';
 import { setPropertyFromDotNotation } from '../../../common/DotNotation';
 import { Widget } from '../../../model/MyLinks-interface';
 import { ColorPicker, ColorPickerItem } from '../../colorPicker/ColorPicker';
+import { Footer, FooterButton } from '../../footer/Footer';
 import Modal from '../../modal/Modal';
 import { getModal } from '../../modal/ModalHandler';
 import { CloseResultCode } from '../../modal/ModalTypes';
@@ -57,6 +58,11 @@ function WidgetForm({ widget, onSave }: WidgetDialogProps): ReactElement {
     { id: 'backgroundColor', label: 'Background', defaultValue: backgroundColor },
   ];
 
+  const rightButtons: FooterButton[] = [
+    { id: 'save', label: 'Save', type: 'submit' },
+    { id: 'cancel', label: 'Cancel', onClick: onClickCancel },
+  ];
+
   return (
     <section>
       <form onSubmit={onClickSave}>
@@ -66,27 +72,7 @@ function WidgetForm({ widget, onSave }: WidgetDialogProps): ReactElement {
             <ColorPicker items={colors} onChange={onChangeColor} />
           </li>
         </ul>
-        <footer className="footer">
-          <div className="toolbar">
-            <div className="label" />
-            <div className="toolbar-left" />
-            <div className="toolbar-right">
-              <button
-                type="submit"
-                className="text-white bg-action-primary hover"
-              >
-                Save
-              </button>
-              <button
-                type="button"
-                className="text-white bg-action-secondary hover"
-                onClick={onClickCancel}
-              >
-                Cancel
-              </button>
-            </div>
-          </div>
-        </footer>
+        <Footer rightButtons={rightButtons} />
       </form>
     </section>
   );

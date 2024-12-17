@@ -1,4 +1,4 @@
-import { ChangeEvent, MouseEvent, ReactElement, useState } from 'react';
+import { ChangeEvent, ReactElement, useState } from 'react';
 import { applyColorScheme, buildColorSchemeOptions, ColorScheme } from '../../common/ColorScheme';
 import { setPropertyFromDotNotation } from '../../common/DotNotation';
 import { applyColorToFavicon } from '../../common/Favicon';
@@ -8,6 +8,7 @@ import { useAppConfigContext } from '../../contexts/AppConfigContext';
 import { Config, MyLinks } from '../../model/MyLinks-interface';
 import { Theme } from '../../model/Theme';
 import { SelectColorScheme } from '../colorScheme/SelectColorScheme';
+import { Footer, FooterButton } from '../footer/Footer';
 import { getModal } from '../modal/ModalHandler';
 import { CloseResultCode } from '../modal/ModalTypes';
 
@@ -46,9 +47,7 @@ export function ThemeSettingsForm({ onSave, modalId }: SettingsProps): ReactElem
     getModal(modalId)?.close(code);
   };
 
-  function onClickSave(e: MouseEvent<HTMLButtonElement>): void {
-    e.preventDefault();
-
+  function onClickSave(): void {
     onSave(form);
     onCloseDialog('Ok');
   }
@@ -91,6 +90,14 @@ export function ThemeSettingsForm({ onSave, modalId }: SettingsProps): ReactElem
       faviconService
     },
   });
+
+  const leftButtons: FooterButton[] = [
+    { id: 'cancel', label: 'Preview', onClick: onClickPreview },
+  ];
+  const rightButtons: FooterButton[] = [
+    { id: 'save', label: 'Save', onClick: onClickSave },
+    { id: 'close', label: 'Close', onClick: onClickCancel },
+  ];
 
   return (
     <div className="panel">
@@ -150,36 +157,7 @@ export function ThemeSettingsForm({ onSave, modalId }: SettingsProps): ReactElem
           </ul>
         </form>
       </section>
-
-      <footer className="footer">
-        <div className="toolbar">
-          <div className="toolbar-left">
-            <button
-              type="button"
-              className="text-white bg-action-primary hover"
-              onClick={onClickPreview}
-            >
-              Preview
-            </button>
-          </div>
-          <div className="toolbar-right">
-            <button
-              type="button"
-              className="text-white bg-action-primary hover"
-              onClick={onClickSave}
-            >
-              Save
-            </button>
-            <button
-              type="button"
-              className="text-white bg-action-secondary hover right"
-              onClick={onClickCancel}
-            >
-              Close
-            </button>
-          </div>
-        </div>
-      </footer>
+      <Footer leftButtons={leftButtons} rightButtons={rightButtons} />
     </div>
   );
 }

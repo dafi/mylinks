@@ -1,9 +1,10 @@
-import { Dispatch, MouseEvent, ReactElement, SetStateAction } from 'react';
+import { Dispatch, ReactElement, SetStateAction } from 'react';
 
 import './ShortcutDialog.css';
 import { Shortcut } from '../../../common/shortcut/Shortcut';
 import { compareCombinationsArray, findKeyCombinations, getShortcuts } from '../../../common/shortcut/ShortcutManager';
 import { KeyCombination } from '../../../model/KeyCombination';
+import { Footer, FooterButton } from '../../footer/Footer';
 import Modal from '../../modal/Modal';
 import { getModal } from '../../modal/ModalHandler';
 import { ShortcutDetails } from '../shortcutDetails/ShortcutDetails';
@@ -61,9 +62,7 @@ export function ShortcutDialog(
     extraCombinations,
   }: ShortcutDialogProps
 ): ReactElement {
-  function onClickSave(e: MouseEvent<HTMLButtonElement>): void {
-    e.preventDefault();
-
+  function onClickSave(): void {
     getModal(shortcutDialogId)?.close('Ok', keyCombination);
   }
 
@@ -72,6 +71,10 @@ export function ShortcutDialog(
   }
 
   const message = getMessage(extraCombinations, keyCombination, defaultCombination);
+  const rightButtons: FooterButton[] = [
+    { id: 'save', label: 'Save', onClick: onClickSave, disabled: message.type === 'error' },
+    { id: 'close', label: 'Close', onClick: onClickCancel },
+  ];
 
   return (
     <Modal id={shortcutDialogId}>
@@ -99,28 +102,7 @@ export function ShortcutDialog(
           </p>
         </section>
 
-        <footer className="footer">
-          <div className="toolbar">
-            <div className="toolbar-left" />
-            <div className="toolbar-right">
-              <button
-                type="button"
-                className="text-white bg-action-primary hover right"
-                onClick={onClickSave}
-                disabled={message.type === 'error'}
-              >
-                Save
-              </button>
-              <button
-                type="button"
-                className="text-white bg-action-secondary hover right"
-                onClick={onClickCancel}
-              >
-                Close
-              </button>
-            </div>
-          </div>
-        </footer>
+        <Footer rightButtons={rightButtons} />
       </div>
     </Modal>
   );

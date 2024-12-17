@@ -1,4 +1,6 @@
 import { ChangeEvent, ReactElement } from 'react';
+import { Button } from '../button/Button';
+import { Footer, FooterButton } from '../footer/Footer';
 import { getModal } from '../modal/ModalHandler';
 
 export type ExportConfigType = 'clipboard' | 'view';
@@ -28,6 +30,10 @@ export function ExportSettingsForm(
     }
   }
 
+  const rightButtons: FooterButton[] = [
+    { id: 'close', label: 'Close', onClick: onCloseDialog, isPrimary: false },
+  ];
+
   return (
     <div className="panel">
       <section>
@@ -36,7 +42,7 @@ export function ExportSettingsForm(
             <li>
               <label htmlFor="load-config">Load</label>
               <div>
-                <label className="form-button text-white bg-action-warn hover">
+                <label className="ml-button text-white bg-action-warn hover">
                   Load JSON
                   {/* eslint-disable-next-line react/jsx-max-depth */}
                   <input
@@ -53,44 +59,23 @@ export function ExportSettingsForm(
             <li>
               <label htmlFor="load-config">Save</label>
               <div>
-                <button
-                  type="button"
-                  name="export-json"
-                  id="export-json"
-                  className="form-button text-white bg-action-success hover"
+                <Button
+                  label="Copy to Clipboard"
+                  scope="success"
                   onClick={() => onExportConfig('clipboard')}
-                >
-                  Copy to Clipboard
-                </button>
-                <button
-                  type="button"
-                  name="export-json"
-                  id="export-json"
-                  className="form-button text-white bg-action-success hover"
+                />
+                <Button
+                  label="View JSON"
+                  scope="success"
                   onClick={() => onExportConfig('view')}
-                >
-                  View JSON
-                </button>
+                />
               </div>
             </li>
           </ul>
         </form>
       </section>
 
-      <footer className="footer">
-        <div className="toolbar">
-          <div className="toolbar-left" />
-          <div className="toolbar-right">
-            <button
-              type="button"
-              className="text-white bg-action-secondary hover right"
-              onClick={onCloseDialog}
-            >
-              Close
-            </button>
-          </div>
-        </div>
-      </footer>
+      <Footer rightButtons={rightButtons} />
     </div>
   );
 }
