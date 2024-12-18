@@ -1,12 +1,12 @@
 import { ComponentProps, ReactElement } from 'react';
-import { Button } from '../button/Button';
+import { Button, Scope } from '../button/Button';
 import './Footer.css';
 
 export type FooterButton = {
   id: string;
   label: string;
   type?: ComponentProps<'button'>['type'];
-  isPrimary?: boolean;
+  scope?: Scope;
   onClick?: (item: FooterButton) => void;
   disabled?: boolean;
 };
@@ -18,7 +18,7 @@ type FooterProps = Readonly<{
 
 function buttonArray(buttons: FooterButton[]): ReactElement[] {
   return buttons.map((button, i) => {
-    const { id, onClick, isPrimary = i === 0, ...buttonProps } = button;
+    const { id, onClick, scope = i === 0 ? 'primary' : 'secondary', ...buttonProps } = button;
 
     const validProps: ComponentProps<'button'> = {};
 
@@ -31,7 +31,7 @@ function buttonArray(buttons: FooterButton[]): ReactElement[] {
     return (
       <Button
         key={id}
-        scope={isPrimary ? 'primary' : 'secondary'}
+        scope={scope}
         {...buttonProps}
         {...validProps}
       />);

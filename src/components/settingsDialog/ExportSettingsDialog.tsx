@@ -31,7 +31,7 @@ export function ExportSettingsForm(
   }
 
   const rightButtons: FooterButton[] = [
-    { id: 'close', label: 'Close', onClick: onCloseDialog, isPrimary: false },
+    { id: 'close', label: 'Close', onClick: onCloseDialog, scope: 'secondary' },
   ];
 
   return (
