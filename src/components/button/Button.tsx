@@ -1,14 +1,14 @@
 import { ComponentProps, ReactElement } from 'react';
 import './Button.css';
 
-export type ScopeType = 'primary' | 'secondary' | 'success' | 'warning' | 'danger';
+export type Scope = 'primary' | 'secondary' | 'success' | 'warning' | 'danger';
 
 type ButtonProps = ComponentProps<'button'> & Readonly<{
   label: string;
-  scope?: ScopeType;
+  scope?: Scope;
 }>;
 
-const cssScopeMap: Readonly<Record<ScopeType, string>> = {
+const cssScopeMap: Readonly<Record<Scope, string>> = {
   primary: 'text-white bg-action-primary',
   secondary: 'text-white bg-action-secondary',
   success: 'text-white bg-action-success',
