@@ -6,7 +6,7 @@ import { useModal } from './useModal';
  * @param id the modal id
  * @returns the visible modal status and the ref to the first modal element
  */
-export function useModalAutoFocus<T extends HTMLElement>(id: string): [boolean, RefObject<T>] {
+export function useModalAutoFocus<T extends HTMLElement>(id: string): [boolean, RefObject<T | null>] {
   const { visible } = useModal(id);
   const ref = useRef<T>(null);
 

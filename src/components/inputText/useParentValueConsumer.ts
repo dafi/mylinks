@@ -8,7 +8,7 @@ import { InputTextHandle } from './InputTextTypes';
  */
 export function useParentValueConsumer<T extends HTMLInputElement>(
   parentRef: ForwardedRef<InputTextHandle>,
-  valueRef: RefObject<T>,
+  valueRef: RefObject<T | null>,
 ): void {
   useImperativeHandle(parentRef, () => ({
     value(): string {

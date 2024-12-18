@@ -3,7 +3,7 @@ import { DependencyList, RefObject, useEffect, useRef } from 'react';
 export function useAutoFocus<T extends HTMLElement>(
   initValue: T | null,
   deps?: DependencyList
-): RefObject<T> {
+): RefObject<T | null> {
   const ref = useRef(initValue);
 
   // eslint-disable-next-line react-compiler/react-compiler
