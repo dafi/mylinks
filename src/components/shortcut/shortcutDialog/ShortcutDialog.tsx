@@ -1,4 +1,4 @@
-import { Dispatch, ReactElement, SetStateAction } from 'react';
+import { Dispatch, ReactNode, SetStateAction } from 'react';
 
 import './ShortcutDialog.css';
 import { Shortcut } from '../../../common/shortcut/Shortcut';
@@ -12,13 +12,13 @@ import { ShortcutInput } from '../shortcutInput/ShortcutInput';
 import { formatShortcuts } from '../ShortcutUtil';
 import { shortcutDialogId } from './ShortcutDialogTypes';
 
-type ShortcutDialogProps = {
-  readonly label: string;
-  readonly defaultCombination: KeyCombination[];
-  readonly keyCombination: KeyCombination[];
-  readonly setKeyCombination: Dispatch<SetStateAction<KeyCombination[]>>;
-  readonly extraCombinations?: Shortcut[];
-};
+type ShortcutDialogProps = Readonly<{
+  label: string;
+  defaultCombination: KeyCombination[];
+  keyCombination: KeyCombination[];
+  setKeyCombination: Dispatch<SetStateAction<KeyCombination[]>>;
+  extraCombinations?: Shortcut[];
+}>;
 
 type Message = {
   type: 'error' | 'warn' | 'info';
@@ -61,7 +61,7 @@ export function ShortcutDialog(
     setKeyCombination,
     extraCombinations,
   }: ShortcutDialogProps
-): ReactElement {
+): ReactNode {
   function onClickSave(): void {
     getModal(shortcutDialogId)?.close('Ok', keyCombination);
   }

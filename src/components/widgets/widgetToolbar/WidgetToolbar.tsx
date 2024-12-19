@@ -1,15 +1,15 @@
-import { ReactElement } from 'react';
+import { ReactNode } from 'react';
 import { MyLinkActionCallback } from '../../../model/Events';
 import './widgetToolbar.css';
 
 export type WidgetToolbarActionType = 'collapse' | 'edit' | 'openLinks';
 
-interface WidgetToolbarProps {
-  readonly collapsed: boolean;
-  readonly classNames?: string;
-  readonly action: MyLinkActionCallback<WidgetToolbarActionType>;
-  readonly editable: boolean;
-}
+type WidgetToolbarProps = Readonly<{
+  collapsed: boolean;
+  classNames?: string;
+  action: MyLinkActionCallback<WidgetToolbarActionType>;
+  editable: boolean;
+}>;
 
 export function WidgetToolbar(
   {
@@ -18,7 +18,7 @@ export function WidgetToolbar(
     action,
     editable,
   }: WidgetToolbarProps
-): ReactElement {
+): ReactNode {
   const collapseClassNames = collapsed ? 'fa fa-angle-down icon' : 'fa fa-angle-up icon';
   const collapseTitle = collapsed ? 'Expand content' : 'Collapse content';
   const editClassNames = editable ? 'fas fa-toggle-on icon editable-on' : 'fas fa-toggle-off icon';

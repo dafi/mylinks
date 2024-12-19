@@ -1,14 +1,14 @@
 import { Draggable } from '@hello-pangea/dnd';
-import { ReactElement } from 'react';
+import { ReactNode } from 'react';
 import { Link as MLLink, Widget as MLWidget } from '../../../model/MyLinks-interface';
 import { Link } from '../link/Link';
 
-type LinkListItemProps = {
-  readonly link: MLLink;
-  readonly widget: MLWidget;
-  readonly editable: boolean;
-  readonly index: number;
-};
+type LinkListItemProps = Readonly<{
+  link: MLLink;
+  widget: MLWidget;
+  editable: boolean;
+  index: number;
+}>;
 
 export function LinkListItem(
   {
@@ -17,7 +17,7 @@ export function LinkListItem(
     editable,
     index,
   }: LinkListItemProps
-): ReactElement {
+): ReactNode {
   return (
     <Draggable
       draggableId={link.id}

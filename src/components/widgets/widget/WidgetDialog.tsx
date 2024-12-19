@@ -1,4 +1,4 @@
-import { FormEvent, ReactElement, useState } from 'react';
+import { FormEvent, ReactNode, useState } from 'react';
 import { setPropertyFromDotNotation } from '../../../common/DotNotation';
 import { Widget } from '../../../model/MyLinks-interface';
 import { ColorPicker, ColorPickerItem } from '../../colorPicker/ColorPicker';
@@ -15,7 +15,7 @@ type WidgetDialogProps = Readonly<{
   onSave: (widget: Widget) => void;
 }>;
 
-export function WidgetDialog({ widget, onSave }: WidgetDialogProps): ReactElement {
+export function WidgetDialog({ widget, onSave }: WidgetDialogProps): ReactNode {
   return (
     <Modal id={widgetDialogId}>
       <div className="panel">
@@ -30,7 +30,7 @@ export function WidgetDialog({ widget, onSave }: WidgetDialogProps): ReactElemen
 }
 
 // eslint-disable-next-line react/no-multi-comp
-function WidgetForm({ widget, onSave }: WidgetDialogProps): ReactElement {
+function WidgetForm({ widget, onSave }: WidgetDialogProps): ReactNode {
   function onCloseDialog(code: CloseResultCode): void {
     getModal(widgetDialogId)?.close(code);
   }

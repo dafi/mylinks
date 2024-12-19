@@ -1,15 +1,15 @@
-import { ReactElement, useEffect } from 'react';
+import { ReactNode, useEffect } from 'react';
 import { EditLinkDialog } from '../components/editLinkDialog/EditLinkDialog';
 import { editLinkDialogId } from '../components/editLinkDialog/EditLinkDialogTypes';
 import { getModal } from '../components/modal/ModalHandler';
 import { EditComplete, useEditLink } from '../hooks/useEditLink/useEditLink';
 import { AppUIState, AppUIStateContext } from './AppUIStateContext';
 
-interface AppUIStateProps {
-  readonly uiState: AppUIState;
-  readonly onEditComplete: (result: EditComplete) => void;
-  readonly children: ReactElement;
-}
+type AppUIStateProps = Readonly<{
+  uiState: AppUIState;
+  onEditComplete: (result: EditComplete) => void;
+  children: ReactNode;
+}>;
 
 export function AppUIStateContextProvider(
   {
@@ -17,7 +17,7 @@ export function AppUIStateContextProvider(
     onEditComplete,
     children,
   }: AppUIStateProps
-): ReactElement {
+): ReactNode {
   const { onBeginEdit, onSave, linkEditData } = useEditLink(onEditComplete);
   const localUIState = { ... uiState, onEdit: onBeginEdit };
 

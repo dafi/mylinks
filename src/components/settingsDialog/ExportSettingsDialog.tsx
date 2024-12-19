@@ -1,22 +1,23 @@
-import { ChangeEvent, ReactElement } from 'react';
+import { ChangeEvent, ReactNode } from 'react';
 import { Button } from '../button/Button';
 import { Footer, FooterButton } from '../footer/Footer';
 import { getModal } from '../modal/ModalHandler';
 
 export type ExportConfigType = 'clipboard' | 'view';
 
-interface ExportSettingsProps {
-  readonly modalId: string;
-  readonly onLoadConfig: (file: File) => void;
-  readonly onExportConfig: (type: ExportConfigType) => void;
-}
+type ExportSettingsProps = Readonly<{
+  modalId: string;
+  onLoadConfig: (file: File) => void;
+  onExportConfig: (type: ExportConfigType) => void;
+}>;
 
 export function ExportSettingsForm(
   {
     modalId,
     onLoadConfig,
     onExportConfig
-  }: ExportSettingsProps): ReactElement {
+  }: ExportSettingsProps
+): ReactNode {
   const onCloseDialog = (): void => {
     getModal(modalId)?.close('Cancel');
   };

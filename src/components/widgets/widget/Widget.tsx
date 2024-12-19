@@ -1,5 +1,5 @@
 import { Draggable } from '@hello-pangea/dnd';
-import { CSSProperties, ReactElement, useState } from 'react';
+import { CSSProperties, ReactNode, useState } from 'react';
 import { useAppUIStateContext } from '../../../contexts/AppUIStateContext';
 import useCollapsed from '../../../hooks/useCollapsed/useCollapsed';
 import { MyLinksEvent } from '../../../model/Events';
@@ -24,7 +24,7 @@ export function Widget(
     value: widget,
     index,
   }: WidgetProps
-): ReactElement {
+): ReactNode {
   function onClickToolbar(e: MyLinksEvent<WidgetToolbarActionType>): void {
     switch (e.target) {
       case 'collapse':

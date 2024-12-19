@@ -1,16 +1,16 @@
-import { MouseEvent, ReactElement } from 'react';
+import { MouseEvent, ReactNode } from 'react';
 import { useAppUIStateContext } from '../../../contexts/AppUIStateContext';
 import { EditAction } from '../../../model/EditData-interface';
 import { Link as MLLink, Widget } from '../../../model/MyLinks-interface';
 import './Edit.css';
 
-interface LinkToolbarProps {
-  readonly visible: boolean;
-  readonly link: MLLink;
-  readonly widget: Widget;
-}
+type LinkToolbarProps = Readonly<{
+  visible: boolean;
+  link: MLLink;
+  widget: Widget;
+}>;
 
-export function LinkToolbar({ visible, link, widget }: LinkToolbarProps): ReactElement | null {
+export function LinkToolbar({ visible, link, widget }: LinkToolbarProps): ReactNode {
   function onEdit(e: MouseEvent<HTMLElement>): void {
     e.stopPropagation();
     e.preventDefault();

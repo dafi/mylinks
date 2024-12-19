@@ -1,4 +1,4 @@
-import { ChangeEvent, KeyboardEvent, ReactElement, useRef, useState } from 'react';
+import { ChangeEvent, KeyboardEvent, ReactNode, useRef, useState } from 'react';
 import { LinkSearch, LinkSearchResult } from '../../common/LinkSearch';
 import { Link } from '../../model/MyLinks-interface';
 import { ListView } from '../listView/ListView';
@@ -13,17 +13,17 @@ function formatMatches<R, T>(result: R[], total: T[]): string {
   return `${result.length} ${matchesText} in ${total.length} ${totalText}`;
 }
 
-interface LinkSelectorProps {
-  readonly links: Link[];
-  readonly onSelected: (link: Link) => void;
-}
+type LinkSelectorProps = Readonly<{
+  links: Link[];
+  onSelected: (link: Link) => void;
+}>;
 
 export function LinkSelector(
   {
     links,
     onSelected,
   }: LinkSelectorProps
-): ReactElement {
+): ReactNode {
   function onSelectionChange(_index: number): void {
     inputRef.current?.focus();
   }

@@ -3,7 +3,7 @@ import {
   forwardRef,
   KeyboardEvent,
   MouseEvent,
-  ReactElement,
+  ReactNode,
   useCallback,
   useEffect,
   useImperativeHandle,
@@ -39,7 +39,7 @@ function setOrDelete<K, V>(
 export const ListView = forwardRef(function(
   { selectedIndex: startIndex, items, onSelectionChange, onSelected, tabIndex = -1 }: ListViewProps,
   ref: ForwardedRef<ListViewHandle>
-): ReactElement {
+): ReactNode {
   function onClick(e: MouseEvent<HTMLElement>): void {
     // skip if a dblclick is in progress
     // https://developer.mozilla.org/en-US/docs/Web/API/UIEvent/detail

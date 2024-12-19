@@ -1,4 +1,4 @@
-import { ComponentProps, ReactElement } from 'react';
+import { ComponentProps, ReactNode } from 'react';
 import { Button, Scope } from '../button/Button';
 import './Footer.css';
 
@@ -16,7 +16,7 @@ type FooterProps = Readonly<{
   rightButtons: FooterButton[];
 }>;
 
-function buttonArray(buttons: FooterButton[]): ReactElement[] {
+function buttonArray(buttons: FooterButton[]): ReactNode[] {
   return buttons.map((button, i) => {
     const { id, onClick, scope = i === 0 ? 'primary' : 'secondary', ...buttonProps } = button;
 
@@ -38,7 +38,7 @@ function buttonArray(buttons: FooterButton[]): ReactElement[] {
   });
 }
 
-export function Footer({ leftButtons, rightButtons }: FooterProps): ReactElement {
+export function Footer({ leftButtons, rightButtons }: FooterProps): ReactNode {
   return (
     <footer className="footer">
       <div className="button-container">

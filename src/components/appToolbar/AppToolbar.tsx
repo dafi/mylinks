@@ -1,4 +1,4 @@
-import { CSSProperties, ReactElement, useState } from 'react';
+import { CSSProperties, ReactNode, useState } from 'react';
 import { useAppConfigContext } from '../../contexts/AppConfigContext';
 import { useAppUIStateContext } from '../../contexts/AppUIStateContext';
 import { MyLinkActionCallback } from '../../model/Events';
@@ -6,15 +6,15 @@ import { AppToolbarButton } from './AppToolbarButton';
 import { AppToolbarActionType, isAction } from './AppToolbarButtonTypes';
 import './AppToolbar.css';
 
-interface AppToolbarProps {
-  readonly action: MyLinkActionCallback<AppToolbarActionType>;
-}
+type AppToolbarProps = Readonly<{
+  action: MyLinkActionCallback<AppToolbarActionType>;
+}>;
 
 export function AppToolbar(
   {
     action
   }: AppToolbarProps
-): ReactElement {
+): ReactNode {
   function onAction(actionName: string | undefined, data: unknown): void {
     if (isAction(actionName)) {
       action({ target: actionName, data });

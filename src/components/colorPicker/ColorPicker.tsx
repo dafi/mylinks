@@ -1,4 +1,4 @@
-import { ChangeEvent, ReactElement } from 'react';
+import { ChangeEvent, ReactNode } from 'react';
 import { isNotEmptyString } from '../../common/StringUtil';
 import './ColorPicker.css';
 
@@ -18,7 +18,7 @@ export function ColorPicker(
     items,
     onChange,
   }: ColorPickerProps
-): ReactElement {
+): ReactNode {
   function onChangeColor(item: ColorPickerItem, e: ChangeEvent<HTMLInputElement>): void {
     onChange(item, e.target.value);
   }

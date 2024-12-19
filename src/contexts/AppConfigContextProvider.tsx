@@ -1,4 +1,4 @@
-import { ReactElement } from 'react';
+import { ReactNode } from 'react';
 import { ActionShortcut } from '../action/ActionType';
 import { ExportConfigType, ExportSettingsForm } from '../components/settingsDialog/ExportSettingsDialog';
 import { SettingsDialog } from '../components/settingsDialog/SettingsDialog';
@@ -10,13 +10,13 @@ import { MyLinks } from '../model/MyLinks-interface';
 import { AppConfigContext } from './AppConfigContext';
 import { AppConfig } from './AppConfigType';
 
-type AppConfigContextProps = {
-  readonly config: AppConfig;
-  readonly onEditComplete: (result: EditComplete) => void;
-  readonly onLoadConfig: (file: File) => void;
-  readonly onExportConfig: (type: ExportConfigType) => void;
-  readonly children: ReactElement;
-};
+type AppConfigContextProps = Readonly<{
+  config: AppConfig;
+  onEditComplete: (result: EditComplete) => void;
+  onLoadConfig: (file: File) => void;
+  onExportConfig: (type: ExportConfigType) => void;
+  children: ReactNode;
+}>;
 
 export function AppConfigContextProvider(
   {
@@ -26,7 +26,7 @@ export function AppConfigContextProvider(
     onLoadConfig,
     onExportConfig,
   }: AppConfigContextProps
-): ReactElement {
+): ReactNode {
   function onSaveSettings(settings: Pick<MyLinks, 'theme' | 'config'>): void {
     const data: MyLinks = {
       ...myLinks,

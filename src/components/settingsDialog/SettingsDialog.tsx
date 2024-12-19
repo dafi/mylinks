@@ -1,4 +1,4 @@
-import { ReactElement, useState } from 'react';
+import { ReactNode, useState } from 'react';
 import { isNotEmptyString } from '../../common/StringUtil';
 import Modal from '../modal/Modal';
 import './SettingsDialog.css';
@@ -13,7 +13,7 @@ type SettingsDialogProps = Readonly<{
 
 export function SettingsDialog(
   settings: SettingsDialogProps
-): ReactElement {
+): ReactNode {
   return (
     <Modal id={settingsDialogId}>
       <div>
@@ -29,7 +29,7 @@ function SettingsForm(
     panels,
     selected,
   }: SettingsDialogProps
-): ReactElement {
+): ReactNode {
   const [current, setCurrent] = useState(() => {
     if (selected) {
       return selected;

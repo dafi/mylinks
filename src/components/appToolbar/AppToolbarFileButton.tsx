@@ -1,4 +1,4 @@
-import { ChangeEvent, ReactElement } from 'react';
+import { ChangeEvent, ReactNode } from 'react';
 
 import { AppToolbarButtonProps } from './AppToolbarButtonTypes';
 
@@ -10,7 +10,7 @@ export function AppToolbarFileButton(
     icon,
     onAction,
   }: AppToolbarButtonProps
-): ReactElement {
+): ReactNode {
   function handleFileSelect(evt: ChangeEvent<HTMLInputElement>): void {
     const file = evt.target.files?.[0] ?? null;
     // onChange is not called when the path is the same so, we force the change

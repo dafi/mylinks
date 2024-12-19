@@ -1,4 +1,4 @@
-import { ComponentProps, ReactElement } from 'react';
+import { ComponentProps, ReactNode } from 'react';
 import './Button.css';
 
 export type Scope = 'primary' | 'secondary' | 'success' | 'warning' | 'danger';
@@ -24,7 +24,7 @@ export function Button(
     scope = 'primary',
     ...buttonProps
   }: ButtonProps
-): ReactElement {
+): ReactNode {
   const validProps: ComponentProps<'button'> = {};
 
   if (onClick) {

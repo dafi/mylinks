@@ -1,19 +1,19 @@
 import { Droppable } from '@hello-pangea/dnd';
-import { ReactElement } from 'react';
+import { ReactNode } from 'react';
 import { Widget } from '../../../model/MyLinks-interface';
 import { LinkListItem } from './LinkListItem';
 
-type LinkListViewProps = {
-  readonly widget: Widget;
-  readonly editable: boolean;
-};
+type LinkListViewProps = Readonly<{
+  widget: Widget;
+  editable: boolean;
+}>;
 
 export function LinkListView(
   {
     widget,
     editable
   }: LinkListViewProps
-): ReactElement {
+): ReactNode {
   return (
     <Droppable droppableId={widget.id} type="link">
       {provided =>

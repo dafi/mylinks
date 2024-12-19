@@ -1,10 +1,10 @@
 import { ChangeEvent, ReactNode } from 'react';
 import { ColorScheme } from '../../common/ColorScheme';
 
-type SelectColorSchemeProps = {
-  readonly colorScheme?: ColorScheme;
-  readonly onSelectColorScheme: (scheme: ColorScheme) => void;
-};
+type SelectColorSchemeProps = Readonly<{
+  colorScheme?: ColorScheme;
+  onSelectColorScheme: (scheme: ColorScheme) => void;
+}>;
 
 type SeparatorType = [null, null];
 const Separator: SeparatorType = [null, null];

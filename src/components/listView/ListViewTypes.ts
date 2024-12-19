@@ -1,8 +1,8 @@
-import { KeyboardEvent, ReactElement } from 'react';
+import { KeyboardEvent, ReactNode } from 'react';
 
 export type ListViewItem = {
   id: string;
-  element: ReactElement;
+  element: ReactNode;
 };
 
 export type ListViewHandle = {

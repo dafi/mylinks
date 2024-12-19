@@ -1,17 +1,17 @@
-import { KeyboardEvent, ReactElement, useRef } from 'react';
+import { KeyboardEvent, ReactNode, useRef } from 'react';
 import { isNotEmptyString } from '../../../common/StringUtil';
 import { useAppUIStateContext } from '../../../contexts/AppUIStateContext';
 import { Widget } from '../../../model/MyLinks-interface';
 import { InputText } from '../../inputText/InputText';
 import { InputTextHandle } from '../../inputText/InputTextTypes';
 
-interface WidgetTitleProps {
-  readonly editable: boolean;
-  readonly widget: Widget;
-  readonly onToggleEdit: () => void;
-}
+type WidgetTitleProps = Readonly<{
+  editable: boolean;
+  widget: Widget;
+  onToggleEdit: () => void;
+}>;
 
-export default function WidgetTitle({ editable, widget, onToggleEdit }: WidgetTitleProps): ReactElement {
+export default function WidgetTitle({ editable, widget, onToggleEdit }: WidgetTitleProps): ReactNode {
   function saveTitle(title: string | undefined): void {
     if (context.onEdit && isNotEmptyString(title) && widget.title !== title) {
       context.onEdit({

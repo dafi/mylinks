@@ -1,8 +1,8 @@
-import { ReactElement } from 'react';
+import { ReactNode } from 'react';
 
 export const settingsDialogId = 'settingsDialog';
 
 export interface SettingsPanel {
   title: string;
-  content: ReactElement;
+  content: ReactNode;
 }

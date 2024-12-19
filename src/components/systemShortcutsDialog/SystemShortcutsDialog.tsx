@@ -1,4 +1,4 @@
-import { ReactElement, useMemo, useState } from 'react';
+import { ReactNode, useMemo, useState } from 'react';
 import { ActionList, ActionShortcut } from '../../action/ActionType';
 import { Shortcut } from '../../common/shortcut/Shortcut';
 import { useAppConfigContext } from '../../contexts/AppConfigContext';
@@ -37,7 +37,7 @@ function formSystemShortcut(systemShortcuts: ActionShortcut[] | undefined): Form
     }));
 }
 
-export function SystemShortcutForm({ modalId, onSave }: SystemShortcutProps): ReactElement {
+export function SystemShortcutForm({ modalId, onSave }: SystemShortcutProps): ReactNode {
   const onCloseDialog = (code: CloseResultCode): void => getModal(modalId)?.close(code);
 
   function onClickSave(): void {

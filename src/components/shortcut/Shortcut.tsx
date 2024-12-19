@@ -1,15 +1,15 @@
-import { ReactElement } from 'react';
+import { ReactNode } from 'react';
 import { useAppUIStateContext } from '../../contexts/AppUIStateContext';
 import { KeyCombination } from '../../model/KeyCombination';
 import { combinationToSymbols } from './ShortcutUtil';
 import './Shortcut.css';
 
-interface ShortcutProps {
-  readonly shortcut: KeyCombination[] | undefined;
-  readonly visible: boolean;
-  readonly isMouseOver: boolean;
-  readonly scrollToLast?: boolean;
-}
+type ShortcutProps = Readonly<{
+  shortcut: KeyCombination[] | undefined;
+  visible: boolean;
+  isMouseOver: boolean;
+  scrollToLast?: boolean;
+}>;
 
 export function Shortcut(
   {
@@ -18,7 +18,7 @@ export function Shortcut(
     isMouseOver,
     scrollToLast = false,
   }: ShortcutProps
-): ReactElement | null {
+): ReactNode {
   function isShortcutVisible(): boolean {
     if (!visible) {
       return false;

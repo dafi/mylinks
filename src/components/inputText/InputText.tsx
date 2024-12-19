@@ -1,4 +1,4 @@
-import { ChangeEvent, ForwardedRef, forwardRef, InputHTMLAttributes, ReactElement } from 'react';
+import { ChangeEvent, ForwardedRef, forwardRef, InputHTMLAttributes, ReactNode } from 'react';
 import { useAutoFocus } from '../../hooks/useAutoFocus/useAutoFocus';
 import { InputTextHandle, OnTextType } from './InputTextTypes';
 
@@ -7,10 +7,10 @@ import { useInputChange } from './useInputChange';
 
 const defaultDebounceTimeout = 1500;
 
-export interface InputTextProps {
-  readonly onText?: OnTextType;
-  readonly debounceTimeout?: number;
-}
+export type InputTextProps = Readonly<{
+  onText?: OnTextType;
+  debounceTimeout?: number;
+}>;
 
 export const InputText = forwardRef(function(
   {
@@ -22,7 +22,7 @@ export const InputText = forwardRef(function(
     onKeyDown
   }: InputTextProps & InputHTMLAttributes<HTMLInputElement>,
   ref: ForwardedRef<InputTextHandle>
-): ReactElement {
+): ReactNode {
   function onChange(e: ChangeEvent<HTMLInputElement>): void {
     if (onInputChange) {
       onInputChange(e.target.value);

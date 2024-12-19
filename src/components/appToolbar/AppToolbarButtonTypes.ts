@@ -3,16 +3,16 @@ import { isNotEmptyString } from '../../common/StringUtil';
 
 export type AppToolbarButtonType = 'button' | 'file';
 
-export interface AppToolbarButtonProps {
-  readonly title: string;
-  readonly className: string;
-  readonly action: string;
-  readonly icon: string;
-  readonly onAction: (action: string | undefined, data?: unknown) => void;
-  readonly type?: AppToolbarButtonType;
-  readonly style?: CSSProperties | undefined;
-  readonly data?: unknown;
-}
+export type AppToolbarButtonProps = Readonly<{
+  title: string;
+  className: string;
+  action: string;
+  icon: string;
+  onAction: (action: string | undefined, data?: unknown) => void;
+  type?: AppToolbarButtonType;
+  style?: CSSProperties | undefined;
+  data?: unknown;
+}>;
 
 const actions = [
   'loadConfig',

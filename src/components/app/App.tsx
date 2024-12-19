@@ -1,4 +1,4 @@
-import { ReactElement } from 'react';
+import { ReactNode } from 'react';
 import { executeAction } from '../../action/Action';
 import { buildColorSchemeOptions } from '../../common/ColorScheme';
 import { loadConfig, saveConfig } from '../../common/Config';
@@ -27,7 +27,7 @@ import { useAppStartup } from './useAppStartup';
 
 type EditAction = 'editLink' | 'editSettings';
 
-function Page(): ReactElement {
+function Page(): ReactNode {
   const onLinkSelected = (link: Link): void => {
     getModal(linkFinderDialogId)?.close('Ok');
     // Ensure the DOM is updated and the dialog is hidden when the link is open
@@ -154,7 +154,7 @@ function Page(): ReactElement {
 
 // Just for App we can declare two components in same file
 // eslint-disable-next-line react/no-multi-comp
-function App(): ReactElement {
+function App(): ReactNode {
   return <Page />;
 }
 

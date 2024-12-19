@@ -1,4 +1,4 @@
-import { ReactElement } from 'react';
+import { ReactNode } from 'react';
 import { AppToolbarButtonProps } from './AppToolbarButtonTypes';
 import { AppToolbarFileButton } from './AppToolbarFileButton';
 
@@ -13,7 +13,7 @@ export function AppToolbarButton(
     style,
     data,
   }: AppToolbarButtonProps
-): ReactElement {
+): ReactNode {
   if (type === 'file') {
     return (
       <AppToolbarFileButton

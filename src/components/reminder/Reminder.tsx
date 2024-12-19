@@ -1,11 +1,11 @@
-import { ReactElement } from 'react';
+import { ReactNode } from 'react';
 import { Button } from '../button/Button';
 
-type ReminderProps = {
-  readonly message: string;
-  readonly isVisible: boolean;
-  readonly onExportConfig: () => void;
-};
+type ReminderProps = Readonly<{
+  message: string;
+  isVisible: boolean;
+  onExportConfig: () => void;
+}>;
 
 export function ReminderComponent(
   {
@@ -13,7 +13,7 @@ export function ReminderComponent(
     isVisible,
     onExportConfig,
   }: ReminderProps
-): ReactElement | null {
+): ReactNode {
   if (!isVisible) {
     return null;
   }

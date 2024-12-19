@@ -1,4 +1,4 @@
-import { KeyboardEvent, ReactElement, useEffect } from 'react';
+import { KeyboardEvent, ReactNode, useEffect } from 'react';
 import './Modal.css';
 import { createPortal } from 'react-dom';
 import { toKebab } from '../../common/StringUtil';
@@ -6,17 +6,17 @@ import { getModal } from './ModalHandler';
 import { focusLast, isStackEmpty, stackSize, updateStack } from './ModalStack';
 import { useModalAutoFocus } from './useModalAutoFocus';
 
-export interface ModalProp {
-  readonly id: string;
-  readonly children: ReactElement;
-}
+export type ModalProps = Readonly<{
+  id: string;
+  children: ReactNode;
+}>;
 
 export default function Modal(
   {
     id,
     children,
-  }: ModalProp
-): ReactElement | null {
+  }: ModalProps
+): ReactNode {
   const onKeyDown = (e: KeyboardEvent<HTMLDivElement>): void => {
     e.stopPropagation();
     if (e.key === 'Escape') {

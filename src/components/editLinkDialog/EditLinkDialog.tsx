@@ -1,4 +1,4 @@
-import { ChangeEvent, ReactElement, useState } from 'react';
+import { ChangeEvent, ReactNode, useState } from 'react';
 import { isNotEmptyString } from '../../common/StringUtil';
 import { LinkEditableProperties, LinkEditData, LinkEditDataCreate, LinkEditDataUpdate } from '../../model/EditData-interface';
 import { KeyCombination } from '../../model/KeyCombination';
@@ -22,7 +22,7 @@ export type EditLinkDialogProps = Readonly<{
 // compound properties must be strings so, we allow to index elements by string
 type EditLinkDialogState = LinkEditableProperties & Record<string, LinkEditableProperties[keyof LinkEditableProperties]>;
 
-export function EditLinkDialog({ data, onSave }: EditLinkDialogProps): ReactElement {
+export function EditLinkDialog({ data, onSave }: EditLinkDialogProps): ReactNode {
   return (
     <Modal id={editLinkDialogId}>
       <div className="panel">
@@ -51,7 +51,7 @@ function validateUrls(urls: string[], el: HTMLTextAreaElement): boolean {
 }
 
 // eslint-disable-next-line react/no-multi-comp
-function EditLinkForm({ data, onSave }: EditLinkDialogProps): ReactElement {
+function EditLinkForm({ data, onSave }: EditLinkDialogProps): ReactNode {
   function onCloseDialog(code: CloseResultCode): void {
     getModal(editLinkDialogId)?.close(code);
   }

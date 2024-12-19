@@ -1,20 +1,20 @@
-import { ReactElement } from 'react';
+import { ReactNode } from 'react';
 import { Link } from '../../model/MyLinks-interface';
 import Modal from '../modal/Modal';
 import { linkFinderDialogId } from './LinkFinderDialogTypes';
 import { LinkSelector } from './LinkSelector';
 
-interface LinkFinderDialogProps {
-  readonly onLinkSelected: (link: Link) => void;
-  readonly links: Link[] | undefined;
-}
+type LinkFinderDialogProps = Readonly<{
+  onLinkSelected: (link: Link) => void;
+  links: Link[] | undefined;
+}>;
 
 export function LinkFinderDialog(
   {
     onLinkSelected,
     links,
   }: LinkFinderDialogProps
-): ReactElement | null {
+): ReactNode {
   function onSelected(link: Link): void {
     onLinkSelected(link);
   }

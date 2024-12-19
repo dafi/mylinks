@@ -1,4 +1,4 @@
-import { ChangeEvent, ReactElement, useState } from 'react';
+import { ChangeEvent, ReactNode, useState } from 'react';
 import { applyColorScheme, buildColorSchemeOptions, ColorScheme } from '../../common/ColorScheme';
 import { setPropertyFromDotNotation } from '../../common/DotNotation';
 import { applyColorToFavicon } from '../../common/Favicon';
@@ -42,7 +42,7 @@ function previewColorScheme(colorScheme: ColorScheme): void {
   }));
 }
 
-export function ThemeSettingsForm({ onSave, modalId }: SettingsProps): ReactElement {
+export function ThemeSettingsForm({ onSave, modalId }: SettingsProps): ReactNode {
   const onCloseDialog = (code: CloseResultCode): void => {
     getModal(modalId)?.close(code);
   };

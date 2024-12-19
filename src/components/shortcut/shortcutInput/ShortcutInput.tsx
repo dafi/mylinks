@@ -1,13 +1,13 @@
-import { Dispatch, KeyboardEvent, ReactElement, SetStateAction, useRef } from 'react';
+import { Dispatch, KeyboardEvent, ReactNode, SetStateAction, useRef } from 'react';
 import './ShortcutInput.css';
 import { KeyCombination } from '../../../model/KeyCombination';
 import { Shortcut } from '../Shortcut';
 
-type ShortcutInputProps = {
-  readonly autoFocus?: boolean;
-  readonly keyCombination: KeyCombination[];
-  readonly setKeyCombination: Dispatch<SetStateAction<KeyCombination[]>>;
-};
+type ShortcutInputProps = Readonly<{
+  autoFocus?: boolean;
+  keyCombination: KeyCombination[];
+  setKeyCombination: Dispatch<SetStateAction<KeyCombination[]>>;
+}>;
 
 export const ShortcutInput = function(
   {
@@ -15,7 +15,7 @@ export const ShortcutInput = function(
     keyCombination,
     setKeyCombination,
   }: ShortcutInputProps,
-): ReactElement {
+): ReactNode {
   function onKeyDown(e: KeyboardEvent<HTMLElement>): void {
     if (e.ctrlKey || e.shiftKey || e.altKey || e.metaKey || e.key === 'Enter') {
       return;

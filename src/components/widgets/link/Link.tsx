@@ -1,4 +1,4 @@
-import { MouseEvent, ReactElement, useState } from 'react';
+import { MouseEvent, ReactNode, useState } from 'react';
 import { openLink } from '../../../model/MyLinks';
 import { Link as MLLink, Widget } from '../../../model/MyLinks-interface';
 import { Shortcut } from '../../shortcut/Shortcut';
@@ -20,7 +20,7 @@ export function Link(
     editable,
     draggable = true,
   }: LinkProps
-): ReactElement {
+): ReactNode {
   const [isMouseOver, setIsMouseOver] = useState(false);
 
   function onClick(e: MouseEvent<HTMLElement>): void {

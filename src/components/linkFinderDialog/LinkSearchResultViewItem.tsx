@@ -1,4 +1,4 @@
-import { ReactElement } from 'react';
+import { ReactNode } from 'react';
 import { LinkSearchResult } from '../../common/LinkSearch';
 import { isNotEmptyString } from '../../common/StringUtil';
 import { useAppConfigContext } from '../../contexts/AppConfigContext';
@@ -18,7 +18,7 @@ export function LinkSearchResultViewItem(
   {
     item,
   }: { readonly item: LinkSearchResult }
-): ReactElement {
+): ReactNode {
   const { myLinksLookup } = useAppConfigContext();
 
   return (

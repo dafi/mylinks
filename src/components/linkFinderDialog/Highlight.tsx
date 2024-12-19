@@ -2,9 +2,9 @@ import { ReactNode } from 'react';
 import { LinkSearchResult } from '../../common/LinkSearch';
 import { isNotEmptyString } from '../../common/StringUtil';
 
-type HighlightProps = {
-  readonly matches: LinkSearchResult['matches'];
-};
+type HighlightProps = Readonly<{
+  matches: LinkSearchResult['matches'];
+}>;
 
 export function Highlight({ matches: m }: HighlightProps): ReactNode {
   if (m?.[0] && isNotEmptyString(m[0].value)) {

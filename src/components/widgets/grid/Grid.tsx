@@ -1,16 +1,16 @@
 import { DragDropContext, DropResult, ResponderProvided } from '@hello-pangea/dnd';
-import { ReactElement } from 'react';
+import { ReactNode } from 'react';
 import { useAppConfigContext } from '../../../contexts/AppConfigContext';
 import { useAppUIStateContext } from '../../../contexts/AppUIStateContext';
 import { isEditEntity } from '../../../model/EditData-interface';
 import { Widget as MLWidget } from '../../../model/MyLinks-interface';
 import { Column } from '../column/Column';
 
-interface GridProps {
-  readonly columns: MLWidget[][];
-}
+type GridProps = Readonly<{
+  columns: MLWidget[][];
+}>;
 
-export function Grid({ columns }: GridProps): ReactElement {
+export function Grid({ columns }: GridProps): ReactNode {
   function onDragEnd(result: DropResult, _provided: ResponderProvided): void {
     const { source, destination } = result;
 

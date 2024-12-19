@@ -1,12 +1,12 @@
-import { ComponentPropsWithoutRef, ReactElement } from 'react';
+import { ComponentPropsWithoutRef, ReactNode } from 'react';
 import { KeyCombination } from '../../../model/KeyCombination';
 import { Shortcut } from '../Shortcut';
 import './ShortcutDetails.css';
 
-type ShortcutDetailsProps = {
-  readonly label?: string;
-  readonly combination: KeyCombination[] | undefined;
-} & ComponentPropsWithoutRef<'div'>;
+type ShortcutDetailsProps = Readonly<{
+  label?: string;
+  combination: KeyCombination[] | undefined;
+}> & ComponentPropsWithoutRef<'div'>;
 
 export function ShortcutDetails(
   {
@@ -16,7 +16,7 @@ export function ShortcutDetails(
     style,
     className = ''
   }: ShortcutDetailsProps
-): ReactElement {
+): ReactNode {
   let labelChild;
 
   if (label != null) {
