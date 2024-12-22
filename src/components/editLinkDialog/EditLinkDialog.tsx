@@ -3,6 +3,7 @@ import { isNotEmptyString } from '../../common/StringUtil';
 import { LinkEditableProperties, LinkEditData, LinkEditDataCreate, LinkEditDataUpdate } from '../../model/EditData-interface';
 import { KeyCombination } from '../../model/KeyCombination';
 import { Footer, FooterButton } from '../footer/Footer';
+import { InputUrl } from '../inputUrl/InputUrl';
 import Modal from '../modal/Modal';
 import { getModal } from '../modal/ModalHandler';
 import { CloseResultCode } from '../modal/ModalTypes';
@@ -36,20 +37,6 @@ export function EditLinkDialog({ data, onSave }: EditLinkDialogProps): ReactNode
   );
 }
 
-function validateUrls(urls: string[], el: HTMLTextAreaElement): boolean {
-  if (urls.length === 0) {
-    el.setCustomValidity('Url is mandatory');
-    return false;
-  }
-  const invalidUrl = urls.find(url => !/^[a-z]*:\/\/.*/.test(url));
-  if (invalidUrl !== undefined) {
-    el.setCustomValidity(`Invalid url '${invalidUrl}'`);
-    return false;
-  }
-  el.setCustomValidity('');
-  return true;
-}
-
 // eslint-disable-next-line react/no-multi-comp
 function EditLinkForm({ data, onSave }: EditLinkDialogProps): ReactNode {
   function onCloseDialog(code: CloseResultCode): void {
@@ -77,16 +64,6 @@ function EditLinkForm({ data, onSave }: EditLinkDialogProps): ReactNode {
     if (isNotEmptyString(action)) {
       setForm(prevState => ({
         ...prevState, [action]: e.target.value
-      }));
-    }
-  }
-
-  function onChangeUrls(e: ChangeEvent<HTMLTextAreaElement>): void {
-    const trimmed = e.target.value.trim();
-    const urls = trimmed.length === 0 ? [] : trimmed.split(/\n+/);
-    if (validateUrls(urls, e.target)) {
-      setForm(prevState => ({
-        ...prevState, urls
       }));
     }
   }
@@ -128,6 +105,7 @@ function EditLinkForm({ data, onSave }: EditLinkDialogProps): ReactNode {
             <li>
               <label htmlFor="link-label">Label</label>
               <input
+                id="link-label"
                 data-action="label"
                 data-auto-focus="true"
                 type="text"
@@ -140,21 +118,22 @@ function EditLinkForm({ data, onSave }: EditLinkDialogProps): ReactNode {
             </li>
             <li>
               <label htmlFor="link-url">Urls</label>
-              <textarea
-                data-action="urls"
-                defaultValue={form.urls.join('\n')}
-                onChange={onChangeUrls}
-                placeholder="https://youtube.com"
+              <InputUrl
+                id="link-url"
+                type="multiple"
+                defaultValue={form.urls}
+                onChange={urls => setForm(prevState => ({ ...prevState, urls }))}
+                placeholder="https://github.com"
                 required
               />
             </li>
             <li>
-              <label htmlFor="shortcut">Favicon URL</label>
-              <input
-                data-action="favicon"
-                type="url"
+              <label htmlFor="link-faviconurl">Favicon URL</label>
+              <InputUrl
+                id="link-faviconurl"
+                type="single"
                 defaultValue={form.favicon}
-                onChange={onChange}
+                onChange={favicon => setForm(prevState => ({ ...prevState, favicon }))}
                 placeholder="Favicon Url"
               />
             </li>
