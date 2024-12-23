@@ -69,7 +69,7 @@ export function Widget(
   const cls = cssExtraClasses(startCollapsed, collapsed);
 
   const style: VarCSSProperties = {
-    [WidgetCssVar.titleColor] : widget.textColor,
+    [WidgetCssVar.titleColor]: widget.textColor,
     [WidgetCssVar.toolbarIconColor]: widget.textColor,
     [WidgetCssVar.backgroundColor]: widget.backgroundColor,
     [WidgetCssVar.textColor]: widget.textColor,
@@ -89,7 +89,7 @@ export function Widget(
           {...onCollapse}
           {...dragProvided.draggableProps}
           {...dragProvided.dragHandleProps}
-          style={style}
+          style={{ ...dragProvided.draggableProps.style, ...style }}
         >
           <div>
             <h2 className="ml-widget-title">
