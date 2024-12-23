@@ -1,4 +1,4 @@
-import { ChangeEvent, ReactNode } from 'react';
+import { ChangeEvent, ReactNode, useState } from 'react';
 import { Button } from '../button/Button';
 import { Footer, FooterButton } from '../footer/Footer';
 import { getModal } from '../modal/ModalHandler';
@@ -31,6 +31,17 @@ export function ExportSettingsForm(
     }
   }
 
+  function copyToClipboard(): void {
+    setCopyToClipboardLabel('Copying...');
+    onExportConfig('clipboard');
+
+    const timeout = 300;
+    setTimeout(() => {
+      setCopyToClipboardLabel('Copy to Clipboard');
+    }, timeout);
+  }
+
+  const [copyToClipboardLabel, setCopyToClipboardLabel] = useState('Copy to Clipboard');
   const rightButtons: FooterButton[] = [
     { id: 'close', label: 'Close', onClick: onCloseDialog, scope: 'secondary' },
   ];
@@ -61,9 +72,9 @@ export function ExportSettingsForm(
               <label htmlFor="load-config">Save</label>
               <div>
                 <Button
-                  label="Copy to Clipboard"
+                  label={copyToClipboardLabel}
                   scope="success"
-                  onClick={() => onExportConfig('clipboard')}
+                  onClick={copyToClipboard}
                 />
                 <Button
                   label="View JSON"
