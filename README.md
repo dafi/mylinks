@@ -23,6 +23,7 @@ As the name implies, MyLinks, it's a dashboard to organize links.
 - Arrange links in a grid that can hold as many widgets as the user desires
 - The columns and rows in the grid are defined by the user
 - It is possible for users to organize links into widgets. One example is to make a widget called 'Social' and include links to Facebook, Instagram, and X
+- Widgets text and background colors can be customized
 - Drag and drop can be used to reposition widgets
 - Drag and drop can also be used to move links between different widgets
 
