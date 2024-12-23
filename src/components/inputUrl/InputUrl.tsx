@@ -1,4 +1,4 @@
-import { ChangeEvent, ComponentProps, ReactNode } from 'react';
+import { ChangeEvent, ComponentPropsWithoutRef, ReactNode } from 'react';
 
 function validateUrls(urls: string[], el: HTMLTextAreaElement): boolean {
   if (urls.length === 0) {
@@ -17,13 +17,13 @@ function validateUrls(urls: string[], el: HTMLTextAreaElement): boolean {
 type InputUrlSingleProps = Readonly<{
   onChange: (url: string) => void;
   type: 'single';
-}> & Omit<ComponentProps<'input'>, 'onChange' | 'type'>;
+}> & Omit<ComponentPropsWithoutRef<'input'>, 'onChange' | 'type'>;
 
 type InputUrlMultipleProps = Readonly<{
   onChange: (urls: string[]) => void;
   defaultValue: string[];
   type: 'multiple';
-}> & Omit<ComponentProps<'textarea'>, 'onChange' | 'type'>;
+}> & Omit<ComponentPropsWithoutRef<'textarea'>, 'onChange' | 'type'>;
 
 export function InputUrl(
   {
@@ -47,7 +47,7 @@ export function InputUrl(
     return (
       <input
         // typescript is unable to understand that props are relative to 'input' so we force it using the type assertion
-        {...(props as ComponentProps<'input'>)}
+        {...(props as ComponentPropsWithoutRef<'input'>)}
         type="url"
         defaultValue={defaultValue}
         onChange={e => onChange(e.target.value)}
@@ -58,7 +58,7 @@ export function InputUrl(
   return (
     <textarea
       // typescript is unable to understand that props are relative to 'textarea' so we force it using the type assertion
-      {...(props as ComponentProps<'textarea'>)}
+      {...(props as ComponentPropsWithoutRef<'textarea'>)}
       defaultValue={Array.isArray(defaultValue) ? defaultValue.join('\n') : defaultValue}
       onChange={onValidate}
     />

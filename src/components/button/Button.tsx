@@ -1,12 +1,12 @@
-import { ComponentProps, ReactNode } from 'react';
+import { ComponentPropsWithoutRef, ReactNode } from 'react';
 import './Button.css';
 
 export type Scope = 'primary' | 'secondary' | 'success' | 'warning' | 'danger';
 
-type ButtonProps = ComponentProps<'button'> & Readonly<{
+type ButtonProps = Readonly<{
   label: string;
   scope?: Scope;
-}>;
+}> & ComponentPropsWithoutRef<'button'>;
 
 const cssScopeMap: Readonly<Record<Scope, string>> = {
   primary: 'text-white bg-action-primary',
@@ -25,7 +25,7 @@ export function Button(
     ...buttonProps
   }: ButtonProps
 ): ReactNode {
-  const validProps: ComponentProps<'button'> = {};
+  const validProps: ComponentPropsWithoutRef<'button'> = {};
 
   if (onClick) {
     validProps.onClick = (e): void => {
