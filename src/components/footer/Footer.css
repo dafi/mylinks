@@ -12,25 +12,6 @@
   width: 100%;
 }
 
-/*.footer .button-container button {*/
-/*  padding: 8px 16px;*/
-/*  border: none;*/
-/*  text-transform: uppercase;*/
-/*  letter-spacing: 0.09em;*/
-/*  margin-left: 4px;*/
-/*  cursor: pointer;*/
-/*  border-radius: 4px;*/
-/*  font-size: var(--font-sm);*/
-/*}*/
-
-/*.footer .button-container button:first-child {*/
-/*  margin-left: 0;*/
-/*}*/
-
-/*.footer .button-container button:disabled {*/
-/*  opacity: 0.3;*/
-/*}*/
-
 .footer .left-container {
   display: block;
   flex: 1 1 auto;
