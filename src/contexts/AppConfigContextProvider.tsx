@@ -61,12 +61,12 @@ export function AppConfigContextProvider(
     { title: 'System Shortcuts', content: <SystemShortcutForm onSave={onSaveSystemShortcuts} modalId={settingsDialogId} /> },
   ];
   return (
-    <AppConfigContext.Provider value={config}>
+    <AppConfigContext value={config}>
       {children}
 
       <SettingsDialog
         panels={panels}
       />
-    </AppConfigContext.Provider>
+    </AppConfigContext>
   );
 }

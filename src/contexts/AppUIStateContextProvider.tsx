@@ -28,7 +28,7 @@ export function AppUIStateContextProvider(
   }, [linkEditData]);
 
   return (
-    <AppUIStateContext.Provider value={localUIState}>
+    <AppUIStateContext value={localUIState}>
       {children}
       { linkEditData && (linkEditData.action === 'create' || linkEditData.action === 'update') &&
         <EditLinkDialog
@@ -36,6 +36,6 @@ export function AppUIStateContextProvider(
           data={linkEditData}
         />
       }
-    </AppUIStateContext.Provider>
+    </AppUIStateContext>
   );
 }
