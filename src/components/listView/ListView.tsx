@@ -1,9 +1,8 @@
 import {
-  ForwardedRef,
-  forwardRef,
   KeyboardEvent,
   MouseEvent,
   ReactNode,
+  RefObject,
   useCallback,
   useEffect,
   useImperativeHandle,
@@ -15,6 +14,7 @@ import { ListViewHandle, ListViewItem } from './ListViewTypes';
 const ClickCount = 2;
 
 type ListViewProps = Readonly<{
+  ref?: RefObject<ListViewHandle | null>;
   selectedIndex: number;
   items: ListViewItem[];
   onSelectionChange?: (index: number) => void;
@@ -36,9 +36,15 @@ function setOrDelete<K, V>(
   }
 }
 
-export const ListView = forwardRef(function(
-  { selectedIndex: startIndex, items, onSelectionChange, onSelected, tabIndex = -1 }: ListViewProps,
-  ref: ForwardedRef<ListViewHandle>
+export function ListView(
+  {
+    selectedIndex: startIndex,
+    items,
+    onSelectionChange,
+    onSelected,
+    tabIndex = -1,
+    ref,
+  }: ListViewProps
 ): ReactNode {
   function onClick(e: MouseEvent<HTMLElement>): void {
     // skip if a dblclick is in progress
@@ -49,7 +55,7 @@ export const ListView = forwardRef(function(
     e.preventDefault();
     e.stopPropagation();
 
-    const strIndex = e.currentTarget.dataset.index;
+    const strIndex = e.currentTarget.dataset['index'];
     const index = strIndex === undefined ? 0 : +strIndex;
 
     updateSelectedIndex(index);
@@ -63,7 +69,7 @@ export const ListView = forwardRef(function(
     e.preventDefault();
     e.stopPropagation();
 
-    const strIndex = e.currentTarget.dataset.index;
+    const strIndex = e.currentTarget.dataset['index'];
     const index = strIndex === undefined ? 0 : +strIndex;
 
     updateSelectedIndex(index);
@@ -160,4 +166,4 @@ export const ListView = forwardRef(function(
       </ul>
     </div>
   );
-});
+}

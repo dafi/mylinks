@@ -1,27 +1,27 @@
-import { ChangeEvent, ForwardedRef, forwardRef, InputHTMLAttributes, ReactNode } from 'react';
+import { ChangeEvent, ComponentPropsWithoutRef, ReactNode, RefObject } from 'react';
 import { useAutoFocus } from '../../hooks/useAutoFocus/useAutoFocus';
 import { InputTextHandle, OnTextType } from './InputTextTypes';
-
-import { useParentValueConsumer } from './useParentValueConsumer';
 import { useInputChange } from './useInputChange';
+import { useParentValueConsumer } from './useParentValueConsumer';
 
 const defaultDebounceTimeout = 1500;
 
 export type InputTextProps = Readonly<{
+  ref: RefObject<InputTextHandle | null>;
   onText?: OnTextType;
   debounceTimeout?: number;
-}>;
+}> & ComponentPropsWithoutRef<'input'>;
 
-export const InputText = forwardRef(function(
+export function InputText(
   {
+    ref,
     autoFocus,
     defaultValue,
     className,
     debounceTimeout = defaultDebounceTimeout,
     onText,
     onKeyDown
-  }: InputTextProps & InputHTMLAttributes<HTMLInputElement>,
-  ref: ForwardedRef<InputTextHandle>
+  }: InputTextProps
 ): ReactNode {
   function onChange(e: ChangeEvent<HTMLInputElement>): void {
     if (onInputChange) {
@@ -43,4 +43,4 @@ export const InputText = forwardRef(function(
       onChange={onChange}
     />
   );
-});
+}
