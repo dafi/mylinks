@@ -1,6 +1,6 @@
-type ValueObject = Record<string, {} | string | number | undefined>;
+type ValueObject = Record<string, object | string | number | undefined>;
 
-export function setPropertyFromDotNotation<T extends {} | string | number, O extends ValueObject>(
+export function setPropertyFromDotNotation<T extends object | string | number, O extends ValueObject>(
   dotNotation: string,
   value: T,
   obj: O
@@ -19,7 +19,7 @@ export function setPropertyFromDotNotation<T extends {} | string | number, O ext
     if (current[objectName] === undefined) {
       current[objectName] = {};
     }
-    current = current[objectName] as {};
+    current = current[objectName] as ValueObject;
   }
   current[propertyName] = value;
 
