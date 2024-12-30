@@ -31,11 +31,6 @@ export function Widget(
         saveCollapsed(toggleStartCollapsed());
         break;
       case 'edit':
-        // In edit mode, the compressed state is ignored to avoid annoying interference
-        // due to the continuous expansion/compression of the widget
-        if (isCollapsedOnStart) {
-          setStartCollapsed(editable);
-        }
         onToggleEdit();
         break;
       case 'openLinks':
@@ -56,6 +51,11 @@ export function Widget(
   }
 
   function onToggleEdit(): void {
+    // In edit mode, the compressed state is ignored to avoid annoying interference
+    // due to the continuous expansion/compression of the widget
+    if (isCollapsedOnStart) {
+      setStartCollapsed(editable);
+    }
     setEditable(prevState => !prevState);
   }
 
