@@ -19,7 +19,7 @@ interface UseEditLink {
   /**
    * The data to edit from some UI. Generally you open some dialog to create or updated the data
    */
-  linkEditData?: LinkEditData;
+  linkEditData?: LinkEditData | undefined;
   /**
    * Begin the edit operation then save edited data, this can require to show a dialog or immediately call save
    * @param editData the data to edit/save

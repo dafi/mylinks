@@ -1,12 +1,12 @@
 import { ColorScheme } from '../common/ColorScheme';
 
 export type Background = {
-  image?: string;
-  color?: string;
+  image?: string | undefined;
+  color?: string | undefined;
 };
 
 export type Theme = {
-  background?: Background;
-  faviconColor?: string;
-  colorScheme?: ColorScheme;
+  background?: Background | undefined;
+  faviconColor?: string | undefined;
+  colorScheme?: ColorScheme | undefined;
 };

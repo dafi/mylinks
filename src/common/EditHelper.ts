@@ -52,7 +52,7 @@ function updateLinkProperty(
     case 'hotKey': {
       const v = value[propName];
       if (v === undefined || v.length === 0) {
-        link[propName] = undefined;
+        delete link[propName];
         return true;
       }
       const oldValue = link[propName];

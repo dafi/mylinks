@@ -103,7 +103,7 @@ function Page(): ReactNode {
 
   useAppStartup(onConfigLoaded);
   useColorScheme(buildColorSchemeOptions({
-    colorScheme: config.theme?.colorScheme,
+    colorScheme: config.theme?.colorScheme ?? 'system',
   }));
 
   const myLinks = config.myLinksLookup.myLinks;

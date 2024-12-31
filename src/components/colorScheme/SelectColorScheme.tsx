@@ -2,7 +2,7 @@ import { ChangeEvent, ReactNode } from 'react';
 import { ColorScheme } from '../../common/ColorScheme';
 
 type SelectColorSchemeProps = Readonly<{
-  colorScheme?: ColorScheme;
+  colorScheme?: ColorScheme | undefined;
   onSelectColorScheme: (scheme: ColorScheme) => void;
 }>;
 

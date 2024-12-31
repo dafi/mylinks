@@ -20,8 +20,8 @@ export type WidgetExtraCssClass = {
 };
 
 export type WidgetColorScheme = {
-  textColor?: string;
-  backgroundColor?: string;
+  textColor?: string | undefined;
+  backgroundColor?: string | undefined;
 };
 
 export function cssExtraClasses(startCollapsed: boolean, collapsed: boolean): WidgetExtraCssClass {

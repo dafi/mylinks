@@ -5,13 +5,13 @@ type TestType = {
   background?: {
     image?: string | URL;
     color?: string;
-  };
+  } | undefined;
   address?: {
     city: {
       name: string;
       code: string;
     };
-  };
+  } | undefined;
 };
 
 test('check not existing property', () => {

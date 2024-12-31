@@ -4,8 +4,8 @@ import './ColorPicker.css';
 
 export type ColorPickerItem = {
   id: string;
-  label?: string;
-  defaultValue?: string;
+  label?: string | undefined;
+  defaultValue?: string | undefined;
 };
 
 type ColorPickerProps = Readonly<{

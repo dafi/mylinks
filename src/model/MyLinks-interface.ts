@@ -6,7 +6,7 @@ export type Link = {
   id: string;
   label: string;
   urls: string[];
-  favicon?: string;
+  favicon?: string | undefined;
 } & Partial<HotKey>;
 
 export type Widget = {
@@ -19,14 +19,14 @@ export type Widget = {
 };
 
 export type Config = {
-  faviconService?: string;
-  systemShortcuts?: ActionShortcut[];
+  faviconService?: string | undefined;
+  systemShortcuts?: ActionShortcut[] | undefined;
 };
 
 export type MyLinks = {
-  theme?: Theme;
+  theme?: Theme | undefined;
   columns: Widget[][];
-  config?: Config;
+  config?: Config | undefined;
 };
 
 export type ItemLocation = {
