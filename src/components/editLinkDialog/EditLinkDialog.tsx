@@ -1,4 +1,5 @@
 import { ChangeEvent, ReactNode, useState } from 'react';
+import { isKeyCombinationArray } from '../../common/shortcut/ShortcutManager';
 import { isNotEmptyString } from '../../common/StringUtil';
 import { LinkEditableProperties, LinkEditData, LinkEditDataCreate, LinkEditDataUpdate } from '../../model/EditData-interface';
 import { KeyCombination } from '../../model/KeyCombination';
@@ -75,7 +76,7 @@ function EditLinkForm({ data, onSave }: EditLinkDialogProps): ReactNode {
     setSelectedCombination([...currentHotKey]);
     getModal(shortcutDialogId)?.open({
       onClose: (code, hotKey) => {
-        if (code === 'Ok' && Array.isArray(hotKey)) {
+        if (code === 'Ok' && isKeyCombinationArray(hotKey)) {
           setForm(prevState => ({
             ...prevState, hotKey
           }));

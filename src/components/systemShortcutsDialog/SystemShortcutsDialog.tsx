@@ -1,6 +1,7 @@
 import { ReactNode, useMemo, useState } from 'react';
 import { ActionList, ActionShortcut } from '../../action/ActionType';
 import { Shortcut } from '../../common/shortcut/Shortcut';
+import { isKeyCombinationArray } from '../../common/shortcut/ShortcutManager';
 import { useAppConfigContext } from '../../contexts/AppConfigContext';
 import { KeyCombination } from '../../model/KeyCombination';
 import { Footer, FooterButton } from '../footer/Footer';
@@ -62,7 +63,7 @@ export function SystemShortcutForm({ modalId, onSave }: SystemShortcutProps): Re
     setSelectedCombination([...shortcutAction.hotKey]);
     getModal(shortcutDialogId)?.open({
       onClose: (code, data) => {
-        if (code === 'Ok' && Array.isArray(data)) {
+        if (code === 'Ok' && isKeyCombinationArray(data)) {
           setForm(form.map(v => v.shortcutAction.action === shortcutAction.action ?
             { ...v, edited: true, shortcutAction: { ...v.shortcutAction, hotKey: data } } : v));
         }

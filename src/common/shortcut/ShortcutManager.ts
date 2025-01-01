@@ -83,6 +83,15 @@ export function findKeyCombinations<T extends Shortcut>(
   return list.filter(s => compareCombinationsArray(shortcut, s.hotKey, options));
 }
 
+/**
+ * Check is passed object is a KeyCombination[]
+ * @param obj
+ * @returns true if obj is an array and contains KeyCombination, an empty array returns true
+ */
+export function isKeyCombinationArray(obj: unknown): obj is KeyCombination[] {
+  return Array.isArray(obj) && (obj.length === 0 ? true : 'key' in obj[0]);
+}
+
 export function addShortcut(shortcut: Shortcut): boolean {
   if (shortcut.hotKey.length === 0) {
     console.error(`Shortcut hotkey is empty`, shortcut);
