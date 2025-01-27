@@ -20,7 +20,7 @@ export default function Modal(
   const onKeyDown = (e: KeyboardEvent<HTMLDivElement>): void => {
     e.stopPropagation();
     if (e.key === 'Escape') {
-      getModal(id)?.close('Cancel');
+      getModal(id).close('Cancel');
     }
   };
 

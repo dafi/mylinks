@@ -10,7 +10,7 @@ export function useOpenDialog(
 
   useEffect(() => {
     if (isDialogOpen) {
-      getModal(id)?.open({
+      getModal(id).open({
         onClose: (code, data) => {
           setIsDialogOpen(false);
           if (cb?.onClose) {

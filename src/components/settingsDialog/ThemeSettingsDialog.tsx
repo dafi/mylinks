@@ -10,7 +10,6 @@ import { Theme } from '../../model/Theme';
 import { SelectColorScheme } from '../colorScheme/SelectColorScheme';
 import { Footer, FooterButton } from '../footer/Footer';
 import { getModal } from '../modal/ModalHandler';
-import { CloseResultCode } from '../modal/ModalTypes';
 
 type DialogState = {
   theme: Pick<Theme, 'background' | 'faviconColor' | 'colorScheme'>;
@@ -43,18 +42,14 @@ function previewColorScheme(colorScheme: ColorScheme): void {
 }
 
 export function ThemeSettingsForm({ onSave, modalId }: SettingsProps): ReactNode {
-  const onCloseDialog = (code: CloseResultCode): void => {
-    getModal(modalId)?.close(code);
-  };
-
   function onClickSave(): void {
     onSave(form);
-    onCloseDialog('Ok');
+    getModal(modalId).close('Ok');
   }
 
   function onClickCancel(): void {
     restoreConfig(form, theme);
-    onCloseDialog('Cancel');
+    getModal(modalId).close('Cancel');
   }
 
   function onClickPreview(): void {

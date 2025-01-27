@@ -7,7 +7,7 @@ export function findLinksAction(
   _context: ActionContext
 ): ActionCommand {
   return {
-    execute: () => getModal(linkFinderDialogId)?.open()
+    execute: () => getModal(linkFinderDialogId).open()
   };
 }
 
@@ -15,6 +15,6 @@ export function openSettingsAction(
   _context: ActionContext
 ): ActionCommand {
   return {
-    execute: () => getModal(settingsDialogId)?.open()
+    execute: () => getModal(settingsDialogId).open()
   };
 }

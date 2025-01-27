@@ -29,7 +29,7 @@ type EditAction = 'editLink' | 'editSettings';
 
 function Page(): ReactNode {
   const onLinkSelected = (link: Link): void => {
-    getModal(linkFinderDialogId)?.close('Ok');
+    getModal(linkFinderDialogId).close('Ok');
     // Ensure the DOM is updated and the dialog is hidden when the link is open
     // This is necessary because when returning to myLinks window/tab, the dialog can be yet visible
     window.requestIdleCallback(() => openLink(link));

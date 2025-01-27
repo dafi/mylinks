@@ -8,7 +8,6 @@ import { Footer, FooterButton } from '../footer/Footer';
 import { ListView } from '../listView/ListView';
 import { ListViewItem } from '../listView/ListViewTypes';
 import { getModal } from '../modal/ModalHandler';
-import { CloseResultCode } from '../modal/ModalTypes';
 import './SystemShortcutsDialog.css';
 import { ShortcutDetails } from '../shortcut/shortcutDetails/ShortcutDetails';
 import { ShortcutDialog } from '../shortcut/shortcutDialog/ShortcutDialog';
@@ -39,15 +38,13 @@ function formSystemShortcut(systemShortcuts: ActionShortcut[] | undefined): Form
 }
 
 export function SystemShortcutForm({ modalId, onSave }: SystemShortcutProps): ReactNode {
-  const onCloseDialog = (code: CloseResultCode): void => getModal(modalId)?.close(code);
-
   function onClickSave(): void {
     onSave(form.map(v => v.shortcutAction).filter(v => v.hotKey.length > 0));
-    onCloseDialog('Ok');
+    getModal(modalId).close('Ok');
   }
 
   function onClickClose(): void {
-    onCloseDialog('Cancel');
+    getModal(modalId).close('Cancel');
   }
 
   function onSelectedItem(index: number): void {
@@ -61,7 +58,7 @@ export function SystemShortcutForm({ modalId, onSave }: SystemShortcutProps): Re
     setCombinationLabel(shortcut.label);
     setDefaultCombination(shortcutAction.hotKey);
     setSelectedCombination([...shortcutAction.hotKey]);
-    getModal(shortcutDialogId)?.open({
+    getModal(shortcutDialogId).open({
       onClose: (code, data) => {
         if (code === 'Ok' && isKeyCombinationArray(data)) {
           setForm(form.map(v => v.shortcutAction.action === shortcutAction.action ?

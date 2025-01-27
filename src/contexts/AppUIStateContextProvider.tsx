@@ -23,7 +23,7 @@ export function AppUIStateContextProvider(
 
   useEffect(() => {
     if (linkEditData) {
-      getModal(editLinkDialogId)?.open();
+      getModal(editLinkDialogId).open();
     }
   }, [linkEditData]);
 

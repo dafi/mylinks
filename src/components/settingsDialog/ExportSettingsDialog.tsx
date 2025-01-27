@@ -19,7 +19,7 @@ export function ExportSettingsForm(
   }: ExportSettingsProps
 ): ReactNode {
   const onCloseDialog = (): void => {
-    getModal(modalId)?.close('Cancel');
+    getModal(modalId).close('Cancel');
   };
 
   function handleFileSelect(evt: ChangeEvent<HTMLInputElement>): void {

@@ -63,11 +63,11 @@ export function ShortcutDialog(
   }: ShortcutDialogProps
 ): ReactNode {
   function onClickSave(): void {
-    getModal(shortcutDialogId)?.close('Ok', keyCombination);
+    getModal(shortcutDialogId).close('Ok', keyCombination);
   }
 
   function onClickCancel(): void {
-    getModal(shortcutDialogId)?.close('Cancel');
+    getModal(shortcutDialogId).close('Cancel');
   }
 
   const message = getMessage(extraCombinations, keyCombination, defaultCombination);

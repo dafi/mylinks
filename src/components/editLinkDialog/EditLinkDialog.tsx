@@ -7,7 +7,6 @@ import { Footer, FooterButton } from '../footer/Footer';
 import { InputUrl } from '../inputUrl/InputUrl';
 import Modal from '../modal/Modal';
 import { getModal } from '../modal/ModalHandler';
-import { CloseResultCode } from '../modal/ModalTypes';
 import '../modal/StandardDialog.css';
 import { ShortcutDetails } from '../shortcut/shortcutDetails/ShortcutDetails';
 import { ShortcutDialog } from '../shortcut/shortcutDialog/ShortcutDialog';
@@ -40,10 +39,6 @@ export function EditLinkDialog({ data, onSave }: EditLinkDialogProps): ReactNode
 
 // eslint-disable-next-line react/no-multi-comp
 function EditLinkForm({ data, onSave }: EditLinkDialogProps): ReactNode {
-  function onCloseDialog(code: CloseResultCode): void {
-    getModal(editLinkDialogId)?.close(code);
-  }
-
   function onClickSave(): void {
     switch (data.action) {
       case 'create':
@@ -53,11 +48,11 @@ function EditLinkForm({ data, onSave }: EditLinkDialogProps): ReactNode {
         onSave({ ...data, edited: form, original: { ...data.link } });
         break;
     }
-    onCloseDialog('Ok');
+    getModal(editLinkDialogId).close('Ok');
   }
 
   function onClickCancel(): void {
-    onCloseDialog('Cancel');
+    getModal(editLinkDialogId).close('Cancel');
   }
 
   function onChange(e: ChangeEvent<HTMLInputElement>): void {
@@ -74,7 +69,7 @@ function EditLinkForm({ data, onSave }: EditLinkDialogProps): ReactNode {
     const currentHotKey = form.hotKey ?? [];
     setDefaultCombination(currentHotKey);
     setSelectedCombination([...currentHotKey]);
-    getModal(shortcutDialogId)?.open({
+    getModal(shortcutDialogId).open({
       onClose: (code, hotKey) => {
         if (code === 'Ok' && isKeyCombinationArray(hotKey)) {
           setForm(prevState => ({

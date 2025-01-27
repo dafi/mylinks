@@ -5,7 +5,6 @@ import { ColorPicker, ColorPickerItem } from '../../colorPicker/ColorPicker';
 import { Footer, FooterButton } from '../../footer/Footer';
 import Modal from '../../modal/Modal';
 import { getModal } from '../../modal/ModalHandler';
-import { CloseResultCode } from '../../modal/ModalTypes';
 import { getWidgetColorScheme } from './Widget.utils';
 
 export const widgetDialogId = 'widgetDialogId';
@@ -31,18 +30,14 @@ export function WidgetDialog({ widget, onSave }: WidgetDialogProps): ReactNode {
 
 // eslint-disable-next-line react/no-multi-comp
 function WidgetForm({ widget, onSave }: WidgetDialogProps): ReactNode {
-  function onCloseDialog(code: CloseResultCode): void {
-    getModal(widgetDialogId)?.close(code);
-  }
-
   function onClickSave(e: FormEvent<HTMLFormElement>): void {
     e.preventDefault();
     onSave(form);
-    onCloseDialog('Ok');
+    getModal(widgetDialogId).close('Ok');
   }
 
   function onClickCancel(): void {
-    onCloseDialog('Cancel');
+    getModal(widgetDialogId).close('Cancel');
   }
 
   function onChangeColor({ id }: ColorPickerItem, newColor: string): void {
