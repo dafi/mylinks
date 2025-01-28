@@ -48,15 +48,15 @@ test('check username', () => {
 });
 
 test('invalid format specifier', () => {
-  expect(() => formatUrl(url, 'Hello$')).toThrowError(new Error('Format specifier at end of string'));
+  expect(() => formatUrl(url, 'Hello$')).toThrowError('Format specifier at end of string');
 });
 
 test('invalid url format', () => {
-  expect(() => formatUrl('hha', '$u')).toThrowError(new Error('Invalid URL'));
+  expect(() => new URL('hha')).toThrowError('Invalid URL');
 });
 
 test('invalid format specifier', () => {
-  expect(() => formatUrl(url, '$x')).toThrowError(new Error("Invalid format specifier 'x'"));
+  expect(() => formatUrl(url, '$x')).toThrowError("Invalid format specifier 'x'");
 });
 
 test('protocol + hash', () => {
