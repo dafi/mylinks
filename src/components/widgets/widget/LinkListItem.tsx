@@ -8,6 +8,7 @@ type LinkListItemProps = Readonly<{
   widget: MLWidget;
   editable: boolean;
   index: number;
+  isMouseOver?: boolean;
 }>;
 
 export function LinkListItem(
@@ -16,6 +17,7 @@ export function LinkListItem(
     widget,
     editable,
     index,
+    isMouseOver = false,
   }: LinkListItemProps
 ): ReactNode {
   return (
@@ -36,6 +38,7 @@ export function LinkListItem(
             draggable={!editable}
             widget={widget}
             editable={editable}
+            isMouseOver={isMouseOver}
           />
         </li>
       }

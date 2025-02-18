@@ -1,4 +1,4 @@
-import { MouseEvent, ReactNode, useState } from 'react';
+import { MouseEvent, ReactNode } from 'react';
 import { openLink } from '../../../model/MyLinks';
 import { Link as MLLink, Widget } from '../../../model/MyLinks-interface';
 import { Shortcut } from '../../shortcut/Shortcut';
@@ -11,6 +11,7 @@ type LinkProps = Readonly<{
   widget: Widget;
   editable: boolean;
   draggable?: boolean;
+  isMouseOver?: boolean;
 }>;
 
 export function Link(
@@ -19,10 +20,9 @@ export function Link(
     widget,
     editable,
     draggable = true,
+    isMouseOver = false,
   }: LinkProps
 ): ReactNode {
-  const [isMouseOver, setIsMouseOver] = useState(false);
-
   function onClick(e: MouseEvent<HTMLElement>): void {
     e.preventDefault();
     e.stopPropagation();
@@ -30,11 +30,7 @@ export function Link(
   }
 
   return (
-    <div
-      className="ml-link-container"
-      onMouseEnter={(): void => setIsMouseOver(true)}
-      onMouseLeave={(): void => setIsMouseOver(false)}
-    >
+    <div className="ml-link-container">
       <div className="left">
         <a
           onClick={onClick}

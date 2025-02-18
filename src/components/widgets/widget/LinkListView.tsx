@@ -6,12 +6,14 @@ import { LinkListItem } from './LinkListItem';
 type LinkListViewProps = Readonly<{
   widget: Widget;
   editable: boolean;
+  isMouseOver?: boolean;
 }>;
 
 export function LinkListView(
   {
     widget,
-    editable
+    editable,
+    isMouseOver = false,
   }: LinkListViewProps
 ): ReactNode {
   return (
@@ -29,6 +31,7 @@ export function LinkListView(
               widget={widget}
               editable={editable}
               index={index}
+              isMouseOver={isMouseOver}
             />
           )}
           {provided.placeholder}

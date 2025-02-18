@@ -75,6 +75,8 @@ export function Widget(
     [WidgetCssVar.textColor]: widget.textColor,
   };
 
+  const [isMouseOver, setIsMouseOver] = useState(false);
+
   return (
     <Draggable
       draggableId={widget.id}
@@ -102,9 +104,13 @@ export function Widget(
               classNames="hover-toolbar"
             />
           </div>
-          <div className="ml-widget-container">
+          <div
+            className="ml-widget-container"
+            onMouseEnter={(): void => setIsMouseOver(true)}
+            onMouseLeave={(): void => setIsMouseOver(false)}
+          >
             <div className="ml-widget-control-box">
-              <LinkListView widget={widget} editable={editable} />
+              <LinkListView widget={widget} editable={editable} isMouseOver={isMouseOver} />
               <WidgetActionList editable={editable} widget={widget} />
             </div>
           </div>
