@@ -62,8 +62,10 @@ function SettingsForm(
       <div className="settings-secondary-panel">
         <header>
           <h2 className="title">{current.title}</h2>
-          { current.content }
         </header>
+        <section>
+          {current.content}
+        </section>
       </div>
     </div>
   );
