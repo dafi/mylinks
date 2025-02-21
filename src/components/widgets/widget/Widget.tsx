@@ -92,6 +92,8 @@ export function Widget(
           {...dragProvided.draggableProps}
           {...dragProvided.dragHandleProps}
           style={{ ...dragProvided.draggableProps.style, ...style }}
+          onMouseEnter={(): void => setIsMouseOver(true)}
+          onMouseLeave={(): void => setIsMouseOver(false)}
         >
           <div>
             <h2 className="ml-widget-title">
@@ -104,11 +106,7 @@ export function Widget(
               classNames="hover-toolbar"
             />
           </div>
-          <div
-            className="ml-widget-container"
-            onMouseEnter={(): void => setIsMouseOver(true)}
-            onMouseLeave={(): void => setIsMouseOver(false)}
-          >
+          <div className="ml-widget-container">
             <div className="ml-widget-control-box">
               <LinkListView widget={widget} editable={editable} isMouseOver={isMouseOver} />
               <WidgetActionList editable={editable} widget={widget} />
