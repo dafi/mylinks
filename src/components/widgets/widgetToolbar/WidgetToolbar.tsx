@@ -1,6 +1,7 @@
 import { ReactNode } from 'react';
 import { MyLinkActionCallback } from '../../../model/Events';
 import './widgetToolbar.css';
+import { useWidgetContext } from '../contexts/WidgetContext';
 
 export type WidgetToolbarActionType = 'collapse' | 'edit' | 'openLinks';
 
@@ -8,7 +9,6 @@ type WidgetToolbarProps = Readonly<{
   collapsed: boolean;
   classNames?: string;
   action: MyLinkActionCallback<WidgetToolbarActionType>;
-  editable: boolean;
 }>;
 
 export function WidgetToolbar(
@@ -16,9 +16,9 @@ export function WidgetToolbar(
     collapsed,
     classNames = '',
     action,
-    editable,
   }: WidgetToolbarProps
 ): ReactNode {
+  const { editable } = useWidgetContext();
   const collapseClassNames = collapsed ? 'fa fa-angle-down icon' : 'fa fa-angle-up icon';
   const collapseTitle = collapsed ? 'Expand content' : 'Collapse content';
   const editClassNames = editable ? 'fas fa-toggle-on icon editable-on' : 'fas fa-toggle-off icon';

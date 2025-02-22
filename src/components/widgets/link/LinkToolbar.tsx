@@ -1,24 +1,24 @@
 import { MouseEvent, ReactNode } from 'react';
 import { useAppUIStateContext } from '../../../contexts/AppUIStateContext';
 import { EditAction } from '../../../model/EditData-interface';
-import { Link as MLLink, Widget } from '../../../model/MyLinks-interface';
+import { Link as MLLink } from '../../../model/MyLinks-interface';
+import { useWidgetContext } from '../contexts/WidgetContext';
 import './Edit.css';
 
 type LinkToolbarProps = Readonly<{
   visible: boolean;
   link: MLLink;
-  widget: Widget;
 }>;
 
-export function LinkToolbar({ visible, link, widget }: LinkToolbarProps): ReactNode {
-  function onEdit(e: MouseEvent<HTMLElement>): void {
+export function LinkToolbar({ visible, link }: LinkToolbarProps): ReactNode {
+  function onEditLink(e: MouseEvent<HTMLElement>): void {
     e.stopPropagation();
     e.preventDefault();
     const action = e.currentTarget.dataset.action as EditAction;
 
-    if (context.onEdit) {
+    if (onEdit) {
       if (action === 'delete') {
-        context.onEdit({
+        onEdit({
           link,
           widget,
           action,
@@ -26,7 +26,7 @@ export function LinkToolbar({ visible, link, widget }: LinkToolbarProps): ReactN
           original: link,
         });
       } else if (action === 'update') {
-        context.onEdit({
+        onEdit({
           link,
           widget,
           action,
@@ -38,7 +38,8 @@ export function LinkToolbar({ visible, link, widget }: LinkToolbarProps): ReactN
     }
   }
 
-  const context = useAppUIStateContext();
+  const { onEdit } = useAppUIStateContext();
+  const { widget } = useWidgetContext();
 
   if (!visible) {
     return null;
@@ -50,13 +51,13 @@ export function LinkToolbar({ visible, link, widget }: LinkToolbarProps): ReactN
         className="fas fa-trash-alt edit-actions danger text-action-secondary"
         title="Delete"
         data-action="delete"
-        onClick={onEdit}
+        onClick={onEditLink}
       />
       <i
         className="fa fa-edit edit-actions text-action-secondary"
         title="Edit"
         data-action="update"
-        onClick={onEdit}
+        onClick={onEditLink}
       />
     </>
   );

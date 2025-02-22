@@ -1,28 +1,25 @@
 import { MouseEvent, ReactNode } from 'react';
 import { openLink } from '../../../model/MyLinks';
-import { Link as MLLink, Widget } from '../../../model/MyLinks-interface';
+import { Link as MLLink } from '../../../model/MyLinks-interface';
 import { Shortcut } from '../../shortcut/Shortcut';
 import { LinkIcon } from '../linkIcon/LinkIcon';
 import './Link.css';
+import { useWidgetContext } from '../contexts/WidgetContext';
 import { LinkToolbar } from './LinkToolbar';
 
 type LinkProps = Readonly<{
   link: MLLink;
-  widget: Widget;
-  editable: boolean;
   draggable?: boolean;
-  isMouseOver?: boolean;
 }>;
 
 export function Link(
   {
     link,
-    widget,
-    editable,
     draggable = true,
-    isMouseOver = false,
   }: LinkProps
 ): ReactNode {
+  const { editable, isMouseOver } = useWidgetContext();
+
   function onClick(e: MouseEvent<HTMLElement>): void {
     e.preventDefault();
     e.stopPropagation();
@@ -42,7 +39,7 @@ export function Link(
         </a>
       </div>
       <div className="right">
-        <LinkToolbar visible={editable} link={link} widget={widget} />
+        <LinkToolbar visible={editable} link={link} />
         <Shortcut shortcut={link.hotKey} visible={!editable} isMouseOver={isMouseOver} />
       </div>
     </div>

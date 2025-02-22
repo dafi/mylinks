@@ -1,25 +1,22 @@
 import { Draggable } from '@hello-pangea/dnd';
 import { ReactNode } from 'react';
-import { Link as MLLink, Widget as MLWidget } from '../../../model/MyLinks-interface';
+import { Link as MLLink } from '../../../model/MyLinks-interface';
 import { Link } from '../link/Link';
+import { useWidgetContext } from '../contexts/WidgetContext';
 
 type LinkListItemProps = Readonly<{
   link: MLLink;
-  widget: MLWidget;
-  editable: boolean;
   index: number;
-  isMouseOver?: boolean;
 }>;
 
 export function LinkListItem(
   {
     link,
-    widget,
-    editable,
     index,
-    isMouseOver = false,
   }: LinkListItemProps
 ): ReactNode {
+  const { editable } = useWidgetContext();
+
   return (
     <Draggable
       draggableId={link.id}
@@ -36,9 +33,6 @@ export function LinkListItem(
           <Link
             link={link}
             draggable={!editable}
-            widget={widget}
-            editable={editable}
-            isMouseOver={isMouseOver}
           />
         </li>
       }

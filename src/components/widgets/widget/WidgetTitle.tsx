@@ -1,20 +1,18 @@
 import { KeyboardEvent, ReactNode, useRef } from 'react';
 import { isNotEmptyString } from '../../../common/StringUtil';
 import { useAppUIStateContext } from '../../../contexts/AppUIStateContext';
-import { Widget } from '../../../model/MyLinks-interface';
 import { InputText } from '../../inputText/InputText';
 import { InputTextHandle } from '../../inputText/InputTextTypes';
+import { useWidgetContext } from '../contexts/WidgetContext';
 
 type WidgetTitleProps = Readonly<{
-  editable: boolean;
-  widget: Widget;
   onToggleEdit: () => void;
 }>;
 
-export default function WidgetTitle({ editable, widget, onToggleEdit }: WidgetTitleProps): ReactNode {
+export default function WidgetTitle({ onToggleEdit }: WidgetTitleProps): ReactNode {
   function saveTitle(title: string | undefined): void {
-    if (context.onEdit && isNotEmptyString(title) && widget.title !== title) {
-      context.onEdit({
+    if (onEdit && isNotEmptyString(title) && widget.title !== title) {
+      onEdit({
         widget,
         action: 'update',
         entity: 'widget',
@@ -33,8 +31,9 @@ export default function WidgetTitle({ editable, widget, onToggleEdit }: WidgetTi
     }
   }
 
-  const context = useAppUIStateContext();
-  const inputRef = useRef<InputTextHandle>(null);
+  const { onEdit } = useAppUIStateContext();
+  const { widget, editable } = useWidgetContext();
+  const inputRef = useRef<InputTextHandle | null>(null);
 
   if (editable) {
     return (

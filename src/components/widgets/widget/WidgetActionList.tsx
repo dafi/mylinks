@@ -4,14 +4,10 @@ import { useAppUIStateContext } from '../../../contexts/AppUIStateContext';
 import { Widget } from '../../../model/MyLinks-interface';
 import { Button } from '../../button/Button';
 import { useOpenDialog } from '../../modal/useShowDialog';
+import { useWidgetContext } from '../contexts/WidgetContext';
 import { WidgetDialog, widgetDialogId } from './WidgetDialog';
 
-type WidgetActionListProps = Readonly<{
-  editable: boolean;
-  widget: Widget;
-}>;
-
-export default function WidgetActionList({ editable, widget }: WidgetActionListProps): ReactNode {
+export default function WidgetActionList(): ReactNode {
   function onAddLink(): void {
     if (onEdit) {
       onEdit({
@@ -55,6 +51,7 @@ export default function WidgetActionList({ editable, widget }: WidgetActionListP
 
   const { onEdit } = useAppUIStateContext();
   const { myLinksLookup } = useAppConfigContext();
+  const { widget, editable } = useWidgetContext();
   const [isDialogOpen, setIsDialogOpen] = useOpenDialog(widgetDialogId);
 
   if (editable) {

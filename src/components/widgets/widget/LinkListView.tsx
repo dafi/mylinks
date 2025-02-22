@@ -1,21 +1,11 @@
 import { Droppable } from '@hello-pangea/dnd';
 import { ReactNode } from 'react';
-import { Widget } from '../../../model/MyLinks-interface';
 import { LinkListItem } from './LinkListItem';
+import { useWidgetContext } from '../contexts/WidgetContext';
 
-type LinkListViewProps = Readonly<{
-  widget: Widget;
-  editable: boolean;
-  isMouseOver?: boolean;
-}>;
+export function LinkListView(): ReactNode {
+  const { widget } = useWidgetContext();
 
-export function LinkListView(
-  {
-    widget,
-    editable,
-    isMouseOver = false,
-  }: LinkListViewProps
-): ReactNode {
   return (
     <Droppable droppableId={widget.id} type="link">
       {provided =>
@@ -28,10 +18,7 @@ export function LinkListView(
             <LinkListItem
               key={link.id}
               link={link}
-              widget={widget}
-              editable={editable}
               index={index}
-              isMouseOver={isMouseOver}
             />
           )}
           {provided.placeholder}

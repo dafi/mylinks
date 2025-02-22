@@ -10,6 +10,7 @@ import './Widget.css';
 import { LinkListView } from './LinkListView';
 import { cssExtraClasses, CssVar, WidgetCssVar } from './Widget.utils';
 import WidgetActionList from './WidgetActionList';
+import { WidgetContextProvider } from '../contexts/WidgetContextProvider';
 import WidgetTitle from './WidgetTitle';
 
 export type WidgetProps = Readonly<{
@@ -95,23 +96,24 @@ export function Widget(
           onMouseEnter={(): void => setIsMouseOver(true)}
           onMouseLeave={(): void => setIsMouseOver(false)}
         >
-          <div>
-            <h2 className="ml-widget-title">
-              <WidgetTitle editable={editable} widget={widget} onToggleEdit={onToggleEdit} />
-            </h2>
-            <WidgetToolbar
-              collapsed={startCollapsed}
-              editable={editable}
-              action={onClickToolbar}
-              classNames="hover-toolbar"
-            />
-          </div>
-          <div className="ml-widget-container">
-            <div className="ml-widget-control-box">
-              <LinkListView widget={widget} editable={editable} isMouseOver={isMouseOver} />
-              <WidgetActionList editable={editable} widget={widget} />
+          <WidgetContextProvider widget={widget} editable={editable} isMouseOver={isMouseOver}>
+            <div>
+              <h2 className="ml-widget-title">
+                <WidgetTitle onToggleEdit={onToggleEdit} />
+              </h2>
+              <WidgetToolbar
+                collapsed={startCollapsed}
+                action={onClickToolbar}
+                classNames="hover-toolbar"
+              />
             </div>
-          </div>
+            <div className="ml-widget-container">
+              <div className="ml-widget-control-box">
+                <LinkListView />
+                <WidgetActionList />
+              </div>
+            </div>
+          </WidgetContextProvider>
         </div>
       }
     </Draggable>
