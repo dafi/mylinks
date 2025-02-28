@@ -5,12 +5,12 @@ import useCollapsed from '../../../hooks/useCollapsed/useCollapsed';
 import { MyLinksEvent } from '../../../model/Events';
 import { openWidgetLinks } from '../../../model/MyLinks';
 import { Widget as MLWidget } from '../../../model/MyLinks-interface';
+import { WidgetContextProvider } from '../contexts/WidgetContextProvider';
 import { WidgetToolbar, WidgetToolbarActionType } from '../widgetToolbar/WidgetToolbar';
 import './Widget.css';
 import { LinkListView } from './LinkListView';
 import { cssExtraClasses, CssVar, WidgetCssVar } from './Widget.utils';
 import WidgetActionList from './WidgetActionList';
-import { WidgetContextProvider } from '../contexts/WidgetContextProvider';
 import WidgetTitle from './WidgetTitle';
 
 export type WidgetProps = Readonly<{
@@ -93,8 +93,6 @@ export function Widget(
           {...dragProvided.draggableProps}
           {...dragProvided.dragHandleProps}
           style={{ ...dragProvided.draggableProps.style, ...style }}
-          onMouseEnter={(): void => setIsMouseOver(true)}
-          onMouseLeave={(): void => setIsMouseOver(false)}
         >
           <WidgetContextProvider widget={widget} editable={editable} isMouseOver={isMouseOver}>
             <div>
@@ -107,7 +105,11 @@ export function Widget(
                 classNames="hover-toolbar"
               />
             </div>
-            <div className="ml-widget-container">
+            <div
+              className="ml-widget-container"
+              onMouseEnter={(): void => setIsMouseOver(true)}
+              onMouseLeave={(): void => setIsMouseOver(false)}
+            >
               <div className="ml-widget-control-box">
                 <LinkListView />
                 <WidgetActionList />
