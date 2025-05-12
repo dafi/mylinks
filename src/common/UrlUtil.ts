@@ -52,3 +52,32 @@ function parseSpecifier(url: URL, specifier: string): string {
       throw new Error(`Invalid format specifier '${specifier}'`);
   }
 }
+
+export function validateUrls(urls: string[]): string | undefined {
+  if (urls.length === 0) {
+    return 'Url is mandatory';
+  }
+  const leadingSpaces = urls.find(url => /^\s+.*$/.test(url));
+
+  if (leadingSpaces !== undefined) {
+    return `'${leadingSpaces}' has leading spaces`;
+  }
+
+  const trailingSpaces = urls.find(url => /^.*\s+$/.test(url));
+
+  if (trailingSpaces !== undefined) {
+    return `'${trailingSpaces}' has trailing spaces`;
+  }
+
+  const emptyLines = urls.find(url => url.length === 0);
+
+  if (emptyLines !== undefined) {
+    return 'Url list has empty lines';
+  }
+
+  const invalidUrl = urls.find(url => !/^[a-z]*:\/\/.*/.test(url));
+  if (invalidUrl !== undefined) {
+    return `Invalid url '${invalidUrl}'`;
+  }
+  return undefined;
+}

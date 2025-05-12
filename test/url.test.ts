@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { formatUrl } from '../src/common/UrlUtil';
+import { formatUrl, validateUrls } from '../src/common/UrlUtil';
 
 const url = 'https://uname:pwd@my-address.com:8081/mail/u/0?a=1&b=3#inbox';
 
@@ -67,3 +67,18 @@ test('strings surrounding formats', () => {
   expect(formatUrl(url, 'hash = $a, protocol = $t')).toEqual('hash = #inbox, protocol = https:');
 });
 
+test('url with leading spaces', () => {
+  const urls = ['https://localhost.com', '  https://second.url'];
+  expect(validateUrls(urls)).toEqual(`'${urls[1]}' has leading spaces`);
+});
+
+test('url with trailing spaces', () => {
+  const urls = ['https://localhost.com', 'https://second.url', 'https://third.url    '];
+  // eslint-disable-next-line @typescript-eslint/no-magic-numbers
+  expect(validateUrls(urls)).toEqual(`'${urls[2]}' has trailing spaces`);
+});
+
+test('url with empty lines', () => {
+  const urls = '\n\n\n'.split('\n');
+  expect(validateUrls(urls)).toEqual('Url list has empty lines');
+});

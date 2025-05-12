@@ -29,7 +29,7 @@ export function InputText(
     }
   }
 
-  const inputRef = useAutoFocus<HTMLInputElement>(null, [autoFocus]);
+  const inputRef = useAutoFocus<HTMLInputElement>(null, autoFocus);
   const onInputChange = useInputChange(debounceTimeout, onText);
   useParentValueConsumer(ref, inputRef);
 

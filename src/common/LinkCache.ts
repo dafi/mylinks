@@ -13,9 +13,7 @@ export class LinkCache {
   ) {}
 
   find(linkId: string): LinkCacheItem | undefined {
-    if (this.itemByLinkId === undefined) {
-      this.itemByLinkId = this.fillMap(this.widgets);
-    }
+    this.itemByLinkId ??= this.fillMap(this.widgets);
     return this.itemByLinkId.get(linkId);
   }
 

@@ -35,9 +35,9 @@ export function shortcutListener(e: KeyboardEvent): boolean {
 function execShortcut(shortcuts: Shortcut[]): boolean {
   if (shortcuts.length === 0) {
     // not found
-    buffer.splice(0, buffer.length);
+    buffer.splice(0);
   } else if (shortcuts.length === 1 && compareCombinationsArray(buffer, shortcuts[0].hotKey)) {
-    buffer.splice(0, buffer.length);
+    buffer.splice(0);
     shortcuts[0].callback();
     return true;
   }
