@@ -5,7 +5,6 @@ import customReact from 'eslint-config-dafi/flat/reactjs/index.mjs';
 import customStylistic from 'eslint-config-dafi/flat/stylistic/index.mjs';
 
 import tsParser from '@typescript-eslint/parser';
-import reactCompiler from 'eslint-plugin-react-compiler';
 
 export default [
   {
@@ -33,11 +32,8 @@ export default [
   ...customReact,
   ...customStylistic,
   {
-    plugins: {
-      'react-compiler': reactCompiler,
-    },
     rules: {
-      'react-compiler/react-compiler': 'error',
+      'react-hooks/react-compiler': 'error',
     },
   }
 ];
