@@ -1,5 +1,6 @@
 import { ChangeEvent, KeyboardEvent, ReactNode, useRef, useState } from 'react';
-import { LinkSearch, LinkSearchResult } from '../../common/LinkSearch';
+import { LinkSearchResult } from '../../common/LinkSearch';
+import { useLinkSearch } from '../../hooks/useLinkSearch/useLinkSearch';
 import { Link } from '../../model/MyLinks-interface';
 import { ListView } from '../listView/ListView';
 import { ListViewHandle, ListViewItem } from '../listView/ListViewTypes';
@@ -39,10 +40,8 @@ export function LinkSelector(
 
   const inputRef = useRef<HTMLInputElement>(null);
   const listViewRef = useRef<ListViewHandle>(null);
-  const linkSearch = new LinkSearch();
+  const linkSearch = useLinkSearch(links);
   const [result, setResult] = useState<LinkSearchResult[]>([]);
-
-  linkSearch.setLinks(links);
 
   const listComponents = result.map((item): ListViewItem => (
     {
